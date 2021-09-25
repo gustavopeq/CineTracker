@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
 
         val movieDbService: MovieDbService = retrofit.create(MovieDbService::class.java)
 
-        movieDbService.getPopularMovies().enqueue(object : Callback<Any>{
+        movieDbService.getMovieById().enqueue(object : Callback<Any>{
             override fun onResponse(call: Call<Any>, response: Response<Any>) {
                 Log.i("print", response.toString())
             }
