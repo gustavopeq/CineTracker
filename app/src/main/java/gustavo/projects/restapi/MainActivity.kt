@@ -2,21 +2,20 @@ package gustavo.projects.restapi
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import androidx.lifecycle.ViewModelProvider
 import com.squareup.picasso.Picasso
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
+
 
 
 class MainActivity : AppCompatActivity() {
+
+    val viewModel: SharedViewModel by lazy {
+        ViewModelProvider(this).get(SharedViewModel::class.java)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -28,55 +27,40 @@ class MainActivity : AppCompatActivity() {
         val genresTextView = findViewById<TextView>(R.id.genresTextView)
         val runtimeTextView = findViewById<TextView>(R.id.runtimeTextView)
 
-        val moshi = Moshi.Builder().addLast(KotlinJsonAdapterFactory()).build()
 
-        val retrofit: Retrofit = Retrofit.Builder()
-                .baseUrl("https://api.themoviedb.org/3/")
-                .addConverterFactory(MoshiConverterFactory.create(moshi))
-                .build()
 
-        val movieDbService: MovieDbService = retrofit.create(MovieDbService::class.java)
+        viewModel.refreshMovie(155)
+        viewModel.getMovieByIdLiveData.observe(this){ response ->
 
-        movieDbService.getMovieById(155).enqueue(object : Callback<GetMovieByIdResponse>{
-            override fun onResponse(call: Call<GetMovieByIdResponse>, response: Response<GetMovieByIdResponse>) {
-
-                if(!response.isSuccessful){
-                    Toast.makeText(this@MainActivity, "Unsuccessful network call!", Toast.LENGTH_SHORT)
-                    return
-                }
-
-                val body = response.body()!!
-
-                titleTextView.text = body.original_title
-                overviewTextView.text = body.overview
-                releaseDateTextView.text = body.release_date
-
-                val listOfGenres = body.genres
-
-                var listOfGenresText: String = ""
-
-                for((index, value) in listOfGenres!!.withIndex()){
-                    if(index < listOfGenres.lastIndex){
-                        listOfGenresText += value!!.name + ", "
-                    }else{
-                        listOfGenresText += value!!.name + "."
-                    }
-                }
-                genresTextView.text = listOfGenresText
-
-                var runtimeHours: Int = body.runtime!!/60
-                var runtimeMinutes = body.runtime%60
-                var runtimeText: String = runtimeHours.toString() + "h "+ runtimeMinutes + "min"
-
-                runtimeTextView.text = runtimeText
-
-                Picasso.get().load("https://image.tmdb.org/t/p/w500"+body.poster_path).into(titleImageView)
-
+            if(response == null){
+                Toast.makeText(this@MainActivity, "Unsuccessful network call!", Toast.LENGTH_SHORT)
+                return@observe
             }
 
-            override fun onFailure(call: Call<GetMovieByIdResponse>, t: Throwable) {
-                Log.i("print", t.message?: "Null message")
+            titleTextView.text = response.original_title
+            overviewTextView.text = response.overview
+            releaseDateTextView.text = response.release_date
+
+            val listOfGenres = response.genres
+
+            var listOfGenresText: String = ""
+
+            for((index, value) in listOfGenres!!.withIndex()){
+                if(index < listOfGenres.lastIndex){
+                    listOfGenresText += value!!.name + ", "
+                }else{
+                    listOfGenresText += value!!.name + "."
+                }
             }
-        })
+            genresTextView.text = listOfGenresText
+
+            var runtimeHours: Int = response.runtime!!/60
+            var runtimeMinutes = response.runtime%60
+            var runtimeText: String = runtimeHours.toString() + "h "+ runtimeMinutes + "min"
+
+            runtimeTextView.text = runtimeText
+
+            Picasso.get().load("https://image.tmdb.org/t/p/w500"+ response.poster_path).into(titleImageView)
+        }
     }
 }
