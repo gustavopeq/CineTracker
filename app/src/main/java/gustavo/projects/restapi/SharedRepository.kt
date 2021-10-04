@@ -1,6 +1,5 @@
 package gustavo.projects.restapi
 
-import android.widget.Toast
 
 class SharedRepository {
 
@@ -8,10 +7,14 @@ class SharedRepository {
 
         val request = NetworkLayer.apiClient.getMovieById(movie_ID)
 
-        if(request.isSuccessful){
-            return request.body()!!
+        if(request.failed) {
+            return null
         }
 
-        return null
+        if(!request.isSuccessful){
+            return null
+        }
+
+        return request.body
     }
 }
