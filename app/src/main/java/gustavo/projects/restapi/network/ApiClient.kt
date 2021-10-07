@@ -1,5 +1,6 @@
-package gustavo.projects.restapi
+package gustavo.projects.restapi.network
 
+import gustavo.projects.restapi.network.response.GetMovieByIdResponse
 import retrofit2.Response
 import kotlin.Exception
 
@@ -7,7 +8,7 @@ class ApiClient(
     private val movieDbService: MovieDbService
     ) {
 
-    suspend fun getMovieById(movie_ID: Int): SimpleResponse<GetMovieByIdResponse>{
+    suspend fun getMovieById(movie_ID: Int): SimpleResponse<GetMovieByIdResponse> {
         return safeApiCall { movieDbService.getMovieById(movie_ID) }
     }
 

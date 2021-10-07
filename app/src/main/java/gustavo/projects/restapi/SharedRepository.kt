@@ -1,5 +1,8 @@
 package gustavo.projects.restapi
 
+import gustavo.projects.restapi.network.response.GetMovieByIdResponse
+import gustavo.projects.restapi.network.NetworkLayer
+
 
 class SharedRepository {
 

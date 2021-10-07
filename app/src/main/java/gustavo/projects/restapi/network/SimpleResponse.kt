@@ -1,16 +1,16 @@
-package gustavo.projects.restapi
+package gustavo.projects.restapi.network
 
 import retrofit2.Response
 import java.lang.Exception
 
 data class SimpleResponse<T>(
-    val status: Status,
-    val data: Response<T>?,
-    val exception: Exception?
+        val status: Status,
+        val data: Response<T>?,
+        val exception: Exception?
 ){
 
     companion object {
-        fun <T> success(data: Response<T>): SimpleResponse <T> {
+        fun <T> success(data: Response<T>): SimpleResponse<T> {
             return SimpleResponse(
                 status = Status.Success,
                 data = data,
