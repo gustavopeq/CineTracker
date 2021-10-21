@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="wrap_content">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/releaseDateTitle"
+        android:layout_width="86dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="48dp"
+        android:text="Release Date"
+        android:textColor="?attr/colorOnBackground"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/releaseDateTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="01/01/2021"
+        android:textColor="?attr/colorOnBackground"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@+id/releaseDateTitle"
+        app:layout_constraintTop_toBottomOf="@+id/releaseDateTitle" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/genresListTitle"
+        android:layout_width="86dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="48dp"
+        android:text="Genres"
+        android:textColor="?attr/colorOnBackground"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/releaseDateTextView" />
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/genresTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Action, Comedy."
+        android:textColor="?attr/colorOnBackground"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@+id/genresListTitle"
+        app:layout_constraintTop_toBottomOf="@+id/genresListTitle" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/runtimeTitle"
+        android:layout_width="86dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="48dp"
+        android:text="Runtime"
+        android:textColor="?attr/colorOnBackground"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/genresTextView" />
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/runtimeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2h 20min"
+        android:textColor="?attr/colorOnBackground"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@+id/runtimeTitle"
+        app:layout_constraintTop_toBottomOf="@+id/runtimeTitle" />
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
