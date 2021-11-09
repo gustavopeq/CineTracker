@@ -1,21 +1,21 @@
-package gustavo.projects.restapi.movies
+package gustavo.projects.restapi.popularmovies
 
 import androidx.paging.PageKeyedDataSource
-import gustavo.projects.restapi.MoviesRepository
-import gustavo.projects.restapi.network.response.GetPopularMovieByIdResponse
+import gustavo.projects.restapi.network.response.GetPopularMoviesByIdResponse
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-class MoviesDataSource(
+class PopularMoviesDataSource(
         private val coroutineScope: CoroutineScope,
-        private val repository: MoviesRepository
-        ): PageKeyedDataSource<Int, GetPopularMovieByIdResponse>() {
+        private val repository: PopularMoviesRepository
+        ): PageKeyedDataSource<Int, GetPopularMoviesByIdResponse>() {
+
         override fun loadInitial(
                 params: LoadInitialParams<Int>,
-                callback: LoadInitialCallback<Int, GetPopularMovieByIdResponse>
+                callback: LoadInitialCallback<Int, GetPopularMoviesByIdResponse>
         ) {
                 coroutineScope.launch {
-                        val page = repository.getPopularMoviesList(1)
+                        val page = repository.getPopularMoviesPage(1)
 
                         if(page == null) {
                                 callback.onResult(emptyList(), null, null)
@@ -28,10 +28,16 @@ class MoviesDataSource(
 
         override fun loadBefore(
                 params: LoadParams<Int>,
-                callback: LoadCallback<Int, GetPopularMovieByIdResponse>
+                callback: LoadCallback<Int, GetPopularMoviesByIdResponse>
         ) {
+                //Nothing to do
+        }
+
+        override fun loadAfter(
+                params: LoadParams<Int>,
+                callback: LoadCallback<Int, GetPopularMoviesByIdResponse>) {
                 coroutineScope.launch {
-                        val page = repository.getPopularMoviesList(params.key)
+                        val page = repository.getPopularMoviesPage(params.key)
 
                         if(page == null) {
                                 callback.onResult(emptyList(), null)
@@ -40,12 +46,5 @@ class MoviesDataSource(
 
                         callback.onResult(page.results, page.page + 1)
                 }
-
-        }
-
-        override fun loadAfter(
-                params: LoadParams<Int>,
-                callback: LoadCallback<Int, GetPopularMovieByIdResponse>) {
-                // Nothing to do
         }
 }

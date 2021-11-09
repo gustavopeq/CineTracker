@@ -1,6 +1,6 @@
 package gustavo.projects.restapi.network.response
 
-data class GetPopularMovieByIdResponse(
+data class GetPopularMoviesByIdResponse(
     val adult: Boolean?,
     val backdrop_path: String?,
     val genre_ids: List<Int?>?,
