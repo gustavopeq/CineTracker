@@ -1,4 +1,4 @@
-package gustavo.projects.restapi
+package gustavo.projects.restapi.moviedetails
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -6,20 +6,22 @@ import android.view.MenuItem
 import android.widget.*
 import androidx.lifecycle.ViewModelProvider
 import com.airbnb.epoxy.EpoxyRecyclerView
+import gustavo.projects.restapi.Constants
+import gustavo.projects.restapi.R
 import gustavo.projects.restapi.epoxy.MovieDetailsEpoxyController
 
 
 class MovieDetailsActivity : AppCompatActivity() {
 
-    private val viewModel: SharedViewModel by lazy {
-        ViewModelProvider(this).get(SharedViewModel::class.java)
+    private val viewModel: MovieDetailsViewModel by lazy {
+        ViewModelProvider(this).get(MovieDetailsViewModel::class.java)
     }
 
     private val epoxyController = MovieDetailsEpoxyController()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_movie_details)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 

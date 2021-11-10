@@ -13,7 +13,7 @@
 
         android:theme="@style/Theme.RESTAPI">
 
-        <activity android:name=".MovieDetailsActivity">
+        <activity android:name=".moviedetails.MovieDetailsActivity">
 <!--            <intent-filter>-->
 <!--                <action android:name="android.intent.action.MAIN" />-->
 

@@ -1,4 +1,4 @@
-package gustavo.projects.restapi
+package gustavo.projects.restapi.moviedetails
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -7,9 +7,9 @@ import androidx.lifecycle.viewModelScope
 import gustavo.projects.restapi.domain.models.Movie
 import kotlinx.coroutines.launch
 
-class SharedViewModel: ViewModel() {
+class MovieDetailsViewModel: ViewModel() {
 
-    private val repository = SharedRepository()
+    private val repository = MovieDetailsRepository()
 
     private val _getMovieByIdLiveData = MutableLiveData<Movie?>()
     val getMovieByIdLiveData: LiveData<Movie?> = _getMovieByIdLiveData

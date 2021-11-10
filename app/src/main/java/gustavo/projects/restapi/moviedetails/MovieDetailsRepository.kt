@@ -1,11 +1,11 @@
-package gustavo.projects.restapi
+package gustavo.projects.restapi.moviedetails
 
 import gustavo.projects.restapi.domain.mappers.MovieMapper
 import gustavo.projects.restapi.domain.models.Movie
 import gustavo.projects.restapi.network.NetworkLayer
 
 
-class SharedRepository {
+class MovieDetailsRepository {
 
     suspend fun getMovieById(movie_ID: Int) : Movie? {
 

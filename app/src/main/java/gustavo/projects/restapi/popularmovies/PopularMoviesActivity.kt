@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.airbnb.epoxy.EpoxyRecyclerView
 import gustavo.projects.restapi.Constants
-import gustavo.projects.restapi.MovieDetailsActivity
+import gustavo.projects.restapi.moviedetails.MovieDetailsActivity
 import gustavo.projects.restapi.R
 import gustavo.projects.restapi.epoxy.PopularMoviesPagingEpoxyController
 
