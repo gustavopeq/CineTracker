@@ -11,7 +11,7 @@ object MovieCreditsMapper {
         val listOfCast = mutableListOf<MovieCast>()
 
         response.cast.forEach {
-            listOfCast.add(MovieCast(it.character, it.name, it.profile_path))
+            listOfCast.add(MovieCast(it.character, it.id, it.name, it.profile_path))
         }
 
         return MovieCredits(response.id, listOfCast)

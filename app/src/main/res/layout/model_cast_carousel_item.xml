@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/castImageView"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.RestAPI" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/castName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxWidth="100dp"
+        android:text="Christian Bale"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="@+id/castImageView"
+        app:layout_constraintStart_toStartOf="@+id/castImageView"
+        app:layout_constraintTop_toBottomOf="@id/castImageView" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/castCharacterName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxWidth="100dp"
+        android:text="Batman"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="@+id/castName"
+        app:layout_constraintStart_toStartOf="@+id/castName"
+        app:layout_constraintTop_toBottomOf="@id/castName" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

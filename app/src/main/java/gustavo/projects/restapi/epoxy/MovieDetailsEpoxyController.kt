@@ -1,6 +1,7 @@
 package gustavo.projects.restapi.epoxy
 
 import android.util.Log
+import com.airbnb.epoxy.CarouselModel_
 import com.airbnb.epoxy.EpoxyController
 import com.squareup.picasso.Picasso
 import gustavo.projects.restapi.Constants
@@ -51,6 +52,16 @@ class MovieDetailsEpoxyController: EpoxyController() {
             movieDetails!!.genres!!,
             movieDetails!!.runtime!!
         ).id("details").addTo(this)
+
+        val carouselItems = movieDetails!!.movieCast!!.map {
+            CastCarouselItemEpoxyModel(it!!).id(it!!.id)
+        }
+
+        CarouselModel_()
+                .id("cast_carousel")
+                .models(carouselItems)
+                .numViewsToShowOnScreen(3f)
+                .addTo(this)
     }
 
     data class TitleEpoxyModel(
@@ -65,7 +76,7 @@ class MovieDetailsEpoxyController: EpoxyController() {
         val posterPath: String
     ) : ViewBindingKotlinModel<ModelMoviePosterBinding>(R.layout.model_movie_poster) {
         override fun ModelMoviePosterBinding.bind() {
-            val fullPosterPath = Constants.POSTER_URL + posterPath
+            val fullPosterPath = Constants.BASE_IMAGE_URL + posterPath
             Picasso.get().load(fullPosterPath).into(titleImageView)
         }
     }
@@ -104,6 +115,24 @@ class MovieDetailsEpoxyController: EpoxyController() {
             var runtimeText: String = runtimeHours.toString() + "h "+ runtimeMinutes + "min"
 
             runtimeTextView.text = runtimeText
+        }
+    }
+
+    data class CastCarouselItemEpoxyModel(
+            val movieCast: MovieCast
+    ): ViewBindingKotlinModel<ModelCastCarouselItemBinding>(R.layout.model_cast_carousel_item) {
+
+        override fun ModelCastCarouselItemBinding.bind() {
+
+            var fullImagePath = Constants.MISSING_PROFILE_PICTURE_URL
+
+            if(movieCast.profile_path != null){
+                fullImagePath = Constants.BASE_IMAGE_URL + movieCast.profile_path
+            }
+                Picasso.get().load(fullImagePath).into(castImageView)
+
+            castName.text = movieCast.name
+            castCharacterName.text = movieCast.character
         }
 
     }

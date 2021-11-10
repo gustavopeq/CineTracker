@@ -34,7 +34,7 @@ class PopularMoviesPagingEpoxyController(
     ): ViewBindingKotlinModel<ModelPopularMovieListItemBinding>(R.layout.model_popular_movie_list_item) {
 
         override fun ModelPopularMovieListItemBinding.bind() {
-            val fullPosterPath = Constants.POSTER_URL + posterPath
+            val fullPosterPath = Constants.BASE_IMAGE_URL + posterPath
             Picasso.get().load(fullPosterPath).into(movieImageView)
             movieTitleTextView.text = movieTitle
             movieRatingTextView.text = movieRating.toString()
