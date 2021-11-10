@@ -60,7 +60,6 @@ class MovieDetailsEpoxyController: EpoxyController() {
         CarouselModel_()
                 .id("cast_carousel")
                 .models(carouselItems)
-                .numViewsToShowOnScreen(3f)
                 .addTo(this)
     }
 

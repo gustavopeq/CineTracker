@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginLeft="8dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.google.android.material.imageview.ShapeableImageView
@@ -22,7 +22,7 @@
         android:maxWidth="100dp"
         android:text="Christian Bale"
         android:textAlignment="center"
-        android:textColor="@color/black"
+        android:textColor="?attr/colorOnBackground"
         app:layout_constraintEnd_toEndOf="@+id/castImageView"
         app:layout_constraintStart_toStartOf="@+id/castImageView"
         app:layout_constraintTop_toBottomOf="@id/castImageView" />
