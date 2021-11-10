@@ -6,15 +6,15 @@ import com.squareup.picasso.Picasso
 import gustavo.projects.restapi.Constants
 import gustavo.projects.restapi.R
 import gustavo.projects.restapi.databinding.ModelPopularMovieListItemBinding
-import gustavo.projects.restapi.network.response.GetPopularMoviesByIdResponse
+import gustavo.projects.restapi.domain.models.PopularMovie
 
 class PopularMoviesPagingEpoxyController(
         private val onMovieSelected: (Int) -> Unit
-): PagedListEpoxyController<GetPopularMoviesByIdResponse>() {
+): PagedListEpoxyController<PopularMovie>() {
 
 
     override fun buildItemModel(currentPosition: Int,
-                                item: GetPopularMoviesByIdResponse?
+                                item: PopularMovie?
     ): EpoxyModel<*> {
         return PopularMoviesItemEpoxyModel(
                 item!!.id!!,

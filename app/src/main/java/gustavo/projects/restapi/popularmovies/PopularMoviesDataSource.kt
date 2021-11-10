@@ -1,18 +1,18 @@
 package gustavo.projects.restapi.popularmovies
 
 import androidx.paging.PageKeyedDataSource
-import gustavo.projects.restapi.network.response.GetPopularMoviesByIdResponse
+import gustavo.projects.restapi.domain.models.PopularMovie
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 class PopularMoviesDataSource(
         private val coroutineScope: CoroutineScope,
         private val repository: PopularMoviesRepository
-        ): PageKeyedDataSource<Int, GetPopularMoviesByIdResponse>() {
+        ): PageKeyedDataSource<Int, PopularMovie>() {
 
         override fun loadInitial(
                 params: LoadInitialParams<Int>,
-                callback: LoadInitialCallback<Int, GetPopularMoviesByIdResponse>
+                callback: LoadInitialCallback<Int, PopularMovie>
         ) {
                 coroutineScope.launch {
                         val page = repository.getPopularMoviesPage(1)
@@ -28,14 +28,14 @@ class PopularMoviesDataSource(
 
         override fun loadBefore(
                 params: LoadParams<Int>,
-                callback: LoadCallback<Int, GetPopularMoviesByIdResponse>
+                callback: LoadCallback<Int, PopularMovie>
         ) {
                 //Nothing to do
         }
 
         override fun loadAfter(
                 params: LoadParams<Int>,
-                callback: LoadCallback<Int, GetPopularMoviesByIdResponse>) {
+                callback: LoadCallback<Int, PopularMovie>) {
                 coroutineScope.launch {
                         val page = repository.getPopularMoviesPage(params.key)
 

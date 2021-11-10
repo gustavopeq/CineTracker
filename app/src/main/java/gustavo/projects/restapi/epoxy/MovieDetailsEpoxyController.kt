@@ -88,7 +88,7 @@ class MovieDetailsEpoxyController: EpoxyController() {
 
             var listOfGenresText: String = ""
 
-            for((index, value) in listOfGenres!!.withIndex()){
+            for((index, value) in listOfGenres.withIndex()){
                 if(index < listOfGenres.lastIndex){
                     listOfGenresText += value!!.name + ", "
                 }else{
@@ -98,7 +98,7 @@ class MovieDetailsEpoxyController: EpoxyController() {
             genresTextView.text = listOfGenresText
 
 
-            var runtimeHours: Int = runtime!!/60
+            var runtimeHours: Int = runtime/60
             var runtimeMinutes = runtime%60
             var runtimeText: String = runtimeHours.toString() + "h "+ runtimeMinutes + "min"
 

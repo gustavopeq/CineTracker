@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import gustavo.projects.restapi.Constants
-import gustavo.projects.restapi.network.response.GetPopularMoviesByIdResponse
+import gustavo.projects.restapi.domain.models.PopularMovie
 
 class PopularMoviesViewModel: ViewModel() {
 
@@ -19,7 +19,7 @@ class PopularMoviesViewModel: ViewModel() {
 
     private val dataSourceFactory = PopularMoviesDataSourceFactory(viewModelScope, repository)
 
-    val moviesPagedListLiveData: LiveData<PagedList<GetPopularMoviesByIdResponse>> =
+    val moviesPagedListLiveData: LiveData<PagedList<PopularMovie>> =
             LivePagedListBuilder(dataSourceFactory, pageListConfig).build()
 
 }
