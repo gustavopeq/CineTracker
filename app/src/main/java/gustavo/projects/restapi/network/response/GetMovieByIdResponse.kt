@@ -1,11 +1,13 @@
 package gustavo.projects.restapi.network.response
 
+import gustavo.projects.restapi.domain.models.MovieGenre
+
 data class GetMovieByIdResponse(
         val adult: Boolean?,
         val backdrop_path: String?,
         val belongs_to_collection: BelongsToCollection?,
         val budget: Int?,
-        val genres: List<Genre?>?,
+        val genres: List<MovieGenre?>?,
         val homepage: String?,
         val id: Int?,
         val imdb_id: String?,
@@ -34,10 +36,7 @@ data class GetMovieByIdResponse(
         val poster_path: String?
     )
 
-    data class Genre(
-        val id: Int?,
-        val name: String?
-    )
+
 
     data class ProductionCompany(
         val id: Int?,

@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.airbnb.epoxy.EpoxyRecyclerView
 import gustavo.projects.restapi.Constants
-import gustavo.projects.restapi.MovieDetails
+import gustavo.projects.restapi.MovieDetailsActivity
 import gustavo.projects.restapi.R
 import gustavo.projects.restapi.epoxy.PopularMoviesPagingEpoxyController
 
@@ -30,7 +30,7 @@ class PopularMoviesActivity: AppCompatActivity() {
     }
 
     private fun onMovieSelected(movieId: Int) {
-        val intent = Intent(this, MovieDetails::class.java)
+        val intent = Intent(this, MovieDetailsActivity::class.java)
         intent.putExtra(Constants.INTENT_MOVIE_ID, movieId)
         startActivity(intent)
     }

@@ -9,7 +9,7 @@ import com.airbnb.epoxy.EpoxyRecyclerView
 import gustavo.projects.restapi.epoxy.MovieDetailsEpoxyController
 
 
-class MovieDetails : AppCompatActivity() {
+class MovieDetailsActivity : AppCompatActivity() {
 
     private val viewModel: SharedViewModel by lazy {
         ViewModelProvider(this).get(SharedViewModel::class.java)
@@ -23,12 +23,12 @@ class MovieDetails : AppCompatActivity() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        viewModel.getMovieByIdLiveData.observe(this){ response ->
+        viewModel.getMovieByIdLiveData.observe(this){ movie ->
 
-            epoxyController.movieResponse = response
+            epoxyController.movie = movie
 
-            if(response == null){
-                Toast.makeText(this@MovieDetails, "Unsuccessful network call!",
+            if(movie == null){
+                Toast.makeText(this@MovieDetailsActivity, "Unsuccessful network call!",
                         Toast.LENGTH_SHORT)
                 return@observe
             }

@@ -6,7 +6,8 @@ import com.squareup.picasso.Picasso
 import gustavo.projects.restapi.Constants
 import gustavo.projects.restapi.R
 import gustavo.projects.restapi.databinding.*
-import gustavo.projects.restapi.network.response.GetMovieByIdResponse
+import gustavo.projects.restapi.domain.models.Movie
+import gustavo.projects.restapi.domain.models.MovieGenre
 
 class MovieDetailsEpoxyController: EpoxyController() {
 
@@ -18,7 +19,7 @@ class MovieDetailsEpoxyController: EpoxyController() {
             }
         }
 
-    var movieResponse: GetMovieByIdResponse? = null
+    var movie: Movie? = null
         set(value) {
             field = value
             if(field != null){
@@ -35,19 +36,19 @@ class MovieDetailsEpoxyController: EpoxyController() {
             return
         }
 
-        if(movieResponse == null) {
+        if(movie == null) {
 
             Log.d("print", "Movie not found")
             return
         }
 
-        TitleEpoxyModel(movieResponse!!.original_title!!).id("title").addTo(this)
-        PosterEpoxyModel(movieResponse!!.poster_path!!).id("poster").addTo(this)
-        OverviewEpoxyModel(movieResponse!!.overview!!).id("overview").addTo(this)
+        TitleEpoxyModel(movie!!.title!!).id("title").addTo(this)
+        PosterEpoxyModel(movie!!.poster_path!!).id("poster").addTo(this)
+        OverviewEpoxyModel(movie!!.overview!!).id("overview").addTo(this)
         DetailsEpoxyModel(
-            movieResponse!!.release_date!!,
-            movieResponse!!.genres!!,
-            movieResponse!!.runtime!!
+            movie!!.release_date!!,
+            movie!!.genres!!,
+            movie!!.runtime!!
         ).id("details").addTo(this)
     }
 
@@ -79,7 +80,7 @@ class MovieDetailsEpoxyController: EpoxyController() {
 
     data class DetailsEpoxyModel(
         val releaseDate: String,
-        val listOfGenres: List<GetMovieByIdResponse.Genre?>,
+        val listOfGenres: List<MovieGenre?>,
         val runtime: Int
     ) : ViewBindingKotlinModel<ModelMovieDetailsBinding>(R.layout.model_movie_details) {
         override fun ModelMovieDetailsBinding.bind() {
