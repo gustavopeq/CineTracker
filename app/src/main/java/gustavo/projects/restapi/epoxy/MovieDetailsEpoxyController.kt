@@ -6,7 +6,8 @@ import com.squareup.picasso.Picasso
 import gustavo.projects.restapi.Constants
 import gustavo.projects.restapi.R
 import gustavo.projects.restapi.databinding.*
-import gustavo.projects.restapi.domain.models.Movie
+import gustavo.projects.restapi.domain.models.MovieCast
+import gustavo.projects.restapi.domain.models.MovieDetails
 import gustavo.projects.restapi.domain.models.MovieGenre
 
 class MovieDetailsEpoxyController: EpoxyController() {
@@ -19,7 +20,7 @@ class MovieDetailsEpoxyController: EpoxyController() {
             }
         }
 
-    var movie: Movie? = null
+    var movieDetails: MovieDetails? = null
         set(value) {
             field = value
             if(field != null){
@@ -36,19 +37,19 @@ class MovieDetailsEpoxyController: EpoxyController() {
             return
         }
 
-        if(movie == null) {
+        if(movieDetails == null) {
 
             Log.d("print", "Movie not found")
             return
         }
 
-        TitleEpoxyModel(movie!!.title!!).id("title").addTo(this)
-        PosterEpoxyModel(movie!!.poster_path!!).id("poster").addTo(this)
-        OverviewEpoxyModel(movie!!.overview!!).id("overview").addTo(this)
+        TitleEpoxyModel(movieDetails!!.title!!).id("title").addTo(this)
+        PosterEpoxyModel(movieDetails!!.poster_path!!).id("poster").addTo(this)
+        OverviewEpoxyModel(movieDetails!!.overview!!).id("overview").addTo(this)
         DetailsEpoxyModel(
-            movie!!.release_date!!,
-            movie!!.genres!!,
-            movie!!.runtime!!
+            movieDetails!!.release_date!!,
+            movieDetails!!.genres!!,
+            movieDetails!!.runtime!!
         ).id("details").addTo(this)
     }
 

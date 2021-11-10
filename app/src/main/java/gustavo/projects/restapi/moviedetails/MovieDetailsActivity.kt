@@ -25,9 +25,9 @@ class MovieDetailsActivity : AppCompatActivity() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        viewModel.getMovieByIdLiveData.observe(this){ movie ->
+        viewModel.getMovieDetailsByIdLiveData.observe(this){ movie ->
 
-            epoxyController.movie = movie
+            epoxyController.movieDetails = movie
 
             if(movie == null){
                 Toast.makeText(this@MovieDetailsActivity, "Unsuccessful network call!",

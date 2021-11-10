@@ -1,6 +1,6 @@
 package gustavo.projects.restapi.domain.models
 
-data class Movie(
+data class MovieDetails(
         val budget: Int?,
         val genres: List<MovieGenre?>?,
         val id: Int?,
@@ -11,5 +11,6 @@ data class Movie(
         val runtime: Int?,
         val title: String?,
         val vote_average: Double?,
+        val movieCast: List<MovieCast?>?
 ) {
 }

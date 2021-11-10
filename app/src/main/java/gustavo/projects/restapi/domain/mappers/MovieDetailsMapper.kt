@@ -1,13 +1,19 @@
 package gustavo.projects.restapi.domain.mappers
 
-import gustavo.projects.restapi.domain.models.Movie
+import gustavo.projects.restapi.domain.models.MovieCast
+import gustavo.projects.restapi.domain.models.MovieDetails
 import gustavo.projects.restapi.network.response.GetMovieByIdResponse
+import gustavo.projects.restapi.network.response.GetMovieCastByIdResponse
+import gustavo.projects.restapi.network.response.GetMovieCreditsByIdResponse
 
-object MovieMapper {
+object MovieDetailsMapper {
 
-    fun buildFrom(response: GetMovieByIdResponse) : Movie {
+    fun buildFrom(
+            response: GetMovieByIdResponse,
+            cast: List<MovieCast>
+    ) : MovieDetails {
 
-        return Movie(
+        return MovieDetails(
                 budget = response.budget,
                 genres = response.genres,
                 id = response.id,
@@ -17,7 +23,8 @@ object MovieMapper {
                 revenue = response.revenue,
                 runtime = response.runtime,
                 title = response.title,
-                vote_average = response.vote_average
+                vote_average = response.vote_average,
+                movieCast = cast
         )
     }
 }
