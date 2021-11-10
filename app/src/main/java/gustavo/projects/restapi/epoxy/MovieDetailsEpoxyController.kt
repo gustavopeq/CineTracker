@@ -3,6 +3,7 @@ package gustavo.projects.restapi.epoxy
 import android.util.Log
 import com.airbnb.epoxy.EpoxyController
 import com.squareup.picasso.Picasso
+import gustavo.projects.restapi.Constants
 import gustavo.projects.restapi.R
 import gustavo.projects.restapi.databinding.*
 import gustavo.projects.restapi.network.response.GetMovieByIdResponse
@@ -62,7 +63,8 @@ class MovieDetailsEpoxyController: EpoxyController() {
         val posterPath: String
     ) : ViewBindingKotlinModel<ModelMoviePosterBinding>(R.layout.model_movie_poster) {
         override fun ModelMoviePosterBinding.bind() {
-            Picasso.get().load("https://image.tmdb.org/t/p/w500$posterPath").into(titleImageView)
+            val fullPosterPath = Constants.POSTER_URL + posterPath
+            Picasso.get().load(fullPosterPath).into(titleImageView)
         }
     }
 

@@ -10,7 +10,7 @@ import gustavo.projects.restapi.epoxy.MovieDetailsEpoxyController
 
 class MainActivity : AppCompatActivity() {
 
-    val viewModel: SharedViewModel by lazy {
+    private val viewModel: SharedViewModel by lazy {
         ViewModelProvider(this).get(SharedViewModel::class.java)
     }
 
