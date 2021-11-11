@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/popularMoviesFragment"
-        android:name="gustavo.projects.restapi.popularmovies.PopularMoviesFragment"
+        android:name="gustavo.projects.moviemanager.movies.popularmovies.PopularMoviesFragment"
         android:label="Popular Movies"
         tools:layout="@layout/fragment_popular_movies" >
         <action
@@ -21,7 +21,7 @@
 
     <fragment
         android:id="@+id/movieDetailsFragment"
-        android:name="gustavo.projects.restapi.moviedetails.MovieDetailsFragment"
+        android:name="gustavo.projects.moviemanager.movies.moviedetails.MovieDetailsFragment"
         android:label="Movie Details"
         tools:layout="@layout/fragment_movie_details" >
         <argument
@@ -32,7 +32,7 @@
 
     <fragment
         android:id="@+id/searchMoviesFragment"
-        android:name="gustavo.projects.restapi.moviesearch.MovieSearchFragment"
+        android:name="gustavo.projects.moviemanager.movies.moviesearch.MovieSearchFragment"
         android:label="Search movies"
         tools:layout="@layout/fragment_movie_search" >
         <action
