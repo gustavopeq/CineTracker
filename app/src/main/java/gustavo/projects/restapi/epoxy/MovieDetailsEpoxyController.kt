@@ -45,7 +45,7 @@ class MovieDetailsEpoxyController: EpoxyController() {
         }
 
         TitleEpoxyModel(movieDetails!!.title!!).id("title").addTo(this)
-        PosterEpoxyModel(movieDetails!!.poster_path!!).id("poster").addTo(this)
+        PosterEpoxyModel(movieDetails!!.poster_path).id("poster").addTo(this)
         OverviewEpoxyModel(movieDetails!!.overview!!).id("overview").addTo(this)
         DetailsEpoxyModel(
             movieDetails!!.release_date!!,
@@ -72,10 +72,18 @@ class MovieDetailsEpoxyController: EpoxyController() {
     }
 
     data class PosterEpoxyModel(
-        val posterPath: String
+        val posterPath: String?
     ) : ViewBindingKotlinModel<ModelMoviePosterBinding>(R.layout.model_movie_poster) {
         override fun ModelMoviePosterBinding.bind() {
-            val fullPosterPath = Constants.BASE_IMAGE_URL + posterPath
+
+            var fullPosterPath = ""
+            if(posterPath != null)
+            {
+                fullPosterPath = Constants.BASE_IMAGE_URL + posterPath
+            }else
+            {
+                fullPosterPath = Constants.MISSING_PROFILE_PICTURE_URL
+            }
             Picasso.get().load(fullPosterPath).into(titleImageView)
         }
     }

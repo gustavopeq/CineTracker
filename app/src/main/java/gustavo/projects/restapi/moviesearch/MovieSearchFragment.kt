@@ -8,9 +8,11 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import gustavo.projects.restapi.R
 import gustavo.projects.restapi.databinding.FragmentMovieSearchBinding
 import gustavo.projects.restapi.epoxy.MovieSearchEpoxyController
+import gustavo.projects.restapi.popularmovies.PopularMoviesFragmentDirections
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -29,13 +31,13 @@ class MovieSearchFragment : Fragment(R.layout.fragment_movie_search) {
         viewModel.submitSearchQuery(currentSearchText)
     }
 
+    private val epoxyController = MovieSearchEpoxyController(::onMovieSelected)
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentMovieSearchBinding.bind(view)
 
-        val epoxyController = MovieSearchEpoxyController { movieId ->
-            TODO()
-        }
+
         binding.epoxyRecyclerView.setControllerAndBuildModels(epoxyController)
 
         /**Handler responsible for giving a brief delay to get what's being
@@ -66,5 +68,13 @@ class MovieSearchFragment : Fragment(R.layout.fragment_movie_search) {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun onMovieSelected(movieId: Int) {
+        val directions =
+            MovieSearchFragmentDirections.actionSearchMoviesFragmentToMovieDetailsFragment(
+                movieId
+            )
+        findNavController().navigate(directions)
     }
 }

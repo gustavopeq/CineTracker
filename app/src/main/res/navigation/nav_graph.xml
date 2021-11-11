@@ -35,6 +35,13 @@
         android:name="gustavo.projects.restapi.moviesearch.MovieSearchFragment"
         android:label="Search movies"
         tools:layout="@layout/fragment_movie_search" >
+        <action
+            android:id="@+id/action_searchMoviesFragment_to_movieDetailsFragment"
+            app:destination="@id/movieDetailsFragment"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:exitAnim="@anim/slide_out_to_left"
+            app:popEnterAnim="@anim/slide_in_from_left"
+            app:popExitAnim="@anim/slide_out_to_right" />
     </fragment>
 
 </navigation>
