@@ -5,12 +5,19 @@ import gustavo.projects.restapi.domain.mappers.MovieCreditsMapper
 import gustavo.projects.restapi.domain.mappers.MovieDetailsMapper
 import gustavo.projects.restapi.domain.models.MovieDetails
 import gustavo.projects.restapi.domain.models.MovieCast
+import gustavo.projects.restapi.network.MovieCache
 import gustavo.projects.restapi.network.NetworkLayer
 
 
 class MovieDetailsRepository {
 
     suspend fun getMovieById(movie_ID: Int) : MovieDetails? {
+
+        val movie = MovieCache.movieMap[movie_ID]
+
+        if(movie != null) {
+            return movie
+        }
 
         val request = NetworkLayer.apiClient.getMovieById(movie_ID)
 
@@ -19,8 +26,10 @@ class MovieDetailsRepository {
         }
 
         val requestMovieCast = getMovieCastById(movie_ID)
+        val movieDetail = MovieDetailsMapper.buildFrom(request.body, requestMovieCast)
+        MovieCache.movieMap[movie_ID] = movieDetail
 
-        return MovieDetailsMapper.buildFrom(request.body, requestMovieCast)
+        return movieDetail
     }
 
     private suspend fun getMovieCastById(movie_ID: Int) : List<MovieCast> {
