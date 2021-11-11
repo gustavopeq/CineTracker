@@ -1,6 +1,7 @@
 package gustavo.projects.moviemanager
 
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
@@ -10,6 +11,8 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
+import gustavo.projects.moviemanager.database.AppDatabase
+import gustavo.projects.moviemanager.database.ToWatchViewModel
 
 class NavGraphActivity: AppCompatActivity() {
 
@@ -30,8 +33,10 @@ class NavGraphActivity: AppCompatActivity() {
             drawerLayout = drawerLayout)
         setupActionBarWithNavController(navController, appBarConfiguration)
 
-
         findViewById<NavigationView>(R.id.nav_view).setupWithNavController(navController)
+
+        val viewModel: ToWatchViewModel by viewModels()
+        viewModel.init(AppDatabase.getDatabase(this))
     }
 
     //Back arrow to return stack

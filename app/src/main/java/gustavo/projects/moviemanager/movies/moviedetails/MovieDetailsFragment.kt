@@ -33,8 +33,6 @@ class MovieDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
         viewModel.getMovieDetailsByIdLiveData.observe(viewLifecycleOwner){ movie ->
 
             epoxyController.movieDetails = movie
@@ -51,16 +49,5 @@ class MovieDetailsFragment : Fragment() {
 
         val epoxyRecyclerView = view.findViewById<EpoxyRecyclerView>(R.id.epoxyRecyclerView)
         epoxyRecyclerView.setControllerAndBuildModels(epoxyController)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId) {
-            android.R.id.home -> {
-                //finish()
-                return true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-        return false
     }
 }
