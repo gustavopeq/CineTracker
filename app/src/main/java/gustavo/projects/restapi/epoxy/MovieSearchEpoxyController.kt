@@ -1,28 +1,28 @@
 package gustavo.projects.restapi.epoxy
 
+import android.util.Log
 import com.airbnb.epoxy.EpoxyModel
-import com.airbnb.epoxy.paging.PagedListEpoxyController
+import com.airbnb.epoxy.paging3.PagingDataEpoxyController
 import com.squareup.picasso.Picasso
 import gustavo.projects.restapi.Constants
 import gustavo.projects.restapi.R
-import gustavo.projects.restapi.databinding.ModelPopularMovieListItemBinding
+import gustavo.projects.restapi.databinding.ModelSearchMovieListItemBinding
 import gustavo.projects.restapi.domain.models.PopularMovie
 
-class PopularMoviesPagingEpoxyController(
-        private val onMovieSelected: (Int) -> Unit
-): PagedListEpoxyController<PopularMovie>() {
-
+class MovieSearchEpoxyController(
+    private val onMovieSelected: (Int) -> Unit
+): PagingDataEpoxyController<PopularMovie>() {
 
     override fun buildItemModel(currentPosition: Int,
                                 item: PopularMovie?
     ): EpoxyModel<*> {
-        return PopularMoviesItemEpoxyModel(
-                item!!.id!!,
-                item!!.poster_path,
-                item!!.title!!,
-                item!!.vote_average!!,
-                onMovieSelected
-                ).id(item.id)
+        return SearchedMoviesItemEpoxyModel(
+            item!!.id!!,
+            item!!.poster_path,
+            item!!.title!!,
+            item!!.vote_average!!,
+            onMovieSelected
+        ).id(item.id)
     }
 
     override fun addModels(models: List<EpoxyModel<*>>) {
@@ -35,15 +35,15 @@ class PopularMoviesPagingEpoxyController(
         super.addModels(models)
     }
 
-    data class PopularMoviesItemEpoxyModel(
-            val movieId: Int,
-            val posterPath: String?,
-            val movieTitle: String,
-            val movieRating: Double,
-            val onMovieSelected: (Int) -> Unit
-    ): ViewBindingKotlinModel<ModelPopularMovieListItemBinding>(R.layout.model_popular_movie_list_item) {
+    data class SearchedMoviesItemEpoxyModel(
+        val movieId: Int,
+        val posterPath: String?,
+        val movieTitle: String,
+        val movieRating: Double,
+        val onMovieSelected: (Int) -> Unit
+    ): ViewBindingKotlinModel<ModelSearchMovieListItemBinding>(R.layout.model_search_movie_list_item) {
 
-        override fun ModelPopularMovieListItemBinding.bind() {
+        override fun ModelSearchMovieListItemBinding.bind() {
             var fullPosterPath = ""
             if(posterPath != null)
             {
@@ -62,5 +62,4 @@ class PopularMoviesPagingEpoxyController(
             }
         }
     }
-
 }

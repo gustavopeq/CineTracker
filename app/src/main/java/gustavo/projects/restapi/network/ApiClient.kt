@@ -23,6 +23,11 @@ class ApiClient(
         return safeApiCall { movieDbService.getMovieCreditsById(movie_ID) }
     }
 
+    suspend fun getMoviesPageByTitle(movieTitle: String,
+                                     pageIndex: Int): SimpleResponse<GetPopularMoviesPageResponse> {
+        return safeApiCall { movieDbService.getMoviesPageByTitle(movieTitle, pageIndex) }
+    }
+
     private inline fun <T> safeApiCall(apiCall: () -> Response<T>) : SimpleResponse<T> {
         return try {
             SimpleResponse.success(apiCall.invoke())
