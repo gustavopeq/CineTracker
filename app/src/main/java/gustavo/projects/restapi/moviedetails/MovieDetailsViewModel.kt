@@ -14,7 +14,7 @@ class MovieDetailsViewModel: ViewModel() {
     private val _getMovieByIdLiveData = MutableLiveData<MovieDetails?>()
     val getMovieDetailsByIdLiveData: LiveData<MovieDetails?> = _getMovieByIdLiveData
 
-    fun refreshMovie(movie_ID: Int){
+    fun fetchMovie(movie_ID: Int){
 
         viewModelScope.launch {
             val response = repository.getMovieById(movie_ID)

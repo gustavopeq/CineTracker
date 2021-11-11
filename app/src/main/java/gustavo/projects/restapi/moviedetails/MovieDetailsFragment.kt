@@ -47,7 +47,7 @@ class MovieDetailsFragment : Fragment() {
         }
 
 
-        viewModel.refreshMovie(safeArgs.movieId)
+        viewModel.fetchMovie(safeArgs.movieId)
 
         val epoxyRecyclerView = view.findViewById<EpoxyRecyclerView>(R.id.epoxyRecyclerView)
         epoxyRecyclerView.setControllerAndBuildModels(epoxyController)

@@ -13,8 +13,8 @@ class MovieDetailsRepository {
 
     suspend fun getMovieById(movie_ID: Int) : MovieDetails? {
 
+        //Check if movie is cached
         val movie = MovieCache.movieMap[movie_ID]
-
         if(movie != null) {
             return movie
         }
@@ -27,6 +27,8 @@ class MovieDetailsRepository {
 
         val requestMovieCast = getMovieCastById(movie_ID)
         val movieDetail = MovieDetailsMapper.buildFrom(request.body, requestMovieCast)
+
+        //Add movie to the cache list
         MovieCache.movieMap[movie_ID] = movieDetail
 
         return movieDetail
