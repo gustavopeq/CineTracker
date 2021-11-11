@@ -75,9 +75,10 @@ dependencies {
     implementation "com.airbnb.android:epoxy:$epoxyVersion"
     kapt ("com.airbnb.android:epoxy-processor:$epoxyVersion")
     implementation "com.airbnb.android:epoxy-paging:$epoxyVersion"
+    implementation "com.airbnb.android:epoxy-paging3:$epoxyVersion"
 
     //Paging
-    def paging_version = "2.1.2"
+    def paging_version = "3.0.0"
     implementation "androidx.paging:paging-runtime-ktx:$paging_version"
 
     //Lottie

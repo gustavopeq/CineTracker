@@ -30,4 +30,11 @@
             android:defaultValue="-1" />
     </fragment>
 
+    <fragment
+        android:id="@+id/searchMoviesFragment"
+        android:name="gustavo.projects.restapi.moviesearch.MovieSearchFragment"
+        android:label="Search movies"
+        tools:layout="@layout/fragment_movie_search" >
+    </fragment>
+
 </navigation>

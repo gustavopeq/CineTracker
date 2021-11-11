@@ -7,5 +7,10 @@
             android:title="Popular Movies"
             android:icon="@drawable/ic_popular_movie"/>
 
+        <item
+            android:id="@+id/searchMoviesFragment"
+            android:title="Search Movies"
+            android:icon="@drawable/ic_search"/>
+
     </group>
 </menu>
