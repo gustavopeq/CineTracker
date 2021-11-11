@@ -26,7 +26,7 @@ class NavGraphActivity: AppCompatActivity() {
 
         // Action bar to create back arrow and page title
         appBarConfiguration = AppBarConfiguration(
-            topLevelDestinationIds = setOf(R.id.popularMoviesFragment),
+            topLevelDestinationIds = setOf(R.id.popularMoviesFragment, R.id.searchMoviesFragment),
             drawerLayout = drawerLayout)
         setupActionBarWithNavController(navController, appBarConfiguration)
 

@@ -1,8 +1,7 @@
 package gustavo.projects.restapi.network
 
-import gustavo.projects.restapi.Constants
+import gustavo.projects.restapi.util.Constants
 import gustavo.projects.restapi.network.response.GetMovieByIdResponse
-import gustavo.projects.restapi.network.response.GetMovieCastByIdResponse
 import gustavo.projects.restapi.network.response.GetMovieCreditsByIdResponse
 import gustavo.projects.restapi.network.response.GetPopularMoviesPageResponse
 import retrofit2.Response

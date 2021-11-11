@@ -38,8 +38,8 @@ class MovieSearchFragment : Fragment(R.layout.fragment_movie_search) {
         }
         binding.epoxyRecyclerView.setControllerAndBuildModels(epoxyController)
 
-        // Handler responsible for giving a brief delay to get what's being
-        // searched and send the API request
+        /**Handler responsible for giving a brief delay to get what's being
+         * searched and send the API request */
         binding.searchEditText.doAfterTextChanged {
             currentSearchText = it?.toString() ?: ""
 
@@ -49,8 +49,16 @@ class MovieSearchFragment : Fragment(R.layout.fragment_movie_search) {
 
         lifecycleScope.launch {
             viewModel.flow.collectLatest { pagingData ->
+                epoxyController.searchException = null
                 epoxyController.submitData(pagingData)
             }
+        }
+
+        viewModel.searchExceptionEvenLiveData.observe(viewLifecycleOwner) { event ->
+            event.getContent()?.let { searchException ->
+                epoxyController.searchException = searchException
+            }
+
         }
 
     }

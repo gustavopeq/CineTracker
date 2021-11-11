@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
-import gustavo.projects.restapi.Constants
+import gustavo.projects.restapi.util.Constants
 import gustavo.projects.restapi.domain.models.PopularMovie
 
 class PopularMoviesViewModel: ViewModel() {

@@ -4,7 +4,7 @@ import android.util.Log
 import com.airbnb.epoxy.CarouselModel_
 import com.airbnb.epoxy.EpoxyController
 import com.squareup.picasso.Picasso
-import gustavo.projects.restapi.Constants
+import gustavo.projects.restapi.util.Constants
 import gustavo.projects.restapi.R
 import gustavo.projects.restapi.databinding.*
 import gustavo.projects.restapi.domain.models.MovieCast

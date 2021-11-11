@@ -1,4 +1,4 @@
-package gustavo.projects.restapi
+package gustavo.projects.restapi.util
 
 object Constants {
 

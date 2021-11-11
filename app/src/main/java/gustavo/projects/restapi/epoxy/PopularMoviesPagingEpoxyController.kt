@@ -3,7 +3,7 @@ package gustavo.projects.restapi.epoxy
 import com.airbnb.epoxy.EpoxyModel
 import com.airbnb.epoxy.paging.PagedListEpoxyController
 import com.squareup.picasso.Picasso
-import gustavo.projects.restapi.Constants
+import gustavo.projects.restapi.util.Constants
 import gustavo.projects.restapi.R
 import gustavo.projects.restapi.databinding.ModelPopularMovieListItemBinding
 import gustavo.projects.restapi.domain.models.PopularMovie

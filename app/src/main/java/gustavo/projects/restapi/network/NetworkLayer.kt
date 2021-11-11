@@ -2,7 +2,7 @@ package gustavo.projects.restapi.network
 
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import gustavo.projects.restapi.Constants
+import gustavo.projects.restapi.util.Constants
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 

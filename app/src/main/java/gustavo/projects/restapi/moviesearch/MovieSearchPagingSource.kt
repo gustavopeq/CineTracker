@@ -5,16 +5,23 @@ import androidx.paging.PagingState
 import gustavo.projects.restapi.domain.mappers.PopularMovieMapper
 import gustavo.projects.restapi.domain.models.PopularMovie
 import gustavo.projects.restapi.network.NetworkLayer
-import java.security.PrivateKey
 
 class MovieSearchPagingSource(
     private val userSearch: String,
     private val searchExceptionCallback: (SearchException) -> Unit
 ) : PagingSource<Int, PopularMovie>() {
 
-    sealed class SearchException: Exception() {
-        object EmptySearch : SearchException()
-        object NoResults : SearchException()
+    sealed class SearchException(
+        val title: String,
+        val description: String = ""
+    ): Exception() {
+        object EmptySearch : SearchException(
+            title = "Type to search!"
+        )
+        object NoResults : SearchException(
+            title = "Sorry... :(",
+            description = "No results found"
+        )
     }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, PopularMovie> {
@@ -35,6 +42,13 @@ class MovieSearchPagingSource(
 
         val request = NetworkLayer.apiClient.getMoviesPageByTitle(userSearch, pageNumber)
 
+        //When search doesn't find any movie
+        if (request.body.page == 1 && request.body.results.isEmpty()) {
+            val exception = SearchException.NoResults
+            searchExceptionCallback(exception)
+            return LoadResult.Error(exception)
+        }
+
         request.exception?.let {
             return LoadResult.Error(it)
         }
@@ -42,7 +56,7 @@ class MovieSearchPagingSource(
         return LoadResult.Page(
             data = request.body.results.map { movieResponse ->
                 PopularMovieMapper.buildFrom(movieResponse)
-            } ?: emptyList(),
+            },
             prevKey = previousKey,
             nextKey = pageNumber + 1
         )

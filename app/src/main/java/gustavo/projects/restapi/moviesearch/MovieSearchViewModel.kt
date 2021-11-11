@@ -1,23 +1,28 @@
 package gustavo.projects.restapi.moviesearch
 
-import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
-import gustavo.projects.restapi.Constants
+import gustavo.projects.restapi.util.Constants
+import gustavo.projects.restapi.util.Event
+import gustavo.projects.restapi.moviesearch.MovieSearchPagingSource.SearchException
 
 class MovieSearchViewModel: ViewModel() {
 
     private var currentUserSearch: String = ""
+
 
     //Singleton used to ensure that we will always get a valid pagingSource
     private var pagingSource: MovieSearchPagingSource? = null
         get() {
             if(field == null || field?.invalid == true) {
                 field = MovieSearchPagingSource(currentUserSearch) { searchException ->
-                    Log.d("Print", searchException.toString())
+
+                    _searchExceptionEventLiveData.postValue(Event(searchException))
                 }
             }
             return field
@@ -32,6 +37,10 @@ class MovieSearchViewModel: ViewModel() {
     ) {
         pagingSource!!
     }.flow.cachedIn(viewModelScope)
+
+    //Propagate event exception to UI
+    private val _searchExceptionEventLiveData = MutableLiveData<Event<SearchException>>()
+    val searchExceptionEvenLiveData: LiveData<Event<SearchException>> = _searchExceptionEventLiveData
 
     fun submitSearchQuery(movieSearched: String) {
         currentUserSearch = movieSearched
