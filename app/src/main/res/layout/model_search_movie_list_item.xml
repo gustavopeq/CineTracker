@@ -1,62 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="460dp"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginHorizontal="8dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="8dp"
     xmlns:tools="http://schemas.android.com/tools">
 
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/materialCardView2"
-        android:layout_width="240dp"
-        android:layout_height="360dp"
-        android:textColor="?attr/colorOnBackground"
-        app:cardCornerRadius="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/movieImageView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             android:scaleType="centerCrop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:src="@tools:sample/avatars[8]" />
 
-    </com.google.android.material.card.MaterialCardView>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/movieTitleTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="128dp"
+            android:text="Batman"
+            android:layout_marginTop="24dp"
+            android:textColor="?attr/colorOnBackground"
+            android:textSize="24sp"
+            android:maxLines="2"
+            app:layout_constraintStart_toEndOf="@+id/movieImageView"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/movieTitleTextView"
-        android:layout_width="240dp"
-        android:layout_height="wrap_content"
-        android:text="Batman: The Dark Knight"
-        android:maxHeight="60dp"
-        android:textColor="?attr/colorOnBackground"
-        android:textSize="24dp"
-        app:layout_constraintStart_toStartOf="@+id/materialCardView2"
-        app:layout_constraintTop_toBottomOf="@+id/materialCardView2"/>
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ratingStar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:translationX="-0.5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/movieTitleTextView"
+            app:layout_constraintTop_toBottomOf="@+id/movieTitleTextView"
+            app:srcCompat="@drawable/ic_star" />
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/ratingStar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:translationX="-0.5dp"
-        app:layout_constraintStart_toStartOf="@+id/movieTitleTextView"
-        app:layout_constraintTop_toBottomOf="@+id/movieTitleTextView"
-        app:srcCompat="@drawable/ic_star" />
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/movieRatingTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
+            android:text="8.0"
+            android:textColor="#FA9F26"
+            android:textSize="24dp"
+            android:translationY="4dp"
+            app:layout_constraintBottom_toBottomOf="@+id/ratingStar"
+            app:layout_constraintStart_toEndOf="@id/ratingStar" />
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/movieRatingTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="3dp"
-        android:text="8.0"
-        android:textColor="#FA9F26"
-        android:textSize="24dp"
-        android:translationY="4dp"
-        app:layout_constraintBottom_toBottomOf="@+id/ratingStar"
-        app:layout_constraintStart_toEndOf="@id/ratingStar" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
-
+</com.google.android.material.card.MaterialCardView>
