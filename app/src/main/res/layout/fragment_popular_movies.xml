@@ -14,6 +14,7 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        tools:listitem="@layout/model_popular_movie_list_item"
         tools:itemCount="12" />
 
 

@@ -13,20 +13,13 @@
 
         android:theme="@style/Theme.RESTAPI">
 
-        <activity android:name=".moviedetails.MovieDetailsActivity">
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
-        </activity>
-
-        <activity android:name=".popularmovies.PopularMoviesActivity">
+        <activity android:name=".NavGraphActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
     </application>
 </manifest>

@@ -25,6 +25,16 @@ class PopularMoviesPagingEpoxyController(
                 ).id(item.id)
     }
 
+    override fun addModels(models: List<EpoxyModel<*>>) {
+
+        if(models.isEmpty()) {
+            LoadingEpoxyModel().id("loading").addTo(this)
+            return
+        }
+
+        super.addModels(models)
+    }
+
     data class PopularMoviesItemEpoxyModel(
             val movieId: Int,
             val posterPath: String,

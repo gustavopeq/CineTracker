@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".moviedetails.MovieDetailsActivity">
+    android:layout_height="match_parent">
 
     <com.airbnb.epoxy.EpoxyRecyclerView
         android:id="@+id/epoxyRecyclerView"
@@ -13,6 +12,7 @@
         android:orientation="vertical"
         android:paddingBottom="24dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/model_movie_details"
         />
 
 
