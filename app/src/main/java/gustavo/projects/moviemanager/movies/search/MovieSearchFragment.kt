@@ -1,4 +1,4 @@
-package gustavo.projects.moviemanager.movies.moviesearch
+package gustavo.projects.moviemanager.movies.search
 
 import android.os.Bundle
 import android.os.Handler

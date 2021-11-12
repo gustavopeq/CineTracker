@@ -1,4 +1,4 @@
-package gustavo.projects.moviemanager.movies.moviesearch
+package gustavo.projects.moviemanager.movies.search
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -9,7 +9,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import gustavo.projects.moviemanager.util.Constants
 import gustavo.projects.moviemanager.util.Event
-import gustavo.projects.moviemanager.movies.moviesearch.MovieSearchPagingSource.SearchException
+import gustavo.projects.moviemanager.movies.search.MovieSearchPagingSource.SearchException
 
 class MovieSearchViewModel: ViewModel() {
 

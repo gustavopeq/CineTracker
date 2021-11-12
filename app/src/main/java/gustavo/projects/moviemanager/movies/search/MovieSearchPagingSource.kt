@@ -1,4 +1,4 @@
-package gustavo.projects.moviemanager.movies.moviesearch
+package gustavo.projects.moviemanager.movies.search
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState

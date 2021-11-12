@@ -21,7 +21,7 @@
 
     <fragment
         android:id="@+id/movieDetailsFragment"
-        android:name="gustavo.projects.moviemanager.movies.moviedetails.MovieDetailsFragment"
+        android:name="gustavo.projects.moviemanager.movies.details.MovieDetailsFragment"
         android:label="Movie Details"
         tools:layout="@layout/fragment_movie_details" >
         <argument
@@ -32,7 +32,7 @@
 
     <fragment
         android:id="@+id/searchMoviesFragment"
-        android:name="gustavo.projects.moviemanager.movies.moviesearch.MovieSearchFragment"
+        android:name="gustavo.projects.moviemanager.movies.search.MovieSearchFragment"
         android:label="Search movies"
         tools:layout="@layout/model_search_movie_list_item" >
         <action

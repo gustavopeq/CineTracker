@@ -1,4 +1,4 @@
-package gustavo.projects.moviemanager.movies.moviedetails
+package gustavo.projects.moviemanager.movies.details
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

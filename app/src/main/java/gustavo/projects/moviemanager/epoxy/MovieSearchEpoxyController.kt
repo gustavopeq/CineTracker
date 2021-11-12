@@ -7,7 +7,7 @@ import gustavo.projects.moviemanager.R
 import gustavo.projects.moviemanager.databinding.ModelSearchExceptionMsgBinding
 import gustavo.projects.moviemanager.databinding.ModelSearchMovieListItemBinding
 import gustavo.projects.moviemanager.domain.models.Movie
-import gustavo.projects.moviemanager.movies.moviesearch.MovieSearchPagingSource
+import gustavo.projects.moviemanager.movies.search.MovieSearchPagingSource
 import gustavo.projects.moviemanager.util.Constants
 
 class MovieSearchEpoxyController(
