@@ -75,9 +75,24 @@
     <fragment
         android:id="@+id/upcomingFragment"
         android:name="gustavo.projects.moviemanager.movies.upcoming.UpcomingFragment"
-        android:label="Upcoming Movies" >
+        android:label="Upcoming Movies"
+        tools:layout="@layout/fragment_upcoming_movies">
         <action
             android:id="@+id/action_upcomingFragment_to_movieDetailsFragment"
+            app:destination="@id/movieDetailsFragment"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:exitAnim="@anim/slide_out_to_left"
+            app:popEnterAnim="@anim/slide_in_from_left"
+            app:popExitAnim="@anim/slide_out_to_right"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/topRatedFragment"
+        android:name="gustavo.projects.moviemanager.movies.toprated.TopRatedFragment"
+        android:label="Top Rated Movies"
+        tools:layout="@layout/fragment_top_rated_movies">
+        <action
+            android:id="@+id/action_topRatedFragment_to_movieDetailsFragment"
             app:destination="@id/movieDetailsFragment"
             app:enterAnim="@anim/slide_in_from_right"
             app:exitAnim="@anim/slide_out_to_left"

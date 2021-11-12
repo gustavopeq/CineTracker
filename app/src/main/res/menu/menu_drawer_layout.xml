@@ -13,6 +13,11 @@
             android:icon="@drawable/ic_upcoming_movies"/>
 
         <item
+            android:id="@+id/topRatedFragment"
+            android:title="Top Rated Movies"
+            android:icon="@drawable/ic_top_rated"/>
+
+        <item
             android:id="@+id/popularMoviesFragment"
             android:title="Popular Movies"
             android:icon="@drawable/ic_popular_movie"/>

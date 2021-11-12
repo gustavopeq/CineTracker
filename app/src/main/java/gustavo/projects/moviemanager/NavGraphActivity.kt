@@ -34,7 +34,8 @@ class NavGraphActivity: AppCompatActivity() {
                 R.id.searchMoviesFragment,
                 R.id.toWatchFragment,
                 R.id.nowPlayingFragment,
-                R.id.upcomingFragment),
+                R.id.upcomingFragment,
+                R.id.topRatedFragment),
             drawerLayout = drawerLayout)
         setupActionBarWithNavController(navController, appBarConfiguration)
 

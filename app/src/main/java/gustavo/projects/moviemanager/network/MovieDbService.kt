@@ -27,6 +27,11 @@ interface MovieDbService {
         @Query("page") pageIndex: Int
     ) : Response<GetMoviesPageResponse>
 
+    @GET("movie/top_rated?api_key=${Constants.API_KEY}")
+    suspend fun getTopRatedMoviesPage(
+        @Query("page") pageIndex: Int
+    ) : Response<GetMoviesPageResponse>
+
     @GET("movie/popular?api_key=${Constants.API_KEY}")
     suspend fun getPopularMoviesPage(
         @Query("page") pageIndex: Int
