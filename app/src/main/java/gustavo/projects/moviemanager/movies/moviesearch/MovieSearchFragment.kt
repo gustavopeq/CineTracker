@@ -6,7 +6,7 @@ import android.os.Looper
 import android.view.View
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import gustavo.projects.moviemanager.R
@@ -20,9 +20,7 @@ class MovieSearchFragment : Fragment(R.layout.fragment_movie_search) {
     private var _binding: FragmentMovieSearchBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: MovieSearchViewModel by lazy {
-        ViewModelProvider(this).get(MovieSearchViewModel::class.java)
-    }
+    private val viewModel: MovieSearchViewModel by viewModels()
 
     private var currentSearchText = ""
     private val handler = Handler(Looper.getMainLooper())

@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import gustavo.projects.moviemanager.epoxy.MovieDetailsEpoxyController
 import gustavo.projects.moviemanager.R
@@ -18,9 +18,7 @@ class MovieDetailsFragment : BaseFragment() {
     private var _binding: FragmentMovieDetailsBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: MovieDetailsViewModel by lazy {
-        ViewModelProvider(this).get(MovieDetailsViewModel::class.java)
-    }
+    private val viewModel: MovieDetailsViewModel by viewModels()
 
     private val epoxyController = MovieDetailsEpoxyController()
 

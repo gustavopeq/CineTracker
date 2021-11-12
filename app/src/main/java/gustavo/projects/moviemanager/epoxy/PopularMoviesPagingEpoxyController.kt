@@ -1,7 +1,7 @@
 package gustavo.projects.moviemanager.epoxy
 
 import com.airbnb.epoxy.EpoxyModel
-import com.airbnb.epoxy.paging.PagedListEpoxyController
+import com.airbnb.epoxy.paging3.PagingDataEpoxyController
 import com.squareup.picasso.Picasso
 import gustavo.projects.moviemanager.R
 import gustavo.projects.moviemanager.databinding.ModelPopularMovieListItemBinding
@@ -10,7 +10,7 @@ import gustavo.projects.moviemanager.util.Constants
 
 class PopularMoviesPagingEpoxyController(
         private val onMovieSelected: (Int) -> Unit
-): PagedListEpoxyController<Movie>() {
+): PagingDataEpoxyController<Movie>() {
 
 
     override fun buildItemModel(currentPosition: Int,

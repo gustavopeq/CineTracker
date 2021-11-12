@@ -1,25 +1,29 @@
 package gustavo.projects.moviemanager.movies.popularmovies
 
-import androidx.lifecycle.LiveData
+
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.LivePagedListBuilder
-import androidx.paging.PagedList
+import androidx.paging.*
 import gustavo.projects.moviemanager.util.Constants
-import gustavo.projects.moviemanager.domain.models.Movie
 
 class PopularMoviesViewModel: ViewModel() {
 
-    private val repository = PopularMoviesRepository()
+    private var pagingSource: PopularMoviesPagingSource? = null
+        get() {
+            if(field == null || field?.invalid == true) {
+                field = PopularMoviesPagingSource()
+            }
+            return field
+        }
 
-    private val pageListConfig: PagedList.Config = PagedList.Config.Builder()
-            .setPageSize(Constants.PAGE_SIZE)
-            .setPrefetchDistance(Constants.PREFETCH_DISTANCE)
-            .build()
-
-    private val dataSourceFactory = PopularMoviesDataSourceFactory(viewModelScope, repository)
-
-    val moviesPagedListLiveData: LiveData<PagedList<Movie>> =
-            LivePagedListBuilder(dataSourceFactory, pageListConfig).build()
+    val flow = Pager(
+        PagingConfig(
+            pageSize = Constants.PAGE_SIZE,
+            prefetchDistance = Constants.PREFETCH_DISTANCE,
+            enablePlaceholders = false
+        )
+    ) {
+        pagingSource!!
+    }.flow.cachedIn(viewModelScope)
 
 }
