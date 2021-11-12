@@ -14,6 +14,10 @@ class ApiClient(
         return safeApiCall { movieDbService.getMovieDetailsById(movie_ID) }
     }
 
+    suspend fun getUpcomingMoviesPage(pageIndex: Int): SimpleResponse<GetMoviesPageResponse> {
+        return safeApiCall { movieDbService.getUpcomingMoviesPage(pageIndex) }
+    }
+
     suspend fun getNowPlayingMoviesPage(pageIndex: Int): SimpleResponse<GetMoviesPageResponse> {
         return safeApiCall { movieDbService.getNowPlayingMoviesPage(pageIndex) }
     }

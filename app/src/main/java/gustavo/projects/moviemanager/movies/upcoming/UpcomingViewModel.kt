@@ -1,17 +1,16 @@
-package gustavo.projects.moviemanager.movies.popularmovies
-
+package gustavo.projects.moviemanager.movies.upcoming
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.*
 import gustavo.projects.moviemanager.util.Constants
 
-class PopularMoviesViewModel: ViewModel() {
+class UpcomingViewModel: ViewModel() {
 
-    private var pagingSource: PopularMoviesPagingSource? = null
+    private var pagingSource: UpcomingPagingSource? = null
         get() {
             if(field == null || field?.invalid == true) {
-                field = PopularMoviesPagingSource()
+                field = UpcomingPagingSource()
             }
             return field
         }

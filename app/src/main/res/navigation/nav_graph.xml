@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/popularMoviesFragment"
-        android:name="gustavo.projects.moviemanager.movies.popularmovies.PopularMoviesFragment"
+        android:name="gustavo.projects.moviemanager.movies.popular.PopularMoviesFragment"
         android:label="Popular Movies"
         tools:layout="@layout/fragment_popular_movies" >
         <action
@@ -65,6 +65,19 @@
         tools:layout="@layout/fragment_now_playing_movies" >
         <action
             android:id="@+id/action_nowPlayingFragment_to_movieDetailsFragment"
+            app:destination="@id/movieDetailsFragment"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:exitAnim="@anim/slide_out_to_left"
+            app:popEnterAnim="@anim/slide_in_from_left"
+            app:popExitAnim="@anim/slide_out_to_right"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/upcomingFragment"
+        android:name="gustavo.projects.moviemanager.movies.upcoming.UpcomingFragment"
+        android:label="Upcoming Movies" >
+        <action
+            android:id="@+id/action_upcomingFragment_to_movieDetailsFragment"
             app:destination="@id/movieDetailsFragment"
             app:enterAnim="@anim/slide_in_from_right"
             app:exitAnim="@anim/slide_out_to_left"

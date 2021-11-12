@@ -8,6 +8,11 @@
             android:icon="@drawable/ic_now_playing"/>
 
         <item
+            android:id="@+id/upcomingFragment"
+            android:title="Upcoming Movies"
+            android:icon="@drawable/ic_upcoming_movies"/>
+
+        <item
             android:id="@+id/popularMoviesFragment"
             android:title="Popular Movies"
             android:icon="@drawable/ic_popular_movie"/>

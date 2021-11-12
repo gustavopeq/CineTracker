@@ -1,4 +1,4 @@
-package gustavo.projects.moviemanager.movies.popularmovies
+package gustavo.projects.moviemanager.movies.upcoming
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -14,17 +14,17 @@ import gustavo.projects.moviemanager.epoxy.PopularMoviesPagingEpoxyController
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class PopularMoviesFragment : Fragment() {
+class UpcomingFragment : Fragment() {
 
     private val epoxyController = PopularMoviesPagingEpoxyController(::onMovieSelected)
 
-    private val viewModel: PopularMoviesViewModel by viewModels()
+    private val viewModel: UpcomingViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_popular_movies, container, false)
+        return inflater.inflate(R.layout.fragment_upcoming_movies, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -41,10 +41,8 @@ class PopularMoviesFragment : Fragment() {
 
 
     private fun onMovieSelected(movieId: Int) {
-        val directions =
-            PopularMoviesFragmentDirections.actionPopularMoviesFragmentToMovieDetailsFragment(
-                movieId
-            )
+        val directions=
+            UpcomingFragmentDirections.actionUpcomingFragmentToMovieDetailsFragment(movieId)
         findNavController().navigate(directions)
     }
 
