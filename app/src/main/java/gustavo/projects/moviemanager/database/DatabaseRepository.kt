@@ -17,4 +17,8 @@ class DatabaseRepository(
     suspend fun getAllItems(): List<ItemEntity> {
         return appDatabase.itemEntityDao().getAllItems()
     }
+
+    suspend fun searchItem(movieId: Int): ItemEntity? {
+        return appDatabase.itemEntityDao().searchItem(movieId)
+    }
 }

@@ -1,22 +1,22 @@
 package gustavo.projects.moviemanager.movies.moviedetails
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
-import com.airbnb.epoxy.EpoxyRecyclerView
 import gustavo.projects.moviemanager.epoxy.MovieDetailsEpoxyController
 import gustavo.projects.moviemanager.R
 import gustavo.projects.moviemanager.database.model.ItemEntity
+import gustavo.projects.moviemanager.databinding.FragmentMovieDetailsBinding
 import gustavo.projects.moviemanager.util.BaseFragment
 
 class MovieDetailsFragment : BaseFragment() {
+
+    private var _binding: FragmentMovieDetailsBinding? = null
+    private val binding get() = _binding!!
 
     private val viewModel: MovieDetailsViewModel by lazy {
         ViewModelProvider(this).get(MovieDetailsViewModel::class.java)
@@ -26,15 +26,19 @@ class MovieDetailsFragment : BaseFragment() {
 
     private val safeArgs: MovieDetailsFragmentArgs by navArgs()
 
+    private var isInWatchLaterList = false
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_movie_details, container, false)
+        _binding = FragmentMovieDetailsBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        _binding = FragmentMovieDetailsBinding.bind(view)
 
         viewModel.getMovieDetailsByIdLiveData.observe(viewLifecycleOwner){ movie ->
 
@@ -45,16 +49,48 @@ class MovieDetailsFragment : BaseFragment() {
                     Toast.LENGTH_SHORT)
                 return@observe
             }
-        }
 
+            sharedViewModel.verifyIfInToWatchList(movie.id!!)
+        }
 
         viewModel.fetchMovie(safeArgs.movieId)
 
-        val epoxyRecyclerView = view.findViewById<EpoxyRecyclerView>(R.id.epoxyRecyclerView)
+        val epoxyRecyclerView = binding.epoxyRecyclerView
         epoxyRecyclerView.setControllerAndBuildModels(epoxyController)
 
-        view.findViewById<Button>(R.id.addToWatchListBtn).setOnClickListener {
-            sharedViewModel.insertItem(ItemEntity(viewModel.movieDisplayed.id!!, viewModel.movieDisplayed))
+
+
+        binding.addToWatchListBtn.setOnClickListener {
+            when(isInWatchLaterList) {
+                true -> {
+                    sharedViewModel.deleteItem(
+                        ItemEntity(viewModel.movieDisplayed.id!!, viewModel.movieDisplayed))
+                    binding.addToWatchListBtn.setIconResource(R.drawable.ic_baseline_bookmark_add)
+                    isInWatchLaterList = false
+                    }
+                false -> {
+                    sharedViewModel.insertItem(
+                        ItemEntity(viewModel.movieDisplayed.id!!, viewModel.movieDisplayed))
+                    binding.addToWatchListBtn.setIconResource(R.drawable.ic_baseline_bookmark_remove)
+                    isInWatchLaterList = true
+                        }
+            }
+
+        }
+
+        sharedViewModel.movieInToWatchList.observe(viewLifecycleOwner) {
+            isInWatchLaterList = it
+
+            when(isInWatchLaterList) {
+                true -> {
+                    binding.addToWatchListBtn.setIconResource(R.drawable.ic_baseline_bookmark_remove)
+                    isInWatchLaterList = true
+                }
+                false -> {
+                    binding.addToWatchListBtn.setIconResource(R.drawable.ic_baseline_bookmark_add)
+                    isInWatchLaterList = false
+                }
+            }
         }
     }
 }

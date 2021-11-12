@@ -11,11 +11,11 @@
         android:layout_height="68dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="10dp"
-        android:backgroundTint="?attr/colorOnBackground"
-        app:icon="@drawable/ic_baseline_bookmark"
-        app:iconSize="32dp"
+        android:backgroundTint="#FA9F26"
+        app:icon="@drawable/ic_baseline_bookmark_add"
         app:iconGravity="textStart"
         app:iconPadding="0dp"
+        app:iconSize="32dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

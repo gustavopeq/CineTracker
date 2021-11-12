@@ -11,6 +11,9 @@ interface ItemEntityDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(itemEntity: ItemEntity)
 
-    @Delete
+    @Delete()
     suspend fun delete(itemEntity: ItemEntity)
+
+    @Query("SELECT * FROM item_entity WHERE dbId=:movieId")
+    suspend fun searchItem(movieId: Int): ItemEntity?
 }

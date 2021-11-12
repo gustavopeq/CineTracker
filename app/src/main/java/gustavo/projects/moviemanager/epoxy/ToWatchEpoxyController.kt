@@ -4,12 +4,14 @@ import com.airbnb.epoxy.EpoxyController
 import com.squareup.picasso.Picasso
 import gustavo.projects.moviemanager.R
 import gustavo.projects.moviemanager.database.model.ItemEntity
+import gustavo.projects.moviemanager.databinding.ModelEmptyToWatchListBinding
+import gustavo.projects.moviemanager.databinding.ModelLoadingBinding
 import gustavo.projects.moviemanager.databinding.ModelSearchMovieListItemBinding
 import gustavo.projects.moviemanager.domain.models.Movie
 import gustavo.projects.moviemanager.util.Constants
 
 class ToWatchEpoxyController(
-    val onMovieSelected: (Int) -> Unit
+    private val onMovieSelected: (Int) -> Unit
 ): EpoxyController() {
 
     var isLoading: Boolean = true
@@ -35,7 +37,7 @@ class ToWatchEpoxyController(
         }
 
         if(itemEntityList.isEmpty()) {
-            //todo empty state
+            EmptyToWatchListEpoxyModel().id("empty").addTo(this)
             return
         }
 
@@ -68,6 +70,15 @@ class ToWatchEpoxyController(
                 onMovieSelected(movie.id!!)
             }
         }
+
+    }
+
+    class EmptyToWatchListEpoxyModel : ViewBindingKotlinModel<ModelEmptyToWatchListBinding>(R.layout.model_empty_to_watch_list) {
+
+        override fun ModelEmptyToWatchListBinding.bind() {
+            // Nothing to do
+        }
+
 
     }
 
