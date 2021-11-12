@@ -8,7 +8,7 @@ import gustavo.projects.moviemanager.databinding.ModelDefaultMovieListItemBindin
 import gustavo.projects.moviemanager.domain.models.Movie
 import gustavo.projects.moviemanager.util.Constants
 
-class PopularMoviesPagingEpoxyController(
+class DefaultMoviesPagingEpoxyController(
         private val onMovieSelected: (Int) -> Unit
 ): PagingDataEpoxyController<Movie>() {
 
