@@ -7,7 +7,7 @@
     <androidx.appcompat.widget.AppCompatTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add more movies to watch later!"
+        android:text="Add movies to watch later!"
         android:textColor="?attr/colorOnBackground"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
