@@ -12,7 +12,9 @@ Movie Manager is a Native Android app that consumes a Movie API and show a lists
 * To Watch list
 
 ## Screenshots
-![ScreenShot](/screenshots/NowPlayingSS.png =207x444)
-![ScreenShot](/screenshots/DrawerOpenedSS.png =207x444)
-![ScreenShot](/screenshots/MovieDetailsSS.png =207x444)
-![ScreenShot](/screenshots/ToWatchSS.png =207x444)
+
+<img src="/screenshots/NowPlayingSS.png" alt="" width="207" height="444" />
+<img src="/screenshots/DrawerOpenedSS.png" alt="" width="207" height="444" />
+<img src="/screenshots/MovieDetailsSS.png" alt="" width="207" height="444" />
+<img src="/screenshots/ToWatchSS.png" alt="" width="207" height="444" />
+
