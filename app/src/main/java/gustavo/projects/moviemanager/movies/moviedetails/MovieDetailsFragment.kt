@@ -6,14 +6,17 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import com.airbnb.epoxy.EpoxyRecyclerView
 import gustavo.projects.moviemanager.epoxy.MovieDetailsEpoxyController
 import gustavo.projects.moviemanager.R
+import gustavo.projects.moviemanager.database.model.ItemEntity
+import gustavo.projects.moviemanager.util.BaseFragment
 
-class MovieDetailsFragment : Fragment() {
+class MovieDetailsFragment : BaseFragment() {
 
     private val viewModel: MovieDetailsViewModel by lazy {
         ViewModelProvider(this).get(MovieDetailsViewModel::class.java)
@@ -49,5 +52,9 @@ class MovieDetailsFragment : Fragment() {
 
         val epoxyRecyclerView = view.findViewById<EpoxyRecyclerView>(R.id.epoxyRecyclerView)
         epoxyRecyclerView.setControllerAndBuildModels(epoxyController)
+
+        view.findViewById<Button>(R.id.addToWatchListBtn).setOnClickListener {
+            sharedViewModel.insertItem(ItemEntity(viewModel.movieDisplayed.id!!, viewModel.movieDisplayed))
+        }
     }
 }

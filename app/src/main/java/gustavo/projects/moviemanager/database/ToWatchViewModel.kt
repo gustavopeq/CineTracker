@@ -24,10 +24,14 @@ class ToWatchViewModel: ViewModel() {
     }
 
     fun insertItem(itemEntity: ItemEntity) {
-        repository.insertItem(itemEntity)
+        viewModelScope.launch {
+            repository.insertItem(itemEntity)
+        }
     }
 
     fun deleteItem(itemEntity: ItemEntity) {
-        repository.deleteItem(itemEntity)
+        viewModelScope.launch {
+            repository.deleteItem(itemEntity)
+        }
     }
 }

@@ -22,7 +22,7 @@ abstract class AppDatabase: RoomDatabase() {
                 return appDatabase!!
             }
 
-            appDatabase = Room.databaseBuilder(context.applicationContext, AppDatabase::class.java, "movie_manager_database").build()
+            appDatabase = Room.databaseBuilder(context.applicationContext, AppDatabase::class.java, "movie_manager_database").fallbackToDestructiveMigration().build()
             return appDatabase!!
         }
     }

@@ -11,7 +11,7 @@ import gustavo.projects.moviemanager.network.NetworkLayer
 
 class MovieDetailsRepository {
 
-    suspend fun getMovieById(movie_ID: Int) : MovieDetails? {
+    suspend fun getMovieDetailsById(movie_ID: Int) : MovieDetails? {
 
         //Check if movie is cached
         val movie = MovieCache.movieMap[movie_ID]

@@ -5,6 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/addToWatchListBtn"
+        android:layout_width="41dp"
+        android:layout_height="68dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="?attr/colorOnBackground"
+        app:icon="@drawable/ic_baseline_bookmark"
+        app:iconSize="32dp"
+        app:iconGravity="textStart"
+        app:iconPadding="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <com.airbnb.epoxy.EpoxyRecyclerView
         android:id="@+id/epoxyRecyclerView"
         android:layout_width="match_parent"
@@ -12,8 +26,9 @@
         android:orientation="vertical"
         android:paddingBottom="24dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/model_movie_details"
-        />
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="-56dp"
+        tools:listitem="@layout/model_movie_details" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

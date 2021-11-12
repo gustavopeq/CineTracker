@@ -44,8 +44,9 @@ class MovieDetailsEpoxyController: EpoxyController() {
             return
         }
 
-        TitleEpoxyModel(movieDetails!!.title!!).id("title").addTo(this)
+
         PosterEpoxyModel(movieDetails!!.poster_path).id("poster").addTo(this)
+        TitleEpoxyModel(movieDetails!!.title!!).id("title").addTo(this)
         OverviewEpoxyModel(movieDetails!!.overview!!).id("overview").addTo(this)
         DetailsEpoxyModel(
             movieDetails!!.release_date!!,

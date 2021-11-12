@@ -12,5 +12,10 @@
             android:title="Search Movies"
             android:icon="@drawable/ic_search"/>
 
+        <item
+            android:id="@+id/toWatchFragment"
+            android:title="To Watch List"
+            android:icon="@drawable/ic_watch_later"/>
+
     </group>
 </menu>
