@@ -62,7 +62,7 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/searchCardView"
-        tools:listitem="@layout/model_popular_movie_list_item"
+        tools:listitem="@layout/model_default_movie_list_item"
         tools:itemCount="12" />
 
 

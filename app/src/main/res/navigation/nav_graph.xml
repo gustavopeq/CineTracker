@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/popularMoviesFragment">
+    app:startDestination="@id/nowPlayingFragment">
 
     <fragment
         android:id="@+id/popularMoviesFragment"
@@ -51,6 +51,20 @@
         tools:layout="@layout/model_search_movie_list_item">
         <action
             android:id="@+id/action_toWatchFragment_to_movieDetailsFragment"
+            app:destination="@id/movieDetailsFragment"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:exitAnim="@anim/slide_out_to_left"
+            app:popEnterAnim="@anim/slide_in_from_left"
+            app:popExitAnim="@anim/slide_out_to_right"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/nowPlayingFragment"
+        android:name="gustavo.projects.moviemanager.movies.nowplaying.NowPlayingFragment"
+        android:label="Now Playing"
+        tools:layout="@layout/fragment_now_playing_movies" >
+        <action
+            android:id="@+id/action_nowPlayingFragment_to_movieDetailsFragment"
             app:destination="@id/movieDetailsFragment"
             app:enterAnim="@anim/slide_in_from_right"
             app:exitAnim="@anim/slide_out_to_left"

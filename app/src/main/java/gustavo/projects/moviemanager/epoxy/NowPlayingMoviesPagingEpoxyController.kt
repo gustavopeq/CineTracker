@@ -8,7 +8,7 @@ import gustavo.projects.moviemanager.databinding.ModelDefaultMovieListItemBindin
 import gustavo.projects.moviemanager.domain.models.Movie
 import gustavo.projects.moviemanager.util.Constants
 
-class PopularMoviesPagingEpoxyController(
+class NowPlayingMoviesPagingEpoxyController(
         private val onMovieSelected: (Int) -> Unit
 ): PagingDataEpoxyController<Movie>() {
 
@@ -16,7 +16,7 @@ class PopularMoviesPagingEpoxyController(
     override fun buildItemModel(currentPosition: Int,
                                 item: Movie?
     ): EpoxyModel<*> {
-        return PopularMoviesItemEpoxyModel(
+        return NowPlayingMoviesItemEpoxyModel(
                 item!!.id!!,
                 item!!.poster_path,
                 item!!.title!!,
@@ -35,7 +35,7 @@ class PopularMoviesPagingEpoxyController(
         super.addModels(models)
     }
 
-    data class PopularMoviesItemEpoxyModel(
+    data class NowPlayingMoviesItemEpoxyModel(
             val movieId: Int,
             val posterPath: String?,
             val movieTitle: String,

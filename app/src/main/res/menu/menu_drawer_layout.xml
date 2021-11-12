@@ -3,6 +3,11 @@
 
     <group android:checkableBehavior="single">
         <item
+            android:id="@+id/nowPlayingFragment"
+            android:title="Now Playing"
+            android:icon="@drawable/ic_now_playing"/>
+
+        <item
             android:id="@+id/popularMoviesFragment"
             android:title="Popular Movies"
             android:icon="@drawable/ic_popular_movie"/>

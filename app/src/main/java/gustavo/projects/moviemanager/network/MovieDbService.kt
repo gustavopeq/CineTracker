@@ -17,6 +17,11 @@ interface MovieDbService {
             @Path("movie_ID") movieId : Int
     ): Response<GetMovieDetailsByIdResponse>
 
+    @GET("movie/now_playing?api_key=${Constants.API_KEY}")
+    suspend fun getNowPlayingMoviesPage(
+        @Query("page") pageIndex: Int
+    ) : Response<GetMoviesPageResponse>
+
     @GET("movie/popular?api_key=${Constants.API_KEY}")
     suspend fun getPopularMoviesPage(
         @Query("page") pageIndex: Int
@@ -32,5 +37,6 @@ interface MovieDbService {
     suspend fun getMovieCreditsById(
             @Path("movie_ID") movieId: Int
     ): Response<GetMovieCreditsByIdResponse>
+
 
 }
