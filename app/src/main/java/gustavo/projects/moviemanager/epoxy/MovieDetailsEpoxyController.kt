@@ -40,7 +40,7 @@ class MovieDetailsEpoxyController: EpoxyController() {
 
         if(movieDetails == null) {
 
-            Log.d("print", "Movie not found")
+            LoadingEpoxyModel().id("loading").addTo(this)
             return
         }
 
