@@ -13,6 +13,7 @@ import gustavo.projects.moviemanager.util.Constants
 import gustavo.projects.moviemanager.util.Constants.BASE_YOUTUBE_THUMBAIL_URL
 import gustavo.projects.moviemanager.util.Constants.MISSING_PROFILE_PICTURE_URL
 import gustavo.projects.moviemanager.util.Constants.YOUTUBE_THUMBNAIL_URL_STRING_INDEX
+import gustavo.projects.moviemanager.util.DateFormatter
 
 class MovieDetailsEpoxyController(
         private val onVideoSelected: (String) -> Unit
@@ -116,7 +117,8 @@ class MovieDetailsEpoxyController(
         val runtime: Int
     ) : ViewBindingKotlinModel<ModelMovieDetailsBinding>(R.layout.model_movie_details) {
         override fun ModelMovieDetailsBinding.bind() {
-            releaseDateTextView.text = releaseDate
+
+            releaseDateTextView.text = DateFormatter().formatDate(releaseDate)
 
             var listOfGenresText: String = ""
 
