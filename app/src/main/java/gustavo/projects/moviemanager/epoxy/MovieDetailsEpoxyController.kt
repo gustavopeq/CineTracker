@@ -52,7 +52,7 @@ class MovieDetailsEpoxyController(
 
 
         PosterEpoxyModel(movieDetails!!.poster_path).id("poster").addTo(this)
-        TitleEpoxyModel(movieDetails!!.title!!).id("title").addTo(this)
+        TitleEpoxyModel(movieDetails!!.title!!, movieDetails!!.vote_average!!).id("title").addTo(this)
         OverviewEpoxyModel(movieDetails!!.overview!!).id("overview").addTo(this)
         DetailsEpoxyModel(
             movieDetails!!.release_date!!,
@@ -78,10 +78,12 @@ class MovieDetailsEpoxyController(
     }
 
     data class TitleEpoxyModel(
-        val movieTitle: String
+        val movieTitle: String,
+        val voteAverage: Double
     ) : ViewBindingKotlinModel<ModelMovieTitleBinding>(R.layout.model_movie_title) {
         override fun ModelMovieTitleBinding.bind() {
             titleTextView.text = movieTitle
+            movieRatingTextView.text = voteAverage.toString()
         }
     }
 

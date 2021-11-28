@@ -15,4 +15,25 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ratingStar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:translationX="-0.5dp"
+        app:layout_constraintStart_toStartOf="@+id/titleTextView"
+        app:layout_constraintTop_toBottomOf="@+id/titleTextView"
+        app:srcCompat="@drawable/ic_star" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/movieRatingTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="3dp"
+        android:text="8.0"
+        android:textColor="#FA9F26"
+        android:textSize="24dp"
+        android:translationY="4dp"
+        app:layout_constraintBottom_toBottomOf="@+id/ratingStar"
+        app:layout_constraintStart_toEndOf="@id/ratingStar" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
