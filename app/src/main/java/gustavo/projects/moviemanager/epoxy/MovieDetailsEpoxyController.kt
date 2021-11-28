@@ -1,6 +1,5 @@
 package gustavo.projects.moviemanager.epoxy
 
-import android.util.Log
 import com.airbnb.epoxy.CarouselModel_
 import com.airbnb.epoxy.EpoxyController
 import com.squareup.picasso.Picasso
@@ -9,9 +8,15 @@ import gustavo.projects.moviemanager.databinding.*
 import gustavo.projects.moviemanager.domain.models.MovieCast
 import gustavo.projects.moviemanager.domain.models.MovieDetails
 import gustavo.projects.moviemanager.domain.models.MovieGenre
+import gustavo.projects.moviemanager.domain.models.MovieVideo
 import gustavo.projects.moviemanager.util.Constants
+import gustavo.projects.moviemanager.util.Constants.BASE_YOUTUBE_THUMBAIL_URL
+import gustavo.projects.moviemanager.util.Constants.MISSING_PROFILE_PICTURE_URL
+import gustavo.projects.moviemanager.util.Constants.YOUTUBE_THUMBNAIL_URL_STRING_INDEX
 
-class MovieDetailsEpoxyController: EpoxyController() {
+class MovieDetailsEpoxyController(
+        private val onVideoSelected: (String) -> Unit
+): EpoxyController() {
 
     var isLoading: Boolean = true
         set(value) {
@@ -54,14 +59,21 @@ class MovieDetailsEpoxyController: EpoxyController() {
             movieDetails!!.runtime!!
         ).id("details").addTo(this)
 
-        val carouselItems = movieDetails!!.movieCast!!.map {
+        val castCarouselItems = movieDetails!!.movieCast!!.map {
             CastCarouselItemEpoxyModel(it!!).id(it!!.id)
         }
 
-        CarouselModel_()
-                .id("cast_carousel")
-                .models(carouselItems)
-                .addTo(this)
+        CarouselModel_().id("cast_carousel").models(castCarouselItems).addTo(this)
+
+        if(movieDetails!!.movieVideos!!.isNotEmpty()) {
+            VideosTitleEpoxyModel(movieDetails!!.movieVideos!!).id("videosTitle").addTo(this)
+            val videosCarouselItems = movieDetails!!.movieVideos!!.map {
+                VideosCarouselItemEpoxyModel(it!!, onVideoSelected).id(it!!.id)
+            }
+
+            CarouselModel_().id("video_carousel").models(videosCarouselItems).addTo(this)
+        }
+
     }
 
     data class TitleEpoxyModel(
@@ -83,7 +95,7 @@ class MovieDetailsEpoxyController: EpoxyController() {
                 fullPosterPath = Constants.BASE_IMAGE_URL + posterPath
             }else
             {
-                fullPosterPath = Constants.MISSING_PROFILE_PICTURE_URL
+                fullPosterPath = MISSING_PROFILE_PICTURE_URL
             }
             Picasso.get().load(fullPosterPath).into(titleImageView)
         }
@@ -132,7 +144,7 @@ class MovieDetailsEpoxyController: EpoxyController() {
 
         override fun ModelCastCarouselItemBinding.bind() {
 
-            var fullImagePath = Constants.MISSING_PROFILE_PICTURE_URL
+            var fullImagePath = MISSING_PROFILE_PICTURE_URL
 
             if(movieCast.profile_path != null){
                 fullImagePath = Constants.BASE_IMAGE_URL + movieCast.profile_path
@@ -143,5 +155,43 @@ class MovieDetailsEpoxyController: EpoxyController() {
             castCharacterName.text = movieCast.character
         }
 
+    }
+
+    data class VideosTitleEpoxyModel(
+            val movieVideo: List<MovieVideo?>
+    ): ViewBindingKotlinModel<ModelVideosTitleBinding>(R.layout.model_videos_title) {
+
+        override fun ModelVideosTitleBinding.bind() {
+
+            movieVideo.let {
+                if (it.size > 1) {
+                    titleTextView.text = "Videos"
+                }
+            }
+        }
+
+    }
+
+    data class VideosCarouselItemEpoxyModel(
+            val movieVideo: MovieVideo,
+            val onVideoSelected: (String) -> Unit
+    ): ViewBindingKotlinModel<ModelVideosCarouselItemBinding>(R.layout.model_videos_carousel_item) {
+
+        override fun ModelVideosCarouselItemBinding.bind() {
+
+            var fullImagePath = MISSING_PROFILE_PICTURE_URL
+
+            movieVideo.key.let {
+                val pathWithMovieKey = BASE_YOUTUBE_THUMBAIL_URL.substring(0, YOUTUBE_THUMBNAIL_URL_STRING_INDEX) +
+                        movieVideo.key + BASE_YOUTUBE_THUMBAIL_URL.substring(YOUTUBE_THUMBNAIL_URL_STRING_INDEX,Constants.BASE_YOUTUBE_THUMBAIL_URL.length)
+                fullImagePath = pathWithMovieKey
+            }
+
+            Picasso.get().load(fullImagePath).into(movieVideoThumbnail)
+
+            root.setOnClickListener {
+                onVideoSelected(movieVideo.key!!)
+            }
+        }
     }
 }

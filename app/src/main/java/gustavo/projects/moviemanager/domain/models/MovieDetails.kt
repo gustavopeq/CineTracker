@@ -1,5 +1,6 @@
 package gustavo.projects.moviemanager.domain.models
 
+
 data class MovieDetails(
         val budget: Int?,
         val genres: List<MovieGenre?>?,
@@ -11,6 +12,6 @@ data class MovieDetails(
         val runtime: Int?,
         val title: String?,
         val vote_average: Double?,
-        val movieCast: List<MovieCast?>?
-) {
-}
+        val movieCast: List<MovieCast?>?,
+        val movieVideos: List<MovieVideo?>?
+)

@@ -2,13 +2,15 @@ package gustavo.projects.moviemanager.domain.mappers
 
 import gustavo.projects.moviemanager.domain.models.MovieCast
 import gustavo.projects.moviemanager.domain.models.MovieDetails
+import gustavo.projects.moviemanager.domain.models.MovieVideo
 import gustavo.projects.moviemanager.network.response.GetMovieDetailsByIdResponse
 
 object MovieDetailsMapper {
 
     fun buildFrom(
         response: GetMovieDetailsByIdResponse,
-        cast: List<MovieCast>
+        cast: List<MovieCast>,
+        movieVideo: List<MovieVideo?>?
     ) : MovieDetails {
 
         return MovieDetails(
@@ -22,7 +24,8 @@ object MovieDetailsMapper {
                 runtime = response.runtime,
                 title = response.title,
                 vote_average = response.vote_average,
-                movieCast = cast
+                movieCast = cast,
+                movieVideos = movieVideo
         )
     }
 }
