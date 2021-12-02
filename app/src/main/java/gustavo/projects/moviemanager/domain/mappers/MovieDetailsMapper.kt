@@ -25,7 +25,8 @@ object MovieDetailsMapper {
                 title = response.title,
                 vote_average = response.vote_average,
                 movieCast = cast,
-                movieVideos = movieVideo
+                movieVideos = movieVideo,
+                productionCountry = response.production_countries
         )
     }
 }

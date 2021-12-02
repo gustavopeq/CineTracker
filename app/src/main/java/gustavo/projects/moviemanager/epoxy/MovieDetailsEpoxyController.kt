@@ -1,14 +1,12 @@
 package gustavo.projects.moviemanager.epoxy
 
+import android.util.Log
 import com.airbnb.epoxy.CarouselModel_
 import com.airbnb.epoxy.EpoxyController
 import com.squareup.picasso.Picasso
 import gustavo.projects.moviemanager.R
 import gustavo.projects.moviemanager.databinding.*
-import gustavo.projects.moviemanager.domain.models.MovieCast
-import gustavo.projects.moviemanager.domain.models.MovieDetails
-import gustavo.projects.moviemanager.domain.models.MovieGenre
-import gustavo.projects.moviemanager.domain.models.MovieVideo
+import gustavo.projects.moviemanager.domain.models.*
 import gustavo.projects.moviemanager.util.Constants
 import gustavo.projects.moviemanager.util.Constants.BASE_YOUTUBE_THUMBAIL_URL
 import gustavo.projects.moviemanager.util.Constants.MISSING_PROFILE_PICTURE_URL
@@ -54,6 +52,18 @@ class MovieDetailsEpoxyController(
         PosterEpoxyModel(movieDetails!!.poster_path).id("poster").addTo(this)
         TitleEpoxyModel(movieDetails!!.title!!, movieDetails!!.vote_average!!).id("title").addTo(this)
         OverviewEpoxyModel(movieDetails!!.overview!!).id("overview").addTo(this)
+
+        movieDetails!!.productionCountry.let { list ->
+            if(!list.isNullOrEmpty()){
+                CountryTitleEpoxyModel(list).id("countryTitle").addTo(this)
+
+                list.forEach { country ->
+                    CountryListEpoxyModel(country!!).id(country.name).addTo(this)
+
+                }
+            }
+        }
+
         DetailsEpoxyModel(
             movieDetails!!.release_date!!,
             movieDetails!!.genres!!,
@@ -111,6 +121,27 @@ class MovieDetailsEpoxyController(
             overviewTextView.text = overview
         }
 
+    }
+
+    data class CountryTitleEpoxyModel(
+        val countryList: List<ProductionCountry?>
+    ) : ViewBindingKotlinModel<ModelMovieDetailsCountryTitleBinding>(R.layout.model_movie_details_country_title) {
+
+        override fun ModelMovieDetailsCountryTitleBinding.bind() {
+
+            if(countryList.size > 1) {
+                countryTitle.text = "Production Countries"
+            }
+        }
+    }
+
+    data class CountryListEpoxyModel(
+        val productionCountry: ProductionCountry
+    ) : ViewBindingKotlinModel<ModelMovieDetailsCountryItemBinding>(R.layout.model_movie_details_country_item) {
+
+        override fun ModelMovieDetailsCountryItemBinding.bind() {
+            countryNameTextView.text = productionCountry.name
+        }
     }
 
     data class DetailsEpoxyModel(

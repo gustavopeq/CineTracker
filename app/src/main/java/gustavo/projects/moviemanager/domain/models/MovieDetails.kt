@@ -1,5 +1,7 @@
 package gustavo.projects.moviemanager.domain.models
 
+import gustavo.projects.moviemanager.network.response.GetMovieDetailsByIdResponse
+
 
 data class MovieDetails(
         val budget: Int?,
@@ -13,5 +15,6 @@ data class MovieDetails(
         val title: String?,
         val vote_average: Double?,
         val movieCast: List<MovieCast?>?,
-        val movieVideos: List<MovieVideo?>?
+        val movieVideos: List<MovieVideo?>?,
+        val productionCountry: List<ProductionCountry?>?
 )

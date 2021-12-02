@@ -1,6 +1,7 @@
 package gustavo.projects.moviemanager.network.response
 
 import gustavo.projects.moviemanager.domain.models.MovieGenre
+import gustavo.projects.moviemanager.domain.models.ProductionCountry
 
 data class GetMovieDetailsByIdResponse(
         val adult: Boolean?,
@@ -43,11 +44,6 @@ data class GetMovieDetailsByIdResponse(
         val logo_path: String?,
         val name: String?,
         val origin_country: String?
-    )
-
-    data class ProductionCountry(
-        val iso_3166_1: String?,
-        val name: String?
     )
 
     data class SpokenLanguage(
