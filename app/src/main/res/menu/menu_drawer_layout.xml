@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
+    <group
+        android:id="@+id/menuMoviesCategory"
+        android:checkableBehavior="single">
         <item
             android:id="@+id/nowPlayingFragment"
             android:title="Now Playing"
@@ -21,7 +23,11 @@
             android:id="@+id/popularMoviesFragment"
             android:title="Popular Movies"
             android:icon="@drawable/ic_popular_movie"/>
+    </group>
 
+    <group
+        android:id="@+id/menuOthers"
+        android:checkableBehavior="single">
         <item
             android:id="@+id/searchMoviesFragment"
             android:title="Search Movies"
@@ -31,6 +37,5 @@
             android:id="@+id/toWatchFragment"
             android:title="To Watch List"
             android:icon="@drawable/ic_watch_later"/>
-
     </group>
 </menu>
