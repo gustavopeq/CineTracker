@@ -166,7 +166,12 @@ class MovieDetailsEpoxyController(
 
             var runtimeHours: Int = runtime/60
             var runtimeMinutes = runtime%60
-            var runtimeText: String = runtimeHours.toString() + "h "+ runtimeMinutes + "min"
+
+            var runtimeText: String = if(runtimeMinutes != 0) {
+                runtimeHours.toString() + "h " + runtimeMinutes + "min"
+            }else {
+                runtimeHours.toString() + "h"
+            }
 
             runtimeTextView.text = runtimeText
         }
