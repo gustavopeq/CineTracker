@@ -1,6 +1,5 @@
 package gustavo.projects.moviemanager.movies.details
 
-
 import gustavo.projects.moviemanager.domain.mappers.MovieCreditsMapper
 import gustavo.projects.moviemanager.domain.mappers.MovieDetailsMapper
 import gustavo.projects.moviemanager.domain.models.MovieDetails

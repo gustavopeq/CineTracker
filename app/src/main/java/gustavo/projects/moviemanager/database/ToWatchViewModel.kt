@@ -1,13 +1,11 @@
 package gustavo.projects.moviemanager.database
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import gustavo.projects.moviemanager.database.model.ItemEntity
 import kotlinx.coroutines.launch
-import kotlin.math.log
 
 class ToWatchViewModel: ViewModel() {
 

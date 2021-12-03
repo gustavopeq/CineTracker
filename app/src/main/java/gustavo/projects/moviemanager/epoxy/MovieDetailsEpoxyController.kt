@@ -27,10 +27,8 @@ class MovieDetailsEpoxyController(
     var movieDetails: MovieDetails? = null
         set(value) {
             field = value
-            if(field != null){
-                isLoading = false
-                requestModelBuild()
-            }
+            isLoading = false
+            requestModelBuild()
         }
 
 
@@ -42,8 +40,7 @@ class MovieDetailsEpoxyController(
         }
 
         if(movieDetails == null) {
-
-            LoadingEpoxyModel().id("loading").addTo(this)
+            DetailsFailedEpoxyModel().id("detailsFailed").addTo(this)
             return
         }
 
@@ -82,6 +79,15 @@ class MovieDetailsEpoxyController(
             }
 
             CarouselModel_().id("video_carousel").models(videosCarouselItems).addTo(this)
+        }
+
+    }
+
+    class DetailsFailedEpoxyModel():
+        ViewBindingKotlinModel<ModelMovieDetailsFailedBinding>(R.layout.model_movie_details_failed) {
+
+        override fun ModelMovieDetailsFailedBinding.bind() {
+
         }
 
     }

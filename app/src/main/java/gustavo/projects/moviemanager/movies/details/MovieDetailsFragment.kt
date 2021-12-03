@@ -30,6 +30,8 @@ class MovieDetailsFragment : BaseFragment() {
 
     private var isInWatchLaterList = false
 
+    private var bookmarkBtnAvailable = false
+
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
@@ -43,16 +45,17 @@ class MovieDetailsFragment : BaseFragment() {
         _binding = FragmentMovieDetailsBinding.bind(view)
 
         viewModel.getMovieDetailsByIdLiveData.observe(viewLifecycleOwner){ movie ->
-
             epoxyController.movieDetails = movie
 
             if(movie == null){
                 Toast.makeText(requireActivity(), "Unsuccessful network call!",
-                        Toast.LENGTH_SHORT)
+                    Toast.LENGTH_SHORT).show()
                 return@observe
             }
 
             sharedViewModel.verifyIfInToWatchList(movie.id!!)
+
+            bookmarkBtnAvailable = true
         }
 
         viewModel.fetchMovie(safeArgs.movieId)
@@ -63,18 +66,22 @@ class MovieDetailsFragment : BaseFragment() {
 
 
         binding.addToWatchListBtn.setOnClickListener {
-            when(isInWatchLaterList) {
-                true -> {
-                    sharedViewModel.deleteItem(
-                            ItemEntity(viewModel.movieDisplayed.id!!, viewModel.movieDisplayed))
-                    binding.addToWatchListBtn.setIconResource(R.drawable.ic_baseline_bookmark_add)
-                    isInWatchLaterList = false
-                }
-                false -> {
-                    sharedViewModel.insertItem(
-                            ItemEntity(viewModel.movieDisplayed.id!!, viewModel.movieDisplayed))
-                    binding.addToWatchListBtn.setIconResource(R.drawable.ic_baseline_bookmark_remove)
-                    isInWatchLaterList = true
+            if(bookmarkBtnAvailable) {
+                when (isInWatchLaterList) {
+                    true -> {
+                        sharedViewModel.deleteItem(
+                            ItemEntity(viewModel.movieDisplayed.id!!, viewModel.movieDisplayed)
+                        )
+                        binding.addToWatchListBtn.setIconResource(R.drawable.ic_baseline_bookmark_add)
+                        isInWatchLaterList = false
+                    }
+                    false -> {
+                        sharedViewModel.insertItem(
+                            ItemEntity(viewModel.movieDisplayed.id!!, viewModel.movieDisplayed)
+                        )
+                        binding.addToWatchListBtn.setIconResource(R.drawable.ic_baseline_bookmark_remove)
+                        isInWatchLaterList = true
+                    }
                 }
             }
 
