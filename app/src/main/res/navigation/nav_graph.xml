@@ -9,7 +9,7 @@
         android:id="@+id/popularMoviesFragment"
         android:name="gustavo.projects.moviemanager.movies.popular.PopularMoviesFragment"
         android:label="Popular Movies"
-        tools:layout="@layout/fragment_popular_movies" >
+        tools:layout="@layout/fragment_movies_list" >
         <action
             android:id="@+id/action_popularMoviesFragment_to_movieDetailsFragment"
             app:destination="@id/movieDetailsFragment"
@@ -62,7 +62,7 @@
         android:id="@+id/nowPlayingFragment"
         android:name="gustavo.projects.moviemanager.movies.nowplaying.NowPlayingFragment"
         android:label="Now Playing"
-        tools:layout="@layout/fragment_now_playing_movies" >
+        tools:layout="@layout/fragment_movies_list" >
         <action
             android:id="@+id/action_nowPlayingFragment_to_movieDetailsFragment"
             app:destination="@id/movieDetailsFragment"
@@ -76,7 +76,7 @@
         android:id="@+id/upcomingFragment"
         android:name="gustavo.projects.moviemanager.movies.upcoming.UpcomingFragment"
         android:label="Upcoming Movies"
-        tools:layout="@layout/fragment_upcoming_movies">
+        tools:layout="@layout/fragment_movies_list">
         <action
             android:id="@+id/action_upcomingFragment_to_movieDetailsFragment"
             app:destination="@id/movieDetailsFragment"
@@ -90,7 +90,7 @@
         android:id="@+id/topRatedFragment"
         android:name="gustavo.projects.moviemanager.movies.toprated.TopRatedFragment"
         android:label="Top Rated Movies"
-        tools:layout="@layout/fragment_top_rated_movies">
+        tools:layout="@layout/fragment_movies_list">
         <action
             android:id="@+id/action_topRatedFragment_to_movieDetailsFragment"
             app:destination="@id/movieDetailsFragment"
