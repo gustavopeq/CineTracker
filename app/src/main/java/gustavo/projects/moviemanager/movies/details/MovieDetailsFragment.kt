@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import gustavo.projects.moviemanager.R
 import gustavo.projects.moviemanager.database.model.ItemEntity
@@ -24,7 +25,7 @@ class MovieDetailsFragment : BaseFragment() {
 
     private val viewModel: MovieDetailsViewModel by viewModels()
 
-    private val epoxyController = MovieDetailsEpoxyController(::onVideoSelected)
+    private val epoxyController = MovieDetailsEpoxyController(::onVideoSelected, ::onPersonSelected)
 
     private val safeArgs: MovieDetailsFragmentArgs by navArgs()
 
@@ -109,5 +110,11 @@ class MovieDetailsFragment : BaseFragment() {
 
         val intent = Intent(Intent.ACTION_VIEW, uri)
         startActivity(intent)
+    }
+
+    private fun onPersonSelected(personId: Int) {
+        val directions = MovieDetailsFragmentDirections.actionMovieDetailsFragmentToPersonDetailsFragment(personId)
+
+        findNavController().navigate(directions)
     }
 }

@@ -28,6 +28,13 @@
             android:name="movieId"
             app:argType="integer"
             android:defaultValue="-1" />
+        <action
+            android:id="@+id/action_movieDetailsFragment_to_personDetailsFragment"
+            app:destination="@id/personDetailsFragment"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:exitAnim="@anim/slide_out_to_left"
+            app:popEnterAnim="@anim/slide_in_from_left"
+            app:popExitAnim="@anim/slide_out_to_right"/>
     </fragment>
 
     <fragment
@@ -99,5 +106,17 @@
             app:popEnterAnim="@anim/slide_in_from_left"
             app:popExitAnim="@anim/slide_out_to_right"/>
     </fragment>
+
+    <fragment
+        android:id="@+id/personDetailsFragment"
+        android:name="gustavo.projects.moviemanager.people.PersonDetailsFragment"
+        android:label="PersonDetailsFragment"
+        tools:layout="@layout/model_person_details">
+        <argument
+            android:name="personId"
+            app:argType="integer"
+            android:defaultValue="-1" />
+    </fragment>
+
 
 </navigation>

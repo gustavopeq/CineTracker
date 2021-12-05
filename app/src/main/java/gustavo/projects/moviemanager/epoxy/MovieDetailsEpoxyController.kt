@@ -13,7 +13,8 @@ import gustavo.projects.moviemanager.util.Constants.YOUTUBE_THUMBNAIL_URL_STRING
 import gustavo.projects.moviemanager.util.DateFormatter
 
 class MovieDetailsEpoxyController(
-        private val onVideoSelected: (String) -> Unit
+        private val onVideoSelected: (String) -> Unit,
+        private val onPersonSelected: (Int) -> Unit
 ): EpoxyController() {
 
     var isLoading: Boolean = true
@@ -67,7 +68,7 @@ class MovieDetailsEpoxyController(
         ).id("details").addTo(this)
 
         val castCarouselItems = movieDetails!!.movieCast!!.map {
-            CastCarouselItemEpoxyModel(it!!).id(it!!.id)
+            CastCarouselItemEpoxyModel(it!!, onPersonSelected).id(it!!.id)
         }
 
         CarouselModel_().id("cast_carousel").models(castCarouselItems).addTo(this)
@@ -184,7 +185,8 @@ class MovieDetailsEpoxyController(
     }
 
     data class CastCarouselItemEpoxyModel(
-            val movieCast: MovieCast
+            val movieCast: MovieCast,
+            private val onPersonSelected: (Int) -> Unit
     ): ViewBindingKotlinModel<ModelCastCarouselItemBinding>(R.layout.model_cast_carousel_item) {
 
         override fun ModelCastCarouselItemBinding.bind() {
@@ -198,6 +200,10 @@ class MovieDetailsEpoxyController(
 
             castName.text = movieCast.name
             castCharacterName.text = movieCast.character
+
+            root.setOnClickListener {
+                onPersonSelected(movieCast.id!!)
+            }
         }
 
     }
