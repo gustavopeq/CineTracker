@@ -110,8 +110,8 @@
     <fragment
         android:id="@+id/personDetailsFragment"
         android:name="gustavo.projects.moviemanager.people.PersonDetailsFragment"
-        android:label="PersonDetailsFragment"
-        tools:layout="@layout/model_person_details">
+        android:label="Person Details"
+        tools:layout="@layout/model_person_born">
         <argument
             android:name="personId"
             app:argType="integer"

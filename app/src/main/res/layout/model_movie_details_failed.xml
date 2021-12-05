@@ -6,12 +6,12 @@
     android:layout_height="match_parent">
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/movieDetailsFailedMsg"
+        android:id="@+id/detailsFailedMsg"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="24dp"
         android:layout_marginTop="100dp"
-        android:text="Sorry, the details for this movie is not available at the moment"
+        android:text="Sorry, the details are not available at the moment"
         android:textAlignment="center"
         android:textColor="?attr/colorOnBackground"
         android:textSize="24sp"

@@ -84,15 +84,6 @@ class MovieDetailsEpoxyController(
 
     }
 
-    class DetailsFailedEpoxyModel():
-        ViewBindingKotlinModel<ModelMovieDetailsFailedBinding>(R.layout.model_movie_details_failed) {
-
-        override fun ModelMovieDetailsFailedBinding.bind() {
-
-        }
-
-    }
-
     data class TitleEpoxyModel(
         val movieTitle: String,
         val voteAverage: Double

@@ -1,5 +1,6 @@
 package gustavo.projects.moviemanager.epoxy
 
+import android.util.Log
 import com.airbnb.epoxy.EpoxyController
 import com.squareup.picasso.Picasso
 import gustavo.projects.moviemanager.R
@@ -7,6 +8,7 @@ import gustavo.projects.moviemanager.databinding.*
 import gustavo.projects.moviemanager.domain.models.person.PersonDetails
 import gustavo.projects.moviemanager.util.Constants
 import gustavo.projects.moviemanager.util.Constants.MISSING_PROFILE_PICTURE_URL
+import gustavo.projects.moviemanager.util.DateFormatter
 
 class PersonDetailsEpoxyController: EpoxyController() {
 
@@ -41,15 +43,21 @@ class PersonDetailsEpoxyController: EpoxyController() {
 
         ImageEpoxyModel(personDetails!!.profile_path).id("image").addTo(this)
         NameEpoxyModel(personDetails!!.name!!).id("personName").addTo(this)
-        BiographyEpoxyModel(personDetails!!.biography!!).id("biography").addTo(this)
 
-    }
+        if(!personDetails!!.biography.isNullOrBlank()) {
+            BiographyEpoxyModel(personDetails!!.biography!!).id("biography").addTo(this)
+        }
 
-    class DetailsFailedEpoxyModel():
-        ViewBindingKotlinModel<ModelMovieDetailsFailedBinding>(R.layout.model_movie_details_failed) {
+        if(!personDetails!!.birthday.isNullOrBlank()) {
+            BornDetailEpoxyModel(personDetails!!.birthday!!).id("birthday").addTo(this)
+        }
 
-        override fun ModelMovieDetailsFailedBinding.bind() {
+        if(!personDetails!!.deathday.isNullOrBlank()) {
+            DeathDetailEpoxyModel(personDetails!!.deathday!!).id("death").addTo(this)
+        }
 
+        if(!personDetails!!.place_of_birth.isNullOrBlank()) {
+            BornLocationEpoxyModel(personDetails!!.place_of_birth!!).id("bornIn").addTo(this)
         }
 
     }
@@ -84,6 +92,30 @@ class PersonDetailsEpoxyController: EpoxyController() {
     ) : ViewBindingKotlinModel<ModelPersonBiographyBinding>(R.layout.model_person_biography) {
         override fun ModelPersonBiographyBinding.bind() {
             biographyTextView.text = biography
+        }
+    }
+
+    data class BornDetailEpoxyModel(
+            val personBday: String
+    ) : ViewBindingKotlinModel<ModelPersonBornBinding>(R.layout.model_person_born) {
+        override fun ModelPersonBornBinding.bind() {
+            bornDateTextView.text = DateFormatter().formatDate(personBday)
+        }
+    }
+
+    data class DeathDetailEpoxyModel(
+            val personDeathDate: String
+    ) : ViewBindingKotlinModel<ModelPersonDeathBinding>(R.layout.model_person_death) {
+        override fun ModelPersonDeathBinding.bind() {
+            deathDateTextView.text = DateFormatter().formatDate(personDeathDate)
+        }
+    }
+
+    data class BornLocationEpoxyModel(
+            val bornLocation: String
+    ) : ViewBindingKotlinModel<ModelPersonBornLocationBinding>(R.layout.model_person_born_location) {
+        override fun ModelPersonBornLocationBinding.bind() {
+            bornInTextView.text = bornLocation
         }
     }
 
