@@ -6,6 +6,7 @@ import gustavo.projects.moviemanager.network.response.GetMovieCreditsByIdRespons
 import gustavo.projects.moviemanager.network.response.GetMovieVideosByIdResponse
 import gustavo.projects.moviemanager.network.response.GetMoviesPageResponse
 import gustavo.projects.moviemanager.network.response.person.GetPersonDetailsByIdResponse
+import gustavo.projects.moviemanager.network.response.person.GetPersonImagesByIdResponse
 import gustavo.projects.moviemanager.network.response.person.GetPersonsMoviesByIdResponse
 import retrofit2.Response
 import retrofit2.http.GET
@@ -67,6 +68,11 @@ interface MovieDbService {
     suspend fun getPersonsMoviesById(
             @Path("person_ID") personId: Int
     ): Response<GetPersonsMoviesByIdResponse>
+
+    @GET("person/{person_ID}/images?api_key=${Constants.API_KEY}")
+    suspend fun getPersonImagesById(
+            @Path("person_ID") personId: Int
+    ): Response<GetPersonImagesByIdResponse>
 
 
 }

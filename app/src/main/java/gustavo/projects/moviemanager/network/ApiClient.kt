@@ -5,6 +5,7 @@ import gustavo.projects.moviemanager.network.response.GetMovieCreditsByIdRespons
 import gustavo.projects.moviemanager.network.response.GetMovieVideosByIdResponse
 import gustavo.projects.moviemanager.network.response.GetMoviesPageResponse
 import gustavo.projects.moviemanager.network.response.person.GetPersonDetailsByIdResponse
+import gustavo.projects.moviemanager.network.response.person.GetPersonImagesByIdResponse
 import gustavo.projects.moviemanager.network.response.person.GetPersonsMoviesByIdResponse
 import retrofit2.Response
 import kotlin.Exception
@@ -54,6 +55,10 @@ class ApiClient(
 
     suspend fun getPersonsMoviesById(people_ID: Int): SimpleResponse<GetPersonsMoviesByIdResponse> {
         return safeApiCall { movieDbService.getPersonsMoviesById(people_ID) }
+    }
+
+    suspend fun getPersonImagesById(people_ID: Int): SimpleResponse<GetPersonImagesByIdResponse> {
+        return safeApiCall { movieDbService.getPersonImagesById(people_ID) }
     }
 
 

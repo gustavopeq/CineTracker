@@ -10,5 +10,6 @@ data class PersonDetails(
         val name: String?,
         val place_of_birth: String?,
         val profile_path: String?,
-        val movieInList: List<Movie>?
+        val movieInList: List<Movie>?,
+        val personImageList: List<PersonImages.Profile?>?
 )
