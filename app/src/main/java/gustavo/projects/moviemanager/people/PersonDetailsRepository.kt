@@ -1,6 +1,8 @@
 package gustavo.projects.moviemanager.people
 
 import gustavo.projects.moviemanager.domain.mappers.person.PersonDetailsMapper
+import gustavo.projects.moviemanager.domain.mappers.person.PersonsMovieCastMapper
+import gustavo.projects.moviemanager.domain.models.MovieCast
 import gustavo.projects.moviemanager.domain.models.person.PersonDetails
 import gustavo.projects.moviemanager.network.NetworkLayer
 
@@ -25,6 +27,19 @@ class PersonDetailsRepository {
         //Add movie to the cache list
         //MovieCache.movieMap[movie_ID] = movieDetail
 
-        return PersonDetailsMapper.buildFrom(request.body)
+        val movieCastList = getPersonsMoviesById(person_ID)
+
+        return PersonDetailsMapper.buildFrom(request.body, movieCastList)
+    }
+
+    suspend fun getPersonsMoviesById(person_ID: Int) : List<MovieCast> {
+        val request = NetworkLayer.apiClient.getPersonsMoviesById(person_ID)
+
+
+        if(request.failed || !request.isSuccessful) {
+            return emptyList()
+        }
+
+        return PersonsMovieCastMapper.buildFrom(request.body).cast
     }
 }

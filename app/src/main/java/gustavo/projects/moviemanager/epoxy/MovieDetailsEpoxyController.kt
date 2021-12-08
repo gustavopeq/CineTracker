@@ -1,5 +1,6 @@
 package gustavo.projects.moviemanager.epoxy
 
+import android.util.Log
 import com.airbnb.epoxy.CarouselModel_
 import com.airbnb.epoxy.EpoxyController
 import com.squareup.picasso.Picasso
@@ -73,7 +74,7 @@ class MovieDetailsEpoxyController(
 
         CarouselModel_().id("cast_carousel").models(castCarouselItems).addTo(this)
 
-        if(movieDetails!!.movieVideos!!.isNotEmpty()) {
+        if(!movieDetails!!.movieVideos!!.isNullOrEmpty()) {
             VideosTitleEpoxyModel(movieDetails!!.movieVideos!!).id("videosTitle").addTo(this)
             val videosCarouselItems = movieDetails!!.movieVideos!!.map {
                 VideosCarouselItemEpoxyModel(it!!, onVideoSelected).id(it!!.id)
@@ -225,7 +226,7 @@ class MovieDetailsEpoxyController(
 
             movieVideo.key.let {
                 val pathWithMovieKey = BASE_YOUTUBE_THUMBAIL_URL.substring(0, YOUTUBE_THUMBNAIL_URL_STRING_INDEX) +
-                        movieVideo.key + BASE_YOUTUBE_THUMBAIL_URL.substring(YOUTUBE_THUMBNAIL_URL_STRING_INDEX,Constants.BASE_YOUTUBE_THUMBAIL_URL.length)
+                        movieVideo.key + BASE_YOUTUBE_THUMBAIL_URL.substring(YOUTUBE_THUMBNAIL_URL_STRING_INDEX,BASE_YOUTUBE_THUMBAIL_URL.length)
                 fullImagePath = pathWithMovieKey
             }
 

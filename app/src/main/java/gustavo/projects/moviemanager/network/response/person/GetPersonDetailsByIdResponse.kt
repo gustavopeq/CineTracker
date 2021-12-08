@@ -1,6 +1,6 @@
 package gustavo.projects.moviemanager.network.response.person
 
-data class GetPersonDetailsById(
+data class GetPersonDetailsByIdResponse(
     val adult: Boolean?,
     val also_known_as: List<String?>?,
     val biography: String?,

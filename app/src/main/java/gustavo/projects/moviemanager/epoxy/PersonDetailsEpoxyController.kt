@@ -1,16 +1,21 @@
 package gustavo.projects.moviemanager.epoxy
 
 import android.util.Log
+import com.airbnb.epoxy.CarouselModel_
 import com.airbnb.epoxy.EpoxyController
 import com.squareup.picasso.Picasso
 import gustavo.projects.moviemanager.R
 import gustavo.projects.moviemanager.databinding.*
+import gustavo.projects.moviemanager.domain.models.MovieCast
+import gustavo.projects.moviemanager.domain.models.MovieVideo
 import gustavo.projects.moviemanager.domain.models.person.PersonDetails
 import gustavo.projects.moviemanager.util.Constants
 import gustavo.projects.moviemanager.util.Constants.MISSING_PROFILE_PICTURE_URL
 import gustavo.projects.moviemanager.util.DateFormatter
 
-class PersonDetailsEpoxyController: EpoxyController() {
+class PersonDetailsEpoxyController(
+    val onMovieSelected: (Int) -> Unit
+): EpoxyController() {
 
     var isLoading: Boolean = true
         set(value) {
@@ -58,6 +63,16 @@ class PersonDetailsEpoxyController: EpoxyController() {
 
         if(!personDetails!!.place_of_birth.isNullOrBlank()) {
             BornLocationEpoxyModel(personDetails!!.place_of_birth!!).id("bornIn").addTo(this)
+        }
+
+        if(!personDetails!!.movieCast.isNullOrEmpty()) {
+            MovieTitleEpoxyModel().id("movieTitle").addTo(this)
+
+            val movieCarouselItems = personDetails!!.movieCast!!.map { movie ->
+                MoviesCarouselItemEpoxyModel(movie, onMovieSelected).id(movie.id)
+            }
+
+            CarouselModel_().id("moviesCarousel").models(movieCarouselItems).addTo(this)
         }
 
     }
@@ -116,6 +131,34 @@ class PersonDetailsEpoxyController: EpoxyController() {
     ) : ViewBindingKotlinModel<ModelPersonBornLocationBinding>(R.layout.model_person_born_location) {
         override fun ModelPersonBornLocationBinding.bind() {
             bornInTextView.text = bornLocation
+        }
+    }
+
+    class MovieTitleEpoxyModel : ViewBindingKotlinModel<ModelPersonMoviesTitleBinding>(R.layout.model_person_movies_title) {
+
+        override fun ModelPersonMoviesTitleBinding.bind() {
+        }
+    }
+
+    data class MoviesCarouselItemEpoxyModel(
+        val movie: MovieCast,
+        val onMovieSelected: (Int) -> Unit
+    ): ViewBindingKotlinModel<ModelPersonMoviesCarouselItemBinding>(R.layout.model_person_movies_carousel_item) {
+
+        override fun ModelPersonMoviesCarouselItemBinding.bind() {
+
+            var fullImagePath = MISSING_PROFILE_PICTURE_URL
+
+            if(!movie.profile_path.isNullOrBlank()) {
+                fullImagePath = Constants.BASE_IMAGE_URL + movie.profile_path
+            }
+
+            Picasso.get().load(fullImagePath).into(movieThumbnail)
+
+
+            root.setOnClickListener {
+                onMovieSelected(movie.id!!)
+            }
         }
     }
 
