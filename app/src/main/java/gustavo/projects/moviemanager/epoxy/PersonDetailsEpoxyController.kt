@@ -1,13 +1,11 @@
 package gustavo.projects.moviemanager.epoxy
 
-import android.util.Log
 import com.airbnb.epoxy.CarouselModel_
 import com.airbnb.epoxy.EpoxyController
 import com.squareup.picasso.Picasso
 import gustavo.projects.moviemanager.R
 import gustavo.projects.moviemanager.databinding.*
-import gustavo.projects.moviemanager.domain.models.MovieCast
-import gustavo.projects.moviemanager.domain.models.MovieVideo
+import gustavo.projects.moviemanager.domain.models.Movie
 import gustavo.projects.moviemanager.domain.models.person.PersonDetails
 import gustavo.projects.moviemanager.util.Constants
 import gustavo.projects.moviemanager.util.Constants.MISSING_PROFILE_PICTURE_URL
@@ -65,10 +63,10 @@ class PersonDetailsEpoxyController(
             BornLocationEpoxyModel(personDetails!!.place_of_birth!!).id("bornIn").addTo(this)
         }
 
-        if(!personDetails!!.movieCast.isNullOrEmpty()) {
+        if(!personDetails!!.movieInList.isNullOrEmpty()) {
             MovieTitleEpoxyModel().id("movieTitle").addTo(this)
 
-            val movieCarouselItems = personDetails!!.movieCast!!.map { movie ->
+            val movieCarouselItems = personDetails!!.movieInList!!.map { movie ->
                 MoviesCarouselItemEpoxyModel(movie, onMovieSelected).id(movie.id)
             }
 
@@ -141,7 +139,7 @@ class PersonDetailsEpoxyController(
     }
 
     data class MoviesCarouselItemEpoxyModel(
-        val movie: MovieCast,
+        val movie: Movie,
         val onMovieSelected: (Int) -> Unit
     ): ViewBindingKotlinModel<ModelPersonMoviesCarouselItemBinding>(R.layout.model_person_movies_carousel_item) {
 
@@ -149,11 +147,14 @@ class PersonDetailsEpoxyController(
 
             var fullImagePath = MISSING_PROFILE_PICTURE_URL
 
-            if(!movie.profile_path.isNullOrBlank()) {
-                fullImagePath = Constants.BASE_IMAGE_URL + movie.profile_path
+            if(!movie.poster_path.isNullOrBlank()) {
+                fullImagePath = Constants.BASE_IMAGE_URL + movie.poster_path
             }
 
             Picasso.get().load(fullImagePath).into(movieThumbnail)
+
+            movieTitleTextView.text = movie.title
+            movieRatingTextView.text = movie.vote_average.toString()
 
 
             root.setOnClickListener {

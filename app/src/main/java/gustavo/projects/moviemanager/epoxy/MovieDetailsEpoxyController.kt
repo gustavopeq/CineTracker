@@ -63,9 +63,9 @@ class MovieDetailsEpoxyController(
         }
 
         DetailsEpoxyModel(
-            movieDetails!!.release_date!!,
-            movieDetails!!.genres!!,
-            movieDetails!!.runtime!!
+            movieDetails!!.release_date,
+            movieDetails!!.genres,
+            movieDetails!!.runtime
         ).id("details").addTo(this)
 
         val castCarouselItems = movieDetails!!.movieCast!!.map {
@@ -143,35 +143,45 @@ class MovieDetailsEpoxyController(
     }
 
     data class DetailsEpoxyModel(
-        val releaseDate: String,
-        val listOfGenres: List<MovieGenre?>,
-        val runtime: Int
+        val releaseDate: String?,
+        val listOfGenres: List<MovieGenre?>?,
+        val runtime: Int?
     ) : ViewBindingKotlinModel<ModelMovieDetailsBinding>(R.layout.model_movie_details) {
         override fun ModelMovieDetailsBinding.bind() {
 
-            releaseDateTextView.text = DateFormatter().formatDate(releaseDate)
+            if(!releaseDate.isNullOrBlank()) {
+                releaseDateTextView.text = DateFormatter().formatDate(releaseDate)
+            }else{
+                releaseDateTextView.text = "N/A"
+            }
 
-            var listOfGenresText: String = ""
+            var listOfGenresText: String = "N/A"
 
-            for((index, value) in listOfGenres.withIndex()){
-                if(index < listOfGenres.lastIndex){
-                    listOfGenresText += value!!.name + ", "
-                }else{
-                    listOfGenresText += value!!.name + "."
+            if(!listOfGenres.isNullOrEmpty()) {
+                listOfGenresText = ""
+                for ((index, value) in listOfGenres.withIndex()) {
+                    if (index < listOfGenres.lastIndex) {
+                        listOfGenresText += value!!.name + ", "
+                    } else {
+                        listOfGenresText += value!!.name + "."
+                    }
+                }
+                genresTextView.text = listOfGenresText
+            }
+
+            var runtimeText: String = "N/A"
+
+            if(runtime != null) {
+
+                var runtimeHours: Int = runtime/60
+                var runtimeMinutes = runtime%60
+
+                runtimeText = if(runtimeMinutes != 0) {
+                    runtimeHours.toString() + "h " + runtimeMinutes + "min"
+                }else {
+                    runtimeHours.toString() + "h"
                 }
             }
-            genresTextView.text = listOfGenresText
-
-
-            var runtimeHours: Int = runtime/60
-            var runtimeMinutes = runtime%60
-
-            var runtimeText: String = if(runtimeMinutes != 0) {
-                runtimeHours.toString() + "h " + runtimeMinutes + "min"
-            }else {
-                runtimeHours.toString() + "h"
-            }
-
             runtimeTextView.text = runtimeText
         }
     }
