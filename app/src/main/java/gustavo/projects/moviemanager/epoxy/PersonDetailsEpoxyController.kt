@@ -7,6 +7,7 @@ import gustavo.projects.moviemanager.R
 import gustavo.projects.moviemanager.databinding.*
 import gustavo.projects.moviemanager.domain.models.Movie
 import gustavo.projects.moviemanager.domain.models.person.PersonDetails
+import gustavo.projects.moviemanager.domain.models.person.PersonImages
 import gustavo.projects.moviemanager.util.Constants
 import gustavo.projects.moviemanager.util.Constants.MISSING_PROFILE_PICTURE_URL
 import gustavo.projects.moviemanager.util.DateFormatter
@@ -72,6 +73,17 @@ class PersonDetailsEpoxyController(
 
             CarouselModel_().id("moviesCarousel").models(movieCarouselItems).addTo(this)
         }
+
+        if(!personDetails!!.personImageList.isNullOrEmpty()) {
+            ImagesTitleEpoxyModel().id("imageTitle").addTo(this)
+
+            val imageCarouselItems = personDetails!!.personImageList!!.map { image ->
+                ImageCarouselItemEpoxyModel(image!!).id(image!!.file_path)
+            }
+
+            CarouselModel_().id("imagesCarousel").models(imageCarouselItems).addTo(this)
+        }
+
 
     }
 
@@ -160,6 +172,28 @@ class PersonDetailsEpoxyController(
             root.setOnClickListener {
                 onMovieSelected(movie.id!!)
             }
+        }
+    }
+
+    class ImagesTitleEpoxyModel : ViewBindingKotlinModel<ModelPersonImagesTitleBinding>(R.layout.model_person_images_title) {
+
+        override fun ModelPersonImagesTitleBinding.bind() {
+        }
+    }
+
+    data class ImageCarouselItemEpoxyModel(
+            val image: PersonImages.Profile,
+    ): ViewBindingKotlinModel<ModelPersonImagesCarouselItemBinding>(R.layout.model_person_images_carousel_item) {
+
+        override fun ModelPersonImagesCarouselItemBinding.bind() {
+
+            var fullImagePath = MISSING_PROFILE_PICTURE_URL
+
+            if(!image.file_path.isNullOrBlank()) {
+                fullImagePath = Constants.BASE_IMAGE_URL + image.file_path
+            }
+
+            Picasso.get().load(fullImagePath).into(personImageView)
         }
     }
 
