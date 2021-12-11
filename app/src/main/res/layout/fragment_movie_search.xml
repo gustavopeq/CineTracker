@@ -41,8 +41,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                android:tint="?colorOnBackground"
+                android:singleLine="true"
                 android:textSize="16sp"
+                android:tint="?colorOnBackground"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/searchIcon"
                 app:layout_constraintTop_toTopOf="parent" />

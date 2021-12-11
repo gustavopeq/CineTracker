@@ -1,6 +1,5 @@
 package gustavo.projects.moviemanager.epoxy
 
-import android.util.Log
 import com.airbnb.epoxy.CarouselModel_
 import com.airbnb.epoxy.EpoxyController
 import com.squareup.picasso.Picasso
