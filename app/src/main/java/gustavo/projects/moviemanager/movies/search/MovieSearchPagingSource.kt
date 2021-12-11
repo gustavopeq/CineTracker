@@ -26,7 +26,7 @@ class MovieSearchPagingSource(
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Movie> {
 
-        if (userSearch.isEmpty()) {
+        if (userSearch.isEmpty() || userSearch.isBlank()) {
             val exception = SearchException.EmptySearch
             searchExceptionCallback(exception)
             return LoadResult.Error(exception)
