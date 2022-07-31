@@ -6,22 +6,22 @@
         android:checkableBehavior="single">
         <item
             android:id="@+id/nowPlayingFragment"
-            android:title="Now Playing"
+            android:title="@string/now_playing"
             android:icon="@drawable/ic_now_playing"/>
 
         <item
             android:id="@+id/upcomingFragment"
-            android:title="Upcoming Movies"
+            android:title="@string/upcoming_movies"
             android:icon="@drawable/ic_upcoming_movies"/>
 
         <item
             android:id="@+id/popularMoviesFragment"
-            android:title="Popular Movies"
+            android:title="@string/popular_movies"
             android:icon="@drawable/ic_popular_movie"/>
 
         <item
             android:id="@+id/topRatedFragment"
-            android:title="Top Rated Movies"
+            android:title="@string/top_rated_movies"
             android:icon="@drawable/ic_top_rated"/>
     </group>
 
@@ -30,12 +30,12 @@
         android:checkableBehavior="single">
         <item
             android:id="@+id/searchMoviesFragment"
-            android:title="Search Movies"
+            android:title="@string/search_movies"
             android:icon="@drawable/ic_search"/>
 
         <item
             android:id="@+id/toWatchFragment"
-            android:title="To Watch List"
+            android:title="@string/to_watchlist"
             android:icon="@drawable/ic_watch_later"/>
     </group>
 </menu>

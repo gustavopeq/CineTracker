@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:text="Video"
+        android:text="@string/movie_details_video_label"
         android:textColor="?attr/colorOnBackground"
         android:textSize="24sp"
         app:layout_constraintLeft_toLeftOf="parent"

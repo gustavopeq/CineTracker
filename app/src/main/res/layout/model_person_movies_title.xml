@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:text="Movies"
+        android:text="@string/person_details_movies_label"
         android:textColor="?attr/colorOnBackground"
         android:textSize="24sp"
         app:layout_constraintLeft_toLeftOf="parent"

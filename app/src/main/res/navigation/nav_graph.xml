@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/popularMoviesFragment"
         android:name="gustavo.projects.moviemanager.movies.popular.PopularMoviesFragment"
-        android:label="Popular Movies"
+        android:label="@string/popular_movies"
         tools:layout="@layout/fragment_movies_list" >
         <action
             android:id="@+id/action_popularMoviesFragment_to_movieDetailsFragment"
@@ -22,7 +22,7 @@
     <fragment
         android:id="@+id/movieDetailsFragment"
         android:name="gustavo.projects.moviemanager.movies.details.MovieDetailsFragment"
-        android:label="Movie Details"
+        android:label="@string/details"
         tools:layout="@layout/fragment_movie_details" >
         <argument
             android:name="movieId"
@@ -40,7 +40,7 @@
     <fragment
         android:id="@+id/searchMoviesFragment"
         android:name="gustavo.projects.moviemanager.movies.search.MovieSearchFragment"
-        android:label="Search movies"
+        android:label="@string/search_movies"
         tools:layout="@layout/model_search_movie_list_item" >
         <action
             android:id="@+id/action_searchMoviesFragment_to_movieDetailsFragment"
@@ -54,7 +54,7 @@
     <fragment
         android:id="@+id/toWatchFragment"
         android:name="gustavo.projects.moviemanager.database.ToWatchFragment"
-        android:label="To Watch"
+        android:label="@string/to_watchlist"
         tools:layout="@layout/model_search_movie_list_item">
         <action
             android:id="@+id/action_toWatchFragment_to_movieDetailsFragment"
@@ -68,7 +68,7 @@
     <fragment
         android:id="@+id/nowPlayingFragment"
         android:name="gustavo.projects.moviemanager.movies.nowplaying.NowPlayingFragment"
-        android:label="Now Playing"
+        android:label="@string/now_playing"
         tools:layout="@layout/fragment_movies_list" >
         <action
             android:id="@+id/action_nowPlayingFragment_to_movieDetailsFragment"
@@ -82,7 +82,7 @@
     <fragment
         android:id="@+id/upcomingFragment"
         android:name="gustavo.projects.moviemanager.movies.upcoming.UpcomingFragment"
-        android:label="Upcoming Movies"
+        android:label="@string/upcoming_movies"
         tools:layout="@layout/fragment_movies_list">
         <action
             android:id="@+id/action_upcomingFragment_to_movieDetailsFragment"
@@ -96,7 +96,7 @@
     <fragment
         android:id="@+id/topRatedFragment"
         android:name="gustavo.projects.moviemanager.movies.toprated.TopRatedFragment"
-        android:label="Top Rated Movies"
+        android:label="@string/top_rated_movies"
         tools:layout="@layout/fragment_movies_list">
         <action
             android:id="@+id/action_topRatedFragment_to_movieDetailsFragment"
@@ -110,7 +110,7 @@
     <fragment
         android:id="@+id/personDetailsFragment"
         android:name="gustavo.projects.moviemanager.people.PersonDetailsFragment"
-        android:label="Person Details"
+        android:label="@string/details"
         tools:layout="@layout/model_person_born">
         <argument
             android:name="personId"

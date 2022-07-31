@@ -1,3 +1,26 @@
 <resources>
     <string name="app_name">Moviebase Watchlist</string>
+    <string name="now_playing">Now Playing</string>
+    <string name="upcoming_movies">Upcoming</string>
+    <string name="popular_movies">Popular</string>
+    <string name="top_rated_movies">Top Rated</string>
+    <string name="search_movies">Search</string>
+    <string name="to_watchlist">To Watch List</string>
+    <string name="details">Details</string>
+    <string name="unavailable_details_message">Sorry, the details are not available at the moment</string>
+    <string name="movie_details_production_country_title">Production Country</string>
+    <string name="movie_details_release_date_label">Release Date</string>
+    <string name="movie_details_genres_label">Genres</string>
+    <string name="movie_details_runtime_label">Runtime</string>
+    <string name="movie_details_cast_label">Cast</string>
+    <string name="movie_details_video_label">Video</string>
+    <string name="person_details_born_label">Born</string>
+    <string name="person_details_born_in_label">Born in</string>
+    <string name="person_details_death_label">Death</string>
+    <string name="person_details_movies_label">Movies</string>
+    <string name="person_details_images_label">Images</string>
+    <string name="empty_search_title_message">Type to search!</string>
+    <string name="search_error_title_message">Sorry… :(</string>
+    <string name="search_error_description_message">No results found</string>
+    <string name="empty_watchlist_message">Add movies to watch later!</string>
 </resources>

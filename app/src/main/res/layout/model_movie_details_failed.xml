@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="24dp"
         android:layout_marginTop="100dp"
-        android:text="Sorry, the details are not available at the moment"
+        android:text="@string/unavailable_details_message"
         android:textAlignment="center"
         android:textColor="?attr/colorOnBackground"
         android:textSize="24sp"

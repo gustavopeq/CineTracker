@@ -28,11 +28,13 @@ class MovieSearchFragment : Fragment(R.layout.fragment_movie_search) {
         viewModel.submitSearchQuery(currentSearchText)
     }
 
-    private val epoxyController = MovieSearchEpoxyController(::onMovieSelected)
+    lateinit var epoxyController: MovieSearchEpoxyController
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentMovieSearchBinding.bind(view)
+
+        epoxyController = MovieSearchEpoxyController(::onMovieSelected, requireContext())
 
 
         binding.epoxyRecyclerView.setControllerAndBuildModels(epoxyController)

@@ -2,6 +2,7 @@ package gustavo.projects.moviemanager.movies.search
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import gustavo.projects.moviemanager.R
 import gustavo.projects.moviemanager.domain.mappers.MovieMapper
 import gustavo.projects.moviemanager.domain.models.Movie
 import gustavo.projects.moviemanager.network.NetworkLayer
@@ -12,15 +13,15 @@ class MovieSearchPagingSource(
 ) : PagingSource<Int, Movie>() {
 
     sealed class SearchException(
-        val title: String,
-        val description: String = ""
+        val titleStringRes: Int,
+        val descriptionStringRes: Int? = null
     ): Exception() {
         object EmptySearch : SearchException(
-            title = "Type to search!"
+            titleStringRes = R.string.empty_search_title_message
         )
         object NoResults : SearchException(
-            title = "Sorry... :(",
-            description = "No results found"
+            titleStringRes = R.string.search_error_title_message,
+            descriptionStringRes = R.string.search_error_description_message
         )
     }
 

@@ -1,5 +1,6 @@
 package gustavo.projects.moviemanager.epoxy
 
+import android.content.Context
 import com.airbnb.epoxy.EpoxyModel
 import com.airbnb.epoxy.paging3.PagingDataEpoxyController
 import com.squareup.picasso.Picasso
@@ -11,7 +12,8 @@ import gustavo.projects.moviemanager.movies.search.MovieSearchPagingSource
 import gustavo.projects.moviemanager.util.Constants
 
 class MovieSearchEpoxyController(
-    private val onMovieSelected: (Int) -> Unit
+    private val onMovieSelected: (Int) -> Unit,
+    private val context: Context
 ): PagingDataEpoxyController<Movie>() {
 
     var searchException: MovieSearchPagingSource.SearchException? = null
@@ -37,7 +39,8 @@ class MovieSearchEpoxyController(
     override fun addModels(models: List<EpoxyModel<*>>) {
 
         searchException?.let {
-            SearchedMoviesExceptionItemEpoxyModel(it).id("exception_msg").addTo(this)
+            SearchedMoviesExceptionItemEpoxyModel(it, context)
+                .id("exception_msg").addTo(this)
             return
         }
 
@@ -78,12 +81,14 @@ class MovieSearchEpoxyController(
     }
 
     data class SearchedMoviesExceptionItemEpoxyModel(
-       val searchException: MovieSearchPagingSource.SearchException
+       val searchException: MovieSearchPagingSource.SearchException,
+       private val context: Context
     ): ViewBindingKotlinModel<ModelSearchExceptionMsgBinding>(R.layout.model_search_exception_msg) {
 
         override fun ModelSearchExceptionMsgBinding.bind() {
-            exceptionTitleTextView.text = searchException.title
-            exceptionDescriptionTextView.text = searchException.description
+            exceptionTitleTextView.text = context.getString(searchException.titleStringRes)
+            exceptionDescriptionTextView.text =
+                searchException.descriptionStringRes?.let { context.getString(it) }
         }
     }
 }

@@ -12,7 +12,7 @@
         android:layout_margin="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="48dp"
-        android:text="Production Country"
+        android:text="@string/movie_details_production_country_title"
         android:textColor="?attr/colorOnBackground"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"

@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">Moviebase Watchlist</string>
+    <string name="now_playing">Em Cartaz</string>
+    <string name="upcoming_movies">Próximas Estreias</string>
+    <string name="popular_movies">Populares</string>
+    <string name="top_rated_movies">Mais bem avaliados</string>
+    <string name="search_movies">Busca</string>
+    <string name="to_watchlist">Lista de interesses</string>
+    <string name="details">Detalhes</string>
+    <string name="unavailable_details_message">Sinto muito, os detalhes não estão disponíveis no momento</string>
+    <string name="movie_details_production_country_title">País de produção</string>
+    <string name="movie_details_release_date_label">Data de lançamento</string>
+    <string name="movie_details_genres_label">Gêneros</string>
+    <string name="movie_details_runtime_label">Duração</string>
+    <string name="movie_details_cast_label">Elenco</string>
+    <string name="movie_details_video_label">Vídeo</string>
+    <string name="person_details_born_label">Nasceu em</string>
+    <string name="person_details_born_in_label">Local de nascimento</string>
+    <string name="person_details_death_label">Faleceu em</string>
+    <string name="person_details_movies_label">Filmes</string>
+    <string name="person_details_images_label">Imagens</string>
+    <string name="empty_search_title_message">Digite para buscar!</string>
+    <string name="search_error_title_message">Sinto muito… :(</string>
+    <string name="search_error_description_message">Nenhum resultado encontrado</string>
+    <string name="empty_watchlist_message">Adicione filmes para assistir depois!</string>
+</resources>
