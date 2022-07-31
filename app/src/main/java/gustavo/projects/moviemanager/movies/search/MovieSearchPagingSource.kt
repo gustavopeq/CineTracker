@@ -3,6 +3,7 @@ package gustavo.projects.moviemanager.movies.search
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import gustavo.projects.moviemanager.R
+import gustavo.projects.moviemanager.config.AppConfiguration
 import gustavo.projects.moviemanager.domain.mappers.MovieMapper
 import gustavo.projects.moviemanager.domain.models.Movie
 import gustavo.projects.moviemanager.network.NetworkLayer
@@ -41,7 +42,11 @@ class MovieSearchPagingSource(
             previousKey = pageNumber - 1
         }
 
-        val request = NetworkLayer.apiClient.getMoviesPageByTitle(userSearch, pageNumber)
+        val request = NetworkLayer.apiClient.getMoviesPageByTitle(
+            userSearch,
+            pageNumber,
+            AppConfiguration.appLanguage
+        )
 
         //When search doesn't find any movie
         if (request.body.page == 1 && request.body.results.isEmpty()) {

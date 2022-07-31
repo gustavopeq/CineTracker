@@ -1,5 +1,6 @@
 package gustavo.projects.moviemanager.people
 
+import gustavo.projects.moviemanager.config.AppConfiguration
 import gustavo.projects.moviemanager.domain.mappers.person.PersonDetailsMapper
 import gustavo.projects.moviemanager.domain.mappers.person.PersonImagesMapper
 import gustavo.projects.moviemanager.domain.mappers.person.PersonMoviesInMapper
@@ -13,7 +14,10 @@ class PersonDetailsRepository {
 
     suspend fun getPersonDetailsById(person_ID: Int) : PersonDetails? {
 
-        val request = NetworkLayer.apiClient.getPersonDetailsById(person_ID)
+        val request = NetworkLayer.apiClient.getPersonDetailsById(
+            person_ID,
+            AppConfiguration.appLanguage
+        )
 
         if(request.failed || !request.isSuccessful) {
             return null

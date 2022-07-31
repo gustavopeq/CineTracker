@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import gustavo.projects.moviemanager.config.AppConfiguration
 import gustavo.projects.moviemanager.domain.models.Movie
 import gustavo.projects.moviemanager.domain.models.MovieDetails
 import kotlinx.coroutines.launch
@@ -23,7 +24,7 @@ class MovieDetailsViewModel: ViewModel() {
     fun fetchMovie(movie_ID: Int){
 
         viewModelScope.launch {
-            val response = repository.getMovieDetailsById(movie_ID)
+            val response = repository.getMovieDetailsById(movie_ID, AppConfiguration.appLanguage)
 
             response?.let {
                 _movieDisplayed = Movie(response.vote_average, response.id, response.poster_path, response.title)

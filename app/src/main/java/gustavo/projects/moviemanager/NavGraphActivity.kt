@@ -11,8 +11,10 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
+import gustavo.projects.moviemanager.config.AppConfiguration
 import gustavo.projects.moviemanager.database.AppDatabase
 import gustavo.projects.moviemanager.database.ToWatchViewModel
+import gustavo.projects.moviemanager.util.LanguageSupport
 
 class NavGraphActivity: AppCompatActivity() {
 
@@ -21,6 +23,8 @@ class NavGraphActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_nav_graph)
+
+        AppConfiguration.appLanguage = LanguageSupport.getLanguage(resources.configuration.locale)
 
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment

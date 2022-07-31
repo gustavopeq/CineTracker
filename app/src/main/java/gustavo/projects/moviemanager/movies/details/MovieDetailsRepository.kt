@@ -9,9 +9,9 @@ import gustavo.projects.moviemanager.network.MovieCache
 import gustavo.projects.moviemanager.network.NetworkLayer
 
 
-class MovieDetailsRepository {
+class MovieDetailsRepository() {
 
-    suspend fun getMovieDetailsById(movie_ID: Int) : MovieDetails? {
+    suspend fun getMovieDetailsById(movie_ID: Int, language: String) : MovieDetails? {
 
         //Check if movie is cached
         val movie = MovieCache.movieMap[movie_ID]
@@ -19,7 +19,7 @@ class MovieDetailsRepository {
             return movie
         }
 
-        val request = NetworkLayer.apiClient.getMovieById(movie_ID)
+        val request = NetworkLayer.apiClient.getMovieById(movie_ID, language)
 
         if(request.failed || !request.isSuccessful) {
             return null

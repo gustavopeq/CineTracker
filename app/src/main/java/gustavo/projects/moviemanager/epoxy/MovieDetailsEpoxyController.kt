@@ -125,10 +125,10 @@ class MovieDetailsEpoxyController(
     ) : ViewBindingKotlinModel<ModelMovieDetailsCountryTitleBinding>(R.layout.model_movie_details_country_title) {
 
         override fun ModelMovieDetailsCountryTitleBinding.bind() {
-
-            if(countryList.size > 1) {
-                countryTitle.text = "Production Countries"
-            }
+//            TODO Check plural
+//            if(countryList.size > 1) {
+//                countryTitle.text = "Production Countries"
+//            }
         }
     }
 
@@ -217,7 +217,7 @@ class MovieDetailsEpoxyController(
 
             movieVideo.let {
                 if (it.size > 1) {
-                    titleTextView.text = "Videos"
+                    titleTextView.text = "${titleTextView.text}s"
                 }
             }
         }

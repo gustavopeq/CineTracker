@@ -14,24 +14,39 @@ class ApiClient(
     private val movieDbService: MovieDbService
     ) {
 
-    suspend fun getMovieById(movie_ID: Int): SimpleResponse<GetMovieDetailsByIdResponse> {
-        return safeApiCall { movieDbService.getMovieDetailsById(movie_ID) }
+    suspend fun getMovieById(
+        movie_ID: Int,
+        language: String
+    ): SimpleResponse<GetMovieDetailsByIdResponse> {
+        return safeApiCall { movieDbService.getMovieDetailsById(movie_ID, language) }
     }
 
-    suspend fun getUpcomingMoviesPage(pageIndex: Int): SimpleResponse<GetMoviesPageResponse> {
-        return safeApiCall { movieDbService.getUpcomingMoviesPage(pageIndex) }
+    suspend fun getUpcomingMoviesPage(
+        pageIndex: Int,
+        language: String
+    ): SimpleResponse<GetMoviesPageResponse> {
+        return safeApiCall { movieDbService.getUpcomingMoviesPage(pageIndex, language) }
     }
 
-    suspend fun getNowPlayingMoviesPage(pageIndex: Int): SimpleResponse<GetMoviesPageResponse> {
-        return safeApiCall { movieDbService.getNowPlayingMoviesPage(pageIndex) }
+    suspend fun getNowPlayingMoviesPage(
+        pageIndex: Int,
+        language: String
+    ): SimpleResponse<GetMoviesPageResponse> {
+        return safeApiCall { movieDbService.getNowPlayingMoviesPage(pageIndex, language) }
     }
 
-    suspend fun getTopRatedMoviesPage(pageIndex: Int): SimpleResponse<GetMoviesPageResponse> {
-        return safeApiCall { movieDbService.getTopRatedMoviesPage(pageIndex) }
+    suspend fun getTopRatedMoviesPage(
+        pageIndex: Int,
+        language: String
+    ): SimpleResponse<GetMoviesPageResponse> {
+        return safeApiCall { movieDbService.getTopRatedMoviesPage(pageIndex, language) }
     }
 
-    suspend fun getPopularMoviesPage(pageIndex: Int): SimpleResponse<GetMoviesPageResponse> {
-        return safeApiCall { movieDbService.getPopularMoviesPage(pageIndex) }
+    suspend fun getPopularMoviesPage(
+        pageIndex: Int,
+        language: String
+    ): SimpleResponse<GetMoviesPageResponse> {
+        return safeApiCall { movieDbService.getPopularMoviesPage(pageIndex, language) }
     }
 
     suspend fun getMovieCreditsById(movie_ID: Int): SimpleResponse<GetMovieCreditsByIdResponse> {
@@ -42,15 +57,21 @@ class ApiClient(
         return safeApiCall { movieDbService.getMovieVideosById(movie_ID) }
     }
 
-    suspend fun getMoviesPageByTitle(movieTitle: String,
-                                     pageIndex: Int): SimpleResponse<GetMoviesPageResponse> {
-        return safeApiCall { movieDbService.getMoviesPageByTitle(movieTitle, pageIndex) }
+    suspend fun getMoviesPageByTitle(
+        movieTitle: String,
+        pageIndex: Int,
+        language: String
+    ): SimpleResponse<GetMoviesPageResponse> {
+        return safeApiCall { movieDbService.getMoviesPageByTitle(movieTitle, pageIndex, language) }
     }
 
     //PEOPLE
 
-    suspend fun getPersonDetailsById(people_ID: Int): SimpleResponse<GetPersonDetailsByIdResponse> {
-        return safeApiCall { movieDbService.getPersonDetailsById(people_ID) }
+    suspend fun getPersonDetailsById(
+        people_ID: Int,
+        language: String
+    ): SimpleResponse<GetPersonDetailsByIdResponse> {
+        return safeApiCall { movieDbService.getPersonDetailsById(people_ID, language) }
     }
 
     suspend fun getPersonsMoviesById(people_ID: Int): SimpleResponse<GetPersonsMoviesByIdResponse> {

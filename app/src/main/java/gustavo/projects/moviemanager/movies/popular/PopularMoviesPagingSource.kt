@@ -2,6 +2,7 @@ package gustavo.projects.moviemanager.movies.popular
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import gustavo.projects.moviemanager.config.AppConfiguration
 import gustavo.projects.moviemanager.domain.mappers.MovieMapper
 import gustavo.projects.moviemanager.domain.models.Movie
 import gustavo.projects.moviemanager.network.NetworkLayer
@@ -18,7 +19,10 @@ class PopularMoviesPagingSource : PagingSource<Int, Movie>() {
                         previousKey = pageNumber - 1
                 }
 
-                val request = NetworkLayer.apiClient.getPopularMoviesPage(pageNumber)
+                val request = NetworkLayer.apiClient.getPopularMoviesPage(
+                        pageNumber,
+                        AppConfiguration.appLanguage
+                )
 
                 request.exception?.let {
                         return LoadResult.Error(it)
