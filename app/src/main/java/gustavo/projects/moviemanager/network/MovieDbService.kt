@@ -1,6 +1,5 @@
 package gustavo.projects.moviemanager.network
 
-import gustavo.projects.moviemanager.config.AppConfiguration
 import gustavo.projects.moviemanager.util.Constants
 import gustavo.projects.moviemanager.network.response.GetMovieDetailsByIdResponse
 import gustavo.projects.moviemanager.network.response.GetMovieCreditsByIdResponse

@@ -25,7 +25,7 @@ class MovieDetailsFragment : BaseFragment() {
 
     private val viewModel: MovieDetailsViewModel by viewModels()
 
-    private val epoxyController = MovieDetailsEpoxyController(::onVideoSelected, ::onPersonSelected)
+    lateinit var epoxyController: MovieDetailsEpoxyController
 
     private val safeArgs: MovieDetailsFragmentArgs by navArgs()
 
@@ -44,6 +44,11 @@ class MovieDetailsFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentMovieDetailsBinding.bind(view)
+        epoxyController = MovieDetailsEpoxyController(
+            ::onVideoSelected,
+            ::onPersonSelected,
+            requireContext()
+        )
 
         viewModel.getMovieDetailsByIdLiveData.observe(viewLifecycleOwner){ movie ->
             epoxyController.movieDetails = movie

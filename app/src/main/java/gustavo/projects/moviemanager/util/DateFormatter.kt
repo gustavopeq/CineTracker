@@ -1,45 +1,38 @@
 package gustavo.projects.moviemanager.util
 
-class DateFormatter() {
+import android.content.Context
+import gustavo.projects.moviemanager.R
 
-    fun formatDate(date:String): String {
-        var month: Int
-        var monthFormated: String = "January"
-        var day: Int
-        var dayFormated: String = "1st"
-        var year: String
+class DateFormatter {
 
-        month = date.substring(5,7).toInt()
-        day = date.substring(8,10).toInt()
-        year = date.substring(0,4)
+    companion object {
+        fun formatDate(date:String, context: Context): String {
+            var month: Int
+            var monthFormated: String = context.resources.getString(R.string.january)
+            var day: Int
+            var year: String
 
-        when(month){
-            1 -> monthFormated = "January"
-            2 -> monthFormated = "February"
-            3 -> monthFormated = "March"
-            4 -> monthFormated = "April"
-            5 -> monthFormated = "May"
-            6 -> monthFormated = "June"
-            7 -> monthFormated = "July"
-            8 -> monthFormated = "August"
-            9 -> monthFormated = "September"
-            10 -> monthFormated = "October"
-            11 -> monthFormated = "November"
-            12 -> monthFormated = "December"
+            month = date.substring(5,7).toInt()
+            day = date.substring(8,10).toInt()
+            year = date.substring(0,4)
+
+            when(month){
+                1 -> monthFormated = context.resources.getString(R.string.january)
+                2 -> monthFormated = context.resources.getString(R.string.february)
+                3 -> monthFormated = context.resources.getString(R.string.march)
+                4 -> monthFormated = context.resources.getString(R.string.april)
+                5 -> monthFormated = context.resources.getString(R.string.may)
+                6 -> monthFormated = context.resources.getString(R.string.june)
+                7 -> monthFormated = context.resources.getString(R.string.july)
+                8 -> monthFormated = context.resources.getString(R.string.august)
+                9 -> monthFormated = context.resources.getString(R.string.september)
+                10 -> monthFormated = context.resources.getString(R.string.october)
+                11 -> monthFormated = context.resources.getString(R.string.november)
+                12 -> monthFormated = context.resources.getString(R.string.december)
+            }
+
+            return "$monthFormated $day, $year"
+
         }
-
-        when(day){
-            1 -> dayFormated = "1st"
-            2 -> dayFormated = "2nd"
-            3 -> dayFormated = "3rd"
-            21 -> dayFormated = "21st"
-            22 -> dayFormated = "22nd"
-            23 -> dayFormated = "23rd"
-            31 -> dayFormated = "31st"
-            else -> dayFormated = month.toString() + "th"
-        }
-
-        return "$monthFormated $dayFormated, $year"
-
     }
 }

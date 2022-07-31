@@ -1,5 +1,6 @@
 package gustavo.projects.moviemanager.epoxy
 
+import android.content.Context
 import com.airbnb.epoxy.CarouselModel_
 import com.airbnb.epoxy.EpoxyController
 import com.squareup.picasso.Picasso
@@ -13,7 +14,8 @@ import gustavo.projects.moviemanager.util.Constants.MISSING_PROFILE_PICTURE_URL
 import gustavo.projects.moviemanager.util.DateFormatter
 
 class PersonDetailsEpoxyController(
-    val onMovieSelected: (Int) -> Unit
+    val onMovieSelected: (Int) -> Unit,
+    val context: Context
 ): EpoxyController() {
 
     var isLoading: Boolean = true
@@ -53,11 +55,17 @@ class PersonDetailsEpoxyController(
         }
 
         if(!personDetails!!.birthday.isNullOrBlank()) {
-            BornDetailEpoxyModel(personDetails!!.birthday!!).id("birthday").addTo(this)
+            BornDetailEpoxyModel(
+                personDetails!!.birthday!!,
+                context
+            ).id("birthday").addTo(this)
         }
 
         if(!personDetails!!.deathday.isNullOrBlank()) {
-            DeathDetailEpoxyModel(personDetails!!.deathday!!).id("death").addTo(this)
+            DeathDetailEpoxyModel(
+                personDetails!!.deathday!!,
+                context
+            ).id("death").addTo(this)
         }
 
         if(!personDetails!!.place_of_birth.isNullOrBlank()) {
@@ -121,18 +129,20 @@ class PersonDetailsEpoxyController(
     }
 
     data class BornDetailEpoxyModel(
-            val personBday: String
+            val personBday: String,
+            val context: Context
     ) : ViewBindingKotlinModel<ModelPersonBornBinding>(R.layout.model_person_born) {
         override fun ModelPersonBornBinding.bind() {
-            bornDateTextView.text = DateFormatter().formatDate(personBday)
+            bornDateTextView.text = DateFormatter.formatDate(personBday, context)
         }
     }
 
     data class DeathDetailEpoxyModel(
-            val personDeathDate: String
+            val personDeathDate: String,
+            val context: Context
     ) : ViewBindingKotlinModel<ModelPersonDeathBinding>(R.layout.model_person_death) {
         override fun ModelPersonDeathBinding.bind() {
-            deathDateTextView.text = DateFormatter().formatDate(personDeathDate)
+            deathDateTextView.text = DateFormatter.formatDate(personDeathDate, context)
         }
     }
 

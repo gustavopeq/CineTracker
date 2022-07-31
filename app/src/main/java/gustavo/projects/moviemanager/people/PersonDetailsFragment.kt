@@ -23,7 +23,7 @@ class PersonDetailsFragment : BaseFragment() {
 
     private val viewModel: PersonDetailsViewModel by viewModels()
 
-    private val epoxyController = PersonDetailsEpoxyController(::onMovieSelected)
+    lateinit var epoxyController: PersonDetailsEpoxyController
 
     private val safeArgs: PersonDetailsFragmentArgs by navArgs()
 
@@ -38,7 +38,7 @@ class PersonDetailsFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentPersonDetailsBinding.bind(view)
-        AppConfiguration.appLanguage = LanguageSupport.getLanguage(resources.configuration.locale)
+        epoxyController = PersonDetailsEpoxyController(::onMovieSelected, requireContext())
 
         viewModel.getPersonDetailsByIdLiveData.observe(viewLifecycleOwner){ person ->
             epoxyController.personDetails = person

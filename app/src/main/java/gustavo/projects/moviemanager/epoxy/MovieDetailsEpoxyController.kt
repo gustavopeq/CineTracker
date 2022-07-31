@@ -1,5 +1,6 @@
 package gustavo.projects.moviemanager.epoxy
 
+import android.content.Context
 import com.airbnb.epoxy.CarouselModel_
 import com.airbnb.epoxy.EpoxyController
 import com.squareup.picasso.Picasso
@@ -14,7 +15,8 @@ import gustavo.projects.moviemanager.util.DateFormatter
 
 class MovieDetailsEpoxyController(
         private val onVideoSelected: (String) -> Unit,
-        private val onPersonSelected: (Int) -> Unit
+        private val onPersonSelected: (Int) -> Unit,
+        private val context: Context
 ): EpoxyController() {
 
     var isLoading: Boolean = true
@@ -64,7 +66,8 @@ class MovieDetailsEpoxyController(
         DetailsEpoxyModel(
             movieDetails!!.release_date,
             movieDetails!!.genres,
-            movieDetails!!.runtime
+            movieDetails!!.runtime,
+            context
         ).id("details").addTo(this)
 
         val castCarouselItems = movieDetails!!.movieCast!!.map {
@@ -144,12 +147,13 @@ class MovieDetailsEpoxyController(
     data class DetailsEpoxyModel(
         val releaseDate: String?,
         val listOfGenres: List<MovieGenre?>?,
-        val runtime: Int?
+        val runtime: Int?,
+        val context: Context
     ) : ViewBindingKotlinModel<ModelMovieDetailsBinding>(R.layout.model_movie_details) {
         override fun ModelMovieDetailsBinding.bind() {
 
             if(!releaseDate.isNullOrBlank()) {
-                releaseDateTextView.text = DateFormatter().formatDate(releaseDate)
+                releaseDateTextView.text = DateFormatter.formatDate(releaseDate, context)
             }else{
                 releaseDateTextView.text = "N/A"
             }
