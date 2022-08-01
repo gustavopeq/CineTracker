@@ -14,6 +14,7 @@
     <string name="movie_details_runtime_label">Runtime</string>
     <string name="movie_details_cast_label">Cast</string>
     <string name="movie_details_video_label">Video</string>
+    <string name="movie_details_videos_label">Videos</string>
     <string name="person_details_born_label">Born</string>
     <string name="person_details_born_in_label">Born in</string>
     <string name="person_details_death_label">Death</string>

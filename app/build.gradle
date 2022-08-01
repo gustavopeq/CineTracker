@@ -10,15 +10,15 @@ kapt{
 }
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 32
     buildToolsVersion "30.0.2"
 
     defaultConfig {
         applicationId "gustavo.projects.restapi"
         minSdkVersion 21
-        targetSdkVersion 30
-        versionCode 8
-        versionName "8.0"
+        targetSdkVersion 32
+        versionCode 11
+        versionName "1.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

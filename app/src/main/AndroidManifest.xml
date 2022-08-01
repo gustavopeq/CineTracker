@@ -13,7 +13,8 @@
 
         android:theme="@style/Theme.RESTAPI">
 
-        <activity android:name="gustavo.projects.moviemanager.NavGraphActivity">
+        <activity android:name="gustavo.projects.moviemanager.NavGraphActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

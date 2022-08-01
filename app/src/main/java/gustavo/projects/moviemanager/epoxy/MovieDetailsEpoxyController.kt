@@ -78,7 +78,7 @@ class MovieDetailsEpoxyController(
         CarouselModel_().id("cast_carousel").models(castCarouselItems).addTo(this)
 
         if(!movieDetails!!.movieVideos!!.isNullOrEmpty()) {
-            VideosTitleEpoxyModel(movieDetails!!.movieVideos!!).id("videosTitle").addTo(this)
+            VideosTitleEpoxyModel(movieDetails!!.movieVideos!!, context).id("videosTitle").addTo(this)
             val videosCarouselItems = movieDetails!!.movieVideos!!.map {
                 VideosCarouselItemEpoxyModel(it!!, onVideoSelected).id(it!!.id)
             }
@@ -215,14 +215,15 @@ class MovieDetailsEpoxyController(
     }
 
     data class VideosTitleEpoxyModel(
-            val movieVideo: List<MovieVideo?>
+            val movieVideo: List<MovieVideo?>,
+            val context: Context
     ): ViewBindingKotlinModel<ModelVideosTitleBinding>(R.layout.model_videos_title) {
 
         override fun ModelVideosTitleBinding.bind() {
 
             movieVideo.let {
                 if (it.size > 1) {
-                    titleTextView.text = "${titleTextView.text}s"
+                    titleTextView.text = context.getString(R.string.movie_details_videos_label)
                 }
             }
         }
