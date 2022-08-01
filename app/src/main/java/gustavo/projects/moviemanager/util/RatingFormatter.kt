@@ -1,6 +1,7 @@
 package gustavo.projects.moviemanager.util
 
 import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
 
 class RatingFormatter {
     companion object {
@@ -11,7 +12,7 @@ class RatingFormatter {
 
             var formattedRating = DecimalFormat("#.#").format(rating)
             if (formattedRating.length == 1) {
-                formattedRating = "$formattedRating,0"
+                formattedRating = "$formattedRating${DecimalFormatSymbols.getInstance().decimalSeparator}0"
             } else {
                 formattedRating
             }
