@@ -73,7 +73,8 @@ interface MovieDbService {
 
     @GET("person/{person_ID}/movie_credits?api_key=${Constants.API_KEY}")
     suspend fun getPersonsMoviesById(
-            @Path("person_ID") personId: Int
+            @Path("person_ID") personId: Int,
+            @Query("language") language : String
     ): Response<GetPersonsMoviesByIdResponse>
 
     @GET("person/{person_ID}/images?api_key=${Constants.API_KEY}")

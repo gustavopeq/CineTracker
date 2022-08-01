@@ -1,0 +1,40 @@
+<resources>
+    <string name="app_name">Moviebase Watchlist</string>
+    <string name="now_playing">En Cartelera</string>
+    <string name="upcoming_movies">Próximo</string>
+    <string name="popular_movies">Popular</string>
+    <string name="top_rated_movies">Mejor Calificado</string>
+    <string name="search_movies">Buscar</string>
+    <string name="to_watchlist">Tu lista</string>
+    <string name="details">Detalles</string>
+    <string name="unavailable_details_message">Lo sentimos, los detalles no están disponibles en este momento</string>
+    <string name="movie_details_production_country_title">País de producción</string>
+    <string name="movie_details_release_date_label">Día de Estreno</string>
+    <string name="movie_details_genres_label">Géneros</string>
+    <string name="movie_details_runtime_label">Tiempo de Ejecución</string>
+    <string name="movie_details_cast_label">Reparto</string>
+    <string name="movie_details_video_label">Video</string>
+    <string name="movie_details_videos_label">Vídeos</string>
+    <string name="person_details_born_label">Cumpleaños</string>
+    <string name="person_details_born_in_label">Lugar de Nacimiento</string>
+    <string name="person_details_death_label">Día de la muerte</string>
+    <string name="person_details_movies_label">Películas</string>
+    <string name="person_details_images_label">Retratos</string>
+    <string name="empty_search_title_message">Escribe para buscar!</string>
+    <string name="search_error_title_message">Perdón… :(</string>
+    <string name="search_error_description_message">Ningún Resultado</string>
+    <string name="empty_watchlist_message">Añadir películas para ver más tarde!</string>
+    <string name="january">Enero</string>
+    <string name="february">Febrero</string>
+    <string name="march">Marzo</string>
+    <string name="april">Abril</string>
+    <string name="may">Mayo</string>
+    <string name="june">Junio</string>
+    <string name="july">Julio</string>
+    <string name="august">Agosto</string>
+    <string name="september">Septiembre</string>
+    <string name="october">Octubre</string>
+    <string name="november">Noviembre</string>
+    <string name="december">Diciembre</string>
+
+</resources>

@@ -30,7 +30,10 @@ class PersonDetailsRepository {
     }
 
     private suspend fun getPersonsMoviesById(person_ID: Int) : List<Movie> {
-        val request = NetworkLayer.apiClient.getPersonsMoviesById(person_ID)
+        val request = NetworkLayer.apiClient.getPersonsMoviesById(
+            person_ID,
+            AppConfiguration.appLanguage
+        )
 
 
         if(request.failed || !request.isSuccessful) {

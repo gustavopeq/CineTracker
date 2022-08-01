@@ -74,8 +74,11 @@ class ApiClient(
         return safeApiCall { movieDbService.getPersonDetailsById(people_ID, language) }
     }
 
-    suspend fun getPersonsMoviesById(people_ID: Int): SimpleResponse<GetPersonsMoviesByIdResponse> {
-        return safeApiCall { movieDbService.getPersonsMoviesById(people_ID) }
+    suspend fun getPersonsMoviesById(
+        people_ID: Int,
+        language: String
+    ): SimpleResponse<GetPersonsMoviesByIdResponse> {
+        return safeApiCall { movieDbService.getPersonsMoviesById(people_ID, language) }
     }
 
     suspend fun getPersonImagesById(people_ID: Int): SimpleResponse<GetPersonImagesByIdResponse> {
