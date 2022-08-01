@@ -4,17 +4,31 @@ import java.util.Locale
 
 class LanguageSupport {
     companion object {
-        private val supportedLanguages = listOf("en-US", "pt-BR", "pt-PT", "es-ES", "es-MX")
+        private val supportedLanguages = listOf(
+            "en-US",
+            "pt-BR",
+            "es-ES",
+            "es-MX",
+            "es-BO",
+            "es-CL",
+            "es-CO",
+            "es-EC",
+            "es-PY",
+            "es-PE",
+            "es-PR",
+            "es-UY",
+            "es-VE",
+            "es-CR")
         private const val DEFAULT_LANGUAGE = "en-US"
 
         fun getLanguage(locale: Locale): String {
-            val language = locale.toLanguageTag()
-            return if (language.isSupported() && language != "pt-PT") {
-                language
-            } else if (language == "pt-PT") {
-                "pt-BR"
-            } else {
-                DEFAULT_LANGUAGE
+            val languageTag = locale.toLanguageTag()
+            val language = locale.language
+            return when {
+                languageTag.isSupported() -> languageTag
+                language == "pt" -> "pt-BR"
+                language == "es" -> "es-ES"
+                else -> DEFAULT_LANGUAGE
             }
         }
 
