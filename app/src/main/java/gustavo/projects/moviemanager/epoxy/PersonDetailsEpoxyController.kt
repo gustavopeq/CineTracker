@@ -12,7 +12,7 @@ import gustavo.projects.moviemanager.domain.models.person.PersonImages
 import gustavo.projects.moviemanager.util.Constants
 import gustavo.projects.moviemanager.util.Constants.MISSING_PROFILE_PICTURE_URL
 import gustavo.projects.moviemanager.util.DateFormatter
-import java.text.DecimalFormat
+import gustavo.projects.moviemanager.util.RatingFormatter
 
 class PersonDetailsEpoxyController(
     val onMovieSelected: (Int) -> Unit,
@@ -177,11 +177,7 @@ class PersonDetailsEpoxyController(
             Picasso.get().load(fullImagePath).into(movieThumbnail)
 
             movieTitleTextView.text = movie.title
-            if (movie.vote_average != 0.0) {
-                movieRatingTextView.text = DecimalFormat("#.#").format(movie.vote_average)
-            } else {
-                movieRatingTextView.text = "N/A"
-            }
+            movieRatingTextView.text = RatingFormatter(movie.vote_average!!)
 
 
             root.setOnClickListener {

@@ -29,7 +29,7 @@ class TopRatedPagingSource : PagingSource<Int, Movie>() {
                 }
 
                 return LoadResult.Page(
-                        data = request.body.results.map { movieResponse ->
+                        data = request.body.results.mapNotNull { movieResponse ->
                                 MovieMapper.buildFrom(movieResponse)
                         },
                         prevKey = previousKey,

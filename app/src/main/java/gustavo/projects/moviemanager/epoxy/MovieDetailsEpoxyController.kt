@@ -12,7 +12,7 @@ import gustavo.projects.moviemanager.util.Constants.BASE_YOUTUBE_THUMBAIL_URL
 import gustavo.projects.moviemanager.util.Constants.MISSING_PROFILE_PICTURE_URL
 import gustavo.projects.moviemanager.util.Constants.YOUTUBE_THUMBNAIL_URL_STRING_INDEX
 import gustavo.projects.moviemanager.util.DateFormatter
-import java.text.DecimalFormat
+import gustavo.projects.moviemanager.util.RatingFormatter
 
 class MovieDetailsEpoxyController(
         private val onVideoSelected: (String) -> Unit,
@@ -94,11 +94,7 @@ class MovieDetailsEpoxyController(
     ) : ViewBindingKotlinModel<ModelMovieTitleBinding>(R.layout.model_movie_title) {
         override fun ModelMovieTitleBinding.bind() {
             titleTextView.text = movieTitle
-            if (voteAverage != 0.0) {
-                movieRatingTextView.text = DecimalFormat("#.#").format(voteAverage)
-            } else {
-                movieRatingTextView.text = "N/A"
-            }
+            movieRatingTextView.text = RatingFormatter(voteAverage)
         }
     }
 

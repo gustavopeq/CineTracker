@@ -10,7 +10,7 @@ import gustavo.projects.moviemanager.databinding.ModelSearchMovieListItemBinding
 import gustavo.projects.moviemanager.domain.models.Movie
 import gustavo.projects.moviemanager.movies.search.MovieSearchPagingSource
 import gustavo.projects.moviemanager.util.Constants
-import java.text.DecimalFormat
+import gustavo.projects.moviemanager.util.RatingFormatter
 
 class MovieSearchEpoxyController(
     private val onMovieSelected: (Int) -> Unit,
@@ -73,11 +73,7 @@ class MovieSearchEpoxyController(
 
             Picasso.get().load(fullPosterPath).into(movieImageView)
             movieTitleTextView.text = movieTitle
-            if (movieRating != 0.0) {
-                movieRatingTextView.text = DecimalFormat("#.#").format(movieRating)
-            } else {
-                movieRatingTextView.text = "N/A"
-            }
+            movieRatingTextView.text = RatingFormatter(movieRating)
 
             root.setOnClickListener {
                 onMovieSelected(movieId)
