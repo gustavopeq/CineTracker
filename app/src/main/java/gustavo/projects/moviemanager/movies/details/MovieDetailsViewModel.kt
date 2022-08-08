@@ -4,14 +4,20 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import gustavo.projects.moviemanager.config.AppConfiguration
 import gustavo.projects.moviemanager.domain.models.Movie
 import gustavo.projects.moviemanager.domain.models.MovieDetails
+import gustavo.projects.moviemanager.network.ApiClient
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MovieDetailsViewModel: ViewModel() {
+@HiltViewModel
+class MovieDetailsViewModel @Inject constructor(
+    private val apiClient: ApiClient
+): ViewModel() {
 
-    private val repository = MovieDetailsRepository()
+    private val repository = MovieDetailsRepository(apiClient)
 
     private val _getMovieByIdLiveData = MutableLiveData<MovieDetails?>()
     val getMovieDetailsByIdLiveData: LiveData<MovieDetails?> = _getMovieByIdLiveData

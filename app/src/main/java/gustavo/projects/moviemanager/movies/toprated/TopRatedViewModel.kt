@@ -4,14 +4,20 @@ package gustavo.projects.moviemanager.movies.toprated
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.*
+import dagger.hilt.android.lifecycle.HiltViewModel
+import gustavo.projects.moviemanager.network.ApiClient
 import gustavo.projects.moviemanager.util.Constants
+import javax.inject.Inject
 
-class TopRatedViewModel: ViewModel() {
+@HiltViewModel
+class TopRatedViewModel @Inject constructor(
+    private val apiClient: ApiClient
+): ViewModel() {
 
     private var pagingSource: TopRatedPagingSource? = null
         get() {
             if(field == null || field?.invalid == true) {
-                field = TopRatedPagingSource()
+                field = TopRatedPagingSource(apiClient)
             }
             return field
         }

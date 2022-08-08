@@ -7,11 +7,17 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
+import dagger.hilt.android.lifecycle.HiltViewModel
 import gustavo.projects.moviemanager.util.Constants
 import gustavo.projects.moviemanager.util.Event
 import gustavo.projects.moviemanager.movies.search.MovieSearchPagingSource.SearchException
+import gustavo.projects.moviemanager.network.ApiClient
+import javax.inject.Inject
 
-class MovieSearchViewModel: ViewModel() {
+@HiltViewModel
+class MovieSearchViewModel @Inject constructor(
+    private val apiClient: ApiClient
+): ViewModel() {
 
     private var currentUserSearch: String = ""
 
@@ -20,7 +26,7 @@ class MovieSearchViewModel: ViewModel() {
     private var pagingSource: MovieSearchPagingSource? = null
         get() {
             if(field == null || field?.invalid == true) {
-                field = MovieSearchPagingSource(currentUserSearch) { searchException ->
+                field = MovieSearchPagingSource(currentUserSearch, apiClient) { searchException ->
 
                     _searchExceptionEventLiveData.postValue(Event(searchException))
                 }

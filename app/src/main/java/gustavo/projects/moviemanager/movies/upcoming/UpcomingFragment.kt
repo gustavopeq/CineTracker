@@ -9,11 +9,13 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.airbnb.epoxy.EpoxyRecyclerView
+import dagger.hilt.android.AndroidEntryPoint
 import gustavo.projects.moviemanager.R
 import gustavo.projects.moviemanager.epoxy.DefaultMoviesPagingEpoxyController
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class UpcomingFragment : Fragment() {
 
     private val epoxyController = DefaultMoviesPagingEpoxyController(::onMovieSelected)

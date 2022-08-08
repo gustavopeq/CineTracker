@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import dagger.hilt.android.AndroidEntryPoint
 import gustavo.projects.moviemanager.R
 import gustavo.projects.moviemanager.database.model.ItemEntity
 import gustavo.projects.moviemanager.databinding.FragmentMovieDetailsBinding
@@ -17,7 +18,7 @@ import gustavo.projects.moviemanager.epoxy.MovieDetailsEpoxyController
 import gustavo.projects.moviemanager.util.BaseFragment
 import gustavo.projects.moviemanager.util.Constants
 
-
+@AndroidEntryPoint
 class MovieDetailsFragment : BaseFragment() {
 
     private var _binding: FragmentMovieDetailsBinding? = null

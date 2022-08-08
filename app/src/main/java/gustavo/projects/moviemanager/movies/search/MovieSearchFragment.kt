@@ -9,12 +9,14 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import dagger.hilt.android.AndroidEntryPoint
 import gustavo.projects.moviemanager.R
 import gustavo.projects.moviemanager.databinding.FragmentMovieSearchBinding
 import gustavo.projects.moviemanager.epoxy.MovieSearchEpoxyController
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class MovieSearchFragment : Fragment(R.layout.fragment_movie_search) {
 
     private var _binding: FragmentMovieSearchBinding? = null

@@ -9,13 +9,14 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import dagger.hilt.android.AndroidEntryPoint
 import gustavo.projects.moviemanager.config.AppConfiguration
 import gustavo.projects.moviemanager.databinding.FragmentPersonDetailsBinding
 import gustavo.projects.moviemanager.epoxy.PersonDetailsEpoxyController
 import gustavo.projects.moviemanager.util.BaseFragment
 import gustavo.projects.moviemanager.util.LanguageSupport
 
-
+@AndroidEntryPoint
 class PersonDetailsFragment : BaseFragment() {
 
     private var _binding: FragmentPersonDetailsBinding? = null

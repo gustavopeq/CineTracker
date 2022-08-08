@@ -5,11 +5,14 @@ import gustavo.projects.moviemanager.domain.mappers.MovieDetailsMapper
 import gustavo.projects.moviemanager.domain.models.MovieDetails
 import gustavo.projects.moviemanager.domain.models.MovieCast
 import gustavo.projects.moviemanager.domain.models.MovieVideo
+import gustavo.projects.moviemanager.network.ApiClient
 import gustavo.projects.moviemanager.network.MovieCache
-import gustavo.projects.moviemanager.network.NetworkLayer
+import javax.inject.Inject
 
 
-class MovieDetailsRepository() {
+class MovieDetailsRepository @Inject constructor(
+    private val apiClient: ApiClient
+) {
 
     suspend fun getMovieDetailsById(movie_ID: Int, language: String) : MovieDetails? {
 
@@ -19,7 +22,7 @@ class MovieDetailsRepository() {
             return movie
         }
 
-        val request = NetworkLayer.apiClient.getMovieById(movie_ID, language)
+        val request = apiClient.getMovieById(movie_ID, language)
 
         if(request.failed || !request.isSuccessful) {
             return null
@@ -37,7 +40,7 @@ class MovieDetailsRepository() {
 
     private suspend fun getMovieCastById(movie_ID: Int) : List<MovieCast> {
 
-        val request = NetworkLayer.apiClient.getMovieCreditsById(movie_ID)
+        val request = apiClient.getMovieCreditsById(movie_ID)
 
         if(request.failed || !request.isSuccessful) {
             return emptyList()
@@ -48,7 +51,7 @@ class MovieDetailsRepository() {
 
     private suspend fun getMovieVideosById(movie_ID: Int) : List<MovieVideo?>? {
 
-        val request = NetworkLayer.apiClient.getMovieVideosById(movie_ID)
+        val request = apiClient.getMovieVideosById(movie_ID)
 
         if(request.failed || !request.isSuccessful) {
             return emptyList()

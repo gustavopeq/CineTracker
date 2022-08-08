@@ -3,14 +3,20 @@ package gustavo.projects.moviemanager.movies.upcoming
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.*
+import dagger.hilt.android.lifecycle.HiltViewModel
+import gustavo.projects.moviemanager.network.ApiClient
 import gustavo.projects.moviemanager.util.Constants
+import javax.inject.Inject
 
-class UpcomingViewModel: ViewModel() {
+@HiltViewModel
+class UpcomingViewModel @Inject constructor(
+    private val apiClient: ApiClient
+) : ViewModel() {
 
     private var pagingSource: UpcomingPagingSource? = null
         get() {
             if(field == null || field?.invalid == true) {
-                field = UpcomingPagingSource()
+                field = UpcomingPagingSource(apiClient)
             }
             return field
         }

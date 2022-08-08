@@ -6,10 +6,12 @@ import gustavo.projects.moviemanager.R
 import gustavo.projects.moviemanager.config.AppConfiguration
 import gustavo.projects.moviemanager.domain.mappers.MovieMapper
 import gustavo.projects.moviemanager.domain.models.Movie
-import gustavo.projects.moviemanager.network.NetworkLayer
+import gustavo.projects.moviemanager.network.ApiClient
+import javax.inject.Inject
 
-class MovieSearchPagingSource(
+class MovieSearchPagingSource @Inject constructor(
     private val userSearch: String,
+    private val apiClient: ApiClient,
     private val searchExceptionCallback: (SearchException) -> Unit
 ) : PagingSource<Int, Movie>() {
 
@@ -42,7 +44,7 @@ class MovieSearchPagingSource(
             previousKey = pageNumber - 1
         }
 
-        val request = NetworkLayer.apiClient.getMoviesPageByTitle(
+        val request = apiClient.getMoviesPageByTitle(
             userSearch,
             pageNumber,
             AppConfiguration.appLanguage

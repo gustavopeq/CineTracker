@@ -5,9 +5,12 @@ import androidx.paging.PagingState
 import gustavo.projects.moviemanager.config.AppConfiguration
 import gustavo.projects.moviemanager.domain.mappers.MovieMapper
 import gustavo.projects.moviemanager.domain.models.Movie
-import gustavo.projects.moviemanager.network.NetworkLayer
+import gustavo.projects.moviemanager.network.ApiClient
+import javax.inject.Inject
 
-class NowPlayingPagingSource : PagingSource<Int, Movie>() {
+class NowPlayingPagingSource @Inject constructor(
+        private val apiClient: ApiClient
+) : PagingSource<Int, Movie>() {
 
         override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Movie> {
 
@@ -19,7 +22,7 @@ class NowPlayingPagingSource : PagingSource<Int, Movie>() {
                         previousKey = pageNumber - 1
                 }
 
-                val request = NetworkLayer.apiClient.getNowPlayingMoviesPage(
+                val request = apiClient.getNowPlayingMoviesPage(
                         pageNumber,
                         AppConfiguration.appLanguage)
 

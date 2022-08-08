@@ -11,11 +11,14 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.HiltAndroidApp
 import gustavo.projects.moviemanager.config.AppConfiguration
 import gustavo.projects.moviemanager.database.AppDatabase
 import gustavo.projects.moviemanager.database.ToWatchViewModel
 import gustavo.projects.moviemanager.util.LanguageSupport
 
+@AndroidEntryPoint
 class NavGraphActivity: AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
