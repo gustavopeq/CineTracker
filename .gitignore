@@ -39,6 +39,7 @@ Thumbs.db
 # Built application files
 *.apk
 *ap_
+app/release
 
 # Gradle files
 .gradle/
