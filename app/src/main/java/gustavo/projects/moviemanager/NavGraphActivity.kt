@@ -16,12 +16,18 @@ import dagger.hilt.android.HiltAndroidApp
 import gustavo.projects.moviemanager.config.AppConfiguration
 import gustavo.projects.moviemanager.database.AppDatabase
 import gustavo.projects.moviemanager.database.ToWatchViewModel
+import gustavo.projects.moviemanager.network.ApiClient
 import gustavo.projects.moviemanager.util.LanguageSupport
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class NavGraphActivity: AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
+
+    @Inject
+    lateinit var apiClient: ApiClient
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,7 +55,7 @@ class NavGraphActivity: AppCompatActivity() {
         findViewById<NavigationView>(R.id.nav_view).setupWithNavController(navController)
 
         val viewModel: ToWatchViewModel by viewModels()
-        viewModel.init(AppDatabase.getDatabase(this))
+        viewModel.init(AppDatabase.getDatabase(this), apiClient)
     }
 
     //Back arrow to return stack

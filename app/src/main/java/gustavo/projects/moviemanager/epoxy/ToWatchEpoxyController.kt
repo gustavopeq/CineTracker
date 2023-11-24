@@ -3,7 +3,6 @@ package gustavo.projects.moviemanager.epoxy
 import com.airbnb.epoxy.EpoxyController
 import com.squareup.picasso.Picasso
 import gustavo.projects.moviemanager.R
-import gustavo.projects.moviemanager.database.model.ItemEntity
 import gustavo.projects.moviemanager.databinding.ModelEmptyToWatchListBinding
 import gustavo.projects.moviemanager.databinding.ModelSearchMovieListItemBinding
 import gustavo.projects.moviemanager.domain.models.Movie
@@ -22,7 +21,7 @@ class ToWatchEpoxyController(
             }
         }
 
-    var itemEntityList = ArrayList<ItemEntity>()
+    var movieList = ArrayList<Movie>()
         set(value) {
             field = value
             isLoading = false
@@ -36,13 +35,13 @@ class ToWatchEpoxyController(
             return
         }
 
-        if(itemEntityList.isEmpty()) {
+        if(movieList.isEmpty()) {
             EmptyToWatchListEpoxyModel().id("empty").addTo(this)
             return
         }
 
-        itemEntityList.forEach {
-            ToWatchListItemEpoxyModel(it.movie, onMovieSelected).id(it.dbId).addTo(this)
+        movieList.forEach {
+            ToWatchListItemEpoxyModel(it, onMovieSelected).id(it.id).addTo(this)
         }
 
     }
