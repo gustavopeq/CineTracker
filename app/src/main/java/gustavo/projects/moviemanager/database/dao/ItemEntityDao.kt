@@ -6,14 +6,14 @@ import gustavo.projects.moviemanager.database.model.ItemEntity
 @Dao
 interface ItemEntityDao {
     @Query("SELECT * FROM item_entity")
-    suspend fun getAllItems(): List<ItemEntity>
+    fun getAllItems(): List<ItemEntity>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(itemEntity: ItemEntity)
+    fun insert(itemEntity: ItemEntity)
 
     @Delete()
-    suspend fun delete(itemEntity: ItemEntity)
+    fun delete(itemEntity: ItemEntity)
 
     @Query("SELECT * FROM item_entity WHERE dbId=:movieId")
-    suspend fun searchItem(movieId: Int): ItemEntity?
+    fun searchItem(movieId: Int): ItemEntity?
 }
