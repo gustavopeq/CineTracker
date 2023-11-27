@@ -35,7 +35,7 @@ fun MovieManagerTheme(
     }
 
     MaterialTheme(
-        colorScheme = colors,
+        colorScheme = LightColorPalette,
         typography = AppTypography,
         shapes = Shapes,
         content = content
