@@ -14,11 +14,12 @@ private val DarkColorPalette = darkColorScheme(
 
 private val LightColorPalette = lightColorScheme(
     primary = PrimaryLight,
-    onPrimary = Color.White,
+    onPrimary = onPrimaryLight,
     secondary = SecondaryLight,
     onSecondary = Color.White,
-    surface = PrimaryContainerLight,
-    onSurface = OnPrimaryContainerLight,
+    surface = PrimaryLight,
+    onSurface = onPrimaryLight,
+    onSurfaceVariant = onPrimaryVariant,
     background = BackgroundLight
 )
 

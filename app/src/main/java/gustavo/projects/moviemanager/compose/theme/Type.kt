@@ -26,5 +26,10 @@ val AppTypography = Typography(
         fontSize = 14.sp,
         fontWeight = FontWeight(400),
         lineHeight = 20.sp
+    ),
+    labelSmall = TextStyle(
+        fontSize = 12.sp,
+        fontWeight = FontWeight(400),
+        lineHeight = 20.sp
     )
 )
