@@ -29,7 +29,12 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        debug {
+            applicationIdSuffix '.debug'
+            versionNameSuffix '-debug'
+        }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
@@ -40,7 +45,6 @@ android {
     buildFeatures {
         compose = true
     }
-
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.2"
     }
@@ -60,8 +64,8 @@ dependencies {
     implementation "com.squareup.moshi:moshi-kotlin:1.12.0"
     implementation "com.squareup.retrofit2:converter-moshi:2.9.0"
 
-    //Picasso
-    implementation 'com.squareup.picasso:picasso:2.8'
+    //Glide
+    implementation "com.github.bumptech.glide:compose:1.0.0-beta01"
 
     //ViewModel KTX + Coroutine
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2"

@@ -1,22 +1,18 @@
 package gustavo.projects.moviemanager.util
 
+import gustavo.projects.moviemanager.compose.util.UiConstants.UNDEFINED_RATINGS
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 
-class RatingFormatter {
-    companion object {
-        operator fun invoke(rating: Double): String {
-            if (rating == 0.0) {
-                return "N/A"
-            }
-
-            var formattedRating = DecimalFormat("#.#").format(rating)
-            if (formattedRating.length == 1) {
-                formattedRating = "$formattedRating${DecimalFormatSymbols.getInstance().decimalSeparator}0"
-            } else {
-                formattedRating
-            }
-            return  formattedRating
-        }
+fun Double?.formatRating(): String {
+    if (this == null || this == 0.0) {
+        return UNDEFINED_RATINGS
     }
+
+    var formattedRating = DecimalFormat("#.#").format(this)
+    if (formattedRating.length == 1) {
+        formattedRating = "$formattedRating${DecimalFormatSymbols.getInstance().decimalSeparator}0"
+    }
+
+    return formattedRating
 }

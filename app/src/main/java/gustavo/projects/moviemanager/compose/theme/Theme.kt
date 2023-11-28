@@ -6,6 +6,13 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import gustavo.projects.moviemanager.compose.theme.AppTypography
+import gustavo.projects.moviemanager.compose.theme.BackgroundLight
+import gustavo.projects.moviemanager.compose.theme.PrimaryLight
+import gustavo.projects.moviemanager.compose.theme.SecondaryLight
+import gustavo.projects.moviemanager.compose.theme.Shapes
+import gustavo.projects.moviemanager.compose.theme.onPrimaryLight
+import gustavo.projects.moviemanager.compose.theme.onPrimaryVariant
 
 private val DarkColorPalette = darkColorScheme(
     primary = PrimaryLight,

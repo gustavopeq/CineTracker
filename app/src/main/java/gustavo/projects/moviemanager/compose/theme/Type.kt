@@ -1,33 +1,51 @@
-package gustavo.projects.carmanager.theme
+package gustavo.projects.moviemanager.compose.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
 // Set of Material typography styles to start with
 val AppTypography = Typography(
+    headlineMedium = TextStyle(
+        fontFamily = FontFamily.SansSerif,
+        fontSize = 18.sp,
+        fontWeight = FontWeight(400),
+        lineHeight = 28.sp
+    ),
     titleLarge = TextStyle(
+        fontFamily = FontFamily.SansSerif,
         fontSize = 22.sp,
         fontWeight = FontWeight(400),
         lineHeight = 28.sp
     ),
     titleMedium = TextStyle(
-        fontSize = 16.sp,
+        fontFamily = FontFamily.SansSerif,
+        fontSize = 18.sp,
+        fontWeight = FontWeight(500),
+        lineHeight = 24.sp
+    ),
+    titleSmall = TextStyle(
+        fontFamily = FontFamily.SansSerif,
+        fontSize = 14.sp,
         fontWeight = FontWeight(500),
         lineHeight = 24.sp
     ),
     bodyLarge = TextStyle(
-        fontSize = 16.sp,
+        fontFamily = FontFamily.SansSerif,
+        fontSize = 24.sp,
         fontWeight = FontWeight(400),
         lineHeight = 24.sp
     ),
     bodyMedium = TextStyle(
-        fontSize = 14.sp,
+        fontFamily = FontFamily.SansSerif,
+        fontSize = 16.sp,
         fontWeight = FontWeight(400),
         lineHeight = 20.sp
     ),
     labelSmall = TextStyle(
+        fontFamily = FontFamily.SansSerif,
         fontSize = 12.sp,
         fontWeight = FontWeight(400),
         lineHeight = 20.sp

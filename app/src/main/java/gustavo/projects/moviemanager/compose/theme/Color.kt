@@ -1,4 +1,4 @@
-package gustavo.projects.carmanager.theme
+package gustavo.projects.moviemanager.compose.theme
 
 import androidx.compose.ui.graphics.Color
 
