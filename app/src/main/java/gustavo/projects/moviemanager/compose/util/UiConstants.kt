@@ -11,5 +11,8 @@ object UiConstants {
     const val HOME_LOGO_SIZE = 36
 
     // Browse
+    const val BROWSE_CARD_WIDTH = 185
+    const val BROWSE_CARD_HEIGHT = 315
+    const val BROWSE_CARD_IMAGE_HEIGHT = 255
     const val BROWSE_CARD_DEFAULT_ELEVATION = 0.5
 }

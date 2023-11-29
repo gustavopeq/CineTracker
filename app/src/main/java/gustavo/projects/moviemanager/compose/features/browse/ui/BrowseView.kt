@@ -5,10 +5,10 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -30,8 +30,12 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import gustavo.projects.moviemanager.R
 import gustavo.projects.moviemanager.compose.theme.Shapes
-import gustavo.projects.moviemanager.compose.ui.NetworkImage
+import gustavo.projects.moviemanager.compose.theme.onPrimaryVariant
+import gustavo.projects.moviemanager.compose.ui.components.NetworkImage
 import gustavo.projects.moviemanager.compose.util.UiConstants.BROWSE_CARD_DEFAULT_ELEVATION
+import gustavo.projects.moviemanager.compose.util.UiConstants.BROWSE_CARD_HEIGHT
+import gustavo.projects.moviemanager.compose.util.UiConstants.BROWSE_CARD_IMAGE_HEIGHT
+import gustavo.projects.moviemanager.compose.util.UiConstants.BROWSE_CARD_WIDTH
 import gustavo.projects.moviemanager.compose.util.UiConstants.DEFAULT_MARGIN
 import gustavo.projects.moviemanager.compose.util.UiConstants.DEFAULT_PADDING
 import gustavo.projects.moviemanager.domain.models.Movie
@@ -53,7 +57,7 @@ internal fun Browse(
     val listOfMovies by browseState.listOfMovies
     Box {
         LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
+            columns = GridCells.Adaptive(BROWSE_CARD_WIDTH.dp),
             modifier = Modifier.padding(horizontal = DEFAULT_MARGIN.dp)
         ) {
             itemsIndexed(listOfMovies) { index: Int, item: Movie ->
@@ -79,10 +83,14 @@ private fun BrowseCard(
 
     Card(
         modifier = modifier
-            .padding(horizontal = 4.dp, vertical = 8.dp),
+            .padding(horizontal = 4.dp, vertical = 8.dp)
+            .size(
+                width = BROWSE_CARD_WIDTH.dp,
+                height = BROWSE_CARD_HEIGHT.dp
+            ),
         onClick = { /*TODO*/ },
         colors = CardDefaults.cardColors(
-            containerColor = Color(0xFFFFFFFF)
+            containerColor = onPrimaryVariant
         ),
         elevation = CardDefaults.elevatedCardElevation(
             defaultElevation = BROWSE_CARD_DEFAULT_ELEVATION.dp
@@ -95,7 +103,9 @@ private fun BrowseCard(
             Spacer(modifier = Modifier.height(4.dp))
             NetworkImage(
                 imageUrl = fullImageUrl,
-                modifier = Modifier.fillMaxWidth().clip(Shapes.small)
+                modifier = Modifier.clip(Shapes.small),
+                widthDp = BROWSE_CARD_WIDTH.dp,
+                heightDp = BROWSE_CARD_IMAGE_HEIGHT.dp
             )
             Spacer(modifier = Modifier.width(DEFAULT_PADDING.dp))
             Text(
