@@ -1,6 +1,6 @@
 package gustavo.projects.moviemanager.network.response
 
-data class GetMoviesByIdResponse(
+data class MovieApiResponse(
     val adult: Boolean?,
     val backdrop_path: String?,
     val genre_ids: List<Int?>?,

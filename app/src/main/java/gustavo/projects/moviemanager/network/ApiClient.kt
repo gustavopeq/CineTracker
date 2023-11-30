@@ -1,18 +1,19 @@
 package gustavo.projects.moviemanager.network
 
-import gustavo.projects.moviemanager.network.response.GetMovieDetailsByIdResponse
+import gustavo.projects.moviemanager.network.models.movie.MovieList
 import gustavo.projects.moviemanager.network.response.GetMovieCreditsByIdResponse
+import gustavo.projects.moviemanager.network.response.GetMovieDetailsByIdResponse
 import gustavo.projects.moviemanager.network.response.GetMovieVideosByIdResponse
-import gustavo.projects.moviemanager.network.response.GetMoviesPageResponse
 import gustavo.projects.moviemanager.network.response.person.GetPersonDetailsByIdResponse
 import gustavo.projects.moviemanager.network.response.person.GetPersonImagesByIdResponse
 import gustavo.projects.moviemanager.network.response.person.GetPersonsMoviesByIdResponse
-import retrofit2.Response
+import gustavo.projects.moviemanager.network.services.MovieDbService
 import kotlin.Exception
+import retrofit2.Response
 
 class ApiClient(
     private val movieDbService: MovieDbService
-    ) {
+) {
 
     suspend fun getMovieById(
         movie_ID: Int,
@@ -24,28 +25,28 @@ class ApiClient(
     suspend fun getUpcomingMoviesPage(
         pageIndex: Int,
         language: String
-    ): SimpleResponse<GetMoviesPageResponse> {
+    ): SimpleResponse<MovieList> {
         return safeApiCall { movieDbService.getUpcomingMoviesPage(pageIndex, language) }
     }
 
     suspend fun getNowPlayingMoviesPage(
         pageIndex: Int,
         language: String
-    ): SimpleResponse<GetMoviesPageResponse> {
+    ): SimpleResponse<MovieList> {
         return safeApiCall { movieDbService.getNowPlayingMoviesPage(pageIndex, language) }
     }
 
     suspend fun getTopRatedMoviesPage(
         pageIndex: Int,
         language: String
-    ): SimpleResponse<GetMoviesPageResponse> {
+    ): SimpleResponse<MovieList> {
         return safeApiCall { movieDbService.getTopRatedMoviesPage(pageIndex, language) }
     }
 
     suspend fun getPopularMoviesPage(
         pageIndex: Int,
         language: String
-    ): SimpleResponse<GetMoviesPageResponse> {
+    ): SimpleResponse<MovieList> {
         return safeApiCall { movieDbService.getPopularMoviesPage(pageIndex, language) }
     }
 
@@ -61,11 +62,11 @@ class ApiClient(
         movieTitle: String,
         pageIndex: Int,
         language: String
-    ): SimpleResponse<GetMoviesPageResponse> {
+    ): SimpleResponse<MovieList> {
         return safeApiCall { movieDbService.getMoviesPageByTitle(movieTitle, pageIndex, language) }
     }
 
-    //PEOPLE
+    // PEOPLE
 
     suspend fun getPersonDetailsById(
         people_ID: Int,
@@ -85,12 +86,10 @@ class ApiClient(
         return safeApiCall { movieDbService.getPersonImagesById(people_ID) }
     }
 
-
-
-    private inline fun <T> safeApiCall(apiCall: () -> Response<T>) : SimpleResponse<T> {
+    private inline fun <T> safeApiCall(apiCall: () -> Response<T>): SimpleResponse<T> {
         return try {
             SimpleResponse.success(apiCall.invoke())
-        }catch (e: Exception){
+        } catch (e: Exception) {
             SimpleResponse.failure(e)
         }
     }

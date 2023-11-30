@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import gustavo.projects.moviemanager.compose.features.home.HomeScreen
 import gustavo.projects.moviemanager.compose.features.home.ui.components.HomeLogoAnimation
-import gustavo.projects.moviemanager.compose.util.UiConstants
+import gustavo.projects.moviemanager.compose.util.UiConstants.DEFAULT_PADDING
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -28,7 +28,7 @@ fun TopNavBar(
             ) {
                 if (currentScreen == HomeScreen.route()) {
                     HomeLogoAnimation()
-                    Spacer(modifier = Modifier.width(UiConstants.DEFAULT_PADDING.dp))
+                    Spacer(modifier = Modifier.width(DEFAULT_PADDING.dp))
                 }
                 Text(
                     text = screenTitle,

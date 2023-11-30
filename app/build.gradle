@@ -84,6 +84,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-messaging-ktx'
 
+    //Timber
+    implementation 'com.jakewharton.timber:timber:5.0.1'
+
 
 
     /* Jetpack Compose */

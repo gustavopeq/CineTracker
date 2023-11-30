@@ -6,15 +6,15 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import gustavo.projects.moviemanager.compose.features.browse.domain.BrowseInteractor
 import gustavo.projects.moviemanager.compose.features.browse.ui.state.BrowseState
-import gustavo.projects.moviemanager.domain.mappers.MovieMapper
-import gustavo.projects.moviemanager.network.ApiClient
+import gustavo.projects.moviemanager.domain.models.util.MovieListType
 import javax.inject.Inject
 import kotlinx.coroutines.launch
 
 @HiltViewModel
 class BrowseViewModel @Inject constructor(
-    private val apiClient: ApiClient
+    private val interactor: BrowseInteractor
 ) : ViewModel() {
 
     var browseState by mutableStateOf(BrowseState())
@@ -27,10 +27,7 @@ class BrowseViewModel @Inject constructor(
     }
 
     private suspend fun fetchNowPlaying() {
-        val result = apiClient.getNowPlayingMoviesPage(pageIndex = 1, language = "en-US")
-        val listOfMovies = result.body.results.mapNotNull {
-            MovieMapper.buildFrom(it)
-        }
-        browseState.listOfMovies.value = listOfMovies
+        val result = interactor.getMovieList(MovieListType.NOW_PLAYING, 1)
+        browseState.listOfMovies.value = result
     }
 }

@@ -5,9 +5,11 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import gustavo.projects.moviemanager.network.ApiClient
-import gustavo.projects.moviemanager.network.MovieDbService
-import retrofit2.Retrofit
+import gustavo.projects.moviemanager.network.services.MovieDbService
+import gustavo.projects.moviemanager.network.services.movie.MovieService
 import javax.inject.Singleton
+import retrofit2.Retrofit
+import retrofit2.create
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -21,4 +23,9 @@ object ServiceModule {
         return ApiClient(movieDbService)
     }
 
+    @Singleton
+    @Provides
+    fun provideMovieService(retrofit: Retrofit): MovieService {
+        return retrofit.create(MovieService::class.java)
+    }
 }
