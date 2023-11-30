@@ -43,4 +43,6 @@
     <string name="main_nav_watchlist">Watchlist</string>
     <string name="main_nav_search">Search</string>
 
+    <string name="common_error">Sorry, something went wrong! Try again...</string>
+
 </resources>

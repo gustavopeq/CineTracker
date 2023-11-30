@@ -3,7 +3,7 @@ package gustavo.projects.moviemanager.database.model
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import gustavo.projects.moviemanager.domain.models.Movie
+import gustavo.projects.moviemanager.domain.models.movie.Movie
 
 @Entity(tableName = "item_entity")
 data class ItemEntity(

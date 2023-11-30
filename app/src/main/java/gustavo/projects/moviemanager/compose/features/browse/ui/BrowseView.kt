@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
@@ -12,22 +14,26 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.itemsIndexed
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.LoadState
+import androidx.paging.compose.collectAsLazyPagingItems
 import gustavo.projects.moviemanager.R
 import gustavo.projects.moviemanager.compose.theme.Shapes
 import gustavo.projects.moviemanager.compose.theme.onPrimaryVariant
@@ -38,7 +44,6 @@ import gustavo.projects.moviemanager.compose.util.UiConstants.BROWSE_CARD_IMAGE_
 import gustavo.projects.moviemanager.compose.util.UiConstants.BROWSE_CARD_WIDTH
 import gustavo.projects.moviemanager.compose.util.UiConstants.DEFAULT_MARGIN
 import gustavo.projects.moviemanager.compose.util.UiConstants.DEFAULT_PADDING
-import gustavo.projects.moviemanager.domain.models.Movie
 import gustavo.projects.moviemanager.util.Constants.BASE_IMAGE_URL
 import gustavo.projects.moviemanager.util.formatRating
 
@@ -53,19 +58,46 @@ fun Browse() {
 internal fun Browse(
     viewModel: BrowseViewModel
 ) {
-    val browseState = viewModel.browseState
-    val listOfMovies by browseState.listOfMovies
-    Box {
-        LazyVerticalGrid(
-            columns = GridCells.Adaptive(BROWSE_CARD_WIDTH.dp),
-            modifier = Modifier.padding(horizontal = DEFAULT_MARGIN.dp)
-        ) {
-            itemsIndexed(listOfMovies) { index: Int, item: Movie ->
-                BrowseCard(
-                    imageUrl = item.poster_path,
-                    title = item.title,
-                    rating = item.vote_average
+    val listOfMovies = viewModel.moviePager.collectAsLazyPagingItems()
+    Box(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        when (listOfMovies.loadState.refresh) {
+            is LoadState.Loading -> {
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .size(50.dp)
+                        .align(Alignment.Center),
+                    color = MaterialTheme.colorScheme.primary
                 )
+            }
+            is LoadState.Error -> {
+                Text(
+                    text = stringResource(id = R.string.common_error),
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .fillMaxWidth(),
+                    style = MaterialTheme.typography.titleMedium,
+                    textAlign = TextAlign.Center,
+                    color = MaterialTheme.colorScheme.onPrimary
+                )
+            }
+            else -> {
+                LazyVerticalGrid(
+                    columns = GridCells.Adaptive(BROWSE_CARD_WIDTH.dp),
+                    modifier = Modifier.padding(horizontal = DEFAULT_MARGIN.dp)
+                ) {
+                    items(listOfMovies.itemCount) { index ->
+                        val movie = listOfMovies[index]
+                        movie?.let {
+                            BrowseCard(
+                                imageUrl = movie.poster_path,
+                                title = movie.title,
+                                rating = movie.vote_average
+                            )
+                        }
+                    }
+                }
             }
         }
     }

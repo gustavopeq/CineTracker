@@ -1,13 +1,12 @@
 package gustavo.projects.moviemanager.domain.mappers.person
 
-import gustavo.projects.moviemanager.domain.models.Movie
+import gustavo.projects.moviemanager.domain.models.movie.Movie
 import gustavo.projects.moviemanager.domain.models.person.PersonMoviesIn
 import gustavo.projects.moviemanager.network.response.person.GetPersonsMoviesByIdResponse
 
 object PersonMoviesInMapper {
 
     fun buildFrom(response: GetPersonsMoviesByIdResponse): PersonMoviesIn {
-
         val listOfCast = mutableListOf<Movie>()
 
         response.cast?.forEach {
