@@ -1,19 +1,21 @@
 package gustavo.projects.moviemanager.compose.navigation.components
 
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import gustavo.projects.moviemanager.R
+import gustavo.projects.moviemanager.compose.features.browse.BrowseScreen
 import gustavo.projects.moviemanager.compose.features.home.HomeScreen
 import gustavo.projects.moviemanager.compose.features.home.ui.components.HomeLogoAnimation
-import gustavo.projects.moviemanager.compose.util.UiConstants.DEFAULT_PADDING
+import gustavo.projects.moviemanager.compose.util.UiConstants.BROWSE_SORT_ICON_SIZE
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -22,18 +24,30 @@ fun TopNavBar(
     screenTitle: String
 ) {
     TopAppBar(
+        navigationIcon = {
+            if (currentScreen == HomeScreen.route()) {
+                HomeLogoAnimation()
+            }
+        },
         title = {
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                if (currentScreen == HomeScreen.route()) {
-                    HomeLogoAnimation()
-                    Spacer(modifier = Modifier.width(DEFAULT_PADDING.dp))
+            Text(
+                text = screenTitle,
+                style = MaterialTheme.typography.headlineLarge,
+                color = MaterialTheme.colorScheme.onPrimary
+            )
+        },
+        actions = {
+            if (currentScreen == BrowseScreen.route()) {
+                IconButton(
+                    onClick = { /*TODO*/ }
+                ) {
+                    Icon(
+                        modifier = Modifier.size(BROWSE_SORT_ICON_SIZE.dp),
+                        painter = painterResource(id = R.drawable.ic_sort),
+                        tint = MaterialTheme.colorScheme.onPrimary,
+                        contentDescription = null
+                    )
                 }
-                Text(
-                    text = screenTitle,
-                    style = MaterialTheme.typography.headlineMedium
-                )
             }
         }
     )

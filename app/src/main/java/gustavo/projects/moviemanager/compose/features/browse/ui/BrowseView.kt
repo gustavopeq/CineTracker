@@ -14,18 +14,21 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -35,6 +38,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import gustavo.projects.moviemanager.R
+import gustavo.projects.moviemanager.compose.features.browse.ui.components.CollapsingTabRow
 import gustavo.projects.moviemanager.compose.theme.Shapes
 import gustavo.projects.moviemanager.compose.theme.onPrimaryVariant
 import gustavo.projects.moviemanager.compose.ui.components.NetworkImage
@@ -54,11 +58,34 @@ fun Browse() {
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun Browse(
     viewModel: BrowseViewModel
 ) {
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
+
+    Scaffold(
+        modifier = Modifier
+            .offset(y = (-15).dp)
+            .fillMaxSize()
+            .nestedScroll(scrollBehavior.nestedScrollConnection),
+        topBar = {
+            CollapsingTabRow(scrollBehavior = scrollBehavior)
+        }
+    ) { innerPadding ->
+        Box(modifier = Modifier.padding(innerPadding)) {
+            BrowseBody(viewModel = viewModel)
+        }
+    }
+}
+
+@Composable
+private fun BrowseBody(
+    viewModel: BrowseViewModel
+) {
     val listOfMovies = viewModel.moviePager.collectAsLazyPagingItems()
+
     Box(
         modifier = Modifier.fillMaxSize()
     ) {

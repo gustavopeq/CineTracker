@@ -1,5 +1,8 @@
 package gustavo.projects.moviemanager.compose.navigation
 
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -27,7 +30,9 @@ fun MainNavGraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = HomeScreen.route()
+        startDestination = HomeScreen.route(),
+        enterTransition = { fadeIn(animationSpec = tween(0)) },
+        exitTransition = { fadeOut(animationSpec = tween(0)) }
     ) {
         mainNavDestinations.forEach { (screen, screenUI) ->
             composable(screen.route(), screen.arguments) {

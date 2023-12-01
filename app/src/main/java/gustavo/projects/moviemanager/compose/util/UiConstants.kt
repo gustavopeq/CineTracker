@@ -15,4 +15,7 @@ object UiConstants {
     const val BROWSE_CARD_HEIGHT = 315
     const val BROWSE_CARD_IMAGE_HEIGHT = 255
     const val BROWSE_CARD_DEFAULT_ELEVATION = 0.5
+
+    const val BROWSE_TAB_ROW_OFFSET_HEIGHT = 17
+    const val BROWSE_SORT_ICON_SIZE = 32
 }

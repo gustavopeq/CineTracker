@@ -13,6 +13,7 @@ import gustavo.projects.moviemanager.compose.theme.SecondaryLight
 import gustavo.projects.moviemanager.compose.theme.Shapes
 import gustavo.projects.moviemanager.compose.theme.onPrimaryLight
 import gustavo.projects.moviemanager.compose.theme.onPrimaryVariant
+import gustavo.projects.moviemanager.compose.theme.unselectedGrey
 
 private val DarkColorPalette = darkColorScheme(
     primary = PrimaryLight,
@@ -24,6 +25,7 @@ private val LightColorPalette = lightColorScheme(
     onPrimary = onPrimaryLight,
     secondary = SecondaryLight,
     onSecondary = Color.White,
+    tertiary = unselectedGrey,
     surface = PrimaryLight,
     onSurface = onPrimaryLight,
     onSurfaceVariant = onPrimaryVariant,
