@@ -24,6 +24,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -38,30 +41,35 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import gustavo.projects.moviemanager.R
+import gustavo.projects.moviemanager.compose.common.MainViewModel
+import gustavo.projects.moviemanager.compose.common.ui.components.NetworkImage
+import gustavo.projects.moviemanager.compose.common.ui.util.UiConstants.BROWSE_CARD_DEFAULT_ELEVATION
+import gustavo.projects.moviemanager.compose.common.ui.util.UiConstants.BROWSE_CARD_HEIGHT
+import gustavo.projects.moviemanager.compose.common.ui.util.UiConstants.BROWSE_CARD_IMAGE_HEIGHT
+import gustavo.projects.moviemanager.compose.common.ui.util.UiConstants.BROWSE_CARD_WIDTH
+import gustavo.projects.moviemanager.compose.common.ui.util.UiConstants.DEFAULT_MARGIN
+import gustavo.projects.moviemanager.compose.common.ui.util.UiConstants.DEFAULT_PADDING
+import gustavo.projects.moviemanager.compose.features.browse.events.BrowseEvent
 import gustavo.projects.moviemanager.compose.features.browse.ui.components.CollapsingTabRow
 import gustavo.projects.moviemanager.compose.theme.Shapes
 import gustavo.projects.moviemanager.compose.theme.onPrimaryVariant
-import gustavo.projects.moviemanager.compose.ui.components.NetworkImage
-import gustavo.projects.moviemanager.compose.util.UiConstants.BROWSE_CARD_DEFAULT_ELEVATION
-import gustavo.projects.moviemanager.compose.util.UiConstants.BROWSE_CARD_HEIGHT
-import gustavo.projects.moviemanager.compose.util.UiConstants.BROWSE_CARD_IMAGE_HEIGHT
-import gustavo.projects.moviemanager.compose.util.UiConstants.BROWSE_CARD_WIDTH
-import gustavo.projects.moviemanager.compose.util.UiConstants.DEFAULT_MARGIN
-import gustavo.projects.moviemanager.compose.util.UiConstants.DEFAULT_PADDING
 import gustavo.projects.moviemanager.util.Constants.BASE_IMAGE_URL
 import gustavo.projects.moviemanager.util.formatRating
+import timber.log.Timber
 
 @Composable
 fun Browse() {
     Browse(
-        viewModel = hiltViewModel()
+        viewModel = hiltViewModel(),
+        mainViewModel = hiltViewModel()
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun Browse(
-    viewModel: BrowseViewModel
+    viewModel: BrowseViewModel,
+    mainViewModel: MainViewModel
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
 
@@ -75,16 +83,26 @@ internal fun Browse(
         }
     ) { innerPadding ->
         Box(modifier = Modifier.padding(innerPadding)) {
-            BrowseBody(viewModel = viewModel)
+            BrowseBody(
+                viewModel = viewModel,
+                mainViewModel = mainViewModel
+            )
         }
     }
 }
 
 @Composable
 private fun BrowseBody(
-    viewModel: BrowseViewModel
+    viewModel: BrowseViewModel,
+    mainViewModel: MainViewModel
 ) {
     val listOfMovies = viewModel.moviePager.collectAsLazyPagingItems()
+    val sortType by mainViewModel.sortType.collectAsState()
+
+    LaunchedEffect(sortType) {
+        Timber.tag("print").d("launched")
+        viewModel.onEvent(BrowseEvent.UpdateSortType(sortType.type))
+    }
 
     Box(
         modifier = Modifier.fillMaxSize()

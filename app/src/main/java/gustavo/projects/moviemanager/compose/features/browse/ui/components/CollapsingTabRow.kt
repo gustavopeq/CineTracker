@@ -27,7 +27,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import gustavo.projects.moviemanager.compose.util.UiConstants.BROWSE_TAB_ROW_OFFSET_HEIGHT
+import gustavo.projects.moviemanager.compose.common.ui.util.UiConstants.BROWSE_TAB_ROW_OFFSET_HEIGHT
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

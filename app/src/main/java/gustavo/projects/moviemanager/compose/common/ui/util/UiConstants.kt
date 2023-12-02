@@ -1,4 +1,4 @@
-package gustavo.projects.moviemanager.compose.util
+package gustavo.projects.moviemanager.compose.common.ui.util
 
 object UiConstants {
     // Common

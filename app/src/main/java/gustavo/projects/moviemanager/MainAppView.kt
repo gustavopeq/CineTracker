@@ -9,10 +9,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import gustavo.projects.carmanager.theme.MovieManagerTheme
+import gustavo.projects.moviemanager.compose.common.MainViewModel
+import gustavo.projects.moviemanager.compose.common.ui.components.ModalComponents
 import gustavo.projects.moviemanager.compose.navigation.MainNavGraph
 import gustavo.projects.moviemanager.compose.navigation.components.MainNavBar
 import gustavo.projects.moviemanager.compose.navigation.components.MainNavBarItem
@@ -21,32 +23,29 @@ import gustavo.projects.moviemanager.compose.navigation.components.TopNavBar
 @Composable
 fun MainApp() {
     MovieManagerTheme {
+        val mainViewModel: MainViewModel = hiltViewModel()
         val navController = rememberNavController()
         val navItems = mainNavBarItems
-        val context = LocalContext.current
         val currentBackStackEntry by navController.currentBackStackEntryAsState()
         val currentScreen = currentBackStackEntry?.destination?.route
-        var screenTitle by remember {
-            mutableStateOf(context.resources.getString(R.string.main_nav_home))
-        }
 
-        val updateScreenTitle: (Int) -> Unit = {
-            val title = context.resources.getString(it)
-            screenTitle = title
+        var showSortBottomSheet by remember { mutableStateOf(false) }
+
+        val displaySortScreen: (Boolean) -> Unit = {
+            showSortBottomSheet = it
         }
 
         Scaffold(
             topBar = {
                 TopNavBar(
                     currentScreen = currentScreen,
-                    screenTitle = screenTitle
+                    displaySortScreen = displaySortScreen
                 )
             },
             bottomBar = {
                 MainNavBar(
                     navController = navController,
-                    navBarItems = navItems,
-                    screenTitle = updateScreenTitle
+                    navBarItems = navItems
                 )
             },
             content = { innerPadding ->
@@ -55,10 +54,16 @@ fun MainApp() {
                 }
             }
         )
+
+        ModalComponents(
+            mainViewModel = mainViewModel,
+            showSortBottomSheet = showSortBottomSheet,
+            displaySortScreen = displaySortScreen
+        )
     }
 }
 
-private val mainNavBarItems = listOf<MainNavBarItem>(
+val mainNavBarItems = listOf<MainNavBarItem>(
     MainNavBarItem.Home,
     MainNavBarItem.Browse,
     MainNavBarItem.Watchlist,

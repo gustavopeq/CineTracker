@@ -1,4 +1,4 @@
-package gustavo.projects.moviemanager.compose.ui.components
+package gustavo.projects.moviemanager.compose.common.ui.components
 
 import android.graphics.drawable.Drawable
 import androidx.compose.foundation.layout.Box

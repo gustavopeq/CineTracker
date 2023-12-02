@@ -10,7 +10,7 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import gustavo.projects.moviemanager.R
-import gustavo.projects.moviemanager.compose.util.UiConstants.HOME_LOGO_SIZE
+import gustavo.projects.moviemanager.compose.common.ui.util.UiConstants.HOME_LOGO_SIZE
 
 @Composable
 fun HomeLogoAnimation() {

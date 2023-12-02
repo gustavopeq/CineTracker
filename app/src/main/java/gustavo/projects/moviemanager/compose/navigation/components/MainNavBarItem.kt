@@ -14,22 +14,22 @@ sealed class MainNavBarItem(
     @StringRes val labelResId: Int,
     @DrawableRes val iconResId: Int
 ) {
-    object Home : MainNavBarItem(
+    data object Home : MainNavBarItem(
         screen = HomeScreen,
         labelResId = R.string.main_nav_home,
         iconResId = R.drawable.ic_home
     )
-    object Browse : MainNavBarItem(
+    data object Browse : MainNavBarItem(
         screen = BrowseScreen,
         labelResId = R.string.main_nav_browse,
         iconResId = R.drawable.ic_browse
     )
-    object Watchlist : MainNavBarItem(
+    data object Watchlist : MainNavBarItem(
         screen = WatchlistScreen,
         labelResId = R.string.main_nav_watchlist,
         iconResId = R.drawable.ic_watchlist
     )
-    object Search : MainNavBarItem(
+    data object Search : MainNavBarItem(
         screen = SearchScreen,
         labelResId = R.string.main_nav_search,
         iconResId = R.drawable.ic_search

@@ -1,4 +1,4 @@
-package gustavo.projects.moviemanager.compose.ui.components
+package gustavo.projects.moviemanager.compose.common.ui.components
 
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode

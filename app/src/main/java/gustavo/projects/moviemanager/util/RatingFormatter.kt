@@ -1,6 +1,6 @@
 package gustavo.projects.moviemanager.util
 
-import gustavo.projects.moviemanager.compose.util.UiConstants.UNDEFINED_RATINGS
+import gustavo.projects.moviemanager.compose.common.ui.util.UiConstants.UNDEFINED_RATINGS
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 

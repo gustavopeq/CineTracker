@@ -46,5 +46,6 @@
     <string name="common_error">Sorry, something went wrong! Try again...</string>
     <string name="movies_tab">Movies</string>
     <string name="shows_tab">Shows</string>
+    <string name="sort_by_header">Sort by</string>
 
 </resources>
