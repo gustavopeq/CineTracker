@@ -13,7 +13,7 @@ class MainViewModel @Inject constructor() : ViewModel() {
     private val _movieSortType = MutableStateFlow<SortTypeItem>(SortTypeItem.NowPlaying)
     val movieSortType: StateFlow<SortTypeItem> get() = _movieSortType
 
-    private val _showSortType = MutableStateFlow<SortTypeItem>(SortTypeItem.NowPlaying)
+    private val _showSortType = MutableStateFlow<SortTypeItem>(SortTypeItem.AiringToday)
     val showSortType: StateFlow<SortTypeItem> get() = _showSortType
 
     private val _currentMediaTypeSelected = MutableStateFlow(MediaType.MOVIE)

@@ -1,5 +1,6 @@
 package com.projects.moviemanager.compose.features.browse.ui
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,6 +15,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -39,10 +42,13 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
+import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.projects.moviemanager.R
 import com.projects.moviemanager.compose.common.MainViewModel
+import com.projects.moviemanager.compose.common.MediaType
 import com.projects.moviemanager.compose.common.ui.components.NetworkImage
+import com.projects.moviemanager.compose.common.ui.components.SortTypeItem
 import com.projects.moviemanager.compose.common.ui.util.UiConstants.BROWSE_CARD_DEFAULT_ELEVATION
 import com.projects.moviemanager.compose.common.ui.util.UiConstants.BROWSE_CARD_HEIGHT
 import com.projects.moviemanager.compose.common.ui.util.UiConstants.BROWSE_CARD_IMAGE_HEIGHT
@@ -53,6 +59,7 @@ import com.projects.moviemanager.compose.features.browse.events.BrowseEvent
 import com.projects.moviemanager.compose.features.browse.ui.components.CollapsingTabRow
 import com.projects.moviemanager.compose.theme.Shapes
 import com.projects.moviemanager.compose.theme.onPrimaryVariant
+import com.projects.moviemanager.domain.models.content.BaseMediaContent
 import com.projects.moviemanager.util.Constants.BASE_IMAGE_URL
 import com.projects.moviemanager.util.formatRating
 
@@ -64,13 +71,27 @@ fun Browse() {
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 internal fun Browse(
     viewModel: BrowseViewModel,
     mainViewModel: MainViewModel
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
+    val pagerState = rememberPagerState(pageCount = { 2 })
+
+    val listOfMovies = viewModel.moviePager.collectAsLazyPagingItems()
+    val movieSortType by mainViewModel.movieSortType.collectAsState()
+
+    val listOfShows = viewModel.showPager.collectAsLazyPagingItems()
+    val showSortType by mainViewModel.showSortType.collectAsState()
+
+    LaunchedEffect(pagerState.currentPage) {
+        when (pagerState.currentPage) {
+            0 -> mainViewModel.updateMediaType(MediaType.MOVIE)
+            1 -> mainViewModel.updateMediaType(MediaType.SHOW)
+        }
+    }
 
     Scaffold(
         modifier = Modifier
@@ -80,15 +101,32 @@ internal fun Browse(
         topBar = {
             CollapsingTabRow(
                 scrollBehavior = scrollBehavior,
-                viewModel = viewModel
+                viewModel = viewModel,
+                pagerState = pagerState
             )
         }
     ) { innerPadding ->
-        Box(modifier = Modifier.padding(innerPadding)) {
-            BrowseBody(
-                viewModel = viewModel,
-                mainViewModel = mainViewModel
-            )
+        HorizontalPager(state = pagerState) { page ->
+            Box(modifier = Modifier.padding(innerPadding)) {
+                when (page) {
+                    0 -> {
+                        BrowseBody(
+                            viewModel = viewModel,
+                            mediaType = MediaType.MOVIE,
+                            pagingData = listOfMovies,
+                            sortTypeItem = movieSortType
+                        )
+                    }
+                    1 -> {
+                        BrowseBody(
+                            viewModel = viewModel,
+                            mediaType = MediaType.SHOW,
+                            pagingData = listOfShows,
+                            sortTypeItem = showSortType
+                        )
+                    }
+                }
+            }
         }
     }
 }
@@ -96,29 +134,18 @@ internal fun Browse(
 @Composable
 private fun BrowseBody(
     viewModel: BrowseViewModel,
-    mainViewModel: MainViewModel
+    mediaType: MediaType,
+    pagingData: LazyPagingItems<BaseMediaContent>,
+    sortTypeItem: SortTypeItem
 ) {
-    val listOfMovies = viewModel.moviePager.collectAsLazyPagingItems()
-    val movieSortType by mainViewModel.movieSortType.collectAsState()
-    val showSortType by mainViewModel.showSortType.collectAsState()
-    val mediaType by viewModel.mediaTypeSelected.collectAsState()
-
-    LaunchedEffect(movieSortType) {
-        viewModel.onEvent(BrowseEvent.UpdateSortType(movieSortType))
-    }
-
-    LaunchedEffect(showSortType) {
-        viewModel.onEvent(BrowseEvent.UpdateSortType(showSortType))
-    }
-
-    LaunchedEffect(mediaType) {
-        mainViewModel.updateMediaType(mediaType)
+    LaunchedEffect(sortTypeItem) {
+        viewModel.onEvent(BrowseEvent.UpdateSortType(sortTypeItem, mediaType))
     }
 
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
-        when (listOfMovies.loadState.refresh) {
+        when (pagingData.loadState.refresh) {
             is LoadState.Loading -> {
                 CircularProgressIndicator(
                     modifier = Modifier
@@ -143,8 +170,8 @@ private fun BrowseBody(
                     columns = GridCells.Adaptive(BROWSE_CARD_WIDTH.dp),
                     modifier = Modifier.padding(horizontal = DEFAULT_MARGIN.dp)
                 ) {
-                    items(listOfMovies.itemCount) { index ->
-                        val movie = listOfMovies[index]
+                    items(pagingData.itemCount) { index ->
+                        val movie = pagingData[index]
                         movie?.let {
                             BrowseCard(
                                 imageUrl = movie.poster_path,

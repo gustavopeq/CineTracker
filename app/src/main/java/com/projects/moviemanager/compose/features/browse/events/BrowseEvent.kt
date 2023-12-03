@@ -5,7 +5,8 @@ import com.projects.moviemanager.compose.common.ui.components.SortTypeItem
 
 sealed class BrowseEvent {
     data class UpdateSortType(
-        val movieListType: SortTypeItem
+        val movieListType: SortTypeItem,
+        val mediaType: MediaType
     ) : BrowseEvent()
     data class UpdateMediaType(
         val mediaType: MediaType

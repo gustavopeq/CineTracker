@@ -1,5 +1,8 @@
 package com.projects.moviemanager.compose.features.browse.ui.components
 
+import androidx.compose.animation.core.animateIntOffsetAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -8,6 +11,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Tab
@@ -17,42 +21,48 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.projects.moviemanager.compose.common.ui.util.UiConstants.BROWSE_TAB_ROW_OFFSET_HEIGHT
 import com.projects.moviemanager.compose.features.browse.events.BrowseEvent
 import com.projects.moviemanager.compose.features.browse.ui.BrowseViewModel
+import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun CollapsingTabRow(
     scrollBehavior: TopAppBarScrollBehavior,
-    viewModel: BrowseViewModel
+    viewModel: BrowseViewModel,
+    pagerState: PagerState
 ) {
     TopAppBar(
         title = {
             BrowseTypeTabRow(
-                viewModel = viewModel
+                viewModel = viewModel,
+                pagerState = pagerState
             )
         },
         scrollBehavior = scrollBehavior
     )
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun BrowseTypeTabRow(
-    viewModel: BrowseViewModel
+    viewModel: BrowseViewModel,
+    pagerState: PagerState
 ) {
     val tabList = listOf(MediaTypeTabItem.Movies, MediaTypeTabItem.Shows)
-    var selectedTabIndex by remember { mutableIntStateOf(0) }
+    val selectedTabIndex = pagerState.currentPage
+
+    val coroutineScope = rememberCoroutineScope()
 
     TabRow(
         modifier = Modifier
@@ -63,7 +73,8 @@ private fun BrowseTypeTabRow(
         indicator = { tabPositions ->
             TabIndicator(
                 width = tabPositions[selectedTabIndex].width,
-                left = tabPositions[selectedTabIndex].left
+                left = tabPositions[selectedTabIndex].left,
+                pagerState = pagerState
             )
         },
         divider = { }
@@ -74,7 +85,9 @@ private fun BrowseTypeTabRow(
                 tabIndex = index,
                 isSelected = selectedTabIndex == index,
                 onClick = {
-                    selectedTabIndex = it
+                    coroutineScope.launch {
+                        pagerState.scrollToPage(it)
+                    }
                     viewModel.onEvent(BrowseEvent.UpdateMediaType(mediaTypeTabItem.mediaType))
                 }
             )
@@ -104,20 +117,28 @@ private fun BrowseTypeTab(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun TabIndicator(
     width: Dp,
     left: Dp,
-    modifier: Modifier = Modifier
+    pagerState: PagerState
 ) {
+    val pagerOffset = (pagerState.currentPageOffsetFraction.dp * 175).value.toInt()
+
+    val animateIndicatorOffset by animateIntOffsetAsState(
+        targetValue = IntOffset(x = pagerOffset + left.value.toInt(), 0),
+        animationSpec = tween(100),
+        label = "indicatorAnimation"
+    )
+
     Box(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxWidth()
             .wrapContentSize(Alignment.BottomStart)
-            .offset(x = left - 10.dp)
+            .offset(x = animateIndicatorOffset.x.dp - 10.dp)
             .width(width)
             .height(2.dp)
             .background(color = Color.Black)
-            .zIndex(-1f)
     )
 }

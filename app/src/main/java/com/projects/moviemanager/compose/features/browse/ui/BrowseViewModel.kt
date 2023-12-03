@@ -4,13 +4,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import dagger.hilt.android.lifecycle.HiltViewModel
 import com.projects.moviemanager.compose.common.MediaType
 import com.projects.moviemanager.compose.common.ui.components.SortTypeItem
 import com.projects.moviemanager.compose.features.browse.domain.BrowseInteractor
 import com.projects.moviemanager.compose.features.browse.events.BrowseEvent
 import com.projects.moviemanager.domain.models.content.BaseMediaContent
 import com.projects.moviemanager.domain.models.util.ContentListType
+import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -27,46 +27,51 @@ class BrowseViewModel @Inject constructor(
     )
     val moviePager: StateFlow<PagingData<BaseMediaContent>> get() = _moviePager
 
+    private val _showPager: MutableStateFlow<PagingData<BaseMediaContent>> = MutableStateFlow(
+        PagingData.empty()
+    )
+    val showPager: StateFlow<PagingData<BaseMediaContent>> get() = _showPager
+
     private var movieSortTypeSelected: ContentListType? = null
     private var showSortTypeSelected: ContentListType? = null
 
     private val _mediaTypeSelected = MutableStateFlow(MediaType.MOVIE)
-    val mediaTypeSelected: StateFlow<MediaType> get() = _mediaTypeSelected
 
     fun onEvent(event: BrowseEvent) {
         when (event) {
-            is BrowseEvent.UpdateSortType -> updateSortType(event.movieListType)
+            is BrowseEvent.UpdateSortType -> updateSortType(event.movieListType, event.mediaType)
             is BrowseEvent.UpdateMediaType -> updateMediaType(event.mediaType)
         }
     }
 
     private fun updateSortType(
-        sortTypeItem: SortTypeItem
+        sortTypeItem: SortTypeItem,
+        mediaType: MediaType
     ) {
-        val currentSortType = when (_mediaTypeSelected.value) {
+        val currentSortType = when (mediaType) {
             MediaType.MOVIE -> movieSortTypeSelected
             MediaType.SHOW -> showSortTypeSelected
         }
 
         if (sortTypeItem.listType != currentSortType) {
             viewModelScope.launch {
-                when (_mediaTypeSelected.value) {
-                    MediaType.MOVIE -> {
-                        movieSortTypeSelected = sortTypeItem.listType
-                    }
-                    MediaType.SHOW -> {
-                        showSortTypeSelected = sortTypeItem.listType
-                    }
-                }
-
                 interactor.getMediaContentListPager(
                     sortTypeItem.listType,
-                    _mediaTypeSelected.value
+                    mediaType
                 )
                     .distinctUntilChanged()
                     .cachedIn(viewModelScope)
                     .collect {
-                        _moviePager.value = it
+                        when (mediaType) {
+                            MediaType.MOVIE -> {
+                                movieSortTypeSelected = sortTypeItem.listType
+                                _moviePager.value = it
+                            }
+                            MediaType.SHOW -> {
+                                showSortTypeSelected = sortTypeItem.listType
+                                _showPager.value = it
+                            }
+                        }
                     }
             }
         }
