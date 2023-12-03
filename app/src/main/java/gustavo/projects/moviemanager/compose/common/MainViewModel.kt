@@ -10,12 +10,27 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor() : ViewModel() {
 
-    private val _sortType = MutableStateFlow<SortTypeItem>(SortTypeItem.NowPlaying)
-    val sortType: StateFlow<SortTypeItem> get() = _sortType
+    private val _movieSortType = MutableStateFlow<SortTypeItem>(SortTypeItem.NowPlaying)
+    val movieSortType: StateFlow<SortTypeItem> get() = _movieSortType
+
+    private val _showSortType = MutableStateFlow<SortTypeItem>(SortTypeItem.NowPlaying)
+    val showSortType: StateFlow<SortTypeItem> get() = _showSortType
+
+    private val _currentMediaTypeSelected = MutableStateFlow(MediaType.MOVIE)
+    val currentMediaTypeSelected: StateFlow<MediaType> get() = _currentMediaTypeSelected
 
     fun updateSortType(
         sortTypeItem: SortTypeItem
     ) {
-        _sortType.value = sortTypeItem
+        when (_currentMediaTypeSelected.value) {
+            MediaType.MOVIE -> _movieSortType.value = sortTypeItem
+            MediaType.SHOW -> _showSortType.value = sortTypeItem
+        }
+    }
+
+    fun updateMediaType(
+        mediaType: MediaType
+    ) {
+        _currentMediaTypeSelected.value = mediaType
     }
 }

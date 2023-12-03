@@ -12,12 +12,16 @@ fun ModalComponents(
     showSortBottomSheet: Boolean,
     displaySortScreen: (Boolean) -> Unit
 ) {
-    val selectedSortType by mainViewModel.sortType.collectAsState()
+    val selectedMovieSortType by mainViewModel.movieSortType.collectAsState()
+    val selectedShowSortType by mainViewModel.showSortType.collectAsState()
+    val selectedMediaType by mainViewModel.currentMediaTypeSelected.collectAsState()
 
     if (showSortBottomSheet) {
         SortBottomSheet(
             mainViewModel = mainViewModel,
-            selectedSortType = selectedSortType,
+            selectedMovieSortType = selectedMovieSortType,
+            selectedShowSortType = selectedShowSortType,
+            selectedMediaType = selectedMediaType,
             displaySortScreen = displaySortScreen
         )
     }

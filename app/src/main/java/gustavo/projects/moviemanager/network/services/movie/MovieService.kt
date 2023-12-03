@@ -1,6 +1,7 @@
 package gustavo.projects.moviemanager.network.services.movie
 
-import gustavo.projects.moviemanager.network.models.movie.MovieList
+import gustavo.projects.moviemanager.network.response.content.ContentListPageResponse
+import gustavo.projects.moviemanager.network.response.content.MovieApiResponse
 import gustavo.projects.moviemanager.util.Constants
 import retrofit2.Response
 import retrofit2.http.GET
@@ -13,5 +14,5 @@ interface MovieService {
         @Path("movie_list_type") movieListType: String,
         @Query("page") pageIndex: Int,
         @Query("language") language: String
-    ): Response<MovieList>
+    ): Response<ContentListPageResponse<MovieApiResponse>>
 }

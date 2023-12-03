@@ -1,6 +1,5 @@
 package gustavo.projects.moviemanager.network.services
 
-import gustavo.projects.moviemanager.network.models.movie.MovieList
 import gustavo.projects.moviemanager.network.response.GetMovieCreditsByIdResponse
 import gustavo.projects.moviemanager.network.response.GetMovieDetailsByIdResponse
 import gustavo.projects.moviemanager.network.response.GetMovieVideosByIdResponse
@@ -20,37 +19,6 @@ interface MovieDbService {
         @Path("movie_ID") movieId: Int,
         @Query("language") language: String
     ): Response<GetMovieDetailsByIdResponse>
-
-    @GET("movie/upcoming?api_key=${Constants.API_KEY}")
-    suspend fun getUpcomingMoviesPage(
-        @Query("page") pageIndex: Int,
-        @Query("language") language: String
-    ): Response<MovieList>
-
-    @GET("movie/now_playing?api_key=${Constants.API_KEY}")
-    suspend fun getNowPlayingMoviesPage(
-        @Query("page") pageIndex: Int,
-        @Query("language") language: String
-    ): Response<MovieList>
-
-    @GET("movie/top_rated?api_key=${Constants.API_KEY}")
-    suspend fun getTopRatedMoviesPage(
-        @Query("page") pageIndex: Int,
-        @Query("language") language: String
-    ): Response<MovieList>
-
-    @GET("movie/popular?api_key=${Constants.API_KEY}")
-    suspend fun getPopularMoviesPage(
-        @Query("page") pageIndex: Int,
-        @Query("language") language: String
-    ): Response<MovieList>
-
-    @GET("search/movie?api_key=${Constants.API_KEY}")
-    suspend fun getMoviesPageByTitle(
-        @Query("query") movieTitle: String,
-        @Query("page") pageIndex: Int,
-        @Query("language") language: String
-    ): Response<MovieList>
 
     @GET("movie/{movie_ID}/credits?api_key=${Constants.API_KEY}")
     suspend fun getMovieCreditsById(

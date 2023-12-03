@@ -6,7 +6,10 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import gustavo.projects.moviemanager.network.repository.movie.MovieRepository
 import gustavo.projects.moviemanager.network.repository.movie.MovieRepositoryImpl
+import gustavo.projects.moviemanager.network.repository.show.ShowRepository
+import gustavo.projects.moviemanager.network.repository.show.ShowRepositoryImpl
 import gustavo.projects.moviemanager.network.services.movie.MovieService
+import gustavo.projects.moviemanager.network.services.show.ShowService
 import javax.inject.Singleton
 
 @Module
@@ -19,5 +22,13 @@ object RepositoryModule {
         movieService: MovieService
     ): MovieRepository {
         return MovieRepositoryImpl(movieService)
+    }
+
+    @Singleton
+    @Provides
+    fun provideShowRepository(
+        showService: ShowService
+    ): ShowRepository {
+        return ShowRepositoryImpl(showService)
     }
 }

@@ -42,6 +42,7 @@ import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import gustavo.projects.moviemanager.R
 import gustavo.projects.moviemanager.compose.common.MainViewModel
+import gustavo.projects.moviemanager.compose.common.MediaType
 import gustavo.projects.moviemanager.compose.common.ui.components.NetworkImage
 import gustavo.projects.moviemanager.compose.common.ui.util.UiConstants.BROWSE_CARD_DEFAULT_ELEVATION
 import gustavo.projects.moviemanager.compose.common.ui.util.UiConstants.BROWSE_CARD_HEIGHT
@@ -55,7 +56,6 @@ import gustavo.projects.moviemanager.compose.theme.Shapes
 import gustavo.projects.moviemanager.compose.theme.onPrimaryVariant
 import gustavo.projects.moviemanager.util.Constants.BASE_IMAGE_URL
 import gustavo.projects.moviemanager.util.formatRating
-import timber.log.Timber
 
 @Composable
 fun Browse() {
@@ -79,7 +79,10 @@ internal fun Browse(
             .fillMaxSize()
             .nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            CollapsingTabRow(scrollBehavior = scrollBehavior)
+            CollapsingTabRow(
+                scrollBehavior = scrollBehavior,
+                viewModel = viewModel
+            )
         }
     ) { innerPadding ->
         Box(modifier = Modifier.padding(innerPadding)) {
@@ -97,11 +100,20 @@ private fun BrowseBody(
     mainViewModel: MainViewModel
 ) {
     val listOfMovies = viewModel.moviePager.collectAsLazyPagingItems()
-    val sortType by mainViewModel.sortType.collectAsState()
+    val movieSortType by mainViewModel.movieSortType.collectAsState()
+    val showSortType by mainViewModel.showSortType.collectAsState()
+    val mediaType by viewModel.mediaTypeSelected.collectAsState()
 
-    LaunchedEffect(sortType) {
-        Timber.tag("print").d("launched")
-        viewModel.onEvent(BrowseEvent.UpdateSortType(sortType.type))
+    LaunchedEffect(movieSortType) {
+        viewModel.onEvent(BrowseEvent.UpdateSortType(movieSortType))
+    }
+
+    LaunchedEffect(showSortType) {
+        viewModel.onEvent(BrowseEvent.UpdateSortType(showSortType))
+    }
+
+    LaunchedEffect(mediaType) {
+        mainViewModel.updateMediaType(mediaType)
     }
 
     Box(

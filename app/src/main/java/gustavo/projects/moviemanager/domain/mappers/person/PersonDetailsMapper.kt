@@ -1,6 +1,6 @@
 package gustavo.projects.moviemanager.domain.mappers.person
 
-import gustavo.projects.moviemanager.domain.models.movie.Movie
+import gustavo.projects.moviemanager.domain.models.content.Movie
 import gustavo.projects.moviemanager.domain.models.person.PersonDetails
 import gustavo.projects.moviemanager.domain.models.person.PersonImages
 import gustavo.projects.moviemanager.network.response.person.GetPersonDetailsByIdResponse

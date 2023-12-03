@@ -1,6 +1,5 @@
 package gustavo.projects.moviemanager.network
 
-import gustavo.projects.moviemanager.network.models.movie.MovieList
 import gustavo.projects.moviemanager.network.response.GetMovieCreditsByIdResponse
 import gustavo.projects.moviemanager.network.response.GetMovieDetailsByIdResponse
 import gustavo.projects.moviemanager.network.response.GetMovieVideosByIdResponse
@@ -22,48 +21,12 @@ class ApiClient(
         return safeApiCall { movieDbService.getMovieDetailsById(movie_ID, language) }
     }
 
-    suspend fun getUpcomingMoviesPage(
-        pageIndex: Int,
-        language: String
-    ): SimpleResponse<MovieList> {
-        return safeApiCall { movieDbService.getUpcomingMoviesPage(pageIndex, language) }
-    }
-
-    suspend fun getNowPlayingMoviesPage(
-        pageIndex: Int,
-        language: String
-    ): SimpleResponse<MovieList> {
-        return safeApiCall { movieDbService.getNowPlayingMoviesPage(pageIndex, language) }
-    }
-
-    suspend fun getTopRatedMoviesPage(
-        pageIndex: Int,
-        language: String
-    ): SimpleResponse<MovieList> {
-        return safeApiCall { movieDbService.getTopRatedMoviesPage(pageIndex, language) }
-    }
-
-    suspend fun getPopularMoviesPage(
-        pageIndex: Int,
-        language: String
-    ): SimpleResponse<MovieList> {
-        return safeApiCall { movieDbService.getPopularMoviesPage(pageIndex, language) }
-    }
-
     suspend fun getMovieCreditsById(movie_ID: Int): SimpleResponse<GetMovieCreditsByIdResponse> {
         return safeApiCall { movieDbService.getMovieCreditsById(movie_ID) }
     }
 
     suspend fun getMovieVideosById(movie_ID: Int): SimpleResponse<GetMovieVideosByIdResponse> {
         return safeApiCall { movieDbService.getMovieVideosById(movie_ID) }
-    }
-
-    suspend fun getMoviesPageByTitle(
-        movieTitle: String,
-        pageIndex: Int,
-        language: String
-    ): SimpleResponse<MovieList> {
-        return safeApiCall { movieDbService.getMoviesPageByTitle(movieTitle, pageIndex, language) }
     }
 
     // PEOPLE

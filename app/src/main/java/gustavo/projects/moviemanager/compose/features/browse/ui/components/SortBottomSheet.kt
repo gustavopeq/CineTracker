@@ -28,6 +28,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import gustavo.projects.moviemanager.R
 import gustavo.projects.moviemanager.compose.common.MainViewModel
+import gustavo.projects.moviemanager.compose.common.MediaType
 import gustavo.projects.moviemanager.compose.common.ui.components.SortTypeItem
 import gustavo.projects.moviemanager.compose.common.ui.components.SystemNavBarSpacer
 import gustavo.projects.moviemanager.compose.common.ui.util.UiConstants.DEFAULT_MARGIN
@@ -38,17 +39,27 @@ import gustavo.projects.moviemanager.compose.theme.dividerGrey
 @Composable
 fun SortBottomSheet(
     mainViewModel: MainViewModel,
-    selectedSortType: SortTypeItem,
+    selectedMovieSortType: SortTypeItem,
+    selectedShowSortType: SortTypeItem,
+    selectedMediaType: MediaType,
     displaySortScreen: (Boolean) -> Unit
 ) {
-    val sortTypeList = listOf(
+    val movieSortTypeList = listOf(
         SortTypeItem.NowPlaying,
         SortTypeItem.Popular,
         SortTypeItem.TopRated,
         SortTypeItem.Upcoming
     )
 
-    var selectedIndex by remember { mutableIntStateOf(selectedSortType.itemIndex) }
+    val showSortTypeList = listOf(
+        SortTypeItem.AiringToday,
+        SortTypeItem.ShowPopular,
+        SortTypeItem.ShowTopRated,
+        SortTypeItem.OnTheAir
+    )
+
+    var selectedMovieIndex by remember { mutableIntStateOf(selectedMovieSortType.itemIndex) }
+    var selectedShowIndex by remember { mutableIntStateOf(selectedShowSortType.itemIndex) }
 
     val dismissBottomSheet: () -> Unit = {
         displaySortScreen(false)
@@ -72,16 +83,25 @@ fun SortBottomSheet(
             color = Color(dividerGrey),
             modifier = Modifier.padding(top = DEFAULT_PADDING.dp)
         )
-        sortTypeList.forEachIndexed { index, sortTypeItem ->
-            SortButton(
-                isSelected = selectedIndex == index,
-                text = stringResource(id = sortTypeItem.sortTypeRes),
-                onClick = {
-                    mainViewModel.updateSortType(sortTypeItem)
-                    selectedIndex = index
-                    dismissBottomSheet()
-                }
-            )
+        when (selectedMediaType) {
+            MediaType.MOVIE -> {
+                CreateSortButtons(
+                    list = movieSortTypeList,
+                    selectedIndex = selectedMovieIndex,
+                    viewModel = mainViewModel,
+                    updateIndex = { selectedMovieIndex = it },
+                    dismissBottomSheet = dismissBottomSheet
+                )
+            }
+            MediaType.SHOW -> {
+                CreateSortButtons(
+                    list = showSortTypeList,
+                    selectedIndex = selectedShowIndex,
+                    viewModel = mainViewModel,
+                    updateIndex = { selectedShowIndex = it },
+                    dismissBottomSheet = dismissBottomSheet
+                )
+            }
         }
         Spacer(modifier = Modifier.height(DEFAULT_PADDING.dp))
         SystemNavBarSpacer()
@@ -113,5 +133,26 @@ fun SortButton(
                 tint = MaterialTheme.colorScheme.onPrimary
             )
         }
+    }
+}
+
+@Composable
+private fun CreateSortButtons(
+    list: List<SortTypeItem>,
+    selectedIndex: Int,
+    viewModel: MainViewModel,
+    updateIndex: (Int) -> Unit,
+    dismissBottomSheet: () -> Unit
+) {
+    list.forEachIndexed { index, sortTypeItem ->
+        SortButton(
+            isSelected = selectedIndex == index,
+            text = stringResource(id = sortTypeItem.titleRes),
+            onClick = {
+                viewModel.updateSortType(sortTypeItem)
+                updateIndex(index)
+                dismissBottomSheet()
+            }
+        )
     }
 }

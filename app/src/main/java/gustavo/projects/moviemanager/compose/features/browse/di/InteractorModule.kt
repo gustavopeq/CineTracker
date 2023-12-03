@@ -6,6 +6,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import gustavo.projects.moviemanager.compose.features.browse.domain.BrowseInteractor
 import gustavo.projects.moviemanager.network.repository.movie.MovieRepository
+import gustavo.projects.moviemanager.network.repository.show.ShowRepository
 import javax.inject.Singleton
 
 @Module
@@ -14,8 +15,12 @@ object InteractorModule {
     @Singleton
     @Provides
     fun provideBrowseInteractor(
-        movieRepository: MovieRepository
+        movieRepository: MovieRepository,
+        showRepository: ShowRepository
     ): BrowseInteractor {
-        return BrowseInteractor(movieRepository = movieRepository)
+        return BrowseInteractor(
+            movieRepository = movieRepository,
+            showRepository = showRepository
+        )
     }
 }

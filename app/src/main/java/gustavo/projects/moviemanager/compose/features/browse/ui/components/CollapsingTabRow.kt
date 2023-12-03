@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Tab
@@ -28,22 +29,29 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import gustavo.projects.moviemanager.compose.common.ui.util.UiConstants.BROWSE_TAB_ROW_OFFSET_HEIGHT
+import gustavo.projects.moviemanager.compose.features.browse.events.BrowseEvent
+import gustavo.projects.moviemanager.compose.features.browse.ui.BrowseViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CollapsingTabRow(
-    scrollBehavior: TopAppBarScrollBehavior
+    scrollBehavior: TopAppBarScrollBehavior,
+    viewModel: BrowseViewModel
 ) {
     TopAppBar(
         title = {
-            BrowseTypeTabRow()
+            BrowseTypeTabRow(
+                viewModel = viewModel
+            )
         },
         scrollBehavior = scrollBehavior
     )
 }
 
 @Composable
-private fun BrowseTypeTabRow() {
+private fun BrowseTypeTabRow(
+    viewModel: BrowseViewModel
+) {
     val tabList = listOf(MediaTypeTabItem.Movies, MediaTypeTabItem.Shows)
     var selectedTabIndex by remember { mutableIntStateOf(0) }
 
@@ -68,6 +76,7 @@ private fun BrowseTypeTabRow() {
                 isSelected = selectedTabIndex == index,
                 onClick = {
                     selectedTabIndex = it
+                    viewModel.onEvent(BrowseEvent.UpdateMediaType(mediaTypeTabItem.mediaType))
                 }
             )
         }
