@@ -34,6 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.layout.layout
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -55,6 +56,7 @@ import com.projects.moviemanager.compose.common.ui.util.UiConstants.BROWSE_CARD_
 import com.projects.moviemanager.compose.common.ui.util.UiConstants.BROWSE_CARD_PADDING_HORIZONTAL
 import com.projects.moviemanager.compose.common.ui.util.UiConstants.BROWSE_CARD_PADDING_VERTICAL
 import com.projects.moviemanager.compose.common.ui.util.UiConstants.BROWSE_CARD_WIDTH
+import com.projects.moviemanager.compose.common.ui.util.UiConstants.BROWSE_SCAFFOLD_HEIGHT_OFFSET
 import com.projects.moviemanager.compose.common.ui.util.UiConstants.DEFAULT_MARGIN
 import com.projects.moviemanager.compose.common.ui.util.UiConstants.DEFAULT_PADDING
 import com.projects.moviemanager.compose.features.browse.events.BrowseEvent
@@ -97,9 +99,30 @@ internal fun Browse(
 
     Scaffold(
         modifier = Modifier
-            .offset(y = (-15).dp)
+            .offset(y = (-BROWSE_SCAFFOLD_HEIGHT_OFFSET).dp)
             .fillMaxSize()
-            .nestedScroll(scrollBehavior.nestedScrollConnection),
+            .nestedScroll(scrollBehavior.nestedScrollConnection)
+            .then(
+                /* To account for the scaffold offset, we have to do this calculation to increase
+                the scaffold height */
+                Modifier.layout { measurable, constraints ->
+                    val fixedContentConstraints = constraints.copy(
+                        maxHeight = constraints.maxHeight +
+                            BROWSE_SCAFFOLD_HEIGHT_OFFSET.dp.roundToPx()
+                    )
+                    val placeable = measurable.measure(fixedContentConstraints)
+
+                    layout(
+                        width = placeable.width,
+                        height = placeable.height + BROWSE_SCAFFOLD_HEIGHT_OFFSET.dp.roundToPx()
+                    ) {
+                        placeable.placeRelative(
+                            x = 0,
+                            y = BROWSE_SCAFFOLD_HEIGHT_OFFSET.dp.roundToPx()
+                        )
+                    }
+                }
+            ),
         topBar = {
             CollapsingTabRow(
                 scrollBehavior = scrollBehavior,
@@ -108,8 +131,8 @@ internal fun Browse(
             )
         }
     ) { innerPadding ->
-        HorizontalPager(state = pagerState) { page ->
-            Box(modifier = Modifier.padding(innerPadding)) {
+        Box(modifier = Modifier.padding(innerPadding)) {
+            HorizontalPager(state = pagerState) { page ->
                 when (page) {
                     0 -> {
                         BrowseBody(
