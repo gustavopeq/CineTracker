@@ -12,7 +12,7 @@
         android:name=".core.CoreApplication">
 
         <activity
-            android:name="gustavo.projects.moviemanager.MainActivity"
+            android:name="com.projects.moviemanager.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.MovieManager">
             <intent-filter>
