@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.projects.carmanager.theme.MovieManagerTheme
+import com.projects.moviemanager.compose.theme.MovieManagerTheme
 import com.projects.moviemanager.compose.common.MainViewModel
 import com.projects.moviemanager.compose.common.ui.components.ModalComponents
 import com.projects.moviemanager.compose.navigation.MainNavGraph

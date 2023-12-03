@@ -19,7 +19,6 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -47,17 +46,20 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.projects.moviemanager.R
 import com.projects.moviemanager.compose.common.MainViewModel
 import com.projects.moviemanager.compose.common.MediaType
+import com.projects.moviemanager.compose.common.ui.components.ComponentPlaceholder
 import com.projects.moviemanager.compose.common.ui.components.NetworkImage
 import com.projects.moviemanager.compose.common.ui.components.SortTypeItem
 import com.projects.moviemanager.compose.common.ui.util.UiConstants.BROWSE_CARD_DEFAULT_ELEVATION
 import com.projects.moviemanager.compose.common.ui.util.UiConstants.BROWSE_CARD_HEIGHT
 import com.projects.moviemanager.compose.common.ui.util.UiConstants.BROWSE_CARD_IMAGE_HEIGHT
+import com.projects.moviemanager.compose.common.ui.util.UiConstants.BROWSE_CARD_PADDING_HORIZONTAL
+import com.projects.moviemanager.compose.common.ui.util.UiConstants.BROWSE_CARD_PADDING_VERTICAL
 import com.projects.moviemanager.compose.common.ui.util.UiConstants.BROWSE_CARD_WIDTH
 import com.projects.moviemanager.compose.common.ui.util.UiConstants.DEFAULT_MARGIN
 import com.projects.moviemanager.compose.common.ui.util.UiConstants.DEFAULT_PADDING
 import com.projects.moviemanager.compose.features.browse.events.BrowseEvent
 import com.projects.moviemanager.compose.features.browse.ui.components.CollapsingTabRow
-import com.projects.moviemanager.compose.theme.Shapes
+import com.projects.moviemanager.compose.theme.RoundCornerShapes
 import com.projects.moviemanager.compose.theme.onPrimaryVariant
 import com.projects.moviemanager.domain.models.content.BaseMediaContent
 import com.projects.moviemanager.util.Constants.BASE_IMAGE_URL
@@ -147,12 +149,7 @@ private fun BrowseBody(
     ) {
         when (pagingData.loadState.refresh) {
             is LoadState.Loading -> {
-                CircularProgressIndicator(
-                    modifier = Modifier
-                        .size(50.dp)
-                        .align(Alignment.Center),
-                    color = MaterialTheme.colorScheme.primary
-                )
+                BrowseBodyPlaceholder()
             }
             is LoadState.Error -> {
                 Text(
@@ -198,7 +195,10 @@ private fun BrowseCard(
 
     Card(
         modifier = modifier
-            .padding(horizontal = 4.dp, vertical = 8.dp)
+            .padding(
+                horizontal = BROWSE_CARD_PADDING_HORIZONTAL.dp,
+                vertical = BROWSE_CARD_PADDING_VERTICAL.dp
+            )
             .size(
                 width = BROWSE_CARD_WIDTH.dp,
                 height = BROWSE_CARD_HEIGHT.dp
@@ -218,7 +218,7 @@ private fun BrowseCard(
             Spacer(modifier = Modifier.height(4.dp))
             NetworkImage(
                 imageUrl = fullImageUrl,
-                modifier = Modifier.clip(Shapes.small),
+                modifier = Modifier.clip(RoundCornerShapes.small),
                 widthDp = BROWSE_CARD_WIDTH.dp,
                 heightDp = BROWSE_CARD_IMAGE_HEIGHT.dp
             )
@@ -242,6 +242,42 @@ private fun BrowseCard(
                     text = rating.formatRating(),
                     color = MaterialTheme.colorScheme.primary,
                     style = MaterialTheme.typography.titleMedium
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun BrowseBodyPlaceholder() {
+    LazyVerticalGrid(
+        columns = GridCells.Adaptive(BROWSE_CARD_WIDTH.dp),
+        modifier = Modifier.padding(horizontal = DEFAULT_MARGIN.dp)
+    ) {
+        items(6) {
+            Column(
+                modifier = Modifier
+                    .size(
+                        width = BROWSE_CARD_WIDTH.dp,
+                        height = BROWSE_CARD_HEIGHT.dp + 16.dp
+                    )
+                    .padding(
+                        horizontal = BROWSE_CARD_PADDING_HORIZONTAL.dp,
+                        vertical = BROWSE_CARD_PADDING_VERTICAL.dp
+                    )
+            ) {
+                ComponentPlaceholder(
+                    widthDp = BROWSE_CARD_WIDTH.dp,
+                    heightDp = BROWSE_CARD_IMAGE_HEIGHT.dp,
+                    modifier = Modifier
+                        .clip(RoundCornerShapes.small)
+                )
+                Spacer(modifier = Modifier.height(DEFAULT_PADDING.dp))
+                ComponentPlaceholder(
+                    widthDp = BROWSE_CARD_WIDTH.dp,
+                    heightDp = 100.dp,
+                    modifier = Modifier
+                        .clip(RoundCornerShapes.extraSmall)
                 )
             }
         }
