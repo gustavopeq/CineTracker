@@ -82,7 +82,11 @@ internal fun Browse(
     mainViewModel: MainViewModel
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
-    val pagerState = rememberPagerState(pageCount = { 2 })
+    val currentMediaTypeSelected by mainViewModel.currentMediaTypeSelected.collectAsState()
+    val pagerState = rememberPagerState(
+        initialPage = currentMediaTypeSelected.ordinal,
+        pageCount = { 2 }
+    )
 
     val listOfMovies = viewModel.moviePager.collectAsLazyPagingItems()
     val movieSortType by mainViewModel.movieSortType.collectAsState()
