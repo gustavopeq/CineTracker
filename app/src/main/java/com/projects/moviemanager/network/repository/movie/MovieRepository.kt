@@ -12,4 +12,8 @@ interface MovieRepository {
         contentListType: ContentListType,
         pageIndex: Int
     ): Flow<Either<ContentListPageResponse<MovieApiResponse>, ApiError>>
+
+    suspend fun getMovieDetailsById(
+        movieId: Int
+    ): Flow<Either<MovieApiResponse, ApiError>>
 }

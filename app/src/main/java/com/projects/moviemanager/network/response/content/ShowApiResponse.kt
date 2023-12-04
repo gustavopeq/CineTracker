@@ -1,7 +1,11 @@
 package com.projects.moviemanager.network.response.content
 
-import com.squareup.moshi.Json
 import com.projects.moviemanager.compose.common.MediaType
+import com.projects.moviemanager.domain.models.ContentGenre
+import com.projects.moviemanager.domain.models.ProductionCompany
+import com.projects.moviemanager.domain.models.ProductionCountry
+import com.projects.moviemanager.domain.models.SpokenLanguage
+import com.squareup.moshi.Json
 
 data class ShowApiResponse(
     override val id: Int,
@@ -19,7 +23,14 @@ data class ShowApiResponse(
     @Json(name = "first_air_date")
     override val release_date: String?,
     override val vote_count: Int?,
-    override val mediaType: MediaType = MediaType.SHOW,
+    override val mediaType: MediaType? = MediaType.SHOW,
+    override val adult: Boolean?,
+    override val genres: List<ContentGenre?>?,
+    override val homepage: String?,
+    override val production_companies: List<ProductionCompany?>?,
+    override val production_countries: List<ProductionCountry?>?,
+    override val spoken_languages: List<SpokenLanguage?>?,
+    override val runtime: Int?,
 
     val origin_country: List<String>?
 ) : BaseMediaContentResponse

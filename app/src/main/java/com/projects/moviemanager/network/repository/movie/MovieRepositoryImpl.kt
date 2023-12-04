@@ -26,4 +26,14 @@ class MovieRepositoryImpl @Inject constructor(
             )
         }.asFlow()
     }
+
+    override suspend fun getMovieDetailsById(
+        movieId: Int
+    ): Flow<Either<MovieApiResponse, ApiError>> {
+        return toApiResult {
+            movieService.getMovieDetailsById(
+                movieId = movieId
+            )
+        }.asFlow()
+    }
 }

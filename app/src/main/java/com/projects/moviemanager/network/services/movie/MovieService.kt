@@ -3,6 +3,7 @@ package com.projects.moviemanager.network.services.movie
 import com.projects.moviemanager.network.response.content.ContentListPageResponse
 import com.projects.moviemanager.network.response.content.MovieApiResponse
 import com.projects.moviemanager.util.Constants
+import com.projects.moviemanager.util.Constants.ENGLISH_LANGUAGE_CODE
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -15,4 +16,10 @@ interface MovieService {
         @Query("page") pageIndex: Int,
         @Query("language") language: String
     ): Response<ContentListPageResponse<MovieApiResponse>>
+
+    @GET("movie/{movie_ID}?api_key=${Constants.API_KEY}")
+    suspend fun getMovieDetailsById(
+        @Path("movie_ID") movieId: Int,
+        @Query("language") language: String = ENGLISH_LANGUAGE_CODE
+    ): Response<MovieApiResponse>
 }

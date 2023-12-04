@@ -1,6 +1,10 @@
 package com.projects.moviemanager.network.response.content
 
 import com.projects.moviemanager.compose.common.MediaType
+import com.projects.moviemanager.domain.models.ContentGenre
+import com.projects.moviemanager.domain.models.ProductionCompany
+import com.projects.moviemanager.domain.models.ProductionCountry
+import com.projects.moviemanager.domain.models.SpokenLanguage
 
 data class MovieApiResponse(
     override val id: Int,
@@ -18,5 +22,11 @@ data class MovieApiResponse(
     override val mediaType: MediaType = MediaType.MOVIE,
 
     val video: Boolean?,
-    val adult: Boolean?
+    override val adult: Boolean?,
+    override val genres: List<ContentGenre?>?,
+    override val homepage: String?,
+    override val production_companies: List<ProductionCompany?>?,
+    override val production_countries: List<ProductionCountry?>?,
+    override val spoken_languages: List<SpokenLanguage?>?,
+    override val runtime: Int?
 ) : BaseMediaContentResponse

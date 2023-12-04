@@ -9,10 +9,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.projects.moviemanager.compose.features.browse.BrowseScreen
+import com.projects.moviemanager.compose.features.details.DetailsScreen
 import com.projects.moviemanager.compose.features.home.HomeScreen
 import com.projects.moviemanager.compose.features.search.SearchScreen
 import com.projects.moviemanager.compose.features.watchlist.WatchlistScreen
 import com.projects.moviemanager.compose.navigation.screens.BrowseScreenUI
+import com.projects.moviemanager.compose.navigation.screens.DetailsScreenUI
 import com.projects.moviemanager.compose.navigation.screens.HomeScreenUI
 import com.projects.moviemanager.compose.navigation.screens.SearchScreenUI
 import com.projects.moviemanager.compose.navigation.screens.WatchlistScreenUI
@@ -21,7 +23,8 @@ private val mainNavDestinations: Map<Screen, ScreenUI> = mapOf(
     HomeScreen to HomeScreenUI(),
     BrowseScreen to BrowseScreenUI(),
     WatchlistScreen to WatchlistScreenUI(),
-    SearchScreen to SearchScreenUI()
+    SearchScreen to SearchScreenUI(),
+    DetailsScreen to DetailsScreenUI()
 )
 
 @Composable

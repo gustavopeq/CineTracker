@@ -68,18 +68,22 @@ import com.projects.moviemanager.util.Constants.BASE_IMAGE_URL
 import com.projects.moviemanager.util.formatRating
 
 @Composable
-fun Browse() {
+fun Browse(
+    goToDetails: (Int, MediaType) -> Unit
+) {
     Browse(
         viewModel = hiltViewModel(),
-        mainViewModel = hiltViewModel()
+        mainViewModel = hiltViewModel(),
+        goToDetails = goToDetails
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
-internal fun Browse(
+private fun Browse(
     viewModel: BrowseViewModel,
-    mainViewModel: MainViewModel
+    mainViewModel: MainViewModel,
+    goToDetails: (Int, MediaType) -> Unit
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
     val currentMediaTypeSelected by mainViewModel.currentMediaTypeSelected.collectAsState()
@@ -143,7 +147,8 @@ internal fun Browse(
                             viewModel = viewModel,
                             mediaType = MediaType.MOVIE,
                             pagingData = listOfMovies,
-                            sortTypeItem = movieSortType
+                            sortTypeItem = movieSortType,
+                            goToDetails = goToDetails
                         )
                     }
                     1 -> {
@@ -151,7 +156,8 @@ internal fun Browse(
                             viewModel = viewModel,
                             mediaType = MediaType.SHOW,
                             pagingData = listOfShows,
-                            sortTypeItem = showSortType
+                            sortTypeItem = showSortType,
+                            goToDetails = goToDetails
                         )
                     }
                 }
@@ -165,7 +171,8 @@ private fun BrowseBody(
     viewModel: BrowseViewModel,
     mediaType: MediaType,
     pagingData: LazyPagingItems<BaseMediaContent>,
-    sortTypeItem: SortTypeItem
+    sortTypeItem: SortTypeItem,
+    goToDetails: (Int, MediaType) -> Unit
 ) {
     LaunchedEffect(sortTypeItem) {
         viewModel.onEvent(BrowseEvent.UpdateSortType(sortTypeItem, mediaType))
@@ -195,12 +202,13 @@ private fun BrowseBody(
                     modifier = Modifier.padding(horizontal = DEFAULT_MARGIN.dp)
                 ) {
                     items(pagingData.itemCount) { index ->
-                        val movie = pagingData[index]
-                        movie?.let {
+                        val content = pagingData[index]
+                        content?.let {
                             BrowseCard(
-                                imageUrl = movie.poster_path,
-                                title = movie.title,
-                                rating = movie.vote_average
+                                imageUrl = content.poster_path,
+                                title = content.title,
+                                rating = content.vote_average,
+                                goToDetails = { goToDetails(content.id, content.mediaType) }
                             )
                         }
                     }
@@ -216,7 +224,8 @@ private fun BrowseCard(
     modifier: Modifier = Modifier,
     imageUrl: String?,
     title: String?,
-    rating: Double?
+    rating: Double?,
+    goToDetails: () -> Unit
 ) {
     val fullImageUrl = BASE_IMAGE_URL + imageUrl
 
@@ -230,7 +239,7 @@ private fun BrowseCard(
                 width = BROWSE_CARD_WIDTH.dp,
                 height = BROWSE_CARD_HEIGHT.dp
             ),
-        onClick = { /*TODO*/ },
+        onClick = goToDetails,
         colors = CardDefaults.cardColors(
             containerColor = onPrimaryVariant
         ),

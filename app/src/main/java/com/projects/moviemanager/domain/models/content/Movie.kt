@@ -17,6 +17,6 @@ fun BaseMediaContentResponse.toMovieDomain(): Movie {
         title = this.title,
         vote_average = this.vote_average,
         poster_path = this.poster_path,
-        mediaType = this.mediaType
+        mediaType = this.mediaType ?: MediaType.MOVIE
     )
 }

@@ -30,7 +30,9 @@ class MediaContentPagingSource(
 
             val apiResponse = when (mediaType) {
                 MediaType.MOVIE -> movieRepository.getMovieList(contentListType, pageNumber).first()
-                MediaType.SHOW -> showRepository.getShowList(contentListType.type, pageNumber).first()
+                MediaType.SHOW -> {
+                    showRepository.getShowList(contentListType.type, pageNumber).first()
+                }
             }
 
             return when (apiResponse) {
