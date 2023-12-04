@@ -13,4 +13,8 @@ interface ShowRepository {
         @Path("content_list_type") contentListType: String,
         @Query("page") pageIndex: Int
     ): Flow<Either<ContentListPageResponse<ShowApiResponse>, ApiError>>
+
+    suspend fun getShowDetailsById(
+        showId: Int
+    ): Flow<Either<ShowApiResponse, ApiError>>
 }

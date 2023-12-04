@@ -3,6 +3,7 @@ package com.projects.moviemanager.network.services.show
 import com.projects.moviemanager.network.response.content.ContentListPageResponse
 import com.projects.moviemanager.network.response.content.ShowApiResponse
 import com.projects.moviemanager.util.Constants
+import com.projects.moviemanager.util.Constants.ENGLISH_LANGUAGE_CODE
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -15,4 +16,10 @@ interface ShowService {
         @Query("page") pageIndex: Int,
         @Query("language") language: String
     ): Response<ContentListPageResponse<ShowApiResponse>>
+
+    @GET("tv/{show_ID}?api_key=${Constants.API_KEY}")
+    suspend fun getShowDetailsById(
+        @Path("show_ID") showId: Int,
+        @Query("language") language: String = ENGLISH_LANGUAGE_CODE
+    ): Response<ShowApiResponse>
 }

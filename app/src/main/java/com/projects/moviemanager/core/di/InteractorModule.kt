@@ -28,10 +28,12 @@ object InteractorModule {
     @Singleton
     @Provides
     fun provideDetailsInteractor(
-        movieRepository: MovieRepository
+        movieRepository: MovieRepository,
+        showRepository: ShowRepository
     ): DetailsInteractor {
         return DetailsInteractor(
-            movieRepository = movieRepository
+            movieRepository = movieRepository,
+            showRepository = showRepository
         )
     }
 }

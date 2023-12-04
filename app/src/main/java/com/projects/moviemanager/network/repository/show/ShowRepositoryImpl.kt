@@ -25,4 +25,12 @@ class ShowRepositoryImpl @Inject constructor(
             )
         }.asFlow()
     }
+
+    override suspend fun getShowDetailsById(showId: Int): Flow<Either<ShowApiResponse, ApiError>> {
+        return toApiResult {
+            showService.getShowDetailsById(
+                showId = showId
+            )
+        }.asFlow()
+    }
 }

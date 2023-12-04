@@ -33,7 +33,7 @@ private fun Details(
 ) {
     LaunchedEffect(Unit) {
         if (contentId != null) {
-            viewModel.printDetails(contentId)
+            viewModel.printDetails(contentId, mediaType)
         } else {
             Timber.tag("print").d("ContentId is null!")
         }
