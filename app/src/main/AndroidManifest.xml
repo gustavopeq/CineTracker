@@ -14,7 +14,8 @@
         <activity
             android:name="com.projects.moviemanager.MainActivity"
             android:exported="true"
-            android:theme="@style/Theme.MovieManager">
+            android:theme="@style/Theme.MovieManager"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -21,8 +21,8 @@ import com.bumptech.glide.request.target.Target
 fun NetworkImage(
     modifier: Modifier = Modifier,
     imageUrl: String,
-    widthDp: Dp,
-    heightDp: Dp
+    widthDp: Dp = Dp.Unspecified,
+    heightDp: Dp = Dp.Unspecified
 ) {
     val loadingSuccess = remember { mutableStateOf(false) }
     Box {

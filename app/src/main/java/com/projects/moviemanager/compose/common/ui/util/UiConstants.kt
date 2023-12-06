@@ -5,8 +5,13 @@ object UiConstants {
     const val BUTTON_NAVIGATION_BAR_HEIGHT = 60
     const val DEFAULT_PADDING = 4
     const val DEFAULT_MARGIN = 8
+    const val EXTRA_MARGIN = 16
     const val UNDEFINED_RATINGS = "N/A"
     const val CARD_ROUND_CORNER = 4
+    const val POSTER_ASPECT_RATIO = 2f / 3f
+    const val BACKDROP_ASPECT_RATIO = 16f / 9f
+    const val FOREGROUND_INDEX = 1f
+    const val BACKGROUND_INDEX = -1f
 
     // Home
     const val HOME_LOGO_SIZE = 36
