@@ -33,7 +33,7 @@ import com.projects.moviemanager.compose.common.ui.components.SortTypeItem
 import com.projects.moviemanager.compose.common.ui.components.SystemNavBarSpacer
 import com.projects.moviemanager.compose.common.ui.util.UiConstants.DEFAULT_MARGIN
 import com.projects.moviemanager.compose.common.ui.util.UiConstants.DEFAULT_PADDING
-import com.projects.moviemanager.compose.theme.dividerGrey
+import com.projects.moviemanager.compose.theme.MainBarGreyColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -67,9 +67,11 @@ fun SortBottomSheet(
 
     BackHandler { dismissBottomSheet() }
 
+    val textColor = MaterialTheme.colorScheme.onPrimary
+
     ModalBottomSheet(
         onDismissRequest = dismissBottomSheet,
-        containerColor = MaterialTheme.colorScheme.primary
+        containerColor = MainBarGreyColor
     ) {
         Text(
             modifier = Modifier
@@ -77,10 +79,11 @@ fun SortBottomSheet(
                 .offset(y = (-DEFAULT_MARGIN).dp),
             text = stringResource(id = R.string.sort_by_header),
             style = MaterialTheme.typography.headlineMedium,
-            fontWeight = FontWeight.SemiBold
+            fontWeight = FontWeight.SemiBold,
+            color = textColor
         )
         Divider(
-            color = Color(dividerGrey),
+            color = MaterialTheme.colorScheme.inverseSurface,
             modifier = Modifier.padding(top = DEFAULT_PADDING.dp)
         )
         when (selectedMediaType) {
@@ -89,6 +92,7 @@ fun SortBottomSheet(
                     list = movieSortTypeList,
                     selectedIndex = selectedMovieIndex,
                     viewModel = mainViewModel,
+                    textColor = textColor,
                     updateIndex = { selectedMovieIndex = it },
                     dismissBottomSheet = dismissBottomSheet
                 )
@@ -98,6 +102,7 @@ fun SortBottomSheet(
                     list = showSortTypeList,
                     selectedIndex = selectedShowIndex,
                     viewModel = mainViewModel,
+                    textColor = textColor,
                     updateIndex = { selectedShowIndex = it },
                     dismissBottomSheet = dismissBottomSheet
                 )
@@ -112,25 +117,27 @@ fun SortBottomSheet(
 fun SortButton(
     text: String,
     isSelected: Boolean = false,
+    textColor: Color,
     onClick: () -> Unit
 ) {
     Button(
         contentPadding = PaddingValues(horizontal = DEFAULT_MARGIN.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = MaterialTheme.colorScheme.primary
+            containerColor = Color.Transparent
         ),
         onClick = onClick
     ) {
         Text(
             text = text,
-            style = MaterialTheme.typography.bodyMedium
+            style = MaterialTheme.typography.bodyMedium,
+            color = if (isSelected) MaterialTheme.colorScheme.onSurfaceVariant else textColor
         )
         Spacer(modifier = Modifier.weight(1f))
         if (isSelected) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_check),
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.onPrimary
+                tint = MaterialTheme.colorScheme.secondary
             )
         }
     }
@@ -141,6 +148,7 @@ private fun CreateSortButtons(
     list: List<SortTypeItem>,
     selectedIndex: Int,
     viewModel: MainViewModel,
+    textColor: Color,
     updateIndex: (Int) -> Unit,
     dismissBottomSheet: () -> Unit
 ) {
@@ -148,6 +156,7 @@ private fun CreateSortButtons(
         SortButton(
             isSelected = selectedIndex == index,
             text = stringResource(id = sortTypeItem.titleRes),
+            textColor = textColor,
             onClick = {
                 viewModel.updateSortType(sortTypeItem)
                 updateIndex(index)

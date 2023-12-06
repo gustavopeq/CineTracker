@@ -2,17 +2,14 @@ package com.projects.moviemanager.compose.theme
 
 import androidx.compose.ui.graphics.Color
 
-val PrimaryLight = Color(0xFFFA9F26)
-val SecondaryLight = Color(0xFFAD680D)
-
-val onPrimaryLight = Color(0xFF000000)
-val onPrimaryVariant = Color(0xFFFFFFFF)
-
-val PrimaryContainerLight = Color(0xFFEADDFF)
-val OnPrimaryContainerLight = Color(0xFF21005D)
-val BackgroundLight = Color(0xFFFFFBFE)
+val PrimaryYellowColor = Color(0xFFFA9F26)
+val PrimaryBlackColor = Color(0xFF000000)
+val PrimaryGreyColor = Color(0xFFDCDCDC)
+val PrimaryGreyColor_55 = Color(0x8C24252A)
+val PrimaryWhiteColor = Color(0xFFFFFFFF)
+val SecondaryGreyColor = Color(0xFF9D9D9D)
+val MainBarGreyColor = Color(0xFF191A1D)
 
 val placeholderGrey = Color(0xFFB8B5B5)
 val placeholderGrey2 = Color(0xFF8F8B8B)
-val unselectedGrey = Color(0xB3FFFFFF)
-val dividerGrey = (0x4DFFFFFF)
+val DividerGrey = Color(0x592C2E33)

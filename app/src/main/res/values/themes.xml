@@ -2,13 +2,13 @@
 <resources>
     <style name="Theme.MovieManager" parent="Theme.AppCompat.NoActionBar">
         <item name="android:statusBarColor">
-            @color/primary_yellow
+            @color/primary_black
         </item>
         <item name="android:backgroundTint">
-            @color/primary_yellow
+            @color/primary_black
         </item>
         <item name="android:navigationBarColor">
-            @color/primary_yellow
+            @color/primary_grey
         </item>
     </style>
 </resources>

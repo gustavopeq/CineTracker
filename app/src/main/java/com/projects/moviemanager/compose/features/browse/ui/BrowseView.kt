@@ -62,7 +62,6 @@ import com.projects.moviemanager.compose.common.ui.util.UiConstants.DEFAULT_PADD
 import com.projects.moviemanager.compose.features.browse.events.BrowseEvent
 import com.projects.moviemanager.compose.features.browse.ui.components.CollapsingTabRow
 import com.projects.moviemanager.compose.theme.RoundCornerShapes
-import com.projects.moviemanager.compose.theme.onPrimaryVariant
 import com.projects.moviemanager.domain.models.content.BaseMediaContent
 import com.projects.moviemanager.util.Constants.BASE_IMAGE_URL
 import com.projects.moviemanager.util.formatRating
@@ -241,7 +240,7 @@ private fun BrowseCard(
             ),
         onClick = goToDetails,
         colors = CardDefaults.cardColors(
-            containerColor = onPrimaryVariant
+            containerColor = Color.Transparent
         ),
         elevation = CardDefaults.elevatedCardElevation(
             defaultElevation = BROWSE_CARD_DEFAULT_ELEVATION.dp
@@ -261,7 +260,7 @@ private fun BrowseCard(
             Spacer(modifier = Modifier.width(DEFAULT_PADDING.dp))
             Text(
                 text = title.orEmpty(),
-                color = Color.Black,
+                color = MaterialTheme.colorScheme.onPrimary,
                 style = MaterialTheme.typography.titleMedium,
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1
@@ -276,7 +275,7 @@ private fun BrowseCard(
                 )
                 Text(
                     text = rating.formatRating(),
-                    color = MaterialTheme.colorScheme.primary,
+                    color = MaterialTheme.colorScheme.onPrimary,
                     style = MaterialTheme.typography.titleMedium
                 )
             }

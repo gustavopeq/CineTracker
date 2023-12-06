@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.projects.moviemanager.compose.common.ui.util.UiConstants.BUTTON_NAVIGATION_BAR_HEIGHT
+import com.projects.moviemanager.compose.theme.MainBarGreyColor
 
 @Composable
 fun MainNavBar(
@@ -32,7 +33,7 @@ fun MainNavBar(
         modifier = Modifier
             .fillMaxWidth()
             .height(BUTTON_NAVIGATION_BAR_HEIGHT.dp),
-        containerColor = MaterialTheme.colorScheme.surface
+        containerColor = MainBarGreyColor
     ) {
         navBarItems.forEach { item ->
             NavigationBarItem(
@@ -57,11 +58,11 @@ fun MainNavBar(
                     }
                 },
                 colors = NavigationBarItemDefaults.colors(
-                    indicatorColor = MaterialTheme.colorScheme.surface,
-                    selectedIconColor = MaterialTheme.colorScheme.onSurface,
-                    selectedTextColor = MaterialTheme.colorScheme.onSurface,
-                    unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                    unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant
+                    indicatorColor = MainBarGreyColor,
+                    selectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    selectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    unselectedIconColor = MaterialTheme.colorScheme.onSurface,
+                    unselectedTextColor = MaterialTheme.colorScheme.onSurface
                 )
             )
         }

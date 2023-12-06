@@ -18,6 +18,7 @@ import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -29,7 +30,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.zIndex
 import com.projects.moviemanager.compose.common.ui.util.UiConstants.BROWSE_TAB_ROW_OFFSET_HEIGHT
 import com.projects.moviemanager.compose.features.browse.events.BrowseEvent
 import com.projects.moviemanager.compose.features.browse.ui.BrowseViewModel
@@ -49,7 +49,10 @@ fun CollapsingTabRow(
                 pagerState = pagerState
             )
         },
-        scrollBehavior = scrollBehavior
+        scrollBehavior = scrollBehavior,
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = MaterialTheme.colorScheme.primary
+        )
     )
 }
 
@@ -77,7 +80,8 @@ private fun BrowseTypeTabRow(
                 pagerState = pagerState
             )
         },
-        divider = { }
+        divider = { },
+        containerColor = Color.Transparent
     ) {
         tabList.forEachIndexed { index, mediaTypeTabItem ->
             BrowseTypeTab(
@@ -139,6 +143,6 @@ private fun TabIndicator(
             .offset(x = animateIndicatorOffset.x.dp - 10.dp)
             .width(width)
             .height(2.dp)
-            .background(color = Color.Black)
+            .background(color = MaterialTheme.colorScheme.secondary)
     )
 }
