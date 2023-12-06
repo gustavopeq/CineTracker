@@ -2,6 +2,7 @@ package com.projects.moviemanager.compose.features.details.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -30,8 +31,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.projects.moviemanager.R
 import com.projects.moviemanager.compose.common.MediaType
 import com.projects.moviemanager.compose.common.ui.components.DimensionSubcomposeLayout
+import com.projects.moviemanager.compose.common.ui.components.GradientDirections
 import com.projects.moviemanager.compose.common.ui.components.NetworkImage
+import com.projects.moviemanager.compose.common.ui.components.RatingComponent
+import com.projects.moviemanager.compose.common.ui.components.classicVerticalGradientBrush
 import com.projects.moviemanager.compose.common.ui.util.UiConstants.BACKGROUND_INDEX
+import com.projects.moviemanager.compose.common.ui.util.UiConstants.DETAILS_TITLE_IMAGE_OFFSET_PERCENT
 import com.projects.moviemanager.compose.common.ui.util.UiConstants.EXTRA_MARGIN
 import com.projects.moviemanager.compose.common.ui.util.UiConstants.FOREGROUND_INDEX
 import com.projects.moviemanager.compose.common.ui.util.UiConstants.POSTER_ASPECT_RATIO
@@ -105,21 +110,63 @@ private fun DetailsComponent(
     scrollState: LazyListState,
     contentDetails: MediaContentDetails?
 ) {
+    Timber.tag("print").d("offset: $bgOffset")
+
     LazyColumn(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth(),
         state = scrollState
     ) {
         item {
             Spacer(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(bgOffset)
+                    .height(bgOffset * DETAILS_TITLE_IMAGE_OFFSET_PERCENT)
             )
         }
         item {
-            Text(
-                text = "${contentDetails?.title}"
-            )
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .classicVerticalGradientBrush(
+                        direction = GradientDirections.UP
+                    )
+            ) {
+                Spacer(modifier = Modifier.height(12.dp))
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = EXTRA_MARGIN.dp, vertical = EXTRA_MARGIN.dp)
+                ) {
+                    Text(
+                        text = "${contentDetails?.title}",
+                        style = MaterialTheme.typography.displayMedium
+                    )
+                    RatingComponent(rating = contentDetails?.vote_average)
+                }
+            }
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(color = Color.Black)
+            ) {
+                Spacer(modifier = Modifier.height(12.dp))
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = EXTRA_MARGIN.dp, vertical = EXTRA_MARGIN.dp)
+                ) {
+                    Text(
+                        text = "${contentDetails?.title}",
+                        style = MaterialTheme.typography.displayMedium
+                    )
+                    RatingComponent(rating = contentDetails?.vote_average)
+                }
+                Spacer(
+                    modifier = Modifier
+                        .height(12.dp)
+                )
+            }
         }
     }
 }

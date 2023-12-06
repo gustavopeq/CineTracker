@@ -27,4 +27,7 @@ object UiConstants {
 
     const val BROWSE_TAB_ROW_OFFSET_HEIGHT = 17
     const val BROWSE_SORT_ICON_SIZE = 32
+
+    // Details
+    const val DETAILS_TITLE_IMAGE_OFFSET_PERCENT = 0.7f
 }

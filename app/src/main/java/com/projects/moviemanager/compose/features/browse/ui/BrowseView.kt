@@ -49,6 +49,7 @@ import com.projects.moviemanager.compose.common.MainViewModel
 import com.projects.moviemanager.compose.common.MediaType
 import com.projects.moviemanager.compose.common.ui.components.ComponentPlaceholder
 import com.projects.moviemanager.compose.common.ui.components.NetworkImage
+import com.projects.moviemanager.compose.common.ui.components.RatingComponent
 import com.projects.moviemanager.compose.common.ui.components.SortTypeItem
 import com.projects.moviemanager.compose.common.ui.util.UiConstants.BROWSE_CARD_DEFAULT_ELEVATION
 import com.projects.moviemanager.compose.common.ui.util.UiConstants.BROWSE_CARD_HEIGHT
@@ -265,20 +266,7 @@ private fun BrowseCard(
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1
             )
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.offset(x = (-0.5).dp)
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_star),
-                    contentDescription = null
-                )
-                Text(
-                    text = rating.formatRating(),
-                    color = MaterialTheme.colorScheme.onPrimary,
-                    style = MaterialTheme.typography.titleMedium
-                )
-            }
+            RatingComponent(rating = rating)
         }
     }
 }
