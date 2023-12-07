@@ -12,7 +12,7 @@ val AppTypography = Typography(
     displayMedium = TextStyle(
         fontFamily = FontFamily.SansSerif,
         fontSize = 28.sp,
-        fontWeight = FontWeight(500),
+        fontWeight = FontWeight(400),
         lineHeight = 28.sp
     ),
     // Headline

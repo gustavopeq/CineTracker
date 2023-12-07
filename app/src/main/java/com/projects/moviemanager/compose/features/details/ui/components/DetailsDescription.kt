@@ -10,6 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.projects.moviemanager.R
 import com.projects.moviemanager.compose.common.ui.components.GradientDirections
@@ -44,12 +45,13 @@ fun DetailsDescriptionHeader(contentDetails: MediaContentDetails?) {
 }
 
 @Composable
-fun MovieDetailsDescription(
+fun DetailsDescriptionBody(
     contentDetails: MediaContentDetails?
 ) {
     Text(
         text = "${contentDetails?.overview}",
-        style = MaterialTheme.typography.bodyMedium
+        style = MaterialTheme.typography.bodyMedium,
+        color = MaterialTheme.colorScheme.onPrimary
     )
 
     Spacer(modifier = Modifier.height(UiConstants.EXTRA_MARGIN.dp))
@@ -96,11 +98,12 @@ fun MovieDetailsDescription(
 
 @Composable
 fun DetailDescriptionLabel(
-    labelText: String
+    labelText: String,
+    textStyle: TextStyle = MaterialTheme.typography.bodyMedium
 ) {
     Text(
         text = labelText,
-        style = MaterialTheme.typography.bodyMedium,
+        style = textStyle,
         color = MaterialTheme.colorScheme.onPrimary
     )
 }

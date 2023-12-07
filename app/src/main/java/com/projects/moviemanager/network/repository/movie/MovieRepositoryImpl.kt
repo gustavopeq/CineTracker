@@ -2,6 +2,7 @@ package com.projects.moviemanager.network.repository.movie
 
 import com.projects.moviemanager.domain.models.util.ContentListType
 import com.projects.moviemanager.network.models.ApiError
+import com.projects.moviemanager.network.response.ContentCreditsResponse
 import com.projects.moviemanager.network.response.content.ContentListPageResponse
 import com.projects.moviemanager.network.response.content.MovieApiResponse
 import com.projects.moviemanager.network.services.movie.MovieService
@@ -32,6 +33,16 @@ class MovieRepositoryImpl @Inject constructor(
     ): Flow<Either<MovieApiResponse, ApiError>> {
         return toApiResult {
             movieService.getMovieDetailsById(
+                movieId = movieId
+            )
+        }.asFlow()
+    }
+
+    override suspend fun getMovieCreditsById(
+        movieId: Int
+    ): Flow<Either<ContentCreditsResponse, ApiError>> {
+        return toApiResult {
+            movieService.getMovieCreditsById(
                 movieId = movieId
             )
         }.asFlow()

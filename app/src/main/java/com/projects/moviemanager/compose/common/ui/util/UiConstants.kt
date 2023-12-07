@@ -7,6 +7,7 @@ object UiConstants {
     const val EXTRA_PADDING = 8
     const val DEFAULT_MARGIN = 8
     const val EXTRA_MARGIN = 16
+    const val SECTION_PADDING = 24
     const val UNDEFINED_RATINGS = "N/A"
     const val CARD_ROUND_CORNER = 4
     const val POSTER_ASPECT_RATIO = 2f / 3f
@@ -31,4 +32,5 @@ object UiConstants {
 
     // Details
     const val DETAILS_TITLE_IMAGE_OFFSET_PERCENT = 0.7f
+    const val DETAILS_CAST_PICTURE_SIZE = 100
 }

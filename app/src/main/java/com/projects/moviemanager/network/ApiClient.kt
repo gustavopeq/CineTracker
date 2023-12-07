@@ -1,6 +1,6 @@
 package com.projects.moviemanager.network
 
-import com.projects.moviemanager.network.response.GetMovieCreditsByIdResponse
+import com.projects.moviemanager.network.response.ContentCreditsResponse
 import com.projects.moviemanager.network.response.GetMovieVideosByIdResponse
 import com.projects.moviemanager.network.response.person.GetPersonDetailsByIdResponse
 import com.projects.moviemanager.network.response.person.GetPersonImagesByIdResponse
@@ -12,7 +12,7 @@ class ApiClient(
     private val movieDbService: MovieDbService
 ) {
 
-    suspend fun getMovieCreditsById(movie_ID: Int): SimpleResponse<GetMovieCreditsByIdResponse> {
+    suspend fun getMovieCreditsById(movie_ID: Int): SimpleResponse<ContentCreditsResponse> {
         return safeApiCall { movieDbService.getMovieCreditsById(movie_ID) }
     }
 

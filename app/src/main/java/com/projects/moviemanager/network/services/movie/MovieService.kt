@@ -1,5 +1,6 @@
 package com.projects.moviemanager.network.services.movie
 
+import com.projects.moviemanager.network.response.ContentCreditsResponse
 import com.projects.moviemanager.network.response.content.ContentListPageResponse
 import com.projects.moviemanager.network.response.content.MovieApiResponse
 import com.projects.moviemanager.util.Constants
@@ -22,4 +23,9 @@ interface MovieService {
         @Path("movie_ID") movieId: Int,
         @Query("language") language: String = ENGLISH_LANGUAGE_CODE
     ): Response<MovieApiResponse>
+
+    @GET("movie/{movie_ID}/credits?api_key=${Constants.API_KEY}")
+    suspend fun getMovieCreditsById(
+        @Path("movie_ID") movieId: Int
+    ): Response<ContentCreditsResponse>
 }

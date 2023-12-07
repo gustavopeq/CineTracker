@@ -2,11 +2,11 @@ package com.projects.moviemanager.domain.mappers
 
 import com.projects.moviemanager.domain.models.MovieCast
 import com.projects.moviemanager.domain.models.MovieCredits
-import com.projects.moviemanager.network.response.GetMovieCreditsByIdResponse
+import com.projects.moviemanager.network.response.ContentCreditsResponse
 
 object MovieCreditsMapper {
 
-    fun buildFrom(response: GetMovieCreditsByIdResponse): MovieCredits {
+    fun buildFrom(response: ContentCreditsResponse): MovieCredits {
 
         val listOfCast = mutableListOf<MovieCast>()
 
