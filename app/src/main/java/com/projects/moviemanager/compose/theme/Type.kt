@@ -66,6 +66,12 @@ val AppTypography = Typography(
         fontWeight = FontWeight(400),
         lineHeight = 20.sp
     ),
+    bodySmall = TextStyle(
+        fontFamily = FontFamily.SansSerif,
+        fontSize = 14.sp,
+        fontWeight = FontWeight(400),
+        lineHeight = 20.sp
+    ),
     // Label
     labelSmall = TextStyle(
         fontFamily = FontFamily.SansSerif,

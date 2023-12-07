@@ -1,10 +1,8 @@
 package com.projects.moviemanager.compose.features.browse.ui
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -32,10 +30,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.layout
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -62,10 +58,10 @@ import com.projects.moviemanager.compose.common.ui.util.UiConstants.DEFAULT_MARG
 import com.projects.moviemanager.compose.common.ui.util.UiConstants.DEFAULT_PADDING
 import com.projects.moviemanager.compose.features.browse.events.BrowseEvent
 import com.projects.moviemanager.compose.features.browse.ui.components.CollapsingTabRow
+import com.projects.moviemanager.compose.theme.MainBarGreyColor
 import com.projects.moviemanager.compose.theme.RoundCornerShapes
 import com.projects.moviemanager.domain.models.content.BaseMediaContent
-import com.projects.moviemanager.util.Constants.BASE_IMAGE_URL
-import com.projects.moviemanager.util.formatRating
+import com.projects.moviemanager.util.Constants.BASE_500_IMAGE_URL
 
 @Composable
 fun Browse(
@@ -227,7 +223,7 @@ private fun BrowseCard(
     rating: Double?,
     goToDetails: () -> Unit
 ) {
-    val fullImageUrl = BASE_IMAGE_URL + imageUrl
+    val fullImageUrl = BASE_500_IMAGE_URL + imageUrl
 
     Card(
         modifier = modifier
@@ -241,7 +237,7 @@ private fun BrowseCard(
             ),
         onClick = goToDetails,
         colors = CardDefaults.cardColors(
-            containerColor = Color.Transparent
+            containerColor = MainBarGreyColor
         ),
         elevation = CardDefaults.elevatedCardElevation(
             defaultElevation = BROWSE_CARD_DEFAULT_ELEVATION.dp

@@ -15,7 +15,10 @@ class DetailsScreenUI : ScreenUI {
         val mediaType = navArguments?.getString(DetailsScreen.ARG_MEDIA_TYPE)
         Details(
             contentId = contentId,
-            mediaType = MediaType.getType(mediaType)
+            mediaType = MediaType.getType(mediaType),
+            onBackPress = {
+                navController.popBackStack()
+            }
         )
     }
 }

@@ -1,6 +1,7 @@
 package com.projects.moviemanager.domain.models.content
 
 import com.projects.moviemanager.compose.common.MediaType
+import com.projects.moviemanager.domain.models.ContentGenre
 import com.projects.moviemanager.domain.models.ProductionCountry
 import com.projects.moviemanager.network.response.content.BaseMediaContentResponse
 
@@ -14,7 +15,7 @@ data class MediaContentDetails(
     val overview: String?,
     val production_countries: List<ProductionCountry?>?,
     val release_date: String?,
-    val genre_ids: List<Int?>?,
+    val genres: List<ContentGenre?>?,
     val runtime: Int?
 ) : BaseMediaContent
 
@@ -29,7 +30,7 @@ fun BaseMediaContentResponse.toMediaContentDetails(): MediaContentDetails {
         overview = this.overview,
         production_countries = this.production_countries,
         release_date = this.release_date,
-        genre_ids = this.genre_ids,
+        genres = this.genres,
         runtime = this.runtime
     )
 }

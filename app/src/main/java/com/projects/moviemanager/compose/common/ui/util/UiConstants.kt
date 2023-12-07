@@ -4,6 +4,7 @@ object UiConstants {
     // Common
     const val BUTTON_NAVIGATION_BAR_HEIGHT = 60
     const val DEFAULT_PADDING = 4
+    const val EXTRA_PADDING = 8
     const val DEFAULT_MARGIN = 8
     const val EXTRA_MARGIN = 16
     const val UNDEFINED_RATINGS = "N/A"
