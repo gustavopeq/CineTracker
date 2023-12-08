@@ -17,6 +17,7 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -33,7 +34,6 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
@@ -59,7 +59,6 @@ import com.projects.moviemanager.domain.models.content.ContentCast
 import com.projects.moviemanager.domain.models.content.MediaContentDetails
 import com.projects.moviemanager.util.Constants.BASE_500_IMAGE_URL
 import com.projects.moviemanager.util.Constants.BASE_ORIGINAL_IMAGE_URL
-import com.projects.moviemanager.util.Constants.MISSING_PROFILE_PICTURE_URL
 import timber.log.Timber
 
 @Composable
@@ -170,7 +169,9 @@ private fun DetailsComponent(
                         contentDetails = contentDetails
                     )
                     Spacer(modifier = Modifier.height(SECTION_PADDING.dp))
-                    CastCarousel(contentCredits)
+                    if (contentCredits.isNotEmpty()) {
+                        CastCarousel(contentCredits)
+                    }
                 }
                 Spacer(modifier = Modifier.height(EXTRA_MARGIN.dp))
             }
@@ -187,50 +188,48 @@ private fun CastCarousel(contentCredits: List<ContentCast>) {
 
     Spacer(modifier = Modifier.height(DEFAULT_PADDING.dp))
 
-    if (contentCredits.isNotEmpty()) {
-        LazyRow(
-            modifier = Modifier
-                .layout { measurable, constraints ->
-                    val placeable = measurable.measure(
-                        constraints.copy(
-                            maxWidth = constraints.maxWidth + EXTRA_MARGIN.dp.roundToPx()
-                        )
+    LazyRow(
+        modifier = Modifier
+            .layout { measurable, constraints ->
+                val placeable = measurable.measure(
+                    constraints.copy(
+                        maxWidth = constraints.maxWidth + EXTRA_MARGIN.dp.roundToPx()
                     )
-                    layout(placeable.width, placeable.height) {
-                        placeable.place((EXTRA_MARGIN / 2).dp.roundToPx(), 0)
-                    }
+                )
+                layout(placeable.width, placeable.height) {
+                    placeable.place(0, 0)
                 }
-        ) {
-            items(contentCredits) { cast ->
-                val castImageUrl = BASE_500_IMAGE_URL + cast.profilePoster
+            }
+    ) {
+        items(contentCredits) { cast ->
+            val castImageUrl = BASE_500_IMAGE_URL + cast.profilePoster
 
-                Column(
+            Column(
+                modifier = Modifier
+                    .width(DETAILS_CAST_PICTURE_SIZE.dp + EXTRA_PADDING.dp)
+                    .padding(horizontal = EXTRA_PADDING.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                NetworkImage(
+                    imageUrl = castImageUrl,
                     modifier = Modifier
-                        .width(DETAILS_CAST_PICTURE_SIZE.dp + EXTRA_PADDING.dp)
-                        .padding(horizontal = EXTRA_PADDING.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    NetworkImage(
-                        imageUrl = castImageUrl,
-                        modifier = Modifier
-                            .size(DETAILS_CAST_PICTURE_SIZE.dp)
-                            .clip(RoundedCornerShape(50))
-                    )
-                    Text(
-                        text = cast.name,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onPrimary,
-                        textAlign = TextAlign.Center,
-                        maxLines = 2
-                    )
-                    Text(
-                        text = cast.character,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.surface,
-                        textAlign = TextAlign.Center,
-                        maxLines = 2
-                    )
-                }
+                        .size(DETAILS_CAST_PICTURE_SIZE.dp)
+                        .clip(CircleShape)
+                )
+                Text(
+                    text = cast.name,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onPrimary,
+                    textAlign = TextAlign.Center,
+                    maxLines = 2
+                )
+                Text(
+                    text = cast.character,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.surface,
+                    textAlign = TextAlign.Center,
+                    maxLines = 2
+                )
             }
         }
     }

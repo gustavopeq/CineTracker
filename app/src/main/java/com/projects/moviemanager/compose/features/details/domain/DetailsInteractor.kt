@@ -43,11 +43,10 @@ class DetailsInteractor @Inject constructor(
         contentId: Int,
         mediaType: MediaType
     ): List<ContentCast> {
-        val result = movieRepository.getMovieCreditsById(contentId)
-//            when (mediaType) {
-//            MediaType.MOVIE -> movieRepository.getMovieCreditsById(contentId)
-//            MediaType.SHOW -> ""
-//        }
+        val result = when (mediaType) {
+            MediaType.MOVIE -> movieRepository.getMovieCreditsById(contentId)
+            MediaType.SHOW -> showRepository.getShowCreditsById(contentId)
+        }
 
         var contentCastList:  List<ContentCast> = emptyList()
         result.collect { response ->

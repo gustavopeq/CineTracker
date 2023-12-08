@@ -1,6 +1,7 @@
 package com.projects.moviemanager.network.repository.show
 
 import com.projects.moviemanager.network.models.ApiError
+import com.projects.moviemanager.network.response.ContentCreditsResponse
 import com.projects.moviemanager.network.response.content.ContentListPageResponse
 import com.projects.moviemanager.network.response.content.ShowApiResponse
 import com.projects.moviemanager.network.services.show.ShowService
@@ -31,6 +32,14 @@ class ShowRepositoryImpl @Inject constructor(
             showService.getShowDetailsById(
                 showId = showId
             )
+        }.asFlow()
+    }
+
+    override suspend fun getShowCreditsById(
+        showId: Int
+    ): Flow<Either<ContentCreditsResponse, ApiError>> {
+        return toApiResult {
+            showService.getShowCreditsById(showId)
         }.asFlow()
     }
 }

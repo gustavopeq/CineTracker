@@ -79,7 +79,7 @@ fun DetailsDescriptionBody(
 
     if (contentDetails?.genres?.isNotEmpty() == true) {
         DetailDescriptionLabel(
-            stringResource(id = R.string.movie_details_release_date_label)
+            stringResource(id = R.string.movie_details_genres_label)
         )
         contentDetails.genres.forEach {
             DetailDescriptionBody(it?.name.orEmpty())

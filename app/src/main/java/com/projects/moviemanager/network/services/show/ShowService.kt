@@ -1,5 +1,6 @@
 package com.projects.moviemanager.network.services.show
 
+import com.projects.moviemanager.network.response.ContentCreditsResponse
 import com.projects.moviemanager.network.response.content.ContentListPageResponse
 import com.projects.moviemanager.network.response.content.ShowApiResponse
 import com.projects.moviemanager.util.Constants
@@ -22,4 +23,9 @@ interface ShowService {
         @Path("show_ID") showId: Int,
         @Query("language") language: String = ENGLISH_LANGUAGE_CODE
     ): Response<ShowApiResponse>
+
+    @GET("tv/{show_ID}/credits?api_key=${Constants.API_KEY}")
+    suspend fun getShowCreditsById(
+        @Path("show_ID") showId: Int
+    ): Response<ContentCreditsResponse>
 }
