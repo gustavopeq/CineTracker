@@ -1,5 +1,7 @@
 package com.projects.moviemanager.compose.features.details.ui
 
+import androidx.compose.animation.core.animateIntOffsetAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -9,32 +11,34 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ScrollableTabRow
+import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.layout
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -45,19 +49,21 @@ import com.projects.moviemanager.compose.common.ui.components.NetworkImage
 import com.projects.moviemanager.compose.common.ui.components.classicVerticalGradientBrush
 import com.projects.moviemanager.compose.common.ui.util.UiConstants.BACKGROUND_INDEX
 import com.projects.moviemanager.compose.common.ui.util.UiConstants.DEFAULT_PADDING
-import com.projects.moviemanager.compose.common.ui.util.UiConstants.DETAILS_CAST_PICTURE_SIZE
 import com.projects.moviemanager.compose.common.ui.util.UiConstants.DETAILS_TITLE_IMAGE_OFFSET_PERCENT
 import com.projects.moviemanager.compose.common.ui.util.UiConstants.EXTRA_MARGIN
-import com.projects.moviemanager.compose.common.ui.util.UiConstants.EXTRA_PADDING
 import com.projects.moviemanager.compose.common.ui.util.UiConstants.FOREGROUND_INDEX
+import com.projects.moviemanager.compose.common.ui.util.UiConstants.LARGE_PADDING
 import com.projects.moviemanager.compose.common.ui.util.UiConstants.POSTER_ASPECT_RATIO
 import com.projects.moviemanager.compose.common.ui.util.UiConstants.SECTION_PADDING
-import com.projects.moviemanager.compose.features.details.ui.components.DetailDescriptionLabel
+import com.projects.moviemanager.compose.common.ui.util.UiConstants.SMALL_PADDING
+import com.projects.moviemanager.compose.features.details.ui.components.CastCarousel
 import com.projects.moviemanager.compose.features.details.ui.components.DetailsDescriptionBody
 import com.projects.moviemanager.compose.features.details.ui.components.DetailsDescriptionHeader
-import com.projects.moviemanager.domain.models.content.ContentCast
+import com.projects.moviemanager.compose.features.details.ui.components.MoreOptionsTabItem
+import com.projects.moviemanager.compose.features.details.ui.components.MoreOptionsTabRow
+import com.projects.moviemanager.compose.theme.MainBarGreyColor
+import com.projects.moviemanager.compose.theme.SecondaryGreyColor
 import com.projects.moviemanager.domain.models.content.MediaContentDetails
-import com.projects.moviemanager.util.Constants.BASE_500_IMAGE_URL
 import com.projects.moviemanager.util.Constants.BASE_ORIGINAL_IMAGE_URL
 import timber.log.Timber
 
@@ -172,68 +178,15 @@ private fun DetailsComponent(
                     if (contentCredits.isNotEmpty()) {
                         CastCarousel(contentCredits)
                     }
+
+                    Spacer(modifier = Modifier.height(SECTION_PADDING.dp))
+
+                    MoreOptionsTabRow()
                 }
                 Spacer(modifier = Modifier.height(EXTRA_MARGIN.dp))
             }
         }
     }
-}
-
-@Composable
-private fun CastCarousel(contentCredits: List<ContentCast>) {
-    DetailDescriptionLabel(
-        labelText = stringResource(id = R.string.movie_details_cast_label),
-        textStyle = MaterialTheme.typography.displayMedium
-    )
-
-    Spacer(modifier = Modifier.height(DEFAULT_PADDING.dp))
-
-    LazyRow(
-        modifier = Modifier
-            .layout { measurable, constraints ->
-                val placeable = measurable.measure(
-                    constraints.copy(
-                        maxWidth = constraints.maxWidth + EXTRA_MARGIN.dp.roundToPx()
-                    )
-                )
-                layout(placeable.width, placeable.height) {
-                    placeable.place(0, 0)
-                }
-            }
-    ) {
-        items(contentCredits) { cast ->
-            val castImageUrl = BASE_500_IMAGE_URL + cast.profilePoster
-
-            Column(
-                modifier = Modifier
-                    .width(DETAILS_CAST_PICTURE_SIZE.dp + EXTRA_PADDING.dp)
-                    .padding(horizontal = EXTRA_PADDING.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                NetworkImage(
-                    imageUrl = castImageUrl,
-                    modifier = Modifier
-                        .size(DETAILS_CAST_PICTURE_SIZE.dp)
-                        .clip(CircleShape)
-                )
-                Text(
-                    text = cast.name,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onPrimary,
-                    textAlign = TextAlign.Center,
-                    maxLines = 2
-                )
-                Text(
-                    text = cast.character,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.surface,
-                    textAlign = TextAlign.Center,
-                    maxLines = 2
-                )
-            }
-        }
-    }
-    Spacer(modifier = Modifier.height(SECTION_PADDING.dp))
 }
 
 @Composable

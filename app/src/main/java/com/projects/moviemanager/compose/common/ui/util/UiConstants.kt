@@ -3,8 +3,9 @@ package com.projects.moviemanager.compose.common.ui.util
 object UiConstants {
     // Common
     const val BUTTON_NAVIGATION_BAR_HEIGHT = 60
-    const val DEFAULT_PADDING = 4
-    const val EXTRA_PADDING = 8
+    const val SMALL_PADDING = 4
+    const val DEFAULT_PADDING = 8
+    const val LARGE_PADDING = 12
     const val DEFAULT_MARGIN = 8
     const val EXTRA_MARGIN = 16
     const val SECTION_PADDING = 24

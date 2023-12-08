@@ -56,4 +56,6 @@
 
     <!-- Details screen -->
     <string name="back_arrow_description">Back arrow</string>
+    <string name="more_options_videos">Videos</string>
+    <string name="more_options_similar">More like this</string>
 </resources>

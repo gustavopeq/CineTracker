@@ -81,14 +81,13 @@ fun DetailsDescriptionBody(
         DetailDescriptionLabel(
             stringResource(id = R.string.movie_details_genres_label)
         )
-        contentDetails.genres.forEach {
-            DetailDescriptionBody(it?.name.orEmpty())
-        }
+        val formattedGenres = contentDetails.genres.map { it?.name }.joinToString(", ")
+        DetailDescriptionBody(bodyText = formattedGenres)
     }
 
     Spacer(modifier = Modifier.height(UiConstants.EXTRA_MARGIN.dp))
 
-    if (contentDetails?.runtime != null) {
+    if (contentDetails?.runtime != null && contentDetails.runtime != 0) {
         DetailDescriptionLabel(
             stringResource(id = R.string.movie_details_runtime_label)
         )

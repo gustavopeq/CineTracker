@@ -55,7 +55,7 @@ import com.projects.moviemanager.compose.common.ui.util.UiConstants.BROWSE_CARD_
 import com.projects.moviemanager.compose.common.ui.util.UiConstants.BROWSE_CARD_WIDTH
 import com.projects.moviemanager.compose.common.ui.util.UiConstants.BROWSE_SCAFFOLD_HEIGHT_OFFSET
 import com.projects.moviemanager.compose.common.ui.util.UiConstants.DEFAULT_MARGIN
-import com.projects.moviemanager.compose.common.ui.util.UiConstants.DEFAULT_PADDING
+import com.projects.moviemanager.compose.common.ui.util.UiConstants.SMALL_PADDING
 import com.projects.moviemanager.compose.features.browse.events.BrowseEvent
 import com.projects.moviemanager.compose.features.browse.ui.components.CollapsingTabRow
 import com.projects.moviemanager.compose.theme.MainBarGreyColor
@@ -245,7 +245,7 @@ private fun BrowseCard(
     ) {
         Column(
             horizontalAlignment = Alignment.Start,
-            modifier = Modifier.padding(horizontal = DEFAULT_PADDING.dp)
+            modifier = Modifier.padding(horizontal = SMALL_PADDING.dp)
         ) {
             Spacer(modifier = Modifier.height(4.dp))
             NetworkImage(
@@ -254,7 +254,7 @@ private fun BrowseCard(
                 widthDp = BROWSE_CARD_WIDTH.dp,
                 heightDp = BROWSE_CARD_IMAGE_HEIGHT.dp
             )
-            Spacer(modifier = Modifier.width(DEFAULT_PADDING.dp))
+            Spacer(modifier = Modifier.width(SMALL_PADDING.dp))
             Text(
                 text = title.orEmpty(),
                 color = MaterialTheme.colorScheme.onPrimary,
@@ -291,7 +291,7 @@ private fun BrowseBodyPlaceholder() {
                     modifier = Modifier
                         .clip(RoundCornerShapes.small)
                 )
-                Spacer(modifier = Modifier.height(DEFAULT_PADDING.dp))
+                Spacer(modifier = Modifier.height(SMALL_PADDING.dp))
                 ComponentPlaceholder(
                     widthDp = BROWSE_CARD_WIDTH.dp,
                     heightDp = 100.dp,

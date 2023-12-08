@@ -7,9 +7,11 @@ fun Int.stringFormat(): String {
     val runtimeHours: Int = this / 60
     val runtimeMinutes = this % 60
 
-    return if (runtimeMinutes != 0) {
+    return if (runtimeHours != 0 && runtimeMinutes != 0) {
         "$runtimeHours h $runtimeMinutes min"
-    } else {
+    } else if (runtimeHours != 0) {
         "$runtimeHours h"
+    } else {
+        "$runtimeMinutes min"
     }
 }

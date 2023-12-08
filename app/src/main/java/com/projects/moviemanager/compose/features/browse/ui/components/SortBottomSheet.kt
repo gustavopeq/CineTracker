@@ -32,7 +32,7 @@ import com.projects.moviemanager.compose.common.MediaType
 import com.projects.moviemanager.compose.common.ui.components.SortTypeItem
 import com.projects.moviemanager.compose.common.ui.components.SystemNavBarSpacer
 import com.projects.moviemanager.compose.common.ui.util.UiConstants.DEFAULT_MARGIN
-import com.projects.moviemanager.compose.common.ui.util.UiConstants.DEFAULT_PADDING
+import com.projects.moviemanager.compose.common.ui.util.UiConstants.SMALL_PADDING
 import com.projects.moviemanager.compose.theme.MainBarGreyColor
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -84,7 +84,7 @@ fun SortBottomSheet(
         )
         Divider(
             color = MaterialTheme.colorScheme.inverseSurface,
-            modifier = Modifier.padding(top = DEFAULT_PADDING.dp)
+            modifier = Modifier.padding(top = SMALL_PADDING.dp)
         )
         when (selectedMediaType) {
             MediaType.MOVIE -> {
@@ -108,7 +108,7 @@ fun SortBottomSheet(
                 )
             }
         }
-        Spacer(modifier = Modifier.height(DEFAULT_PADDING.dp))
+        Spacer(modifier = Modifier.height(SMALL_PADDING.dp))
         SystemNavBarSpacer()
     }
 }
