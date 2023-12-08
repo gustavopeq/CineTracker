@@ -12,10 +12,6 @@ class ApiClient(
     private val movieDbService: MovieDbService
 ) {
 
-    suspend fun getMovieCreditsById(movie_ID: Int): SimpleResponse<ContentCreditsResponse> {
-        return safeApiCall { movieDbService.getMovieCreditsById(movie_ID) }
-    }
-
     suspend fun getMovieVideosById(movie_ID: Int): SimpleResponse<GetMovieVideosByIdResponse> {
         return safeApiCall { movieDbService.getMovieVideosById(movie_ID) }
     }

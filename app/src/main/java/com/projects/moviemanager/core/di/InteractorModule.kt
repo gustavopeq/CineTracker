@@ -1,7 +1,7 @@
 package com.projects.moviemanager.core.di
 
-import com.projects.moviemanager.compose.features.browse.domain.BrowseInteractor
-import com.projects.moviemanager.compose.features.details.domain.DetailsInteractor
+import com.projects.moviemanager.features.browse.domain.BrowseInteractor
+import com.projects.moviemanager.features.details.domain.DetailsInteractor
 import com.projects.moviemanager.network.repository.movie.MovieRepository
 import com.projects.moviemanager.network.repository.show.ShowRepository
 import dagger.Module

@@ -1,6 +1,6 @@
 package com.projects.moviemanager.network.response.content
 
-import com.projects.moviemanager.compose.common.MediaType
+import com.projects.moviemanager.common.domain.MediaType
 import com.projects.moviemanager.domain.models.ContentGenre
 import com.projects.moviemanager.domain.models.ProductionCompany
 import com.projects.moviemanager.domain.models.ProductionCountry

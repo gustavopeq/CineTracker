@@ -19,14 +19,14 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.projects.moviemanager.compose.common.MainViewModel
-import com.projects.moviemanager.compose.common.ui.components.ModalComponents
-import com.projects.moviemanager.compose.features.details.DetailsScreen
-import com.projects.moviemanager.compose.navigation.MainNavGraph
-import com.projects.moviemanager.compose.navigation.components.MainNavBar
-import com.projects.moviemanager.compose.navigation.components.MainNavBarItem
-import com.projects.moviemanager.compose.navigation.components.TopNavBar
-import com.projects.moviemanager.compose.theme.MovieManagerTheme
+import com.projects.moviemanager.common.ui.MainViewModel
+import com.projects.moviemanager.common.ui.components.ModalComponents
+import com.projects.moviemanager.features.details.DetailsScreen
+import com.projects.moviemanager.navigation.MainNavGraph
+import com.projects.moviemanager.navigation.components.MainNavBar
+import com.projects.moviemanager.navigation.components.MainNavBarItem
+import com.projects.moviemanager.navigation.components.TopNavBar
+import com.projects.moviemanager.common.theme.MovieManagerTheme
 
 @Composable
 fun MainApp() {

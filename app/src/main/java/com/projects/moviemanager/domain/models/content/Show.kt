@@ -1,6 +1,6 @@
 package com.projects.moviemanager.domain.models.content
 
-import com.projects.moviemanager.compose.common.MediaType
+import com.projects.moviemanager.common.domain.MediaType
 import com.projects.moviemanager.network.response.content.BaseMediaContentResponse
 
 data class Show(

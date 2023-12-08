@@ -1,6 +1,6 @@
 package com.projects.moviemanager.util
 
-import com.projects.moviemanager.compose.common.ui.util.UiConstants.UNDEFINED_RATINGS
+import com.projects.moviemanager.common.ui.util.UiConstants.UNDEFINED_RATINGS
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 
