@@ -4,6 +4,7 @@ import com.projects.moviemanager.network.models.ApiError
 import com.projects.moviemanager.network.response.content.ContentCreditsResponse
 import com.projects.moviemanager.network.response.content.ContentListPageResponse
 import com.projects.moviemanager.network.response.content.ShowApiResponse
+import com.projects.moviemanager.network.response.content.VideosByIdResponse
 import com.projects.moviemanager.network.util.Either
 import kotlinx.coroutines.flow.Flow
 
@@ -20,4 +21,8 @@ interface ShowRepository {
     suspend fun getShowCreditsById(
         showId: Int
     ): Flow<Either<ContentCreditsResponse, ApiError>>
+
+    suspend fun getShowVideosById(
+        showId: Int
+    ): Flow<Either<VideosByIdResponse, ApiError>>
 }

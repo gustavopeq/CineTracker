@@ -70,7 +70,10 @@ class DetailsInteractor @Inject constructor(
         contentId: Int,
         mediaType: MediaType
     ): List<Videos> {
-        val result = movieRepository.getMovieVideosById(contentId)
+        val result = when (mediaType) {
+            MediaType.MOVIE -> movieRepository.getMovieVideosById(contentId)
+            MediaType.SHOW -> showRepository.getShowVideosById(contentId)
+        }
 
         var videoList: List<Videos> = emptyList()
         result.collect { response ->

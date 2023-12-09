@@ -4,6 +4,7 @@ import com.projects.moviemanager.network.models.ApiError
 import com.projects.moviemanager.network.response.content.ContentCreditsResponse
 import com.projects.moviemanager.network.response.content.ContentListPageResponse
 import com.projects.moviemanager.network.response.content.ShowApiResponse
+import com.projects.moviemanager.network.response.content.VideosByIdResponse
 import com.projects.moviemanager.network.services.show.ShowService
 import com.projects.moviemanager.network.util.Either
 import com.projects.moviemanager.network.util.asFlow
@@ -40,6 +41,14 @@ class ShowRepositoryImpl @Inject constructor(
     ): Flow<Either<ContentCreditsResponse, ApiError>> {
         return toApiResult {
             showService.getShowCreditsById(showId)
+        }.asFlow()
+    }
+
+    override suspend fun getShowVideosById(
+        showId: Int
+    ): Flow<Either<VideosByIdResponse, ApiError>> {
+        return toApiResult {
+            showService.getShowVideosById(showId)
         }.asFlow()
     }
 }

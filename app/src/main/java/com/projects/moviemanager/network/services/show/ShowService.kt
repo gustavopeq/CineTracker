@@ -3,6 +3,7 @@ package com.projects.moviemanager.network.services.show
 import com.projects.moviemanager.network.response.content.ContentCreditsResponse
 import com.projects.moviemanager.network.response.content.ContentListPageResponse
 import com.projects.moviemanager.network.response.content.ShowApiResponse
+import com.projects.moviemanager.network.response.content.VideosByIdResponse
 import com.projects.moviemanager.util.Constants
 import com.projects.moviemanager.util.Constants.ENGLISH_LANGUAGE_CODE
 import retrofit2.Response
@@ -28,4 +29,9 @@ interface ShowService {
     suspend fun getShowCreditsById(
         @Path("show_ID") showId: Int
     ): Response<ContentCreditsResponse>
+
+    @GET("tv/{show_ID}/videos?api_key=${Constants.API_KEY}")
+    suspend fun getShowVideosById(
+        @Path("show_ID") showId: Int
+    ): Response<VideosByIdResponse>
 }
