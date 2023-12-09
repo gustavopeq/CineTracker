@@ -98,7 +98,10 @@ class DetailsInteractor @Inject constructor(
         contentId: Int,
         mediaType: MediaType
     ): List<MediaContent> {
-        val result = movieRepository.getSimilarMoviesById(contentId)
+        val result =  when (mediaType) {
+            MediaType.MOVIE -> movieRepository.getSimilarMoviesById(contentId)
+            MediaType.SHOW -> showRepository.getSimilarShowsById(contentId)
+        }
 
         var listOfSimilar: List<MediaContent> = emptyList()
         result.collect { response ->

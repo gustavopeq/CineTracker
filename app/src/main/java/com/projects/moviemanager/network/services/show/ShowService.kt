@@ -2,6 +2,7 @@ package com.projects.moviemanager.network.services.show
 
 import com.projects.moviemanager.network.response.content.ContentCreditsResponse
 import com.projects.moviemanager.network.response.content.ContentListPageResponse
+import com.projects.moviemanager.network.response.content.MovieApiResponse
 import com.projects.moviemanager.network.response.content.ShowApiResponse
 import com.projects.moviemanager.network.response.content.VideosByIdResponse
 import com.projects.moviemanager.util.Constants
@@ -34,4 +35,9 @@ interface ShowService {
     suspend fun getShowVideosById(
         @Path("show_ID") showId: Int
     ): Response<VideosByIdResponse>
+
+    @GET("tv/{show_ID}/similar?api_key=${Constants.API_KEY}")
+    suspend fun getSimilarShowsById(
+        @Path("show_ID") showId: Int
+    ): Response<ContentListPageResponse<ShowApiResponse>>
 }

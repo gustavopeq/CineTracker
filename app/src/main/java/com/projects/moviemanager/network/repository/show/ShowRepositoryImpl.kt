@@ -40,7 +40,9 @@ class ShowRepositoryImpl @Inject constructor(
         showId: Int
     ): Flow<Either<ContentCreditsResponse, ApiError>> {
         return toApiResult {
-            showService.getShowCreditsById(showId)
+            showService.getShowCreditsById(
+                showId = showId
+            )
         }.asFlow()
     }
 
@@ -48,7 +50,19 @@ class ShowRepositoryImpl @Inject constructor(
         showId: Int
     ): Flow<Either<VideosByIdResponse, ApiError>> {
         return toApiResult {
-            showService.getShowVideosById(showId)
+            showService.getShowVideosById(
+                showId = showId
+            )
+        }.asFlow()
+    }
+
+    override suspend fun getSimilarShowsById(
+        showId: Int
+    ): Flow<Either<ContentListPageResponse<ShowApiResponse>, ApiError>> {
+        return toApiResult {
+            showService.getSimilarShowsById(
+                showId = showId
+            )
         }.asFlow()
     }
 }
