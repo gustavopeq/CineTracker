@@ -33,16 +33,17 @@ import com.projects.moviemanager.common.ui.components.DimensionSubcomposeLayout
 import com.projects.moviemanager.common.ui.components.NetworkImage
 import com.projects.moviemanager.common.ui.components.classicVerticalGradientBrush
 import com.projects.moviemanager.common.ui.util.UiConstants.BACKGROUND_INDEX
+import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_MARGIN
 import com.projects.moviemanager.common.ui.util.UiConstants.DETAILS_TITLE_IMAGE_OFFSET_PERCENT
 import com.projects.moviemanager.common.ui.util.UiConstants.EXTRA_MARGIN
 import com.projects.moviemanager.common.ui.util.UiConstants.FOREGROUND_INDEX
 import com.projects.moviemanager.common.ui.util.UiConstants.POSTER_ASPECT_RATIO
 import com.projects.moviemanager.common.ui.util.UiConstants.SECTION_PADDING
+import com.projects.moviemanager.domain.models.content.MediaContentDetails
 import com.projects.moviemanager.features.details.ui.components.CastCarousel
 import com.projects.moviemanager.features.details.ui.components.DetailsDescriptionBody
 import com.projects.moviemanager.features.details.ui.components.DetailsDescriptionHeader
 import com.projects.moviemanager.features.details.ui.components.MoreOptionsTabRow
-import com.projects.moviemanager.domain.models.content.MediaContentDetails
 import com.projects.moviemanager.util.Constants.BASE_ORIGINAL_IMAGE_URL
 import timber.log.Timber
 
@@ -50,13 +51,15 @@ import timber.log.Timber
 fun Details(
     contentId: Int?,
     mediaType: MediaType,
-    onBackPress: () -> Unit
+    onBackPress: () -> Unit,
+    openSimilarContent: (Int, MediaType) -> Unit
 ) {
     Details(
         viewModel = hiltViewModel(),
         contentId = contentId,
         mediaType = mediaType,
-        onBackPress = onBackPress
+        onBackPress = onBackPress,
+        openSimilarContent = openSimilarContent
     )
 }
 
@@ -65,7 +68,8 @@ private fun Details(
     viewModel: DetailsViewModel,
     contentId: Int?,
     mediaType: MediaType,
-    onBackPress: () -> Unit
+    onBackPress: () -> Unit,
+    openSimilarContent: (Int, MediaType) -> Unit
 ) {
     val localDensity = LocalDensity.current
     val contentDetails by viewModel.contentDetails.collectAsState()
@@ -104,7 +108,13 @@ private fun Details(
         dependentContent = { size ->
             val bgOffset = localDensity.run { size.height.toDp() }
             contentDetails?.let { details ->
-                DetailsComponent(bgOffset, scrollState, details, viewModel)
+                DetailsComponent(
+                    bgOffset = bgOffset,
+                    scrollState = scrollState,
+                    contentDetails = details,
+                    viewModel = viewModel,
+                    openSimilarContent = openSimilarContent
+                )
             }
         }
     )
@@ -115,13 +125,15 @@ private fun DetailsComponent(
     bgOffset: Dp,
     scrollState: LazyListState,
     contentDetails: MediaContentDetails,
-    viewModel: DetailsViewModel
+    viewModel: DetailsViewModel,
+    openSimilarContent: (Int, MediaType) -> Unit
 ) {
     val contentCredits by viewModel.contentCredits.collectAsState()
     val videoList by viewModel.contentVideos.collectAsState()
+    val contentSimilarList by viewModel.contentSimilar.collectAsState()
 
     LaunchedEffect(Unit) {
-        viewModel.fetchContentCredits(contentDetails.id, contentDetails.mediaType)
+        viewModel.fetchAdditionalInfo(contentDetails.id, contentDetails.mediaType)
     }
 
     LazyColumn(
@@ -149,7 +161,7 @@ private fun DetailsComponent(
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(EXTRA_MARGIN.dp)
+                        .padding(DEFAULT_MARGIN.dp)
                 ) {
                     DetailsDescriptionBody(
                         contentDetails = contentDetails
@@ -162,10 +174,11 @@ private fun DetailsComponent(
                     Spacer(modifier = Modifier.height(SECTION_PADDING.dp))
 
                     MoreOptionsTabRow(
-                        videoList = videoList
+                        videoList = videoList,
+                        contentSimilarList = contentSimilarList,
+                        openSimilarContent = openSimilarContent
                     )
                 }
-                Spacer(modifier = Modifier.height(EXTRA_MARGIN.dp))
             }
         }
     }

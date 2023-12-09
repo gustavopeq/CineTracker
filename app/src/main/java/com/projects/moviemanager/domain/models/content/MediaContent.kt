@@ -11,7 +11,7 @@ data class MediaContent(
     override val mediaType: MediaType
 ) : BaseMediaContent
 
-fun BaseMediaContentResponse.toDomain(): MediaContent {
+fun BaseMediaContentResponse.toMediaContent(): MediaContent {
     return MediaContent(
         id = this.id,
         title = this.title,

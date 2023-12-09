@@ -4,7 +4,7 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.projects.moviemanager.common.domain.MediaType
 import com.projects.moviemanager.domain.models.content.BaseMediaContent
-import com.projects.moviemanager.domain.models.content.toDomain
+import com.projects.moviemanager.domain.models.content.toMediaContent
 import com.projects.moviemanager.domain.models.util.ContentListType
 import com.projects.moviemanager.network.repository.movie.MovieRepository
 import com.projects.moviemanager.network.repository.show.ShowRepository
@@ -45,7 +45,7 @@ class MediaContentPagingSource(
 
                 is Left -> {
                     val data = apiResponse.value.results.map {
-                        it.toDomain()
+                        it.toMediaContent()
                     }
                     LoadResult.Page(
                         data = data,

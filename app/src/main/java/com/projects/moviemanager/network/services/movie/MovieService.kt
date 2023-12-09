@@ -1,9 +1,9 @@
 package com.projects.moviemanager.network.services.movie
 
 import com.projects.moviemanager.network.response.content.ContentCreditsResponse
-import com.projects.moviemanager.network.response.content.VideosByIdResponse
 import com.projects.moviemanager.network.response.content.ContentListPageResponse
 import com.projects.moviemanager.network.response.content.MovieApiResponse
+import com.projects.moviemanager.network.response.content.VideosByIdResponse
 import com.projects.moviemanager.util.Constants
 import com.projects.moviemanager.util.Constants.ENGLISH_LANGUAGE_CODE
 import retrofit2.Response
@@ -34,4 +34,9 @@ interface MovieService {
     suspend fun getMovieVideosById(
         @Path("movie_ID") movieId: Int
     ): Response<VideosByIdResponse>
+
+    @GET("movie/{movie_ID}/similar?api_key=${Constants.API_KEY}")
+    suspend fun getSimilarMoviesById(
+        @Path("movie_ID") movieId: Int
+    ): Response<ContentListPageResponse<MovieApiResponse>>
 }

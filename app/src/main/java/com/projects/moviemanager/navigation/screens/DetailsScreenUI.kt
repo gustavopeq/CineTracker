@@ -18,6 +18,11 @@ class DetailsScreenUI : ScreenUI {
             mediaType = MediaType.getType(mediaType),
             onBackPress = {
                 navController.popBackStack()
+            },
+            openSimilarContent = { id, type ->
+                navController.navigate(
+                    DetailsScreen.routeWithArguments(id, type.name)
+                )
             }
         )
     }

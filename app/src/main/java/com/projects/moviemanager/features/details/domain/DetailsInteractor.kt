@@ -2,9 +2,11 @@ package com.projects.moviemanager.features.details.domain
 
 import com.projects.moviemanager.common.domain.MediaType
 import com.projects.moviemanager.domain.models.content.ContentCast
+import com.projects.moviemanager.domain.models.content.MediaContent
 import com.projects.moviemanager.domain.models.content.MediaContentDetails
 import com.projects.moviemanager.domain.models.content.Videos
 import com.projects.moviemanager.domain.models.content.toContentCast
+import com.projects.moviemanager.domain.models.content.toMediaContent
 import com.projects.moviemanager.domain.models.content.toMediaContentDetails
 import com.projects.moviemanager.domain.models.content.toVideos
 import com.projects.moviemanager.network.repository.movie.MovieRepository
@@ -90,5 +92,27 @@ class DetailsInteractor @Inject constructor(
         }
 
         return videoList
+    }
+
+    suspend fun getSimilarContentById(
+        contentId: Int,
+        mediaType: MediaType
+    ): List<MediaContent> {
+        val result = movieRepository.getSimilarMoviesById(contentId)
+
+        var listOfSimilar: List<MediaContent> = emptyList()
+        result.collect { response ->
+            when (response) {
+                is Right -> {
+                    Timber.e("getSimilarContentById failed with error: ${response.error}")
+                }
+                is Left -> {
+                    listOfSimilar = response.value.results.map {
+                        it.toMediaContent()
+                    }
+                }
+            }
+        }
+        return listOfSimilar
     }
 }

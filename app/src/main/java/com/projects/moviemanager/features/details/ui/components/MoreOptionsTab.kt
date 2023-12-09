@@ -23,7 +23,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,9 +34,11 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import com.projects.moviemanager.common.domain.MediaType
 import com.projects.moviemanager.common.theme.MainBarGreyColor
 import com.projects.moviemanager.common.ui.util.UiConstants
 import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_PADDING
+import com.projects.moviemanager.domain.models.content.MediaContent
 import com.projects.moviemanager.domain.models.content.Videos
 import com.projects.moviemanager.features.details.ui.components.MoreOptionsTabItem.MoreLikeThisTab
 import com.projects.moviemanager.features.details.ui.components.MoreOptionsTabItem.VideosTab
@@ -44,14 +46,20 @@ import com.projects.moviemanager.util.Constants.BASE_URL_YOUTUBE_VIDEO
 
 @Composable
 fun MoreOptionsTabRow(
-    videoList: List<Videos>
+    videoList: List<Videos>,
+    contentSimilarList: List<MediaContent>,
+    openSimilarContent: (Int, MediaType) -> Unit
 ) {
-    val tabList = if (videoList.isNotEmpty()) {
-        listOf(VideosTab, MoreLikeThisTab)
-    } else {
-        listOf(MoreLikeThisTab)
+    val tabList = when {
+        videoList.isNotEmpty() && contentSimilarList.isNotEmpty() -> {
+            listOf(VideosTab, MoreLikeThisTab)
+        }
+        videoList.isNotEmpty() -> listOf(VideosTab)
+        contentSimilarList.isNotEmpty() -> listOf(MoreLikeThisTab)
+        else -> emptyList()
     }
-    var selectedTabIndex by remember { mutableIntStateOf(VideosTab.tabIndex) }
+
+    var selectedTabIndex by rememberSaveable { mutableIntStateOf(VideosTab.tabIndex) }
     val activity = LocalContext.current as Activity
 
     val launchVideo: (String) -> Unit = { videoKey ->
@@ -61,42 +69,48 @@ fun MoreOptionsTabRow(
         activity.startActivity(intent)
     }
 
-    Column {
-        ScrollableTabRow(
-            modifier = Modifier.fillMaxWidth(),
-            selectedTabIndex = selectedTabIndex,
-            indicator = { tabPositions ->
-                TabIndicator(
-                    width = tabPositions[selectedTabIndex].width,
-                    left = tabPositions[selectedTabIndex].left
-                )
-            },
-            divider = { },
-            containerColor = Color.Transparent,
-            edgePadding = 0.dp
-        ) {
-            tabList.forEachIndexed { index, mediaTypeTabItem ->
-                MoreOptionsTab(
-                    text = stringResource(id = mediaTypeTabItem.tabResId),
-                    tabIndex = index,
-                    isSelected = selectedTabIndex == index,
-                    onClick = {
-                        selectedTabIndex = index
-                    }
-                )
+    if (tabList.isNotEmpty()) {
+        Column {
+            ScrollableTabRow(
+                modifier = Modifier.fillMaxWidth(),
+                selectedTabIndex = selectedTabIndex,
+                indicator = { tabPositions ->
+                    TabIndicator(
+                        width = tabPositions[selectedTabIndex].width,
+                        left = tabPositions[selectedTabIndex].left
+                    )
+                },
+                divider = { },
+                containerColor = Color.Transparent,
+                edgePadding = 0.dp
+            ) {
+                tabList.forEachIndexed { index, mediaTypeTabItem ->
+                    MoreOptionsTab(
+                        text = stringResource(id = mediaTypeTabItem.tabResId),
+                        tabIndex = index,
+                        isSelected = selectedTabIndex == index,
+                        onClick = {
+                            selectedTabIndex = index
+                        }
+                    )
+                }
             }
-        }
-        Divider(
-            color = MainBarGreyColor,
-            modifier = Modifier
-                .fillMaxWidth()
-                .offset(y = (-1).dp)
-                .zIndex(UiConstants.BACKGROUND_INDEX)
-        )
+            Divider(
+                color = MainBarGreyColor,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .offset(y = (-1).dp)
+                    .zIndex(UiConstants.BACKGROUND_INDEX)
+            )
 
-        when (tabList[selectedTabIndex].tabIndex) {
-            VideosTab.tabIndex -> {
-                VideoList(videoList, launchVideo)
+            when (tabList[selectedTabIndex].tabIndex) {
+                VideosTab.tabIndex -> {
+                    VideoList(videoList, launchVideo)
+                }
+
+                MoreLikeThisTab.tabIndex -> {
+                    MoreLikeThisList(contentSimilarList, openSimilarContent)
+                }
             }
         }
     }
