@@ -2,7 +2,8 @@ package com.projects.moviemanager.network.repository.movie
 
 import com.projects.moviemanager.domain.models.util.ContentListType
 import com.projects.moviemanager.network.models.ApiError
-import com.projects.moviemanager.network.response.ContentCreditsResponse
+import com.projects.moviemanager.network.response.content.ContentCreditsResponse
+import com.projects.moviemanager.network.response.content.VideosByIdResponse
 import com.projects.moviemanager.network.response.content.ContentListPageResponse
 import com.projects.moviemanager.network.response.content.MovieApiResponse
 import com.projects.moviemanager.network.util.Either
@@ -21,4 +22,8 @@ interface MovieRepository {
     suspend fun getMovieCreditsById(
         movieId: Int
     ): Flow<Either<ContentCreditsResponse, ApiError>>
+
+    suspend fun getMovieVideosById(
+        movieId: Int
+    ): Flow<Either<VideosByIdResponse, ApiError>>
 }

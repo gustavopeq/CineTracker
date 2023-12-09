@@ -1,0 +1,81 @@
+package com.projects.moviemanager.features.details.ui.components
+
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.unit.dp
+import com.projects.moviemanager.common.theme.MainBarGreyColor
+import com.projects.moviemanager.common.ui.components.NetworkImage
+import com.projects.moviemanager.common.ui.util.UiConstants
+import com.projects.moviemanager.domain.models.content.Videos
+import com.projects.moviemanager.util.Constants
+
+@Composable
+@OptIn(ExperimentalMaterial3Api::class)
+fun VideoList(
+    videoList: List<Videos>,
+    launchVideo: (String) -> Unit
+) {
+    videoList.forEach { video ->
+        val imagePath = "${Constants.BASE_YOUTUBE_THUMBAIL_URL}${video.key}${Constants.YOUTUBE_THUMBAIL_RESOLUTION}"
+
+        Column(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Card(
+                onClick = {
+                    launchVideo(video.key)
+                },
+                colors = CardDefaults.cardColors(
+                    containerColor = MainBarGreyColor
+                ),
+                modifier = Modifier
+                    .padding(
+                        vertical = UiConstants.DEFAULT_PADDING.dp
+                    )
+                    .fillMaxWidth()
+            ) {
+                Row {
+                    NetworkImage(
+                        imageUrl = imagePath,
+                        modifier = Modifier
+                            .fillMaxWidth(0.5f)
+                            .clip(
+                                RoundedCornerShape(
+                                    topStart = UiConstants.VIDEOS_BORDER_SIZE.dp,
+                                    bottomStart = UiConstants.VIDEOS_BORDER_SIZE.dp
+                                )
+                            ),
+                        contentScale = ContentScale.Fit
+                    )
+                    Spacer(modifier = Modifier.width(UiConstants.SMALL_PADDING.dp))
+                    Column(
+                        verticalArrangement = Arrangement.SpaceBetween,
+                        modifier = Modifier.fillMaxHeight()
+                    ) {
+                        Text(
+                            text = video.name,
+                            color = MaterialTheme.colorScheme.onPrimary,
+                            style = MaterialTheme.typography.bodySmall
+                        )
+                    }
+                }
+            }
+        }
+    }
+}

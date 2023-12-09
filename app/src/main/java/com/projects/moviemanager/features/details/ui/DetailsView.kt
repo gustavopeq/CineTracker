@@ -118,6 +118,7 @@ private fun DetailsComponent(
     viewModel: DetailsViewModel
 ) {
     val contentCredits by viewModel.contentCredits.collectAsState()
+    val videoList by viewModel.contentVideos.collectAsState()
 
     LaunchedEffect(Unit) {
         viewModel.fetchContentCredits(contentDetails.id, contentDetails.mediaType)
@@ -160,7 +161,9 @@ private fun DetailsComponent(
 
                     Spacer(modifier = Modifier.height(SECTION_PADDING.dp))
 
-                    MoreOptionsTabRow()
+                    MoreOptionsTabRow(
+                        videoList = videoList
+                    )
                 }
                 Spacer(modifier = Modifier.height(EXTRA_MARGIN.dp))
             }

@@ -1,6 +1,6 @@
 package com.projects.moviemanager.network.services.show
 
-import com.projects.moviemanager.network.response.ContentCreditsResponse
+import com.projects.moviemanager.network.response.content.ContentCreditsResponse
 import com.projects.moviemanager.network.response.content.ContentListPageResponse
 import com.projects.moviemanager.network.response.content.ShowApiResponse
 import com.projects.moviemanager.util.Constants

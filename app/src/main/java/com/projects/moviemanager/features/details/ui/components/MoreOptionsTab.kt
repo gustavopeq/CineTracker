@@ -1,5 +1,8 @@
 package com.projects.moviemanager.features.details.ui.components
 
+import android.app.Activity
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.animation.core.animateIntOffsetAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -25,23 +28,38 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import com.projects.moviemanager.common.ui.util.UiConstants
 import com.projects.moviemanager.common.theme.MainBarGreyColor
-import com.projects.moviemanager.features.details.ui.components.MoreOptionsTabItem.Videos
-import com.projects.moviemanager.features.details.ui.components.MoreOptionsTabItem.MoreLikeThis
+import com.projects.moviemanager.common.ui.util.UiConstants
+import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_PADDING
+import com.projects.moviemanager.domain.models.content.Videos
+import com.projects.moviemanager.features.details.ui.components.MoreOptionsTabItem.MoreLikeThisTab
+import com.projects.moviemanager.features.details.ui.components.MoreOptionsTabItem.VideosTab
+import com.projects.moviemanager.util.Constants.BASE_URL_YOUTUBE_VIDEO
 
 @Composable
-fun MoreOptionsTabRow() {
-    val tabList = listOf(
-        Videos,
-        MoreLikeThis
-    )
-    var selectedTabIndex by remember { mutableIntStateOf(Videos.tabIndex) }
+fun MoreOptionsTabRow(
+    videoList: List<Videos>
+) {
+    val tabList = if (videoList.isNotEmpty()) {
+        listOf(VideosTab, MoreLikeThisTab)
+    } else {
+        listOf(MoreLikeThisTab)
+    }
+    var selectedTabIndex by remember { mutableIntStateOf(VideosTab.tabIndex) }
+    val activity = LocalContext.current as Activity
+
+    val launchVideo: (String) -> Unit = { videoKey ->
+        val fullUrl = BASE_URL_YOUTUBE_VIDEO + videoKey
+        val uri = Uri.parse(fullUrl)
+        val intent = Intent(Intent.ACTION_VIEW, uri)
+        activity.startActivity(intent)
+    }
 
     Column {
         ScrollableTabRow(
@@ -76,8 +94,10 @@ fun MoreOptionsTabRow() {
                 .zIndex(UiConstants.BACKGROUND_INDEX)
         )
 
-        when (selectedTabIndex) {
-            Videos.tabIndex -> {}
+        when (tabList[selectedTabIndex].tabIndex) {
+            VideosTab.tabIndex -> {
+                VideoList(videoList, launchVideo)
+            }
         }
     }
 }
@@ -90,7 +110,7 @@ private fun MoreOptionsTab(
     onClick: (Int) -> Unit
 ) {
     Tab(
-        modifier = Modifier.padding(horizontal = UiConstants.DEFAULT_PADDING.dp),
+        modifier = Modifier.padding(horizontal = DEFAULT_PADDING.dp),
         selected = isSelected,
         onClick = { onClick(tabIndex) }
     ) {

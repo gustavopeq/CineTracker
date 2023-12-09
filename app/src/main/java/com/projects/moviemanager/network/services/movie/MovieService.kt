@@ -1,6 +1,7 @@
 package com.projects.moviemanager.network.services.movie
 
-import com.projects.moviemanager.network.response.ContentCreditsResponse
+import com.projects.moviemanager.network.response.content.ContentCreditsResponse
+import com.projects.moviemanager.network.response.content.VideosByIdResponse
 import com.projects.moviemanager.network.response.content.ContentListPageResponse
 import com.projects.moviemanager.network.response.content.MovieApiResponse
 import com.projects.moviemanager.util.Constants
@@ -28,4 +29,9 @@ interface MovieService {
     suspend fun getMovieCreditsById(
         @Path("movie_ID") movieId: Int
     ): Response<ContentCreditsResponse>
+
+    @GET("movie/{movie_ID}/videos?api_key=${Constants.API_KEY}")
+    suspend fun getMovieVideosById(
+        @Path("movie_ID") movieId: Int
+    ): Response<VideosByIdResponse>
 }

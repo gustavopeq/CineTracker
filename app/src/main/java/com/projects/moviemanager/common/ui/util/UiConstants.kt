@@ -34,4 +34,5 @@ object UiConstants {
     // Details
     const val DETAILS_TITLE_IMAGE_OFFSET_PERCENT = 0.7f
     const val DETAILS_CAST_PICTURE_SIZE = 100
+    const val VIDEOS_BORDER_SIZE = 4
 }

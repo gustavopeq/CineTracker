@@ -1,5 +1,7 @@
 package com.projects.moviemanager.domain.models
 
+import com.projects.moviemanager.network.response.content.VideoResponse
+
 data class MovieDetails(
     val budget: Int?,
     val genres: List<ContentGenre?>?,
@@ -12,6 +14,6 @@ data class MovieDetails(
     val title: String?,
     val vote_average: Double?,
     val movieCast: List<MovieCast?>?,
-    val movieVideos: List<MovieVideo?>?,
+    val movieVideos: List<VideoResponse?>?,
     val productionCountry: List<ProductionCountry?>?
 )

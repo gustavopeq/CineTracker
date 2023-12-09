@@ -1,7 +1,5 @@
 package com.projects.moviemanager.network
 
-import com.projects.moviemanager.network.response.ContentCreditsResponse
-import com.projects.moviemanager.network.response.GetMovieVideosByIdResponse
 import com.projects.moviemanager.network.response.person.GetPersonDetailsByIdResponse
 import com.projects.moviemanager.network.response.person.GetPersonImagesByIdResponse
 import com.projects.moviemanager.network.response.person.GetPersonsMoviesByIdResponse
@@ -11,10 +9,6 @@ import retrofit2.Response
 class ApiClient(
     private val movieDbService: MovieDbService
 ) {
-
-    suspend fun getMovieVideosById(movie_ID: Int): SimpleResponse<GetMovieVideosByIdResponse> {
-        return safeApiCall { movieDbService.getMovieVideosById(movie_ID) }
-    }
 
     // PEOPLE
 
