@@ -9,6 +9,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
@@ -17,11 +19,14 @@ import com.projects.moviemanager.common.ui.components.GradientDirections
 import com.projects.moviemanager.common.ui.components.RatingComponent
 import com.projects.moviemanager.common.ui.components.classicVerticalGradientBrush
 import com.projects.moviemanager.common.ui.util.UiConstants
-import com.projects.moviemanager.features.details.util.stringFormat
 import com.projects.moviemanager.domain.models.content.MediaContentDetails
+import com.projects.moviemanager.features.details.util.stringFormat
 
 @Composable
-fun DetailsDescriptionHeader(contentDetails: MediaContentDetails?) {
+fun DetailsDescriptionHeader(
+    contentDetails: MediaContentDetails?,
+    updateHeaderPosition: (Float) -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -29,7 +34,11 @@ fun DetailsDescriptionHeader(contentDetails: MediaContentDetails?) {
                 direction = GradientDirections.UP
             )
     ) {
-        Spacer(modifier = Modifier.height(12.dp))
+        Spacer(
+            modifier = Modifier.height(12.dp).onGloballyPositioned {
+                updateHeaderPosition(it.positionInWindow().y)
+            }
+        )
         Column(
             modifier = Modifier
                 .fillMaxWidth()

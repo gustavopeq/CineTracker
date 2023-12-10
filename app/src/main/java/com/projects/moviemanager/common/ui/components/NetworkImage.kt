@@ -10,6 +10,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.DefaultAlpha
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
@@ -29,7 +30,8 @@ fun NetworkImage(
     widthDp: Dp = Dp.Unspecified,
     heightDp: Dp = Dp.Unspecified,
     contentScale: ContentScale = ContentScale.Crop,
-    errorImageRes: Int? = null
+    errorImageRes: Int? = null,
+    alpha: Float = DefaultAlpha
 ) {
     var loadingSuccess by remember { mutableStateOf(false) }
     var onError by remember { mutableStateOf(false) }
@@ -38,7 +40,8 @@ fun NetworkImage(
             modifier = modifier.size(widthDp, heightDp),
             model = imageUrl,
             contentDescription = null,
-            contentScale = contentScale
+            contentScale = contentScale,
+            alpha = alpha
         ) {
             it.listener(
                 object : RequestListener<Drawable> {

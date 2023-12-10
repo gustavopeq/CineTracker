@@ -19,6 +19,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
@@ -44,6 +47,7 @@ import com.projects.moviemanager.features.details.ui.components.CastCarousel
 import com.projects.moviemanager.features.details.ui.components.DetailsDescriptionBody
 import com.projects.moviemanager.features.details.ui.components.DetailsDescriptionHeader
 import com.projects.moviemanager.features.details.ui.components.MoreOptionsTabRow
+import com.projects.moviemanager.features.details.util.mapValueToRange
 import com.projects.moviemanager.util.Constants.BASE_ORIGINAL_IMAGE_URL
 import timber.log.Timber
 
@@ -73,7 +77,6 @@ private fun Details(
 ) {
     val localDensity = LocalDensity.current
     val contentDetails by viewModel.contentDetails.collectAsState()
-    val scrollState = rememberLazyListState()
 
     LaunchedEffect(Unit) {
         if (contentId != null) {
@@ -103,16 +106,26 @@ private fun Details(
         )
     }
 
+    var currentHeaderPosY by rememberSaveable { mutableFloatStateOf(0f) }
+    var initialHeaderPosY by rememberSaveable { mutableFloatStateOf(0f) }
+
+    val updateHeaderPosition: (Float) -> Unit = {
+        if (it > initialHeaderPosY) {
+            initialHeaderPosY = it
+        }
+        currentHeaderPosY = it
+    }
+
     DimensionSubcomposeLayout(
-        mainContent = { BackgroundPoster(contentPosterUrl) },
+        mainContent = { BackgroundPoster(contentPosterUrl, currentHeaderPosY, initialHeaderPosY) },
         dependentContent = { size ->
             val bgOffset = localDensity.run { size.height.toDp() }
             contentDetails?.let { details ->
                 DetailsComponent(
                     bgOffset = bgOffset,
-                    scrollState = scrollState,
                     contentDetails = details,
                     viewModel = viewModel,
+                    updateHeaderPosition = updateHeaderPosition,
                     openSimilarContent = openSimilarContent
                 )
             }
@@ -123,9 +136,9 @@ private fun Details(
 @Composable
 private fun DetailsComponent(
     bgOffset: Dp,
-    scrollState: LazyListState,
     contentDetails: MediaContentDetails,
     viewModel: DetailsViewModel,
+    updateHeaderPosition: (Float) -> Unit,
     openSimilarContent: (Int, MediaType) -> Unit
 ) {
     val contentCredits by viewModel.contentCredits.collectAsState()
@@ -139,8 +152,7 @@ private fun DetailsComponent(
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
-            .fillMaxHeight(),
-        state = scrollState
+            .fillMaxHeight()
     ) {
         item {
             Spacer(
@@ -150,7 +162,7 @@ private fun DetailsComponent(
             )
         }
         item {
-            DetailsDescriptionHeader(contentDetails)
+            DetailsDescriptionHeader(contentDetails, updateHeaderPosition)
         }
         item {
             Column(
@@ -186,13 +198,18 @@ private fun DetailsComponent(
 
 @Composable
 private fun BackgroundPoster(
-    contentPosterUrl: String
+    contentPosterUrl: String,
+    headerPositionY: Float,
+    initialHeaderPosY: Float
 ) {
+    val alpha = headerPositionY.mapValueToRange(initialHeaderPosY)
+
     NetworkImage(
         imageUrl = contentPosterUrl,
         modifier = Modifier
             .fillMaxWidth()
             .zIndex(BACKGROUND_INDEX)
-            .aspectRatio(POSTER_ASPECT_RATIO)
+            .aspectRatio(POSTER_ASPECT_RATIO),
+        alpha = alpha
     )
 }
