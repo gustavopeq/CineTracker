@@ -8,7 +8,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.projects.moviemanager.common.domain.MediaType
 import com.projects.moviemanager.common.ui.components.ContentCard
-import com.projects.moviemanager.common.ui.util.UiConstants
+import com.projects.moviemanager.common.ui.util.UiConstants.DETAILS_CARDS_PER_ROW
+import com.projects.moviemanager.common.ui.util.UiConstants.MAX_COUNT_DETAILS_CARDS
 import com.projects.moviemanager.domain.models.content.MediaContent
 
 @Composable
@@ -20,8 +21,8 @@ fun MoreLikeThisList(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        val filteredList = contentSimilarList.take(UiConstants.MAX_COUNT_DETAILS_CARDS)
-            .chunked(UiConstants.DETAILS_CARDS_PER_ROW)
+        val filteredList = contentSimilarList.take(MAX_COUNT_DETAILS_CARDS)
+            .chunked(DETAILS_CARDS_PER_ROW)
 
         filteredList.forEach { rowItems ->
             Row {

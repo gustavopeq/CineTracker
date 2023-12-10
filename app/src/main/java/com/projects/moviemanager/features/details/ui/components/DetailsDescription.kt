@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInWindow
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
@@ -18,9 +19,10 @@ import com.projects.moviemanager.R
 import com.projects.moviemanager.common.ui.components.GradientDirections
 import com.projects.moviemanager.common.ui.components.RatingComponent
 import com.projects.moviemanager.common.ui.components.classicVerticalGradientBrush
-import com.projects.moviemanager.common.ui.util.UiConstants
+import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_MARGIN
 import com.projects.moviemanager.domain.models.content.MediaContentDetails
 import com.projects.moviemanager.features.details.util.stringFormat
+import com.projects.moviemanager.util.formatDate
 
 @Composable
 fun DetailsDescriptionHeader(
@@ -42,7 +44,7 @@ fun DetailsDescriptionHeader(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(UiConstants.EXTRA_MARGIN.dp)
+                .padding(DEFAULT_MARGIN.dp)
         ) {
             Text(
                 text = "${contentDetails?.title}",
@@ -63,7 +65,7 @@ fun DetailsDescriptionBody(
         color = MaterialTheme.colorScheme.onPrimary
     )
 
-    Spacer(modifier = Modifier.height(UiConstants.EXTRA_MARGIN.dp))
+    Spacer(modifier = Modifier.height(DEFAULT_MARGIN.dp))
 
     if (contentDetails?.production_countries?.isNotEmpty() == true) {
         DetailDescriptionLabel(
@@ -75,16 +77,17 @@ fun DetailsDescriptionBody(
         }
     }
 
-    Spacer(modifier = Modifier.height(UiConstants.EXTRA_MARGIN.dp))
+    Spacer(modifier = Modifier.height(DEFAULT_MARGIN.dp))
 
     if (contentDetails?.release_date?.isNotEmpty() == true) {
         DetailDescriptionLabel(
             stringResource(id = R.string.movie_details_release_date_label)
         )
-        DetailDescriptionBody(contentDetails.release_date)
+        val formattedDate = contentDetails.release_date.formatDate(LocalContext.current)
+        DetailDescriptionBody(formattedDate)
     }
 
-    Spacer(modifier = Modifier.height(UiConstants.EXTRA_MARGIN.dp))
+    Spacer(modifier = Modifier.height(DEFAULT_MARGIN.dp))
 
     if (contentDetails?.genres?.isNotEmpty() == true) {
         DetailDescriptionLabel(
@@ -94,7 +97,7 @@ fun DetailsDescriptionBody(
         DetailDescriptionBody(bodyText = formattedGenres)
     }
 
-    Spacer(modifier = Modifier.height(UiConstants.EXTRA_MARGIN.dp))
+    Spacer(modifier = Modifier.height(DEFAULT_MARGIN.dp))
 
     if (contentDetails?.runtime != null && contentDetails.runtime != 0) {
         DetailDescriptionLabel(

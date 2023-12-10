@@ -1,7 +1,6 @@
 package com.projects.moviemanager.features.details.ui
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -11,9 +10,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -38,9 +36,9 @@ import com.projects.moviemanager.common.ui.components.classicVerticalGradientBru
 import com.projects.moviemanager.common.ui.util.UiConstants.BACKGROUND_INDEX
 import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_MARGIN
 import com.projects.moviemanager.common.ui.util.UiConstants.DETAILS_TITLE_IMAGE_OFFSET_PERCENT
-import com.projects.moviemanager.common.ui.util.UiConstants.EXTRA_MARGIN
 import com.projects.moviemanager.common.ui.util.UiConstants.FOREGROUND_INDEX
 import com.projects.moviemanager.common.ui.util.UiConstants.POSTER_ASPECT_RATIO
+import com.projects.moviemanager.common.ui.util.UiConstants.RETURN_TOP_BAR_HEIGHT
 import com.projects.moviemanager.common.ui.util.UiConstants.SECTION_PADDING
 import com.projects.moviemanager.domain.models.content.MediaContentDetails
 import com.projects.moviemanager.features.details.ui.components.CastCarousel
@@ -77,35 +75,6 @@ private fun Details(
 ) {
     val localDensity = LocalDensity.current
     val contentDetails by viewModel.contentDetails.collectAsState()
-
-    LaunchedEffect(Unit) {
-        if (contentId != null) {
-            viewModel.printDetails(contentId, mediaType)
-        } else {
-            Timber.tag("print").d("ContentId is null!")
-        }
-    }
-
-    val contentPosterUrl = BASE_ORIGINAL_IMAGE_URL + contentDetails?.poster_path
-
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(64.dp)
-            .classicVerticalGradientBrush()
-            .zIndex(FOREGROUND_INDEX)
-    ) {
-        Icon(
-            modifier = Modifier
-                .padding(EXTRA_MARGIN.dp)
-                .clickable {
-                    onBackPress()
-                },
-            painter = painterResource(id = R.drawable.ic_back_arrow),
-            contentDescription = stringResource(id = R.string.back_arrow_description)
-        )
-    }
-
     var currentHeaderPosY by rememberSaveable { mutableFloatStateOf(0f) }
     var initialHeaderPosY by rememberSaveable { mutableFloatStateOf(0f) }
 
@@ -115,6 +84,18 @@ private fun Details(
         }
         currentHeaderPosY = it
     }
+
+    val contentPosterUrl = BASE_ORIGINAL_IMAGE_URL + contentDetails?.poster_path
+
+    LaunchedEffect(Unit) {
+        if (contentId != null) {
+            viewModel.printDetails(contentId, mediaType)
+        } else {
+            Timber.tag("print").d("ContentId is null!")
+        }
+    }
+
+    ReturnTopBar(onBackPress)
 
     DimensionSubcomposeLayout(
         mainContent = { BackgroundPoster(contentPosterUrl, currentHeaderPosY, initialHeaderPosY) },
@@ -131,6 +112,26 @@ private fun Details(
             }
         }
     )
+}
+
+@Composable
+private fun ReturnTopBar(onBackPress: () -> Unit) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(RETURN_TOP_BAR_HEIGHT.dp)
+            .classicVerticalGradientBrush()
+            .zIndex(FOREGROUND_INDEX)
+    ) {
+        IconButton(
+            onClick = { onBackPress() }
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_back_arrow),
+                contentDescription = stringResource(id = R.string.back_arrow_description)
+            )
+        }
+    }
 }
 
 @Composable

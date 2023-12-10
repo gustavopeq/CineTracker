@@ -36,13 +36,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.projects.moviemanager.common.domain.MediaType
 import com.projects.moviemanager.common.theme.MainBarGreyColor
-import com.projects.moviemanager.common.ui.util.UiConstants
+import com.projects.moviemanager.common.ui.util.UiConstants.BACKGROUND_INDEX
+import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_MARGIN
 import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_PADDING
+import com.projects.moviemanager.common.ui.util.UiConstants.FOREGROUND_INDEX
+import com.projects.moviemanager.common.ui.util.UiConstants.LARGE_PADDING
 import com.projects.moviemanager.domain.models.content.MediaContent
 import com.projects.moviemanager.domain.models.content.Videos
 import com.projects.moviemanager.features.details.ui.components.MoreOptionsTabItem.MoreLikeThisTab
 import com.projects.moviemanager.features.details.ui.components.MoreOptionsTabItem.VideosTab
 import com.projects.moviemanager.util.Constants.BASE_URL_YOUTUBE_VIDEO
+import com.projects.moviemanager.util.removeParentPadding
 
 @Composable
 fun MoreOptionsTabRow(
@@ -100,7 +104,8 @@ fun MoreOptionsTabRow(
                 modifier = Modifier
                     .fillMaxWidth()
                     .offset(y = (-1).dp)
-                    .zIndex(UiConstants.BACKGROUND_INDEX)
+                    .zIndex(BACKGROUND_INDEX)
+                    .removeParentPadding(DEFAULT_MARGIN.dp)
             )
 
             when (tabList[selectedTabIndex].tabIndex) {
@@ -137,7 +142,7 @@ private fun MoreOptionsTab(
             },
             style = MaterialTheme.typography.bodyMedium
         )
-        Spacer(modifier = Modifier.height(UiConstants.LARGE_PADDING.dp))
+        Spacer(modifier = Modifier.height(LARGE_PADDING.dp))
     }
 }
 
@@ -159,6 +164,6 @@ private fun TabIndicator(
             .width(width)
             .height(2.dp)
             .background(color = MaterialTheme.colorScheme.secondary)
-            .zIndex(UiConstants.FOREGROUND_INDEX)
+            .zIndex(FOREGROUND_INDEX)
     )
 }

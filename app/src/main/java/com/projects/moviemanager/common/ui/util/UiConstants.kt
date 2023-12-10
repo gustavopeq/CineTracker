@@ -6,8 +6,8 @@ object UiConstants {
     const val SMALL_PADDING = 4
     const val DEFAULT_PADDING = 8
     const val LARGE_PADDING = 12
-    const val DEFAULT_MARGIN = 8
-    const val EXTRA_MARGIN = 16
+    const val SMALL_MARGIN = 8
+    const val DEFAULT_MARGIN = 16
     const val SECTION_PADDING = 24
     const val UNDEFINED_RATINGS = "N/A"
     const val CARD_ROUND_CORNER = 4
@@ -37,4 +37,5 @@ object UiConstants {
     const val VIDEOS_BORDER_SIZE = 4
     const val DETAILS_CARDS_PER_ROW = 2
     const val MAX_COUNT_DETAILS_CARDS = 10
+    const val RETURN_TOP_BAR_HEIGHT = 64
 }

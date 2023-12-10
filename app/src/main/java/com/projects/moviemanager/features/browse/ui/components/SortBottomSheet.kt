@@ -31,7 +31,7 @@ import com.projects.moviemanager.common.ui.MainViewModel
 import com.projects.moviemanager.common.domain.MediaType
 import com.projects.moviemanager.common.ui.components.SortTypeItem
 import com.projects.moviemanager.common.ui.components.SystemNavBarSpacer
-import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_MARGIN
+import com.projects.moviemanager.common.ui.util.UiConstants.SMALL_MARGIN
 import com.projects.moviemanager.common.ui.util.UiConstants.SMALL_PADDING
 import com.projects.moviemanager.common.theme.MainBarGreyColor
 
@@ -76,7 +76,7 @@ fun SortBottomSheet(
         Text(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
-                .offset(y = (-DEFAULT_MARGIN).dp),
+                .offset(y = (-SMALL_MARGIN).dp),
             text = stringResource(id = R.string.sort_by_header),
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.SemiBold,
@@ -121,7 +121,7 @@ fun SortButton(
     onClick: () -> Unit
 ) {
     Button(
-        contentPadding = PaddingValues(horizontal = DEFAULT_MARGIN.dp),
+        contentPadding = PaddingValues(horizontal = SMALL_MARGIN.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = Color.Transparent
         ),

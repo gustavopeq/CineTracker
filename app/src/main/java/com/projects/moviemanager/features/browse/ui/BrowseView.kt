@@ -49,7 +49,7 @@ import com.projects.moviemanager.common.ui.util.UiConstants.BROWSE_CARD_PADDING_
 import com.projects.moviemanager.common.ui.util.UiConstants.BROWSE_CARD_PADDING_VERTICAL
 import com.projects.moviemanager.common.ui.util.UiConstants.BROWSE_CARD_WIDTH
 import com.projects.moviemanager.common.ui.util.UiConstants.BROWSE_SCAFFOLD_HEIGHT_OFFSET
-import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_MARGIN
+import com.projects.moviemanager.common.ui.util.UiConstants.SMALL_MARGIN
 import com.projects.moviemanager.common.ui.util.UiConstants.SMALL_PADDING
 import com.projects.moviemanager.domain.models.content.BaseMediaContent
 import com.projects.moviemanager.features.browse.events.BrowseEvent
@@ -187,7 +187,7 @@ private fun BrowseBody(
             else -> {
                 LazyVerticalGrid(
                     columns = GridCells.Adaptive(BROWSE_CARD_WIDTH.dp),
-                    modifier = Modifier.padding(horizontal = DEFAULT_MARGIN.dp)
+                    modifier = Modifier.padding(horizontal = SMALL_MARGIN.dp)
                 ) {
                     items(pagingData.itemCount) { index ->
                         val content = pagingData[index]
@@ -210,7 +210,7 @@ private fun BrowseBody(
 private fun BrowseBodyPlaceholder() {
     LazyVerticalGrid(
         columns = GridCells.Adaptive(BROWSE_CARD_WIDTH.dp),
-        modifier = Modifier.padding(horizontal = DEFAULT_MARGIN.dp)
+        modifier = Modifier.padding(horizontal = SMALL_MARGIN.dp)
     ) {
         items(6) {
             Column(

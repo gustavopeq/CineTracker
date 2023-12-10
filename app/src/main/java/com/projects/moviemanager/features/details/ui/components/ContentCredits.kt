@@ -21,9 +21,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.projects.moviemanager.R
 import com.projects.moviemanager.common.ui.components.NetworkImage
-import com.projects.moviemanager.common.ui.util.UiConstants
+import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_MARGIN
+import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_PADDING
+import com.projects.moviemanager.common.ui.util.UiConstants.DETAILS_CAST_PICTURE_SIZE
+import com.projects.moviemanager.common.ui.util.UiConstants.SECTION_PADDING
+import com.projects.moviemanager.common.ui.util.UiConstants.SMALL_PADDING
 import com.projects.moviemanager.domain.models.content.ContentCast
 import com.projects.moviemanager.util.Constants
+import com.projects.moviemanager.util.removeParentPadding
 
 @Composable
 fun CastCarousel(contentCredits: List<ContentCast>) {
@@ -32,34 +37,24 @@ fun CastCarousel(contentCredits: List<ContentCast>) {
         textStyle = MaterialTheme.typography.displayMedium
     )
 
-    Spacer(modifier = Modifier.height(UiConstants.SMALL_PADDING.dp))
+    Spacer(modifier = Modifier.height(SMALL_PADDING.dp))
 
     LazyRow(
-        modifier = Modifier
-            .layout { measurable, constraints ->
-                val placeable = measurable.measure(
-                    constraints.copy(
-                        maxWidth = constraints.maxWidth + UiConstants.EXTRA_MARGIN.dp.roundToPx()
-                    )
-                )
-                layout(placeable.width, placeable.height) {
-                    placeable.place(0, 0)
-                }
-            }
+        modifier = Modifier.removeParentPadding(DEFAULT_MARGIN.dp)
     ) {
         items(contentCredits) { cast ->
             val castImageUrl = Constants.BASE_500_IMAGE_URL + cast.profilePoster
 
             Column(
                 modifier = Modifier
-                    .width(UiConstants.DETAILS_CAST_PICTURE_SIZE.dp + UiConstants.DEFAULT_PADDING.dp)
-                    .padding(horizontal = UiConstants.DEFAULT_PADDING.dp),
+                    .width(DETAILS_CAST_PICTURE_SIZE.dp + DEFAULT_PADDING.dp)
+                    .padding(horizontal = DEFAULT_PADDING.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 NetworkImage(
                     imageUrl = castImageUrl,
                     modifier = Modifier
-                        .size(UiConstants.DETAILS_CAST_PICTURE_SIZE.dp)
+                        .size(DETAILS_CAST_PICTURE_SIZE.dp)
                         .clip(CircleShape)
                 )
                 Text(

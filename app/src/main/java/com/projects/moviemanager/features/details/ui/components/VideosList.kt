@@ -21,9 +21,12 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import com.projects.moviemanager.common.theme.MainBarGreyColor
 import com.projects.moviemanager.common.ui.components.NetworkImage
-import com.projects.moviemanager.common.ui.util.UiConstants
+import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_PADDING
+import com.projects.moviemanager.common.ui.util.UiConstants.SMALL_PADDING
+import com.projects.moviemanager.common.ui.util.UiConstants.VIDEOS_BORDER_SIZE
 import com.projects.moviemanager.domain.models.content.Videos
-import com.projects.moviemanager.util.Constants
+import com.projects.moviemanager.util.Constants.BASE_YOUTUBE_THUMBAIL_URL
+import com.projects.moviemanager.util.Constants.YOUTUBE_THUMBAIL_RESOLUTION
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
@@ -32,7 +35,7 @@ fun VideoList(
     launchVideo: (String) -> Unit
 ) {
     videoList.forEach { video ->
-        val imagePath = "${Constants.BASE_YOUTUBE_THUMBAIL_URL}${video.key}${Constants.YOUTUBE_THUMBAIL_RESOLUTION}"
+        val imagePath = "${BASE_YOUTUBE_THUMBAIL_URL}${video.key}$YOUTUBE_THUMBAIL_RESOLUTION"
 
         Column(
             modifier = Modifier.fillMaxWidth()
@@ -46,7 +49,7 @@ fun VideoList(
                 ),
                 modifier = Modifier
                     .padding(
-                        vertical = UiConstants.DEFAULT_PADDING.dp
+                        vertical = DEFAULT_PADDING.dp
                     )
                     .fillMaxWidth()
             ) {
@@ -57,13 +60,13 @@ fun VideoList(
                             .fillMaxWidth(0.5f)
                             .clip(
                                 RoundedCornerShape(
-                                    topStart = UiConstants.VIDEOS_BORDER_SIZE.dp,
-                                    bottomStart = UiConstants.VIDEOS_BORDER_SIZE.dp
+                                    topStart = VIDEOS_BORDER_SIZE.dp,
+                                    bottomStart = VIDEOS_BORDER_SIZE.dp
                                 )
                             ),
                         contentScale = ContentScale.Fit
                     )
-                    Spacer(modifier = Modifier.width(UiConstants.SMALL_PADDING.dp))
+                    Spacer(modifier = Modifier.width(SMALL_PADDING.dp))
                     Column(
                         verticalArrangement = Arrangement.SpaceBetween,
                         modifier = Modifier.fillMaxHeight()

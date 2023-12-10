@@ -19,7 +19,13 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.projects.moviemanager.common.theme.MainBarGreyColor
 import com.projects.moviemanager.common.theme.RoundCornerShapes
-import com.projects.moviemanager.common.ui.util.UiConstants
+import com.projects.moviemanager.common.ui.util.UiConstants.BROWSE_CARD_DEFAULT_ELEVATION
+import com.projects.moviemanager.common.ui.util.UiConstants.BROWSE_CARD_HEIGHT
+import com.projects.moviemanager.common.ui.util.UiConstants.BROWSE_CARD_IMAGE_HEIGHT
+import com.projects.moviemanager.common.ui.util.UiConstants.BROWSE_CARD_PADDING_HORIZONTAL
+import com.projects.moviemanager.common.ui.util.UiConstants.BROWSE_CARD_PADDING_VERTICAL
+import com.projects.moviemanager.common.ui.util.UiConstants.BROWSE_CARD_WIDTH
+import com.projects.moviemanager.common.ui.util.UiConstants.SMALL_PADDING
 import com.projects.moviemanager.util.Constants
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -36,33 +42,33 @@ fun ContentCard(
     Card(
         modifier = modifier
             .padding(
-                horizontal = UiConstants.BROWSE_CARD_PADDING_HORIZONTAL.dp,
-                vertical = UiConstants.BROWSE_CARD_PADDING_VERTICAL.dp
+                horizontal = BROWSE_CARD_PADDING_HORIZONTAL.dp,
+                vertical = BROWSE_CARD_PADDING_VERTICAL.dp
             )
             .size(
-                width = UiConstants.BROWSE_CARD_WIDTH.dp,
-                height = UiConstants.BROWSE_CARD_HEIGHT.dp
+                width = BROWSE_CARD_WIDTH.dp,
+                height = BROWSE_CARD_HEIGHT.dp
             ),
         onClick = goToDetails,
         colors = CardDefaults.cardColors(
             containerColor = MainBarGreyColor
         ),
         elevation = CardDefaults.elevatedCardElevation(
-            defaultElevation = UiConstants.BROWSE_CARD_DEFAULT_ELEVATION.dp
+            defaultElevation = BROWSE_CARD_DEFAULT_ELEVATION.dp
         )
     ) {
         Column(
             horizontalAlignment = Alignment.Start,
-            modifier = Modifier.padding(horizontal = UiConstants.SMALL_PADDING.dp)
+            modifier = Modifier.padding(horizontal = SMALL_PADDING.dp)
         ) {
             Spacer(modifier = Modifier.height(4.dp))
             NetworkImage(
                 imageUrl = fullImageUrl,
                 modifier = Modifier.clip(RoundCornerShapes.small),
-                widthDp = UiConstants.BROWSE_CARD_WIDTH.dp,
-                heightDp = UiConstants.BROWSE_CARD_IMAGE_HEIGHT.dp
+                widthDp = BROWSE_CARD_WIDTH.dp,
+                heightDp = BROWSE_CARD_IMAGE_HEIGHT.dp
             )
-            Spacer(modifier = Modifier.width(UiConstants.SMALL_PADDING.dp))
+            Spacer(modifier = Modifier.width(SMALL_PADDING.dp))
             Text(
                 text = title.orEmpty(),
                 color = MaterialTheme.colorScheme.onPrimary,
