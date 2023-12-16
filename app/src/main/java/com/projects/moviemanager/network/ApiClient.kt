@@ -1,6 +1,6 @@
 package com.projects.moviemanager.network
 
-import com.projects.moviemanager.network.response.person.GetPersonDetailsByIdResponse
+import com.projects.moviemanager.network.response.person.PersonDetailsResponse
 import com.projects.moviemanager.network.response.person.GetPersonImagesByIdResponse
 import com.projects.moviemanager.network.response.person.GetPersonsMoviesByIdResponse
 import com.projects.moviemanager.network.services.MovieDbService
@@ -11,13 +11,6 @@ class ApiClient(
 ) {
 
     // PEOPLE
-
-    suspend fun getPersonDetailsById(
-        people_ID: Int,
-        language: String
-    ): SimpleResponse<GetPersonDetailsByIdResponse> {
-        return safeApiCall { movieDbService.getPersonDetailsById(people_ID, language) }
-    }
 
     suspend fun getPersonsMoviesById(
         people_ID: Int,

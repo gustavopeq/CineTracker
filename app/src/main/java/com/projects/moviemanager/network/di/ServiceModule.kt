@@ -1,13 +1,14 @@
 package com.projects.moviemanager.network.di
 
+import com.projects.moviemanager.network.ApiClient
+import com.projects.moviemanager.network.services.MovieDbService
+import com.projects.moviemanager.network.services.movie.MovieService
+import com.projects.moviemanager.network.services.person.PersonService
+import com.projects.moviemanager.network.services.show.ShowService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import com.projects.moviemanager.network.ApiClient
-import com.projects.moviemanager.network.services.MovieDbService
-import com.projects.moviemanager.network.services.movie.MovieService
-import com.projects.moviemanager.network.services.show.ShowService
 import javax.inject.Singleton
 import retrofit2.Retrofit
 
@@ -33,5 +34,11 @@ object ServiceModule {
     @Provides
     fun provideShowService(retrofit: Retrofit): ShowService {
         return retrofit.create(ShowService::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun providePersonService(retrofit: Retrofit): PersonService {
+        return retrofit.create(PersonService::class.java)
     }
 }

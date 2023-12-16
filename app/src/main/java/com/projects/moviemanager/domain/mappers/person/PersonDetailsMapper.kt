@@ -3,12 +3,12 @@ package com.projects.moviemanager.domain.mappers.person
 import com.projects.moviemanager.domain.models.content.Movie
 import com.projects.moviemanager.domain.models.person.PersonDetails
 import com.projects.moviemanager.domain.models.person.PersonImages
-import com.projects.moviemanager.network.response.person.GetPersonDetailsByIdResponse
+import com.projects.moviemanager.network.response.person.PersonDetailsResponse
 
 object PersonDetailsMapper {
 
     fun buildFrom(
-        response: GetPersonDetailsByIdResponse,
+        response: PersonDetailsResponse,
         movieList: List<Movie>,
         personImageList: PersonImages?
     ): PersonDetails {

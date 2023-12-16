@@ -1,6 +1,9 @@
 package com.projects.moviemanager.network.response.person
 
-data class GetPersonDetailsByIdResponse(
+data class PersonDetailsResponse(
+    val id: Int,
+    val name: String,
+    val profile_path: String?,
     val adult: Boolean?,
     val also_known_as: List<String?>?,
     val biography: String?,
@@ -8,11 +11,8 @@ data class GetPersonDetailsByIdResponse(
     val deathday: String?,
     val gender: Int?,
     val homepage: Any?,
-    val id: Int?,
     val imdb_id: String?,
     val known_for_department: String?,
-    val name: String?,
     val place_of_birth: String?,
-    val popularity: Double?,
-    val profile_path: String?
+    val popularity: Double?
 )
