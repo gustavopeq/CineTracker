@@ -12,6 +12,7 @@ object UiConstants {
     const val UNDEFINED_RATINGS = "N/A"
     const val CARD_ROUND_CORNER = 4
     const val POSTER_ASPECT_RATIO = 2f / 3f
+    const val POSTER_ASPECT_RATIO_MULTIPLY = 1.5f
     const val BACKDROP_ASPECT_RATIO = 16f / 9f
     const val FOREGROUND_INDEX = 1f
     const val BACKGROUND_INDEX = -1f
@@ -20,11 +21,9 @@ object UiConstants {
     const val HOME_LOGO_SIZE = 36
 
     // Browse
-    const val BROWSE_CARD_WIDTH = 185
-    const val BROWSE_CARD_HEIGHT = 315
+    const val BROWSE_MIN_CARD_WIDTH = 450
     const val BROWSE_CARD_PADDING_HORIZONTAL = 4
     const val BROWSE_CARD_PADDING_VERTICAL = 8
-    const val BROWSE_CARD_IMAGE_HEIGHT = 255
     const val BROWSE_CARD_DEFAULT_ELEVATION = 2
     const val BROWSE_SCAFFOLD_HEIGHT_OFFSET = 15
 

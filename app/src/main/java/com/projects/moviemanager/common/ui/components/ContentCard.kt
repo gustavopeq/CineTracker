@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -16,15 +15,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.projects.moviemanager.common.theme.MainBarGreyColor
 import com.projects.moviemanager.common.theme.RoundCornerShapes
 import com.projects.moviemanager.common.ui.util.UiConstants.BROWSE_CARD_DEFAULT_ELEVATION
-import com.projects.moviemanager.common.ui.util.UiConstants.BROWSE_CARD_HEIGHT
-import com.projects.moviemanager.common.ui.util.UiConstants.BROWSE_CARD_IMAGE_HEIGHT
 import com.projects.moviemanager.common.ui.util.UiConstants.BROWSE_CARD_PADDING_HORIZONTAL
 import com.projects.moviemanager.common.ui.util.UiConstants.BROWSE_CARD_PADDING_VERTICAL
-import com.projects.moviemanager.common.ui.util.UiConstants.BROWSE_CARD_WIDTH
+import com.projects.moviemanager.common.ui.util.UiConstants.POSTER_ASPECT_RATIO_MULTIPLY
 import com.projects.moviemanager.common.ui.util.UiConstants.SMALL_PADDING
 import com.projects.moviemanager.util.Constants
 
@@ -32,23 +30,20 @@ import com.projects.moviemanager.util.Constants
 @Composable
 fun ContentCard(
     modifier: Modifier = Modifier,
+    cardWidth: Dp,
     imageUrl: String?,
     title: String?,
     rating: Double?,
     goToDetails: () -> Unit
 ) {
     val fullImageUrl = Constants.BASE_500_IMAGE_URL + imageUrl
+    val imageHeight = cardWidth * POSTER_ASPECT_RATIO_MULTIPLY
 
     Card(
-        modifier = modifier
-            .padding(
-                horizontal = BROWSE_CARD_PADDING_HORIZONTAL.dp,
-                vertical = BROWSE_CARD_PADDING_VERTICAL.dp
-            )
-            .size(
-                width = BROWSE_CARD_WIDTH.dp,
-                height = BROWSE_CARD_HEIGHT.dp
-            ),
+        modifier = modifier.padding(
+            horizontal = BROWSE_CARD_PADDING_HORIZONTAL.dp,
+            vertical = BROWSE_CARD_PADDING_VERTICAL.dp
+        ),
         onClick = goToDetails,
         colors = CardDefaults.cardColors(
             containerColor = MainBarGreyColor
@@ -65,8 +60,8 @@ fun ContentCard(
             NetworkImage(
                 imageUrl = fullImageUrl,
                 modifier = Modifier.clip(RoundCornerShapes.small),
-                widthDp = BROWSE_CARD_WIDTH.dp,
-                heightDp = BROWSE_CARD_IMAGE_HEIGHT.dp
+                widthDp = cardWidth,
+                heightDp = imageHeight
             )
             Spacer(modifier = Modifier.width(SMALL_PADDING.dp))
             Text(
@@ -77,6 +72,7 @@ fun ContentCard(
                 maxLines = 1
             )
             RatingComponent(rating = rating)
+            Spacer(modifier = Modifier.height(4.dp))
         }
     }
 }

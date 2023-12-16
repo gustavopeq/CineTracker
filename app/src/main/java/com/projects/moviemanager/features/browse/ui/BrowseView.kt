@@ -9,7 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.pager.HorizontalPager
@@ -29,8 +29,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.layout
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
@@ -43,14 +46,17 @@ import com.projects.moviemanager.common.ui.MainViewModel
 import com.projects.moviemanager.common.ui.components.ComponentPlaceholder
 import com.projects.moviemanager.common.ui.components.ContentCard
 import com.projects.moviemanager.common.ui.components.SortTypeItem
-import com.projects.moviemanager.common.ui.util.UiConstants.BROWSE_CARD_HEIGHT
-import com.projects.moviemanager.common.ui.util.UiConstants.BROWSE_CARD_IMAGE_HEIGHT
 import com.projects.moviemanager.common.ui.util.UiConstants.BROWSE_CARD_PADDING_HORIZONTAL
 import com.projects.moviemanager.common.ui.util.UiConstants.BROWSE_CARD_PADDING_VERTICAL
-import com.projects.moviemanager.common.ui.util.UiConstants.BROWSE_CARD_WIDTH
+import com.projects.moviemanager.common.ui.util.UiConstants.BROWSE_MIN_CARD_WIDTH
 import com.projects.moviemanager.common.ui.util.UiConstants.BROWSE_SCAFFOLD_HEIGHT_OFFSET
+import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_MARGIN
+import com.projects.moviemanager.common.ui.util.UiConstants.POSTER_ASPECT_RATIO_MULTIPLY
 import com.projects.moviemanager.common.ui.util.UiConstants.SMALL_MARGIN
 import com.projects.moviemanager.common.ui.util.UiConstants.SMALL_PADDING
+import com.projects.moviemanager.common.ui.util.calculateCardsPerRow
+import com.projects.moviemanager.common.ui.util.dpToPx
+import com.projects.moviemanager.common.ui.util.pxToDp
 import com.projects.moviemanager.domain.models.content.BaseMediaContent
 import com.projects.moviemanager.features.browse.events.BrowseEvent
 import com.projects.moviemanager.features.browse.ui.components.CollapsingTabRow
@@ -166,12 +172,27 @@ private fun BrowseBody(
         viewModel.onEvent(BrowseEvent.UpdateSortType(sortTypeItem, mediaType))
     }
 
+    val density = LocalDensity.current
+    val screenWidth = density.run { LocalConfiguration.current.screenWidthDp.dp.roundToPx() }
+    val spacing = density.run { DEFAULT_MARGIN.dp.roundToPx() }
+    val minCardSize = pxToDp(BROWSE_MIN_CARD_WIDTH, density)
+
+    val (numCardsPerRow, adjustedCardSize) = calculateCardsPerRow(
+        screenWidth,
+        dpToPx(minCardSize, density),
+        spacing,
+        density
+    )
+
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
         when (pagingData.loadState.refresh) {
             is LoadState.Loading -> {
-                BrowseBodyPlaceholder()
+                BrowseBodyPlaceholder(
+                    numberOfCards = numCardsPerRow,
+                    cardWidth = adjustedCardSize
+                )
             }
             is LoadState.Error -> {
                 Text(
@@ -186,13 +207,15 @@ private fun BrowseBody(
             }
             else -> {
                 LazyVerticalGrid(
-                    columns = GridCells.Adaptive(BROWSE_CARD_WIDTH.dp),
+                    columns = GridCells.Fixed(numCardsPerRow),
                     modifier = Modifier.padding(horizontal = SMALL_MARGIN.dp)
                 ) {
                     items(pagingData.itemCount) { index ->
                         val content = pagingData[index]
                         content?.let {
                             ContentCard(
+                                modifier = Modifier.width(adjustedCardSize),
+                                cardWidth = adjustedCardSize,
                                 imageUrl = content.poster_path,
                                 title = content.title,
                                 rating = content.vote_average,
@@ -207,17 +230,19 @@ private fun BrowseBody(
 }
 
 @Composable
-private fun BrowseBodyPlaceholder() {
+private fun BrowseBodyPlaceholder(
+    numberOfCards: Int,
+    cardWidth: Dp
+) {
     LazyVerticalGrid(
-        columns = GridCells.Adaptive(BROWSE_CARD_WIDTH.dp),
+        columns = GridCells.Fixed(numberOfCards),
         modifier = Modifier.padding(horizontal = SMALL_MARGIN.dp)
     ) {
-        items(6) {
+        items(numberOfCards * 2) {
             Column(
                 modifier = Modifier
-                    .size(
-                        width = BROWSE_CARD_WIDTH.dp,
-                        height = BROWSE_CARD_HEIGHT.dp + 16.dp
+                    .width(
+                        width = cardWidth
                     )
                     .padding(
                         horizontal = BROWSE_CARD_PADDING_HORIZONTAL.dp,
@@ -225,15 +250,15 @@ private fun BrowseBodyPlaceholder() {
                     )
             ) {
                 ComponentPlaceholder(
-                    widthDp = BROWSE_CARD_WIDTH.dp,
-                    heightDp = BROWSE_CARD_IMAGE_HEIGHT.dp,
+                    widthDp = cardWidth,
+                    heightDp = cardWidth * POSTER_ASPECT_RATIO_MULTIPLY,
                     modifier = Modifier
                         .clip(RoundCornerShapes.small)
                 )
                 Spacer(modifier = Modifier.height(SMALL_PADDING.dp))
                 ComponentPlaceholder(
-                    widthDp = BROWSE_CARD_WIDTH.dp,
-                    heightDp = 100.dp,
+                    widthDp = cardWidth,
+                    heightDp = 50.dp,
                     modifier = Modifier
                         .clip(RoundCornerShapes.extraSmall)
                 )
