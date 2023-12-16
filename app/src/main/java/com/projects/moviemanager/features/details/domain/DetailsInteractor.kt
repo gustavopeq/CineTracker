@@ -98,7 +98,7 @@ class DetailsInteractor @Inject constructor(
         contentId: Int,
         mediaType: MediaType
     ): List<MediaContent> {
-        val result =  when (mediaType) {
+        val result = when (mediaType) {
             MediaType.MOVIE -> movieRepository.getSimilarMoviesById(contentId)
             MediaType.SHOW -> showRepository.getSimilarShowsById(contentId)
         }
@@ -110,9 +110,11 @@ class DetailsInteractor @Inject constructor(
                     Timber.e("getSimilarContentById failed with error: ${response.error}")
                 }
                 is Left -> {
-                    listOfSimilar = response.value.results.map {
-                        it.toMediaContent()
-                    }
+                    listOfSimilar = response.value.results
+                        .filter { it.poster_path?.isNotEmpty() == true }
+                        .map {
+                            it.toMediaContent()
+                        }
                 }
             }
         }

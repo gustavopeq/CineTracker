@@ -16,7 +16,7 @@ fun BaseMediaContentResponse.toMediaContent(): MediaContent {
         id = this.id,
         title = this.title,
         vote_average = this.vote_average,
-        poster_path = this.poster_path,
+        poster_path = this.poster_path.orEmpty(),
         mediaType = this.mediaType ?: MediaType.MOVIE
     )
 }

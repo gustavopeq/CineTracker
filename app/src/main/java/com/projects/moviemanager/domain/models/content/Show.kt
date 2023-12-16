@@ -1,7 +1,6 @@
 package com.projects.moviemanager.domain.models.content
 
 import com.projects.moviemanager.common.domain.MediaType
-import com.projects.moviemanager.network.response.content.BaseMediaContentResponse
 
 data class Show(
     override val vote_average: Double,
@@ -11,12 +10,3 @@ data class Show(
     override val mediaType: MediaType
 ) : BaseMediaContent
 
-fun BaseMediaContentResponse.toShowDomain(): Show {
-    return Show(
-        id = this.id,
-        title = this.title,
-        vote_average = this.vote_average,
-        poster_path = this.poster_path,
-        mediaType = this.mediaType ?: MediaType.SHOW
-    )
-}

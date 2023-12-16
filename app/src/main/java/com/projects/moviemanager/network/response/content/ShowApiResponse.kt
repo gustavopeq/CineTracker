@@ -12,7 +12,7 @@ data class ShowApiResponse(
     @Json(name = "name")
     override val title: String,
     override val vote_average: Double,
-    override val poster_path: String,
+    override val poster_path: String?,
     override val backdrop_path: String?,
     override val genre_ids: List<Int?>?,
     override val original_language: String?,
