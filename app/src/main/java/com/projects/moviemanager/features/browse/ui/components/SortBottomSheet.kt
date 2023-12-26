@@ -107,6 +107,7 @@ fun SortBottomSheet(
                     dismissBottomSheet = dismissBottomSheet
                 )
             }
+            MediaType.PERSON -> {}
         }
         Spacer(modifier = Modifier.height(SMALL_PADDING.dp))
         SystemNavBarSpacer()

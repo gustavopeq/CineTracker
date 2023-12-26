@@ -1,5 +1,7 @@
 package com.projects.moviemanager.features.details.ui.components
 
+import android.content.Context
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,13 +22,18 @@ import com.projects.moviemanager.common.ui.components.GradientDirections
 import com.projects.moviemanager.common.ui.components.RatingComponent
 import com.projects.moviemanager.common.ui.components.classicVerticalGradientBrush
 import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_MARGIN
-import com.projects.moviemanager.domain.models.content.MediaContentDetails
+import com.projects.moviemanager.domain.models.ContentGenre
+import com.projects.moviemanager.domain.models.ProductionCountry
+import com.projects.moviemanager.domain.models.content.DetailedMediaInfo
+import com.projects.moviemanager.domain.models.content.MovieDetailsInfo
+import com.projects.moviemanager.domain.models.content.PersonDetailsInfo
+import com.projects.moviemanager.domain.models.content.ShowDetailsInfo
 import com.projects.moviemanager.features.details.util.stringFormat
 import com.projects.moviemanager.util.formatDate
 
 @Composable
 fun DetailsDescriptionHeader(
-    contentDetails: MediaContentDetails?,
+    contentDetails: DetailedMediaInfo?,
     updateHeaderPosition: (Float) -> Unit
 ) {
     Column(
@@ -37,9 +44,11 @@ fun DetailsDescriptionHeader(
             )
     ) {
         Spacer(
-            modifier = Modifier.height(12.dp).onGloballyPositioned {
-                updateHeaderPosition(it.positionInWindow().y)
-            }
+            modifier = Modifier
+                .height(12.dp)
+                .onGloballyPositioned {
+                    updateHeaderPosition(it.positionInWindow().y)
+                }
         )
         Column(
             modifier = Modifier
@@ -50,60 +59,130 @@ fun DetailsDescriptionHeader(
                 text = "${contentDetails?.title}",
                 style = MaterialTheme.typography.displayMedium
             )
-            RatingComponent(rating = contentDetails?.vote_average)
+            when (contentDetails) {
+                is MovieDetailsInfo -> RatingComponent(rating = contentDetails.voteAverage)
+                is ShowDetailsInfo -> RatingComponent(rating = contentDetails.voteAverage)
+                else -> {}
+            }
         }
     }
 }
 
 @Composable
 fun DetailsDescriptionBody(
-    contentDetails: MediaContentDetails?
+    contentDetails: DetailedMediaInfo
 ) {
+    val context = LocalContext.current
+
     Text(
-        text = "${contentDetails?.overview}",
+        text = contentDetails.overview,
         style = MaterialTheme.typography.bodyMedium,
         color = MaterialTheme.colorScheme.onPrimary
     )
 
     Spacer(modifier = Modifier.height(DEFAULT_MARGIN.dp))
 
-    if (contentDetails?.production_countries?.isNotEmpty() == true) {
+    when (contentDetails) {
+        is MovieDetailsInfo -> {
+            ProductionCountriesInfo(contentDetails.productionCountries)
+            ReleaseDateInfo(contentDetails.releaseDate)
+            GenresInfo(contentDetails.genres)
+            RuntimeInfo(contentDetails.runtime)
+        }
+        is ShowDetailsInfo -> {
+            ProductionCountriesInfo(contentDetails.productionCountries)
+            GenresInfo(contentDetails.genres)
+        }
+        is PersonDetailsInfo -> {
+            BornDeathInfo(
+                labelRes = R.string.person_details_born_label,
+                bodyText = contentDetails.birthday,
+                context = context
+            )
+            BornDeathInfo(
+                labelRes = R.string.person_details_death_label,
+                bodyText = contentDetails.deathday,
+                context = context
+            )
+            BornInInfo(contentDetails.placeOfBirth)
+        }
+    }
+}
+
+@Composable
+private fun RuntimeInfo(runtime: Int?) {
+    if (runtime != null && runtime != 0) {
+        DetailDescriptionLabel(
+            stringResource(id = R.string.movie_details_runtime_label)
+        )
+        DetailDescriptionBody(runtime.stringFormat())
+        Spacer(modifier = Modifier.height(DEFAULT_MARGIN.dp))
+    }
+}
+
+@Composable
+private fun GenresInfo(genres: List<ContentGenre?>?) {
+    if (genres?.isNotEmpty() == true) {
+        DetailDescriptionLabel(
+            stringResource(id = R.string.movie_details_genres_label)
+        )
+        val formattedGenres = genres.map { it?.name }.joinToString(", ")
+        DetailDescriptionBody(bodyText = formattedGenres)
+        Spacer(modifier = Modifier.height(DEFAULT_MARGIN.dp))
+    }
+}
+
+@Composable
+private fun ReleaseDateInfo(releaseDate: String?) {
+    if (releaseDate?.isNotEmpty() == true) {
+        DetailDescriptionLabel(
+            stringResource(id = R.string.movie_details_release_date_label)
+        )
+        val formattedDate = releaseDate.formatDate(LocalContext.current)
+        DetailDescriptionBody(formattedDate)
+        Spacer(modifier = Modifier.height(DEFAULT_MARGIN.dp))
+    }
+}
+
+@Composable
+private fun ProductionCountriesInfo(productionCountry: List<ProductionCountry?>?) {
+    if (productionCountry?.isNotEmpty() == true) {
         DetailDescriptionLabel(
             stringResource(id = R.string.movie_details_production_country_title)
         )
 
-        contentDetails.production_countries.forEach {
+        productionCountry.forEach {
             DetailDescriptionBody(it?.name.orEmpty())
         }
+        Spacer(modifier = Modifier.height(DEFAULT_MARGIN.dp))
     }
+}
 
-    Spacer(modifier = Modifier.height(DEFAULT_MARGIN.dp))
-
-    if (contentDetails?.release_date?.isNotEmpty() == true) {
+@Composable
+private fun BornDeathInfo(
+    @StringRes labelRes: Int,
+    bodyText: String?,
+    context: Context
+) {
+    if (bodyText?.isNotEmpty() == true) {
         DetailDescriptionLabel(
-            stringResource(id = R.string.movie_details_release_date_label)
+            stringResource(id = labelRes)
         )
-        val formattedDate = contentDetails.release_date.formatDate(LocalContext.current)
-        DetailDescriptionBody(formattedDate)
+        DetailDescriptionBody(bodyText.formatDate(context))
+        Spacer(modifier = Modifier.height(DEFAULT_MARGIN.dp))
     }
+}
 
-    Spacer(modifier = Modifier.height(DEFAULT_MARGIN.dp))
-
-    if (contentDetails?.genres?.isNotEmpty() == true) {
+@Composable
+private fun BornInInfo(
+    bornIn: String?
+) {
+    if (bornIn?.isNotEmpty() == true) {
         DetailDescriptionLabel(
-            stringResource(id = R.string.movie_details_genres_label)
+            stringResource(id = R.string.person_details_born_in_label)
         )
-        val formattedGenres = contentDetails.genres.map { it?.name }.joinToString(", ")
-        DetailDescriptionBody(bodyText = formattedGenres)
-    }
-
-    Spacer(modifier = Modifier.height(DEFAULT_MARGIN.dp))
-
-    if (contentDetails?.runtime != null && contentDetails.runtime != 0) {
-        DetailDescriptionLabel(
-            stringResource(id = R.string.movie_details_runtime_label)
-        )
-        DetailDescriptionBody(contentDetails.runtime.stringFormat())
+        DetailDescriptionBody(bornIn)
+        Spacer(modifier = Modifier.height(DEFAULT_MARGIN.dp))
     }
 }
 

@@ -57,9 +57,12 @@ import com.projects.moviemanager.common.ui.util.UiConstants.SMALL_PADDING
 import com.projects.moviemanager.common.ui.util.calculateCardsPerRow
 import com.projects.moviemanager.common.ui.util.dpToPx
 import com.projects.moviemanager.common.ui.util.pxToDp
-import com.projects.moviemanager.domain.models.content.BaseMediaContent
+import com.projects.moviemanager.domain.models.content.DetailedMediaInfo
+import com.projects.moviemanager.domain.models.content.MovieDetailsInfo
+import com.projects.moviemanager.domain.models.content.ShowDetailsInfo
 import com.projects.moviemanager.features.browse.events.BrowseEvent
 import com.projects.moviemanager.features.browse.ui.components.CollapsingTabRow
+import timber.log.Timber
 
 @Composable
 fun Browse(
@@ -164,7 +167,7 @@ private fun Browse(
 private fun BrowseBody(
     viewModel: BrowseViewModel,
     mediaType: MediaType,
-    pagingData: LazyPagingItems<BaseMediaContent>,
+    pagingData: LazyPagingItems<DetailedMediaInfo>,
     sortTypeItem: SortTypeItem,
     goToDetails: (Int, MediaType) -> Unit
 ) {
@@ -213,12 +216,20 @@ private fun BrowseBody(
                     items(pagingData.itemCount) { index ->
                         val content = pagingData[index]
                         content?.let {
+                            val contentVoteAverage = when (content) {
+                                is MovieDetailsInfo -> content.voteAverage
+                                is ShowDetailsInfo -> content.voteAverage
+                                else -> {
+                                    Timber.tag("print").d("content else")
+                                    null
+                                }
+                            }
                             ContentCard(
                                 modifier = Modifier.width(adjustedCardSize),
                                 cardWidth = adjustedCardSize,
                                 imageUrl = content.poster_path,
                                 title = content.title,
-                                rating = content.vote_average,
+                                rating = contentVoteAverage,
                                 goToDetails = { goToDetails(content.id, content.mediaType) }
                             )
                         }

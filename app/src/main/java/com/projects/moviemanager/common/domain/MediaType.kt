@@ -2,7 +2,8 @@ package com.projects.moviemanager.common.domain
 
 enum class MediaType {
     MOVIE,
-    SHOW;
+    SHOW,
+    PERSON;
 
     companion object {
         fun getType(typeName: String?): MediaType {

@@ -3,6 +3,7 @@ package com.projects.moviemanager.core.di
 import com.projects.moviemanager.features.browse.domain.BrowseInteractor
 import com.projects.moviemanager.features.details.domain.DetailsInteractor
 import com.projects.moviemanager.network.repository.movie.MovieRepository
+import com.projects.moviemanager.network.repository.person.PersonRepository
 import com.projects.moviemanager.network.repository.show.ShowRepository
 import dagger.Module
 import dagger.Provides
@@ -29,11 +30,13 @@ object InteractorModule {
     @Provides
     fun provideDetailsInteractor(
         movieRepository: MovieRepository,
-        showRepository: ShowRepository
+        showRepository: ShowRepository,
+        personRepository: PersonRepository
     ): DetailsInteractor {
         return DetailsInteractor(
             movieRepository = movieRepository,
-            showRepository = showRepository
+            showRepository = showRepository,
+            personRepository = personRepository
         )
     }
 }

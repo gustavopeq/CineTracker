@@ -40,7 +40,7 @@ import com.projects.moviemanager.common.ui.util.UiConstants.FOREGROUND_INDEX
 import com.projects.moviemanager.common.ui.util.UiConstants.POSTER_ASPECT_RATIO
 import com.projects.moviemanager.common.ui.util.UiConstants.RETURN_TOP_BAR_HEIGHT
 import com.projects.moviemanager.common.ui.util.UiConstants.SECTION_PADDING
-import com.projects.moviemanager.domain.models.content.MediaContentDetails
+import com.projects.moviemanager.domain.models.content.DetailedMediaInfo
 import com.projects.moviemanager.features.details.ui.components.CastCarousel
 import com.projects.moviemanager.features.details.ui.components.DetailsDescriptionBody
 import com.projects.moviemanager.features.details.ui.components.DetailsDescriptionHeader
@@ -89,7 +89,7 @@ private fun Details(
 
     LaunchedEffect(Unit) {
         if (contentId != null) {
-            viewModel.printDetails(contentId, mediaType)
+            viewModel.fetchDetails(contentId, mediaType)
         } else {
             Timber.tag("print").d("ContentId is null!")
         }
@@ -107,7 +107,7 @@ private fun Details(
                     contentDetails = details,
                     viewModel = viewModel,
                     updateHeaderPosition = updateHeaderPosition,
-                    openSimilarContent = openSimilarContent
+                    openDetails = openSimilarContent
                 )
             }
         }
@@ -137,10 +137,10 @@ private fun ReturnTopBar(onBackPress: () -> Unit) {
 @Composable
 private fun DetailsComponent(
     bgOffset: Dp,
-    contentDetails: MediaContentDetails,
+    contentDetails: DetailedMediaInfo,
     viewModel: DetailsViewModel,
     updateHeaderPosition: (Float) -> Unit,
-    openSimilarContent: (Int, MediaType) -> Unit
+    openDetails: (Int, MediaType) -> Unit
 ) {
     val contentCredits by viewModel.contentCredits.collectAsState()
     val videoList by viewModel.contentVideos.collectAsState()
@@ -181,7 +181,10 @@ private fun DetailsComponent(
                     )
                     Spacer(modifier = Modifier.height(SECTION_PADDING.dp))
                     if (contentCredits.isNotEmpty()) {
-                        CastCarousel(contentCredits)
+                        CastCarousel(
+                            contentCredits = contentCredits,
+                            openDetails = openDetails
+                        )
                     }
 
                     Spacer(modifier = Modifier.height(SECTION_PADDING.dp))
@@ -189,7 +192,7 @@ private fun DetailsComponent(
                     MoreOptionsTabRow(
                         videoList = videoList,
                         contentSimilarList = contentSimilarList,
-                        openSimilarContent = openSimilarContent
+                        openSimilarContent = openDetails
                     )
                 }
             }
