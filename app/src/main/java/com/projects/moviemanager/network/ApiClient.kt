@@ -1,8 +1,7 @@
 package com.projects.moviemanager.network
 
-import com.projects.moviemanager.network.response.person.PersonDetailsResponse
 import com.projects.moviemanager.network.response.person.GetPersonImagesByIdResponse
-import com.projects.moviemanager.network.response.person.GetPersonsMoviesByIdResponse
+import com.projects.moviemanager.network.response.person.PersonCreditsResponse
 import com.projects.moviemanager.network.services.MovieDbService
 import retrofit2.Response
 
@@ -15,7 +14,7 @@ class ApiClient(
     suspend fun getPersonsMoviesById(
         people_ID: Int,
         language: String
-    ): SimpleResponse<GetPersonsMoviesByIdResponse> {
+    ): SimpleResponse<PersonCreditsResponse> {
         return safeApiCall { movieDbService.getPersonsMoviesById(people_ID, language) }
     }
 

@@ -5,14 +5,18 @@ import com.projects.moviemanager.R
 
 sealed class MoreOptionsTabItem(
     @StringRes val tabResId: Int,
-    val tabIndex: Int
+    var tabIndex: Int = -1
 ) {
     data object VideosTab : MoreOptionsTabItem(
-        tabResId = R.string.more_options_videos,
-        tabIndex = 0
+        tabResId = R.string.more_options_videos
     )
     data object MoreLikeThisTab : MoreOptionsTabItem(
-        tabResId = R.string.more_options_similar,
-        tabIndex = 1
+        tabResId = R.string.more_options_similar
+    )
+    data object MoviesTab : MoreOptionsTabItem(
+        tabResId = R.string.movies_tab
+    )
+    data object ShowsTab : MoreOptionsTabItem(
+        tabResId = R.string.shows_tab
     )
 }

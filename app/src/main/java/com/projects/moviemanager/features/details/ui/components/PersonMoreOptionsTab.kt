@@ -10,22 +10,21 @@ import com.projects.moviemanager.common.domain.MediaType
 import com.projects.moviemanager.common.ui.components.GridContentList
 import com.projects.moviemanager.common.ui.components.MoreOptionsTabRow
 import com.projects.moviemanager.domain.models.content.MediaContent
-import com.projects.moviemanager.domain.models.content.Videos
-import com.projects.moviemanager.features.details.ui.components.MoreOptionsTabItem.MoreLikeThisTab
-import com.projects.moviemanager.features.details.ui.components.MoreOptionsTabItem.VideosTab
 
 @Composable
-fun MoreOptionsTab(
-    videoList: List<Videos>,
-    contentSimilarList: List<MediaContent>,
-    openSimilarContent: (Int, MediaType) -> Unit
+fun PersonMoreOptionsTab(
+    contentList: List<MediaContent>,
+    openContentDetails: (Int, MediaType) -> Unit
 ) {
+    val moviesList = contentList.filter { it.mediaType == MediaType.MOVIE }
+    val showList = contentList.filter { it.mediaType == MediaType.SHOW }
+
     val tabList = when {
-        videoList.isNotEmpty() && contentSimilarList.isNotEmpty() -> {
-            listOf(VideosTab, MoreLikeThisTab)
+        moviesList.isNotEmpty() && showList.isNotEmpty() -> {
+            listOf(MoreOptionsTabItem.MoviesTab, MoreOptionsTabItem.ShowsTab)
         }
-        videoList.isNotEmpty() -> listOf(VideosTab)
-        contentSimilarList.isNotEmpty() -> listOf(MoreLikeThisTab)
+        moviesList.isNotEmpty() -> listOf(MoreOptionsTabItem.MoviesTab)
+        showList.isNotEmpty() -> listOf(MoreOptionsTabItem.ShowsTab)
         else -> emptyList()
     }
 
@@ -45,15 +44,20 @@ fun MoreOptionsTab(
         Column {
             MoreOptionsTabRow(selectedTabIndex, tabList, updateSelectedTab)
 
-            when (tabList[selectedTabIndex].tabIndex) {
-                VideosTab.tabIndex -> {
-                    VideoList(videoList)
+            when (tabList.getOrNull(selectedTabIndex)?.tabIndex) {
+                MoreOptionsTabItem.MoviesTab.tabIndex -> {
+                    GridContentList(
+                        mediaContentList = moviesList,
+                        maxCardsNumber = moviesList.size,
+                        openContentDetails = openContentDetails
+                    )
                 }
 
-                MoreLikeThisTab.tabIndex -> {
+                MoreOptionsTabItem.MoreLikeThisTab.tabIndex -> {
                     GridContentList(
-                        mediaContentList = contentSimilarList,
-                        openContentDetails = openSimilarContent
+                        mediaContentList = showList,
+                        maxCardsNumber = showList.size,
+                        openContentDetails = openContentDetails
                     )
                 }
             }

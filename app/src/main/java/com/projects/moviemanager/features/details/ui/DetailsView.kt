@@ -44,7 +44,8 @@ import com.projects.moviemanager.domain.models.content.DetailedMediaInfo
 import com.projects.moviemanager.features.details.ui.components.CastCarousel
 import com.projects.moviemanager.features.details.ui.components.DetailsDescriptionBody
 import com.projects.moviemanager.features.details.ui.components.DetailsDescriptionHeader
-import com.projects.moviemanager.features.details.ui.components.MoreOptionsTabRow
+import com.projects.moviemanager.features.details.ui.components.MoreOptionsTab
+import com.projects.moviemanager.features.details.ui.components.PersonMoreOptionsTab
 import com.projects.moviemanager.features.details.util.mapValueToRange
 import com.projects.moviemanager.util.Constants.BASE_ORIGINAL_IMAGE_URL
 import timber.log.Timber
@@ -104,7 +105,7 @@ private fun Details(
             contentDetails?.let { details ->
                 DetailsComponent(
                     bgOffset = bgOffset,
-                    contentDetails = details,
+                    mediaInfo = details,
                     viewModel = viewModel,
                     updateHeaderPosition = updateHeaderPosition,
                     openDetails = openSimilarContent
@@ -137,7 +138,7 @@ private fun ReturnTopBar(onBackPress: () -> Unit) {
 @Composable
 private fun DetailsComponent(
     bgOffset: Dp,
-    contentDetails: DetailedMediaInfo,
+    mediaInfo: DetailedMediaInfo,
     viewModel: DetailsViewModel,
     updateHeaderPosition: (Float) -> Unit,
     openDetails: (Int, MediaType) -> Unit
@@ -145,9 +146,10 @@ private fun DetailsComponent(
     val contentCredits by viewModel.contentCredits.collectAsState()
     val videoList by viewModel.contentVideos.collectAsState()
     val contentSimilarList by viewModel.contentSimilar.collectAsState()
+    val personContentList by viewModel.personCredits.collectAsState()
 
     LaunchedEffect(Unit) {
-        viewModel.fetchAdditionalInfo(contentDetails.id, contentDetails.mediaType)
+        viewModel.fetchAdditionalInfo(mediaInfo.id, mediaInfo.mediaType)
     }
 
     LazyColumn(
@@ -163,7 +165,7 @@ private fun DetailsComponent(
             )
         }
         item {
-            DetailsDescriptionHeader(contentDetails, updateHeaderPosition)
+            DetailsDescriptionHeader(mediaInfo, updateHeaderPosition)
         }
         item {
             Column(
@@ -177,7 +179,7 @@ private fun DetailsComponent(
                         .padding(DEFAULT_MARGIN.dp)
                 ) {
                     DetailsDescriptionBody(
-                        contentDetails = contentDetails
+                        contentDetails = mediaInfo
                     )
                     Spacer(modifier = Modifier.height(SECTION_PADDING.dp))
                     if (contentCredits.isNotEmpty()) {
@@ -185,15 +187,24 @@ private fun DetailsComponent(
                             contentCredits = contentCredits,
                             openDetails = openDetails
                         )
+                        Spacer(modifier = Modifier.height(SECTION_PADDING.dp))
                     }
 
-                    Spacer(modifier = Modifier.height(SECTION_PADDING.dp))
-
-                    MoreOptionsTabRow(
-                        videoList = videoList,
-                        contentSimilarList = contentSimilarList,
-                        openSimilarContent = openDetails
-                    )
+                    when (mediaInfo.mediaType) {
+                        MediaType.MOVIE, MediaType.SHOW -> {
+                            MoreOptionsTab(
+                                videoList = videoList,
+                                contentSimilarList = contentSimilarList,
+                                openSimilarContent = openDetails
+                            )
+                        }
+                        MediaType.PERSON -> {
+                            PersonMoreOptionsTab(
+                                contentList = personContentList,
+                                openContentDetails = openDetails
+                            )
+                        }
+                    }
                 }
             }
         }

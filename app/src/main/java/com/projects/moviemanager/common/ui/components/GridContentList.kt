@@ -1,4 +1,4 @@
-package com.projects.moviemanager.features.details.ui.components
+package com.projects.moviemanager.common.ui.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,7 +11,6 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import com.projects.moviemanager.common.domain.MediaType
-import com.projects.moviemanager.common.ui.components.ContentCard
 import com.projects.moviemanager.common.ui.util.UiConstants.BROWSE_MIN_CARD_WIDTH
 import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_MARGIN
 import com.projects.moviemanager.common.ui.util.UiConstants.MAX_COUNT_DETAILS_CARDS
@@ -22,9 +21,10 @@ import com.projects.moviemanager.domain.models.content.MediaContent
 import com.projects.moviemanager.util.removeParentPadding
 
 @Composable
-fun MoreLikeThisList(
-    contentSimilarList: List<MediaContent>,
-    openSimilarContent: (Int, MediaType) -> Unit
+fun GridContentList(
+    mediaContentList: List<MediaContent>,
+    maxCardsNumber: Int = MAX_COUNT_DETAILS_CARDS,
+    openContentDetails: (Int, MediaType) -> Unit
 ) {
     val density = LocalDensity.current
     val screenWidth = density.run { LocalConfiguration.current.screenWidthDp.dp.roundToPx() }
@@ -42,7 +42,7 @@ fun MoreLikeThisList(
         modifier = Modifier.fillMaxWidth().removeParentPadding(DEFAULT_MARGIN.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        val filteredList = contentSimilarList.take(MAX_COUNT_DETAILS_CARDS)
+        val filteredList = mediaContentList.take(maxCardsNumber)
             .chunked(numCardsPerRow)
 
         filteredList.forEach { rowItems ->
@@ -55,7 +55,7 @@ fun MoreLikeThisList(
                         title = content.title,
                         rating = content.vote_average,
                         goToDetails = {
-                            openSimilarContent(content.id, content.mediaType)
+                            openContentDetails(content.id, content.mediaType)
                         }
                     )
                 }

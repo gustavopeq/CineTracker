@@ -1,8 +1,7 @@
 package com.projects.moviemanager.network.services
 
-import com.projects.moviemanager.network.response.person.PersonDetailsResponse
 import com.projects.moviemanager.network.response.person.GetPersonImagesByIdResponse
-import com.projects.moviemanager.network.response.person.GetPersonsMoviesByIdResponse
+import com.projects.moviemanager.network.response.person.PersonCreditsResponse
 import com.projects.moviemanager.util.Constants
 import retrofit2.Response
 import retrofit2.http.GET
@@ -17,7 +16,7 @@ interface MovieDbService {
     suspend fun getPersonsMoviesById(
         @Path("person_ID") personId: Int,
         @Query("language") language: String
-    ): Response<GetPersonsMoviesByIdResponse>
+    ): Response<PersonCreditsResponse>
 
     @GET("person/{person_ID}/images?api_key=${Constants.API_KEY}")
     suspend fun getPersonImagesById(

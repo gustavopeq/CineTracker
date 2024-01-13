@@ -1,13 +1,13 @@
 package com.projects.moviemanager.network.response.person
 
-data class PersonsMovieCastResponse(
+data class CrewResponse(
     val adult: Boolean?,
     val backdrop_path: String?,
-    val character: String?,
     val credit_id: String?,
+    val department: String?,
     val genre_ids: List<Int?>?,
     val id: Int?,
-    val order: Int?,
+    val job: String?,
     val original_language: String?,
     val original_title: String?,
     val overview: String?,

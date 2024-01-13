@@ -34,17 +34,23 @@ class DetailsViewModel @Inject constructor(
     )
     val contentSimilar: StateFlow<List<MediaContent>> get() = _contentSimilar
 
+    private val _personCredits: MutableStateFlow<List<MediaContent>> = MutableStateFlow(emptyList())
+    val personCredits: StateFlow<List<MediaContent>> get() = _personCredits
+
     fun fetchDetails(contentId: Int, mediaType: MediaType) {
         viewModelScope.launch {
             _contentDetails.value = detailsInteractor.getContentDetailsById(contentId, mediaType)
         }
     }
 
-    fun fetchAdditionalInfo(contentId: Int, mediaType: MediaType) {
+    fun fetchAdditionalInfo(mediaId: Int, mediaType: MediaType) {
         viewModelScope.launch {
-            _contentCredits.value = detailsInteractor.getContentCreditsById(contentId, mediaType)
-            _contentVideos.value = detailsInteractor.getContentVideosById(contentId, mediaType)
-            _contentSimilar.value = detailsInteractor.getSimilarContentById(contentId, mediaType)
+            _contentCredits.value = detailsInteractor.getContentCreditsById(mediaId, mediaType)
+            _contentVideos.value = detailsInteractor.getContentVideosById(mediaId, mediaType)
+            _contentSimilar.value = detailsInteractor.getSimilarContentById(mediaId, mediaType)
+            if (mediaType == MediaType.PERSON) {
+                _personCredits.value = detailsInteractor.getPersonCreditsById(mediaId)
+            }
         }
     }
 }

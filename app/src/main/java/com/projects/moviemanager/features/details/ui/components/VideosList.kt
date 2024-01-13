@@ -1,5 +1,8 @@
 package com.projects.moviemanager.features.details.ui.components
 
+import android.app.Activity
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.projects.moviemanager.common.theme.MainBarGreyColor
 import com.projects.moviemanager.common.ui.components.NetworkImage
@@ -25,15 +29,24 @@ import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_PADDING
 import com.projects.moviemanager.common.ui.util.UiConstants.SMALL_PADDING
 import com.projects.moviemanager.common.ui.util.UiConstants.VIDEOS_BORDER_SIZE
 import com.projects.moviemanager.domain.models.content.Videos
+import com.projects.moviemanager.util.Constants
 import com.projects.moviemanager.util.Constants.BASE_YOUTUBE_THUMBAIL_URL
 import com.projects.moviemanager.util.Constants.YOUTUBE_THUMBAIL_RESOLUTION
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 fun VideoList(
-    videoList: List<Videos>,
-    launchVideo: (String) -> Unit
+    videoList: List<Videos>
 ) {
+    val activity = LocalContext.current as Activity
+
+    val launchVideo: (String) -> Unit = { videoKey ->
+        val fullUrl = Constants.BASE_URL_YOUTUBE_VIDEO + videoKey
+        val uri = Uri.parse(fullUrl)
+        val intent = Intent(Intent.ACTION_VIEW, uri)
+        activity.startActivity(intent)
+    }
+
     videoList.forEach { video ->
         val imagePath = "${BASE_YOUTUBE_THUMBAIL_URL}${video.key}$YOUTUBE_THUMBAIL_RESOLUTION"
 

@@ -7,6 +7,7 @@ import com.projects.moviemanager.domain.models.content.MediaContent
 import com.projects.moviemanager.domain.models.content.Videos
 import com.projects.moviemanager.domain.models.content.toContentCast
 import com.projects.moviemanager.domain.models.content.toMediaContent
+import com.projects.moviemanager.domain.models.content.toMediaContentList
 import com.projects.moviemanager.domain.models.content.toMovieDetailsInfo
 import com.projects.moviemanager.domain.models.content.toPersonDetailsInfo
 import com.projects.moviemanager.domain.models.content.toShowDetailsInfo
@@ -136,5 +137,25 @@ class DetailsInteractor @Inject constructor(
             }
         }
         return listOfSimilar
+    }
+
+    suspend fun getPersonCreditsById(
+        personId: Int
+    ): List<MediaContent> {
+        val result = personRepository.getPersonCreditsById(personId)
+
+        var mediaContentList: List<MediaContent> = emptyList()
+        result.collect { response ->
+            when (response) {
+                is Right -> {
+                    Timber.e("getPersonCreditsById failed with error: ${response.error}")
+                }
+                is Left -> {
+                    Timber.tag("getPersonCreditsById").d("Left: ${response.value}")
+                    mediaContentList = response.value.cast.toMediaContentList()
+                }
+            }
+        }
+        return mediaContentList
     }
 }

@@ -1,5 +1,6 @@
 package com.projects.moviemanager.network.services.person
 
+import com.projects.moviemanager.network.response.person.PersonCreditsResponse
 import com.projects.moviemanager.network.response.person.PersonDetailsResponse
 import com.projects.moviemanager.util.Constants
 import com.projects.moviemanager.util.Constants.ENGLISH_LANGUAGE_CODE
@@ -15,4 +16,10 @@ interface PersonService {
         @Path("person_ID") personId: Int,
         @Query("language") language: String = ENGLISH_LANGUAGE_CODE
     ): Response<PersonDetailsResponse>
+
+    @GET("person/{person_ID}/combined_credits?api_key=${Constants.API_KEY}")
+    suspend fun getPersonCreditsById(
+        @Path("person_ID") personId: Int,
+        @Query("language") language: String = ENGLISH_LANGUAGE_CODE
+    ): Response<PersonCreditsResponse>
 }
