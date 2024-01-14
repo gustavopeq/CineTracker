@@ -1,9 +1,6 @@
 <resources>
     <string name="app_name">Moviebase Watchlist</string>
-    <string name="now_playing">Now Playing</string>
-    <string name="upcoming_movies">Upcoming</string>
-    <string name="popular_movies">Popular</string>
-    <string name="top_rated_movies">Top Rated</string>
+
     <string name="search_movies">Search</string>
     <string name="to_watchlist">To Watch List</string>
     <string name="details">Details</string>
@@ -37,4 +34,30 @@
     <string name="november">November</string>
     <string name="december">December</string>
 
+    <!-- Jetpack migration -->
+    <string name="main_nav_home">Home</string>
+    <string name="main_nav_browse">Browse</string>
+    <string name="main_nav_watchlist">Watchlist</string>
+    <string name="main_nav_search">Search</string>
+
+    <string name="common_error">Sorry, something went wrong! Try again...</string>
+    <string name="movies_tab">Movies</string>
+    <string name="shows_tab">Shows</string>
+    <string name="sort_by_header">Sort by</string>
+
+    <string name="now_playing">Now Playing</string>
+    <string name="upcoming_movies">Upcoming</string>
+    <string name="popular_movies">Popular</string>
+    <string name="top_rated_movies">Top Rated</string>
+    <string name="show_airing_today">Airing Today</string>
+    <string name="show_popular">Popular</string>
+    <string name="show_top_rated">Top Rated</string>
+    <string name="show_on_the_air">On the air</string>
+
+    <!-- Details screen -->
+    <string name="back_arrow_description">Back arrow</string>
+    <string name="more_options_videos">Videos</string>
+    <string name="more_options_similar">More like this</string>
+    <string name="images_tab">Images</string>
+    <string name="unknown">Unknown</string>
 </resources>
