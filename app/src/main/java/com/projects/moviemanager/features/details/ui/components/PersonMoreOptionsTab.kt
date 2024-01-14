@@ -8,6 +8,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import com.projects.moviemanager.common.domain.MediaType
 import com.projects.moviemanager.common.ui.components.GridContentList
+import com.projects.moviemanager.common.ui.components.GridImageList
 import com.projects.moviemanager.common.ui.components.MoreOptionsTabRow
 import com.projects.moviemanager.domain.models.content.MediaContent
 import com.projects.moviemanager.domain.models.person.PersonImage
@@ -52,7 +53,6 @@ fun PersonMoreOptionsTab(
                 MoreOptionsTabItem.MoviesTab.tabIndex -> {
                     GridContentList(
                         mediaContentList = moviesList,
-                        maxCardsNumber = moviesList.size,
                         openContentDetails = openContentDetails
                     )
                 }
@@ -60,16 +60,13 @@ fun PersonMoreOptionsTab(
                 MoreOptionsTabItem.ShowsTab.tabIndex -> {
                     GridContentList(
                         mediaContentList = showList,
-                        maxCardsNumber = showList.size,
                         openContentDetails = openContentDetails
                     )
                 }
 
                 MoreOptionsTabItem.ImagesTab.tabIndex -> {
-                    GridContentList(
-                        mediaContentList = showList,
-                        maxCardsNumber = showList.size,
-                        openContentDetails = openContentDetails
+                    GridImageList(
+                        personImageList = personImageList
                     )
                 }
             }

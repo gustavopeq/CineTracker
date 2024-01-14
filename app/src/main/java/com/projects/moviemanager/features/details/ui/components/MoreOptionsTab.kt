@@ -9,6 +9,8 @@ import androidx.compose.runtime.setValue
 import com.projects.moviemanager.common.domain.MediaType
 import com.projects.moviemanager.common.ui.components.GridContentList
 import com.projects.moviemanager.common.ui.components.MoreOptionsTabRow
+import com.projects.moviemanager.common.ui.util.UiConstants
+import com.projects.moviemanager.common.ui.util.UiConstants.MAX_COUNT_DETAILS_CARDS
 import com.projects.moviemanager.domain.models.content.MediaContent
 import com.projects.moviemanager.domain.models.content.Videos
 import com.projects.moviemanager.features.details.ui.components.MoreOptionsTabItem.MoreLikeThisTab
@@ -52,6 +54,7 @@ fun MoreOptionsTab(
                 MoreLikeThisTab.tabIndex -> {
                     GridContentList(
                         mediaContentList = contentSimilarList,
+                        maxCardsNumber = MAX_COUNT_DETAILS_CARDS,
                         openContentDetails = openSimilarContent
                     )
                 }

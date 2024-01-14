@@ -9,6 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.projects.moviemanager.common.domain.MediaType
 import com.projects.moviemanager.common.ui.util.UiConstants.BROWSE_MIN_CARD_WIDTH
@@ -18,13 +19,14 @@ import com.projects.moviemanager.common.ui.util.calculateCardsPerRow
 import com.projects.moviemanager.common.ui.util.dpToPx
 import com.projects.moviemanager.common.ui.util.pxToDp
 import com.projects.moviemanager.domain.models.content.MediaContent
+import com.projects.moviemanager.domain.models.person.PersonImage
 import com.projects.moviemanager.util.removeParentPadding
 
 @Composable
-fun GridContentList(
-    mediaContentList: List<MediaContent>,
-    maxCardsNumber: Int = MAX_COUNT_DETAILS_CARDS,
-    openContentDetails: (Int, MediaType) -> Unit
+fun <T> GenericGrid(
+    itemList: List<T>,
+    maxCardsNumber: Int,
+    displayItem: @Composable (T, Dp) -> Unit
 ) {
     val density = LocalDensity.current
     val screenWidth = density.run { LocalConfiguration.current.screenWidthDp.dp.roundToPx() }
@@ -42,24 +44,55 @@ fun GridContentList(
         modifier = Modifier.fillMaxWidth().removeParentPadding(DEFAULT_MARGIN.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        val filteredList = mediaContentList.take(maxCardsNumber)
+        val filteredList = itemList.take(maxCardsNumber)
             .chunked(numCardsPerRow)
 
         filteredList.forEach { rowItems ->
             Row {
                 rowItems.forEach { content ->
-                    ContentCard(
-                        modifier = Modifier.width(adjustedCardSize),
-                        cardWidth = adjustedCardSize,
-                        imageUrl = content.poster_path,
-                        title = content.title,
-                        rating = content.vote_average,
-                        goToDetails = {
-                            openContentDetails(content.id, content.mediaType)
-                        }
-                    )
+                    displayItem(content, adjustedCardSize)
                 }
             }
         }
+    }
+}
+
+@Composable
+fun GridContentList(
+    mediaContentList: List<MediaContent>,
+    maxCardsNumber: Int? = null,
+    openContentDetails: (Int, MediaType) -> Unit
+) {
+    GenericGrid(
+        itemList = mediaContentList,
+        maxCardsNumber = maxCardsNumber ?: mediaContentList.size
+    ) { content, size ->
+        ContentCard(
+            modifier = Modifier.width(size),
+            cardWidth = size,
+            imageUrl = content.poster_path,
+            title = content.title,
+            rating = content.vote_average,
+            goToDetails = {
+                openContentDetails(content.id, content.mediaType)
+            }
+        )
+    }
+}
+
+@Composable
+fun GridImageList(
+    personImageList: List<PersonImage>,
+    maxCardsNumber: Int? = null
+) {
+    GenericGrid(
+        itemList = personImageList,
+        maxCardsNumber = maxCardsNumber ?: personImageList.size
+    ) { personImage, size ->
+        ImageCard(
+            modifier = Modifier.width(size),
+            cardWidth = size,
+            imageUrl = personImage.filePath
+        )
     }
 }
