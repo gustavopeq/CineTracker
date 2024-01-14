@@ -4,7 +4,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import com.projects.moviemanager.compose.common.MainViewModel
+import com.projects.moviemanager.common.ui.MainViewModel
 import javax.inject.Singleton
 
 @Module

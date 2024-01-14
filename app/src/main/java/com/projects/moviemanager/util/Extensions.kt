@@ -1,37 +1,76 @@
 package com.projects.moviemanager.util
 
 import android.content.Context
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.layout
+import androidx.compose.ui.unit.Dp
 import com.projects.moviemanager.R
+import com.projects.moviemanager.common.ui.util.UiConstants.UNDEFINED_RATINGS
+import timber.log.Timber
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
 
-class Extensions {
+fun String.formatDate(context: Context): String {
+    val month: Int?
+    val day: Int?
+    val year: String
 
-    companion object {
-        fun formatDate(date: String, context: Context): String {
-            var month: Int
-            var monthFormated: String = context.resources.getString(R.string.january)
-            var day: Int
-            var year: String
+    try {
+        month = this.substring(5, 7).toIntOrNull()
+        day = this.substring(8, 10).toIntOrNull()
+        year = this.substring(0, 4)
+    } catch (e: StringIndexOutOfBoundsException) {
+        Timber.e("Date format caught exception: $e")
+        return context.resources.getString(R.string.unknown)
+    }
 
-            month = date.substring(5, 7).toInt()
-            day = date.substring(8, 10).toInt()
-            year = date.substring(0, 4)
+    val monthFormated: String? = when (month) {
+        1 -> context.resources.getString(R.string.january)
+        2 -> context.resources.getString(R.string.february)
+        3 -> context.resources.getString(R.string.march)
+        4 -> context.resources.getString(R.string.april)
+        5 -> context.resources.getString(R.string.may)
+        6 -> context.resources.getString(R.string.june)
+        7 -> context.resources.getString(R.string.july)
+        8 -> context.resources.getString(R.string.august)
+        9 -> context.resources.getString(R.string.september)
+        10 -> context.resources.getString(R.string.october)
+        11 -> context.resources.getString(R.string.november)
+        12 -> context.resources.getString(R.string.december)
+        else -> null
+    }
 
-            when (month) {
-                1 -> monthFormated = context.resources.getString(R.string.january)
-                2 -> monthFormated = context.resources.getString(R.string.february)
-                3 -> monthFormated = context.resources.getString(R.string.march)
-                4 -> monthFormated = context.resources.getString(R.string.april)
-                5 -> monthFormated = context.resources.getString(R.string.may)
-                6 -> monthFormated = context.resources.getString(R.string.june)
-                7 -> monthFormated = context.resources.getString(R.string.july)
-                8 -> monthFormated = context.resources.getString(R.string.august)
-                9 -> monthFormated = context.resources.getString(R.string.september)
-                10 -> monthFormated = context.resources.getString(R.string.october)
-                11 -> monthFormated = context.resources.getString(R.string.november)
-                12 -> monthFormated = context.resources.getString(R.string.december)
-            }
+    return if (monthFormated != null && day != null) {
+        "$monthFormated $day, $year"
+    } else {
+        context.resources.getString(R.string.unknown)
+    }
+}
 
-            return "$monthFormated $day, $year"
+fun Double?.formatRating(): String {
+    if (this == null || this == 0.0) {
+        return UNDEFINED_RATINGS
+    }
+
+    var formattedRating = DecimalFormat("#.#").format(this)
+    if (formattedRating.length == 1) {
+        formattedRating = "$formattedRating${DecimalFormatSymbols.getInstance().decimalSeparator}0"
+    }
+
+    return formattedRating
+}
+
+fun Modifier.removeParentPadding(
+    paddingToRemove: Dp
+): Modifier {
+    return this.layout { measurable, constraints ->
+        val placeable = measurable.measure(
+            constraints.copy(
+                maxWidth = constraints.maxWidth + (paddingToRemove.roundToPx() * 2)
+            )
+        )
+        layout(placeable.width, placeable.height) {
+            placeable.place(0, 0)
         }
     }
 }

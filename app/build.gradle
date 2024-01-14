@@ -67,6 +67,9 @@ dependencies {
     //Glide
     implementation "com.github.bumptech.glide:compose:1.0.0-beta01"
 
+    //Picasso
+    implementation 'com.squareup.picasso:picasso:2.8'
+
     //ViewModel KTX + Coroutine
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2"
 
