@@ -1,4 +1,4 @@
-package com.projects.moviemanager.network.response.content
+package com.projects.moviemanager.network.response.content.common
 
 data class ContentCreditsResponse(
     val id: Int = 0,

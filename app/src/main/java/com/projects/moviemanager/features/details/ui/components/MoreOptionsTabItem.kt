@@ -19,4 +19,7 @@ sealed class MoreOptionsTabItem(
     data object ShowsTab : MoreOptionsTabItem(
         tabResId = R.string.shows_tab
     )
+    data object ImagesTab : MoreOptionsTabItem(
+        tabResId = R.string.images_tab
+    )
 }

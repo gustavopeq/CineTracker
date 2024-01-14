@@ -1,10 +1,6 @@
-package com.projects.moviemanager.network.response.content
+package com.projects.moviemanager.network.response.content.common
 
 import com.projects.moviemanager.common.domain.MediaType
-import com.projects.moviemanager.domain.models.ContentGenre
-import com.projects.moviemanager.domain.models.ProductionCompany
-import com.projects.moviemanager.domain.models.ProductionCountry
-import com.projects.moviemanager.domain.models.SpokenLanguage
 
 interface BaseMediaContentResponse {
     val id: Int

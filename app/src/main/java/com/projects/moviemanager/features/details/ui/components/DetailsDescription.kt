@@ -22,8 +22,8 @@ import com.projects.moviemanager.common.ui.components.GradientDirections
 import com.projects.moviemanager.common.ui.components.RatingComponent
 import com.projects.moviemanager.common.ui.components.classicVerticalGradientBrush
 import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_MARGIN
-import com.projects.moviemanager.domain.models.ContentGenre
-import com.projects.moviemanager.domain.models.ProductionCountry
+import com.projects.moviemanager.network.response.content.common.ContentGenre
+import com.projects.moviemanager.network.response.content.common.ProductionCountry
 import com.projects.moviemanager.domain.models.content.DetailedMediaInfo
 import com.projects.moviemanager.domain.models.content.MovieDetailsInfo
 import com.projects.moviemanager.domain.models.content.PersonDetailsInfo

@@ -1,7 +1,5 @@
 package com.projects.moviemanager.network.di
 
-import com.projects.moviemanager.network.ApiClient
-import com.projects.moviemanager.network.services.MovieDbService
 import com.projects.moviemanager.network.services.movie.MovieService
 import com.projects.moviemanager.network.services.person.PersonService
 import com.projects.moviemanager.network.services.show.ShowService
@@ -15,15 +13,6 @@ import retrofit2.Retrofit
 @Module
 @InstallIn(SingletonComponent::class)
 object ServiceModule {
-
-    @Singleton
-    @Provides
-    fun provideMovieApiService(retrofit: Retrofit): ApiClient {
-        val movieDbService = retrofit.create(MovieDbService::class.java)
-
-        return ApiClient(movieDbService)
-    }
-
     @Singleton
     @Provides
     fun provideMovieService(retrofit: Retrofit): MovieService {

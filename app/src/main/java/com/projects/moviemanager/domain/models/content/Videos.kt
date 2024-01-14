@@ -1,6 +1,6 @@
 package com.projects.moviemanager.domain.models.content
 
-import com.projects.moviemanager.network.response.content.VideoResponse
+import com.projects.moviemanager.network.response.content.common.VideoResponse
 
 data class Videos(
     val name: String,

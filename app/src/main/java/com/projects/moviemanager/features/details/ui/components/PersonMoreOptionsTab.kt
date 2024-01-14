@@ -10,22 +10,26 @@ import com.projects.moviemanager.common.domain.MediaType
 import com.projects.moviemanager.common.ui.components.GridContentList
 import com.projects.moviemanager.common.ui.components.MoreOptionsTabRow
 import com.projects.moviemanager.domain.models.content.MediaContent
+import com.projects.moviemanager.domain.models.person.PersonImage
 
 @Composable
 fun PersonMoreOptionsTab(
     contentList: List<MediaContent>,
+    personImageList: List<PersonImage>,
     openContentDetails: (Int, MediaType) -> Unit
 ) {
     val moviesList = contentList.filter { it.mediaType == MediaType.MOVIE }
     val showList = contentList.filter { it.mediaType == MediaType.SHOW }
 
-    val tabList = when {
-        moviesList.isNotEmpty() && showList.isNotEmpty() -> {
-            listOf(MoreOptionsTabItem.MoviesTab, MoreOptionsTabItem.ShowsTab)
-        }
-        moviesList.isNotEmpty() -> listOf(MoreOptionsTabItem.MoviesTab)
-        showList.isNotEmpty() -> listOf(MoreOptionsTabItem.ShowsTab)
-        else -> emptyList()
+    val tabList = mutableListOf<MoreOptionsTabItem>()
+    if (moviesList.isNotEmpty()) {
+        tabList.add(MoreOptionsTabItem.MoviesTab)
+    }
+    if (showList.isNotEmpty()) {
+        tabList.add(MoreOptionsTabItem.ShowsTab)
+    }
+    if (personImageList.isNotEmpty()) {
+        tabList.add(MoreOptionsTabItem.ImagesTab)
     }
 
     tabList.forEachIndexed { index, tabItem ->
@@ -53,7 +57,15 @@ fun PersonMoreOptionsTab(
                     )
                 }
 
-                MoreOptionsTabItem.MoreLikeThisTab.tabIndex -> {
+                MoreOptionsTabItem.ShowsTab.tabIndex -> {
+                    GridContentList(
+                        mediaContentList = showList,
+                        maxCardsNumber = showList.size,
+                        openContentDetails = openContentDetails
+                    )
+                }
+
+                MoreOptionsTabItem.ImagesTab.tabIndex -> {
                     GridContentList(
                         mediaContentList = showList,
                         maxCardsNumber = showList.size,

@@ -20,13 +20,12 @@ fun MoreOptionsTab(
     contentSimilarList: List<MediaContent>,
     openSimilarContent: (Int, MediaType) -> Unit
 ) {
-    val tabList = when {
-        videoList.isNotEmpty() && contentSimilarList.isNotEmpty() -> {
-            listOf(VideosTab, MoreLikeThisTab)
-        }
-        videoList.isNotEmpty() -> listOf(VideosTab)
-        contentSimilarList.isNotEmpty() -> listOf(MoreLikeThisTab)
-        else -> emptyList()
+    val tabList = mutableListOf<MoreOptionsTabItem>()
+    if (videoList.isNotEmpty()) {
+        tabList.add(VideosTab)
+    }
+    if (contentSimilarList.isNotEmpty()) {
+        tabList.add(MoreLikeThisTab)
     }
 
     tabList.forEachIndexed { index, tabItem ->

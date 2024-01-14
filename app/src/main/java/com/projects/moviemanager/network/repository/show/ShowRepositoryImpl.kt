@@ -1,10 +1,10 @@
 package com.projects.moviemanager.network.repository.show
 
 import com.projects.moviemanager.network.models.ApiError
-import com.projects.moviemanager.network.response.content.ContentCreditsResponse
-import com.projects.moviemanager.network.response.content.ContentListPageResponse
-import com.projects.moviemanager.network.response.content.ShowApiResponse
-import com.projects.moviemanager.network.response.content.VideosByIdResponse
+import com.projects.moviemanager.network.response.content.common.ContentCreditsResponse
+import com.projects.moviemanager.network.response.content.common.ContentListPageResponse
+import com.projects.moviemanager.network.response.content.show.ShowApiResponse
+import com.projects.moviemanager.network.response.content.common.VideosByIdResponse
 import com.projects.moviemanager.network.services.show.ShowService
 import com.projects.moviemanager.network.util.Either
 import com.projects.moviemanager.network.util.asFlow

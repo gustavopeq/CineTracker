@@ -1,9 +1,9 @@
 package com.projects.moviemanager.domain.models.content
 
 import com.projects.moviemanager.common.domain.MediaType
-import com.projects.moviemanager.domain.models.ContentGenre
-import com.projects.moviemanager.domain.models.ProductionCountry
-import com.projects.moviemanager.network.response.content.BaseMediaContentResponse
+import com.projects.moviemanager.network.response.content.common.ContentGenre
+import com.projects.moviemanager.network.response.content.common.ProductionCountry
+import com.projects.moviemanager.network.response.content.common.BaseMediaContentResponse
 import com.projects.moviemanager.network.response.person.PersonDetailsResponse
 sealed class DetailedMediaInfo : BaseMediaContent
 

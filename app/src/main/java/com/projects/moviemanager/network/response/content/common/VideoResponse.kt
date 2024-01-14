@@ -1,4 +1,4 @@
-package com.projects.moviemanager.network.response.content
+package com.projects.moviemanager.network.response.content.common
 
 data class VideoResponse(
     val name: String,

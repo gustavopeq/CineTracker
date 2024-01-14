@@ -1,10 +1,11 @@
-package com.projects.moviemanager.network.response.content
+package com.projects.moviemanager.network.response.content.movie
 
 import com.projects.moviemanager.common.domain.MediaType
-import com.projects.moviemanager.domain.models.ContentGenre
-import com.projects.moviemanager.domain.models.ProductionCompany
-import com.projects.moviemanager.domain.models.ProductionCountry
-import com.projects.moviemanager.domain.models.SpokenLanguage
+import com.projects.moviemanager.network.response.content.common.ContentGenre
+import com.projects.moviemanager.network.response.content.common.ProductionCompany
+import com.projects.moviemanager.network.response.content.common.ProductionCountry
+import com.projects.moviemanager.network.response.content.common.SpokenLanguage
+import com.projects.moviemanager.network.response.content.common.BaseMediaContentResponse
 
 data class MovieApiResponse(
     override val id: Int,

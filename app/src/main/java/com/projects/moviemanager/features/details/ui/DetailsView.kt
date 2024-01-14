@@ -147,6 +147,7 @@ private fun DetailsComponent(
     val videoList by viewModel.contentVideos.collectAsState()
     val contentSimilarList by viewModel.contentSimilar.collectAsState()
     val personContentList by viewModel.personCredits.collectAsState()
+    val personImageList by viewModel.personImages.collectAsState()
 
     LaunchedEffect(Unit) {
         viewModel.fetchAdditionalInfo(mediaInfo.id, mediaInfo.mediaType)
@@ -201,6 +202,7 @@ private fun DetailsComponent(
                         MediaType.PERSON -> {
                             PersonMoreOptionsTab(
                                 contentList = personContentList,
+                                personImageList = personImageList,
                                 openContentDetails = openDetails
                             )
                         }

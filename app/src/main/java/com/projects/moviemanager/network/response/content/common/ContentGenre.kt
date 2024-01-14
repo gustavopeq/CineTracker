@@ -1,4 +1,4 @@
-package com.projects.moviemanager.domain.models
+package com.projects.moviemanager.network.response.content.common
 
 data class ContentGenre(
     val id: Int?,

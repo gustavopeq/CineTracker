@@ -2,6 +2,7 @@ package com.projects.moviemanager.network.services.person
 
 import com.projects.moviemanager.network.response.person.PersonCreditsResponse
 import com.projects.moviemanager.network.response.person.PersonDetailsResponse
+import com.projects.moviemanager.network.response.person.PersonImagesResponse
 import com.projects.moviemanager.util.Constants
 import com.projects.moviemanager.util.Constants.ENGLISH_LANGUAGE_CODE
 import retrofit2.Response
@@ -22,4 +23,9 @@ interface PersonService {
         @Path("person_ID") personId: Int,
         @Query("language") language: String = ENGLISH_LANGUAGE_CODE
     ): Response<PersonCreditsResponse>
+
+    @GET("person/{person_ID}/images?api_key=${Constants.API_KEY}")
+    suspend fun getPersonImagesById(
+        @Path("person_ID") personId: Int
+    ): Response<PersonImagesResponse>
 }

@@ -12,11 +12,13 @@ import com.projects.moviemanager.domain.models.content.toMovieDetailsInfo
 import com.projects.moviemanager.domain.models.content.toPersonDetailsInfo
 import com.projects.moviemanager.domain.models.content.toShowDetailsInfo
 import com.projects.moviemanager.domain.models.content.toVideos
+import com.projects.moviemanager.domain.models.person.PersonImage
+import com.projects.moviemanager.domain.models.person.toPersonImage
 import com.projects.moviemanager.network.repository.movie.MovieRepository
 import com.projects.moviemanager.network.repository.person.PersonRepository
 import com.projects.moviemanager.network.repository.show.ShowRepository
-import com.projects.moviemanager.network.response.content.MovieApiResponse
-import com.projects.moviemanager.network.response.content.ShowApiResponse
+import com.projects.moviemanager.network.response.content.movie.MovieApiResponse
+import com.projects.moviemanager.network.response.content.show.ShowApiResponse
 import com.projects.moviemanager.network.response.person.PersonDetailsResponse
 import com.projects.moviemanager.network.util.Left
 import com.projects.moviemanager.network.util.Right
@@ -151,11 +153,33 @@ class DetailsInteractor @Inject constructor(
                     Timber.e("getPersonCreditsById failed with error: ${response.error}")
                 }
                 is Left -> {
-                    Timber.tag("getPersonCreditsById").d("Left: ${response.value}")
                     mediaContentList = response.value.cast.toMediaContentList()
                 }
             }
         }
         return mediaContentList
+    }
+
+    suspend fun getPersonImages(
+        personId: Int
+    ): List<PersonImage> {
+        val result = personRepository.getPersonImagesById(personId)
+
+        var imageList: List<PersonImage> = emptyList()
+        result.collect { response ->
+            when (response) {
+                is Right -> {
+                    Timber.e("getPersonImages failed with error: ${response.error}")
+                }
+                is Left -> {
+                    imageList = response.value.profiles?.filter {
+                        it?.file_path?.isNotEmpty() == true
+                    }?.mapNotNull {
+                        it?.toPersonImage()
+                    } ?: emptyList()
+                }
+            }
+        }
+        return imageList
     }
 }

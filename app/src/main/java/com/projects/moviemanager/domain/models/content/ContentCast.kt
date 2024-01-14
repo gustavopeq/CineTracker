@@ -1,6 +1,6 @@
 package com.projects.moviemanager.domain.models.content
 
-import com.projects.moviemanager.network.response.content.ContentCastResponse
+import com.projects.moviemanager.network.response.content.common.ContentCastResponse
 
 data class ContentCast(
     val id: Int,
