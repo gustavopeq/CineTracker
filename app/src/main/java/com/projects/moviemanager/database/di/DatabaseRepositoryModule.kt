@@ -1,6 +1,6 @@
 package com.projects.moviemanager.database.di
 
-import com.projects.moviemanager.database.dao.ItemEntityDao
+import com.projects.moviemanager.database.dao.ContentEntityDao
 import com.projects.moviemanager.database.repository.DatabaseRepository
 import com.projects.moviemanager.database.repository.DatabaseRepositoryImpl
 import dagger.Module
@@ -15,8 +15,8 @@ object DatabaseRepositoryModule {
     @Singleton
     @Provides
     fun provideDatabaseRepository(
-        itemEntityDao: ItemEntityDao
+        contentEntityDao: ContentEntityDao
     ): DatabaseRepository {
-        return DatabaseRepositoryImpl(itemEntityDao)
+        return DatabaseRepositoryImpl(contentEntityDao)
     }
 }

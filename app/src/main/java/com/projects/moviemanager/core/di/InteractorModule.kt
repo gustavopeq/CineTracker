@@ -34,12 +34,14 @@ object InteractorModule {
     fun provideDetailsInteractor(
         movieRepository: MovieRepository,
         showRepository: ShowRepository,
-        personRepository: PersonRepository
+        personRepository: PersonRepository,
+        databaseRepository: DatabaseRepository
     ): DetailsInteractor {
         return DetailsInteractor(
             movieRepository = movieRepository,
             showRepository = showRepository,
-            personRepository = personRepository
+            personRepository = personRepository,
+            databaseRepository = databaseRepository
         )
     }
 

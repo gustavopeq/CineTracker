@@ -1,10 +1,11 @@
 package com.projects.moviemanager.features.watchlist.ui
 
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
@@ -21,11 +22,16 @@ fun Watchlist() {
 private fun Watchlist(
     viewModel: WatchlistViewModel
 ) {
-    Box(modifier = Modifier.fillMaxSize()) {
+    val watchlist by viewModel.watchlist.collectAsState()
+
+    Column(modifier = Modifier.fillMaxSize()) {
         Text(
             text = "Watchlist Screen",
-            modifier = Modifier.align(Alignment.Center),
             style = TextStyle(color = Color.Red)
         )
+        watchlist.forEach {
+            Text(text = it.contentId.toString())
+            Text(text = it.mediaType)
+        }
     }
 }

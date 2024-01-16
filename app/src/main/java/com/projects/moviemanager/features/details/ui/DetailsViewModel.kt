@@ -10,6 +10,7 @@ import com.projects.moviemanager.domain.models.content.Videos
 import com.projects.moviemanager.domain.models.person.PersonImage
 import com.projects.moviemanager.features.details.domain.DetailsInteractor
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -66,6 +67,12 @@ class DetailsViewModel @Inject constructor(
                     _personImages.value = detailsInteractor.getPersonImages(mediaId)
                 }
             }
+        }
+    }
+
+    fun addToWatchlist(mediaId: Int, mediaType: MediaType) {
+        viewModelScope.launch(Dispatchers.IO) {
+            detailsInteractor.addToWatchlist(mediaId, mediaType)
         }
     }
 }

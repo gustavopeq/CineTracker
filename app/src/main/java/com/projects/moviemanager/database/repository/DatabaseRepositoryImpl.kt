@@ -1,25 +1,32 @@
 package com.projects.moviemanager.database.repository
 
-import com.projects.moviemanager.database.dao.ItemEntityDao
-import com.projects.moviemanager.database.model.ItemEntity
+import com.projects.moviemanager.common.domain.MediaType
+import com.projects.moviemanager.database.dao.ContentEntityDao
+import com.projects.moviemanager.database.model.ContentEntity
 
 class DatabaseRepositoryImpl(
-    private val itemEntityDao: ItemEntityDao
+    private val contentEntityDao: ContentEntityDao
 ) : DatabaseRepository {
 
-    override suspend fun insertItem(itemEntity: ItemEntity) {
-        itemEntityDao.insert(itemEntity)
+    override suspend fun insertItem(itemEntity: ContentEntity) {
+        contentEntityDao.insert(itemEntity)
     }
 
-    override suspend fun deleteItem(itemEntity: ItemEntity) {
-        itemEntityDao.delete(itemEntity)
+    override suspend fun deleteItem(itemEntity: ContentEntity) {
+        contentEntityDao.delete(itemEntity)
     }
 
-    override suspend fun getAllItems(): List<ItemEntity> {
-        return itemEntityDao.getAllItems()
+    override suspend fun getAllItems(): List<ContentEntity> {
+        return contentEntityDao.getAllItems()
     }
 
-    override suspend fun searchItem(movieId: Int): ItemEntity? {
-        return itemEntityDao.searchItem(movieId)
+    override suspend fun searchItem(
+        contentId: Int,
+        mediaType: MediaType
+    ): ContentEntity? {
+        return contentEntityDao.searchItem(
+            contentId = contentId,
+            mediaType = mediaType.name
+        )
     }
 }

@@ -1,7 +1,7 @@
 package com.projects.moviemanager.database.di
 
 import com.projects.moviemanager.database.AppDatabase
-import com.projects.moviemanager.database.dao.ItemEntityDao
+import com.projects.moviemanager.database.dao.ContentEntityDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,7 +15,7 @@ object DaoModule {
     @Singleton
     fun provideItemEntityDao(
         appDatabase: AppDatabase
-    ): ItemEntityDao {
-        return appDatabase.itemEntityDao()
+    ): ContentEntityDao {
+        return appDatabase.contentEntityDao()
     }
 }

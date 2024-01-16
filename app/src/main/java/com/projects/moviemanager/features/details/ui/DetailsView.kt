@@ -149,6 +149,13 @@ private fun DetailsComponent(
     val personContentList by viewModel.personCredits.collectAsState()
     val personImageList by viewModel.personImages.collectAsState()
 
+    val addToWatchlist: () -> Unit = {
+        viewModel.addToWatchlist(
+            mediaId = mediaInfo.id,
+            mediaType = mediaInfo.mediaType
+        )
+    }
+
     LaunchedEffect(Unit) {
         viewModel.fetchAdditionalInfo(mediaInfo.id, mediaInfo.mediaType)
     }
@@ -180,7 +187,8 @@ private fun DetailsComponent(
                         .padding(DEFAULT_MARGIN.dp)
                 ) {
                     DetailsDescriptionBody(
-                        contentDetails = mediaInfo
+                        contentDetails = mediaInfo,
+                        addToWatchlist = addToWatchlist
                     )
                     Spacer(modifier = Modifier.height(SECTION_PADDING.dp))
                     if (contentCredits.isNotEmpty()) {

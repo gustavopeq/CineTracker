@@ -1,6 +1,8 @@
 package com.projects.moviemanager.features.details.domain
 
 import com.projects.moviemanager.common.domain.MediaType
+import com.projects.moviemanager.database.model.ContentEntity
+import com.projects.moviemanager.database.repository.DatabaseRepository
 import com.projects.moviemanager.domain.models.content.ContentCast
 import com.projects.moviemanager.domain.models.content.DetailedMediaInfo
 import com.projects.moviemanager.domain.models.content.MediaContent
@@ -28,7 +30,8 @@ import javax.inject.Inject
 class DetailsInteractor @Inject constructor(
     private val movieRepository: MovieRepository,
     private val showRepository: ShowRepository,
-    private val personRepository: PersonRepository
+    private val personRepository: PersonRepository,
+    private val databaseRepository: DatabaseRepository
 ) {
     suspend fun getContentDetailsById(
         contentId: Int,
@@ -181,5 +184,16 @@ class DetailsInteractor @Inject constructor(
             }
         }
         return imageList
+    }
+
+    suspend fun addToWatchlist(
+        contentId: Int,
+        mediaType: MediaType
+    ) {
+        val item = ContentEntity(
+            contentId = contentId,
+            mediaType = mediaType.name
+        )
+        databaseRepository.insertItem(item)
     }
 }

@@ -3,6 +3,7 @@ package com.projects.moviemanager.database.di
 import android.content.Context
 import androidx.room.Room
 import com.projects.moviemanager.database.AppDatabase
+import com.projects.moviemanager.database.migration.MIGRATION_1_2
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,6 +23,8 @@ object AppDatabaseModule {
             context,
             AppDatabase::class.java,
             "movie_manager_database"
-        ).fallbackToDestructiveMigration().build()
+        )
+            .addMigrations(MIGRATION_1_2)
+            .fallbackToDestructiveMigration().build()
     }
 }
