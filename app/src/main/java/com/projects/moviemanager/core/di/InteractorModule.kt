@@ -1,7 +1,10 @@
 package com.projects.moviemanager.core.di
 
+import com.projects.moviemanager.database.repository.DatabaseRepository
+import com.projects.moviemanager.database.repository.DatabaseRepositoryImpl
 import com.projects.moviemanager.features.browse.domain.BrowseInteractor
 import com.projects.moviemanager.features.details.domain.DetailsInteractor
+import com.projects.moviemanager.features.watchlist.domain.WatchlistInteractor
 import com.projects.moviemanager.network.repository.movie.MovieRepository
 import com.projects.moviemanager.network.repository.person.PersonRepository
 import com.projects.moviemanager.network.repository.show.ShowRepository
@@ -37,6 +40,16 @@ object InteractorModule {
             movieRepository = movieRepository,
             showRepository = showRepository,
             personRepository = personRepository
+        )
+    }
+
+    @Singleton
+    @Provides
+    fun provideWatchlistInteractor(
+        databaseRepository: DatabaseRepository
+    ): WatchlistInteractor {
+        return WatchlistInteractor(
+            databaseRepository = databaseRepository
         )
     }
 }
