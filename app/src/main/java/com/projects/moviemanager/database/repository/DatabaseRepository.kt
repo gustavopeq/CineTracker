@@ -4,9 +4,9 @@ import com.projects.moviemanager.common.domain.MediaType
 import com.projects.moviemanager.database.model.ContentEntity
 
 interface DatabaseRepository {
-    suspend fun insertItem(itemEntity: ContentEntity)
+    suspend fun insertItem(contentId: Int, mediaType: MediaType)
 
-    suspend fun deleteItem(itemEntity: ContentEntity)
+    suspend fun deleteItem(contentId: Int, mediaType: MediaType)
 
     suspend fun getAllItems(): List<ContentEntity>
 

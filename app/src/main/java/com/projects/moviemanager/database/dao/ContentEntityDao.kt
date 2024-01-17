@@ -1,7 +1,6 @@
 package com.projects.moviemanager.database.dao
 
 import androidx.room.*
-import com.projects.moviemanager.common.domain.MediaType
 import com.projects.moviemanager.database.model.ContentEntity
 
 @Dao
@@ -10,10 +9,10 @@ interface ContentEntityDao {
     fun getAllItems(): List<ContentEntity>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insert(itemEntity: ContentEntity)
+    fun insert(contentEntity: ContentEntity)
 
-    @Delete()
-    fun delete(itemEntity: ContentEntity)
+    @Query("DELETE FROM content_entity WHERE contentId=:contentId AND mediaType = :mediaType")
+    fun delete(contentId: Int, mediaType: String)
 
     @Query("SELECT * FROM content_entity WHERE contentId=:contentId AND mediaType = :mediaType")
     fun searchItem(contentId: Int, mediaType: String): ContentEntity?

@@ -42,37 +42,65 @@ class DetailsViewModel @Inject constructor(
     private val _personImages: MutableStateFlow<List<PersonImage>> = MutableStateFlow(emptyList())
     val personImages: StateFlow<List<PersonImage>> get() = _personImages
 
+    private val _contentInWatchlist = MutableStateFlow(false)
+    val contentInWatchlist: StateFlow<Boolean> get() = _contentInWatchlist
+
     fun fetchDetails(contentId: Int, mediaType: MediaType) {
         viewModelScope.launch {
             _contentDetails.value = detailsInteractor.getContentDetailsById(contentId, mediaType)
+            verifyInWatchlist(
+                contentId = contentId,
+                mediaType = mediaType
+            )
         }
     }
 
-    fun fetchAdditionalInfo(mediaId: Int, mediaType: MediaType) {
+    fun fetchAdditionalInfo(contentId: Int, mediaType: MediaType) {
         viewModelScope.launch {
-            _contentCredits.value = detailsInteractor.getContentCreditsById(mediaId, mediaType)
+            _contentCredits.value = detailsInteractor.getContentCreditsById(contentId, mediaType)
             when (mediaType) {
                 MediaType.MOVIE, MediaType.SHOW -> {
                     _contentVideos.value = detailsInteractor.getContentVideosById(
-                        mediaId,
+                        contentId,
                         mediaType
                     )
                     _contentSimilar.value = detailsInteractor.getSimilarContentById(
-                        mediaId,
+                        contentId,
                         mediaType
                     )
                 }
                 MediaType.PERSON -> {
-                    _personCredits.value = detailsInteractor.getPersonCreditsById(mediaId)
-                    _personImages.value = detailsInteractor.getPersonImages(mediaId)
+                    _personCredits.value = detailsInteractor.getPersonCreditsById(contentId)
+                    _personImages.value = detailsInteractor.getPersonImages(contentId)
                 }
             }
         }
     }
 
-    fun addToWatchlist(mediaId: Int, mediaType: MediaType) {
+    private fun verifyInWatchlist(
+        contentId: Int,
+        mediaType: MediaType
+    ) {
         viewModelScope.launch(Dispatchers.IO) {
-            detailsInteractor.addToWatchlist(mediaId, mediaType)
+            _contentInWatchlist.value = detailsInteractor.isInWatchlist(
+                contentId = contentId,
+                mediaType = mediaType
+            )
+        }
+    }
+
+    fun toggleWatchlistStatus(contentId: Int, mediaType: MediaType) {
+        viewModelScope.launch(Dispatchers.IO) {
+            when (contentInWatchlist.value) {
+                true -> {
+                    detailsInteractor.removeFromWatchlist(contentId, mediaType)
+                    _contentInWatchlist.value = false
+                }
+                false -> {
+                    detailsInteractor.addToWatchlist(contentId, mediaType)
+                    _contentInWatchlist.value = true
+                }
+            }
         }
     }
 }

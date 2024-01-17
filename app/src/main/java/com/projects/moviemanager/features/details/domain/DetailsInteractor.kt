@@ -186,14 +186,33 @@ class DetailsInteractor @Inject constructor(
         return imageList
     }
 
+    suspend fun isInWatchlist(
+        contentId: Int,
+        mediaType: MediaType
+    ): Boolean {
+        return databaseRepository.searchItem(
+            contentId = contentId,
+            mediaType = mediaType
+        ) != null
+    }
+
     suspend fun addToWatchlist(
         contentId: Int,
         mediaType: MediaType
     ) {
-        val item = ContentEntity(
+        databaseRepository.insertItem(
             contentId = contentId,
-            mediaType = mediaType.name
+            mediaType = mediaType
         )
-        databaseRepository.insertItem(item)
+    }
+
+    suspend fun removeFromWatchlist(
+        contentId: Int,
+        mediaType: MediaType
+    ) {
+        databaseRepository.deleteItem(
+            contentId = contentId,
+            mediaType = mediaType
+        )
     }
 }

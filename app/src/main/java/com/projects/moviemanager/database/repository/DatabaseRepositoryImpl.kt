@@ -3,17 +3,30 @@ package com.projects.moviemanager.database.repository
 import com.projects.moviemanager.common.domain.MediaType
 import com.projects.moviemanager.database.dao.ContentEntityDao
 import com.projects.moviemanager.database.model.ContentEntity
+import timber.log.Timber
 
 class DatabaseRepositoryImpl(
     private val contentEntityDao: ContentEntityDao
 ) : DatabaseRepository {
 
-    override suspend fun insertItem(itemEntity: ContentEntity) {
-        contentEntityDao.insert(itemEntity)
+    override suspend fun insertItem(contentId: Int, mediaType: MediaType) {
+        val item = ContentEntity(
+            contentId = contentId,
+            mediaType = mediaType.name
+        )
+        contentEntityDao.insert(item)
+        Timber.tag("print").d("item added to db: $item")
     }
 
-    override suspend fun deleteItem(itemEntity: ContentEntity) {
-        contentEntityDao.delete(itemEntity)
+    override suspend fun deleteItem(
+        contentId: Int,
+        mediaType: MediaType
+    ) {
+        Timber.tag("print").d("item removed from db")
+        contentEntityDao.delete(
+            contentId = contentId,
+            mediaType = mediaType.name
+        )
     }
 
     override suspend fun getAllItems(): List<ContentEntity> {

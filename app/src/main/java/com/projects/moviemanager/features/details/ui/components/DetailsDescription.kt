@@ -73,16 +73,9 @@ fun DetailsDescriptionHeader(
 
 @Composable
 fun DetailsDescriptionBody(
-    contentDetails: DetailedMediaInfo,
-    addToWatchlist: () -> Unit
+    contentDetails: DetailedMediaInfo
 ) {
     val context = LocalContext.current
-    Button(onClick = { addToWatchlist() }) {
-        Icon(
-            painter = painterResource(id = R.drawable.ic_baseline_bookmark_add),
-            contentDescription = null
-        )
-    }
     Text(
         text = contentDetails.overview,
         style = MaterialTheme.typography.bodyMedium,
