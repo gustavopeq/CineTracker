@@ -13,6 +13,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.projects.moviemanager.common.domain.MediaType
 import com.projects.moviemanager.common.ui.components.tab.GenericTabRow
 import com.projects.moviemanager.common.ui.components.tab.setupTabs
 import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_PADDING
@@ -24,15 +25,19 @@ import com.projects.moviemanager.features.watchlist.ui.components.WatchlistCard
 import com.projects.moviemanager.features.watchlist.ui.components.WatchlistTabItem
 
 @Composable
-fun Watchlist() {
+fun Watchlist(
+    goToDetails: (Int, MediaType) -> Unit
+) {
     Watchlist(
-        viewModel = hiltViewModel()
+        viewModel = hiltViewModel(),
+        goToDetails = goToDetails
     )
 }
 
 @Composable
 private fun Watchlist(
-    viewModel: WatchlistViewModel
+    viewModel: WatchlistViewModel,
+    goToDetails: (Int, MediaType) -> Unit
 ) {
     val watchlist by viewModel.watchlist.collectAsState()
 
@@ -45,13 +50,17 @@ private fun Watchlist(
 
     Column(modifier = Modifier.fillMaxSize()) {
         GenericTabRow(selectedTabIndex.value, tabList, updateSelectedTab)
-        WatchlistBody(watchlist = watchlist)
+        WatchlistBody(
+            watchlist = watchlist,
+            goToDetails = goToDetails
+        )
     }
 }
 
 @Composable
 private fun WatchlistBody(
-    watchlist: List<DetailedMediaInfo>
+    watchlist: List<DetailedMediaInfo>,
+    goToDetails: (Int, MediaType) -> Unit
 ) {
     LazyColumn(
         contentPadding = PaddingValues(all = SMALL_MARGIN.dp)
@@ -68,7 +77,9 @@ private fun WatchlistBody(
                 rating = rating ?: 0.0,
                 posterUrl = mediaInfo.poster_path,
                 mediaType = mediaInfo.mediaType,
-                onCardClick = { },
+                onCardClick = {
+                    goToDetails(mediaInfo.id, mediaInfo.mediaType)
+                },
                 onRemoveClick = { }
             )
             Spacer(modifier = Modifier.height(DEFAULT_PADDING.dp))
