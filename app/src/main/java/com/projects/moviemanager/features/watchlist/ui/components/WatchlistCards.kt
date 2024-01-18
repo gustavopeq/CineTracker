@@ -1,9 +1,14 @@
 package com.projects.moviemanager.features.watchlist.ui.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
@@ -14,9 +19,14 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.projects.moviemanager.R
+import com.projects.moviemanager.common.domain.MediaType
 import com.projects.moviemanager.common.theme.MainBarGreyColor
 import com.projects.moviemanager.common.ui.components.NetworkImage
 import com.projects.moviemanager.common.ui.components.RatingComponent
@@ -31,12 +41,18 @@ fun WatchlistCard(
     title: String,
     rating: Double,
     posterUrl: String?,
+    mediaType: MediaType,
     onCardClick: () -> Unit,
     onRemoveClick: () -> Unit
 ) {
     val fullImageUrl = BASE_300_IMAGE_URL + posterUrl
     val imageWidth = WATCHLIST_IMAGE_WIDTH.dp
     val imageHeight = imageWidth * POSTER_ASPECT_RATIO_MULTIPLY
+    val mediaTypeTag = if (mediaType == MediaType.MOVIE) {
+        stringResource(id = R.string.movie_tag)
+    } else {
+        stringResource(id = R.string.show_tag)
+    }
 
     Card(
         modifier = Modifier
@@ -49,7 +65,9 @@ fun WatchlistCard(
             defaultElevation = BROWSE_CARD_DEFAULT_ELEVATION.dp
         )
     ) {
-        Row {
+        Row(
+            modifier = Modifier.height(imageHeight)
+        ) {
             NetworkImage(
                 imageUrl = fullImageUrl,
                 widthDp = imageWidth,
@@ -67,7 +85,23 @@ fun WatchlistCard(
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 2
                 )
+                Spacer(modifier = Modifier.height(SMALL_PADDING.dp))
                 RatingComponent(rating = rating)
+                Spacer(modifier = Modifier.weight(1f))
+                Box(
+                    modifier = Modifier
+                        .defaultMinSize(minWidth = 50.dp)
+                        .background(color = Color(0xE6FA9F26)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = mediaTypeTag,
+                        color = MaterialTheme.colorScheme.primary,
+                        style = MaterialTheme.typography.titleSmall,
+                        maxLines = 1,
+                        modifier = Modifier.padding(horizontal = 2.dp)
+                    )
+                }
             }
             IconButton(onClick = onRemoveClick) {
                 Icon(Icons.Default.Delete, contentDescription = "Remove")

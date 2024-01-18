@@ -67,6 +67,7 @@ private fun WatchlistBody(
                 title = mediaInfo.title,
                 rating = rating ?: 0.0,
                 posterUrl = mediaInfo.poster_path,
+                mediaType = mediaInfo.mediaType,
                 onCardClick = { },
                 onRemoveClick = { }
             )
