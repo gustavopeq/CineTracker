@@ -15,14 +15,12 @@ class DatabaseRepositoryImpl(
             mediaType = mediaType.name
         )
         contentEntityDao.insert(item)
-        Timber.tag("print").d("item added to db: $item")
     }
 
     override suspend fun deleteItem(
         contentId: Int,
         mediaType: MediaType
     ) {
-        Timber.tag("print").d("item removed from db")
         contentEntityDao.delete(
             contentId = contentId,
             mediaType = mediaType.name

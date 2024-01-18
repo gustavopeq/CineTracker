@@ -1,4 +1,4 @@
-package com.projects.moviemanager.common.ui.components
+package com.projects.moviemanager.common.ui.components.tab
 
 import androidx.compose.animation.core.animateIntOffsetAsState
 import androidx.compose.animation.core.tween
@@ -17,7 +17,10 @@ import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,20 +31,36 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.projects.moviemanager.common.theme.MainBarGreyColor
 import com.projects.moviemanager.common.ui.util.UiConstants
-import com.projects.moviemanager.features.details.ui.components.MoreOptionsTabItem
 import com.projects.moviemanager.util.removeParentPadding
 
 @Composable
-fun MoreOptionsTabRow(
+fun setupTabs(tabList: List<TabItem>): Triple<List<TabItem>, State<Int>, (Int) -> Unit> {
+    tabList.forEachIndexed { index, tabItem ->
+        tabItem.tabIndex = index
+    }
+
+    val selectedTabIndex = rememberSaveable {
+        mutableIntStateOf(tabList.firstOrNull()?.tabIndex ?: 0)
+    }
+
+    val updateSelectedTab: (Int) -> Unit = { index ->
+        selectedTabIndex.intValue = index
+    }
+
+    return Triple(tabList, selectedTabIndex, updateSelectedTab)
+}
+
+@Composable
+fun GenericTabRow(
     selectedTabIndex: Int,
-    tabList: List<MoreOptionsTabItem>,
+    tabList: List<TabItem>,
     updateSelectedTab: (Int) -> Unit
 ) {
     ScrollableTabRow(
         modifier = Modifier.fillMaxWidth(),
         selectedTabIndex = selectedTabIndex,
         indicator = { tabPositions ->
-            TabIndicator(
+            GenericTabIndicator(
                 width = tabPositions[selectedTabIndex].width,
                 left = tabPositions[selectedTabIndex].left
             )
@@ -51,7 +70,7 @@ fun MoreOptionsTabRow(
         edgePadding = 0.dp
     ) {
         tabList.forEachIndexed { index, mediaTypeTabItem ->
-            MoreOptionsTab(
+            GenericTab(
                 text = stringResource(id = mediaTypeTabItem.tabResId),
                 tabIndex = index,
                 isSelected = selectedTabIndex == index,
@@ -72,7 +91,7 @@ fun MoreOptionsTabRow(
 }
 
 @Composable
-fun MoreOptionsTab(
+fun GenericTab(
     text: String,
     tabIndex: Int,
     isSelected: Boolean,
@@ -97,7 +116,7 @@ fun MoreOptionsTab(
 }
 
 @Composable
-fun TabIndicator(
+fun GenericTabIndicator(
     width: Dp,
     left: Dp
 ) {

@@ -36,8 +36,8 @@ import com.projects.moviemanager.features.details.ui.components.CastCarousel
 import com.projects.moviemanager.features.details.ui.components.DetailsDescriptionBody
 import com.projects.moviemanager.features.details.ui.components.DetailsDescriptionHeader
 import com.projects.moviemanager.features.details.ui.components.DetailsTopBar
-import com.projects.moviemanager.features.details.ui.components.MoreOptionsTab
-import com.projects.moviemanager.features.details.ui.components.PersonMoreOptionsTab
+import com.projects.moviemanager.features.details.ui.components.moreoptions.MoreOptionsTab
+import com.projects.moviemanager.features.details.ui.components.moreoptions.PersonMoreOptionsTab
 import com.projects.moviemanager.features.details.util.mapValueToRange
 import com.projects.moviemanager.util.Constants.BASE_ORIGINAL_IMAGE_URL
 import timber.log.Timber

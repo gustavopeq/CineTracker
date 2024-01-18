@@ -1,15 +1,12 @@
-package com.projects.moviemanager.features.details.ui.components
+package com.projects.moviemanager.features.details.ui.components.moreoptions
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import com.projects.moviemanager.common.domain.MediaType
 import com.projects.moviemanager.common.ui.components.GridContentList
 import com.projects.moviemanager.common.ui.components.GridImageList
-import com.projects.moviemanager.common.ui.components.MoreOptionsTabRow
+import com.projects.moviemanager.common.ui.components.tab.GenericTabRow
+import com.projects.moviemanager.common.ui.components.tab.setupTabs
 import com.projects.moviemanager.domain.models.content.MediaContent
 import com.projects.moviemanager.domain.models.person.PersonImage
 
@@ -22,34 +19,24 @@ fun PersonMoreOptionsTab(
     val moviesList = contentList.filter { it.mediaType == MediaType.MOVIE }
     val showList = contentList.filter { it.mediaType == MediaType.SHOW }
 
-    val tabList = mutableListOf<MoreOptionsTabItem>()
+    val availableTabs = mutableListOf<MoreOptionsTabItem>()
     if (moviesList.isNotEmpty()) {
-        tabList.add(MoreOptionsTabItem.MoviesTab)
+        availableTabs.add(MoreOptionsTabItem.MoviesTab)
     }
     if (showList.isNotEmpty()) {
-        tabList.add(MoreOptionsTabItem.ShowsTab)
+        availableTabs.add(MoreOptionsTabItem.ShowsTab)
     }
     if (personImageList.isNotEmpty()) {
-        tabList.add(MoreOptionsTabItem.ImagesTab)
+        availableTabs.add(MoreOptionsTabItem.ImagesTab)
     }
 
-    tabList.forEachIndexed { index, tabItem ->
-        tabItem.tabIndex = index
-    }
-
-    var selectedTabIndex by rememberSaveable {
-        mutableIntStateOf(tabList.firstOrNull()?.tabIndex ?: 0)
-    }
-
-    val updateSelectedTab: (Int) -> Unit = { index ->
-        selectedTabIndex = index
-    }
+    val (tabList, selectedTabIndex, updateSelectedTab) = setupTabs(availableTabs)
 
     if (tabList.isNotEmpty()) {
         Column {
-            MoreOptionsTabRow(selectedTabIndex, tabList, updateSelectedTab)
+            GenericTabRow(selectedTabIndex.value, availableTabs, updateSelectedTab)
 
-            when (tabList.getOrNull(selectedTabIndex)?.tabIndex) {
+            when (availableTabs.getOrNull(selectedTabIndex.value)?.tabIndex) {
                 MoreOptionsTabItem.MoviesTab.tabIndex -> {
                     GridContentList(
                         mediaContentList = moviesList,

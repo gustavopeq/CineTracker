@@ -60,4 +60,8 @@
     <string name="more_options_similar">More like this</string>
     <string name="images_tab">Images</string>
     <string name="unknown">Unknown</string>
+
+    <!-- Details screen -->
+    <string name="watchlist_tab">Watchlist</string>
+    <string name="watched_tab">Watched</string>
 </resources>

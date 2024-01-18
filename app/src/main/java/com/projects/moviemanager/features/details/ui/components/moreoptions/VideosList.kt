@@ -1,4 +1,4 @@
-package com.projects.moviemanager.features.details.ui.components
+package com.projects.moviemanager.features.details.ui.components.moreoptions
 
 import android.app.Activity
 import android.content.Intent

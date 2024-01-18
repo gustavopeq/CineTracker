@@ -1,20 +1,16 @@
-package com.projects.moviemanager.features.details.ui.components
+package com.projects.moviemanager.features.details.ui.components.moreoptions
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import com.projects.moviemanager.common.domain.MediaType
 import com.projects.moviemanager.common.ui.components.GridContentList
-import com.projects.moviemanager.common.ui.components.MoreOptionsTabRow
-import com.projects.moviemanager.common.ui.util.UiConstants
+import com.projects.moviemanager.common.ui.components.tab.GenericTabRow
+import com.projects.moviemanager.common.ui.components.tab.setupTabs
 import com.projects.moviemanager.common.ui.util.UiConstants.MAX_COUNT_DETAILS_CARDS
 import com.projects.moviemanager.domain.models.content.MediaContent
 import com.projects.moviemanager.domain.models.content.Videos
-import com.projects.moviemanager.features.details.ui.components.MoreOptionsTabItem.MoreLikeThisTab
-import com.projects.moviemanager.features.details.ui.components.MoreOptionsTabItem.VideosTab
+import com.projects.moviemanager.features.details.ui.components.moreoptions.MoreOptionsTabItem.MoreLikeThisTab
+import com.projects.moviemanager.features.details.ui.components.moreoptions.MoreOptionsTabItem.VideosTab
 
 @Composable
 fun MoreOptionsTab(
@@ -22,31 +18,21 @@ fun MoreOptionsTab(
     contentSimilarList: List<MediaContent>,
     openSimilarContent: (Int, MediaType) -> Unit
 ) {
-    val tabList = mutableListOf<MoreOptionsTabItem>()
+    val availableTabs = mutableListOf<MoreOptionsTabItem>()
     if (videoList.isNotEmpty()) {
-        tabList.add(VideosTab)
+        availableTabs.add(VideosTab)
     }
     if (contentSimilarList.isNotEmpty()) {
-        tabList.add(MoreLikeThisTab)
+        availableTabs.add(MoreLikeThisTab)
     }
 
-    tabList.forEachIndexed { index, tabItem ->
-        tabItem.tabIndex = index
-    }
-
-    var selectedTabIndex by rememberSaveable {
-        mutableIntStateOf(tabList.firstOrNull()?.tabIndex ?: 0)
-    }
-
-    val updateSelectedTab: (Int) -> Unit = { index ->
-        selectedTabIndex = index
-    }
+    val (tabList, selectedTabIndex, updateSelectedTab) = setupTabs(availableTabs)
 
     if (tabList.isNotEmpty()) {
         Column {
-            MoreOptionsTabRow(selectedTabIndex, tabList, updateSelectedTab)
+            GenericTabRow(selectedTabIndex.value, tabList, updateSelectedTab)
 
-            when (tabList[selectedTabIndex].tabIndex) {
+            when (tabList[selectedTabIndex.value].tabIndex) {
                 VideosTab.tabIndex -> {
                     VideoList(videoList)
                 }

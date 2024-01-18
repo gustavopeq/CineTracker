@@ -1,12 +1,13 @@
-package com.projects.moviemanager.features.details.ui.components
+package com.projects.moviemanager.features.details.ui.components.moreoptions
 
 import androidx.annotation.StringRes
 import com.projects.moviemanager.R
+import com.projects.moviemanager.common.ui.components.tab.TabItem
 
 sealed class MoreOptionsTabItem(
-    @StringRes val tabResId: Int,
-    var tabIndex: Int = -1
-) {
+    @StringRes override val tabResId: Int,
+    override var tabIndex: Int = -1
+) : TabItem {
     data object VideosTab : MoreOptionsTabItem(
         tabResId = R.string.more_options_videos
     )
