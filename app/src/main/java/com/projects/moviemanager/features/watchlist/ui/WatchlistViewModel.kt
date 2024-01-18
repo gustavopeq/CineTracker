@@ -2,7 +2,8 @@ package com.projects.moviemanager.features.watchlist.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.projects.moviemanager.database.model.ContentEntity
+import com.projects.moviemanager.common.domain.MediaType
+import com.projects.moviemanager.domain.models.content.DetailedMediaInfo
 import com.projects.moviemanager.features.watchlist.domain.WatchlistInteractor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -16,12 +17,20 @@ class WatchlistViewModel @Inject constructor(
     private val watchlistInteractor: WatchlistInteractor
 ) : ViewModel() {
 
-    private val _watchlist = MutableStateFlow(listOf<ContentEntity>())
-    val watchlist: StateFlow<List<ContentEntity>> get() = _watchlist
+    private val _watchlist = MutableStateFlow(listOf<DetailedMediaInfo>())
+    val watchlist: StateFlow<List<DetailedMediaInfo>> get() = _watchlist
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            _watchlist.value = watchlistInteractor.getAllItems()
+            val watchlistDatabaseItems = watchlistInteractor.getAllItems()
+
+            val watchlistDetails = watchlistDatabaseItems.mapNotNull {
+                watchlistInteractor.getContentDetailsById(
+                    contentId = it.contentId,
+                    mediaType = MediaType.getType(it.mediaType)
+                )
+            }
+            _watchlist.value = watchlistDetails
         }
     }
 }

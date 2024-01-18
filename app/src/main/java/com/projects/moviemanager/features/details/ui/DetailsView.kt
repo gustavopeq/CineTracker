@@ -136,13 +136,6 @@ private fun DetailsComponent(
     val personContentList by viewModel.personCredits.collectAsState()
     val personImageList by viewModel.personImages.collectAsState()
 
-    val toggleWatchlist: () -> Unit = {
-        viewModel.toggleWatchlistStatus(
-            contentId = mediaInfo.id,
-            mediaType = mediaInfo.mediaType
-        )
-    }
-
     LaunchedEffect(Unit) {
         viewModel.fetchAdditionalInfo(mediaInfo.id, mediaInfo.mediaType)
     }

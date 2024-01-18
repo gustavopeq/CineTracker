@@ -48,10 +48,14 @@ object InteractorModule {
     @Singleton
     @Provides
     fun provideWatchlistInteractor(
-        databaseRepository: DatabaseRepository
+        databaseRepository: DatabaseRepository,
+        movieRepository: MovieRepository,
+        showRepository: ShowRepository
     ): WatchlistInteractor {
         return WatchlistInteractor(
-            databaseRepository = databaseRepository
+            databaseRepository = databaseRepository,
+            movieRepository = movieRepository,
+            showRepository = showRepository
         )
     }
 }

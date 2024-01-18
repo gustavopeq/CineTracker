@@ -26,7 +26,6 @@ object UiConstants {
     const val BROWSE_CARD_PADDING_VERTICAL = 8
     const val BROWSE_CARD_DEFAULT_ELEVATION = 2
     const val BROWSE_SCAFFOLD_HEIGHT_OFFSET = 15
-
     const val BROWSE_TAB_ROW_OFFSET_HEIGHT = 17
     const val BROWSE_SORT_ICON_SIZE = 32
 
@@ -37,4 +36,7 @@ object UiConstants {
     const val DETAILS_CARDS_PER_ROW = 2
     const val MAX_COUNT_DETAILS_CARDS = 10
     const val RETURN_TOP_BAR_HEIGHT = 64
+
+    // Watchlist
+    const val WATCHLIST_IMAGE_WIDTH = 100
 }
