@@ -1,16 +1,12 @@
 package com.projects.moviemanager.features.details.ui.components
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -24,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.projects.moviemanager.R
 import com.projects.moviemanager.common.ui.components.classicVerticalGradientBrush
+import com.projects.moviemanager.common.ui.components.popup.GenericPopupMenu
 import com.projects.moviemanager.common.ui.components.popup.PopupMenuItem
 import com.projects.moviemanager.common.ui.util.UiConstants
 import com.projects.moviemanager.features.watchlist.model.DefaultLists
@@ -101,15 +98,30 @@ fun WatchlistPopUpMenu(
     onDismissRequest: () -> Unit,
     toggleWatchlist: (String) -> Unit
 ) {
+    val watchlist = stringResource(id = R.string.watchlist_tab)
     val watchlistMenuTitle = if (contentInWatchlistStatus[DefaultLists.WATCHLIST.listId] == true) {
-        "Remove from Watchlist"
+        stringResource(
+            id = R.string.remove_option_popup_menu,
+            watchlist
+        )
     } else {
-        "Add to Watchlist"
+        stringResource(
+            id = R.string.add_option_popup_menu,
+            watchlist
+        )
     }
+
+    val watched = stringResource(id = R.string.watched_tab)
     val watchedMenuTitle = if (contentInWatchlistStatus[DefaultLists.WATCHED.listId] == true) {
-        "Remove from Watched"
+        stringResource(
+            id = R.string.remove_option_popup_menu,
+            watched
+        )
     } else {
-        "Add to Watched"
+        stringResource(
+            id = R.string.add_option_popup_menu,
+            watched
+        )
     }
 
     val menuItems = listOf(
@@ -127,25 +139,5 @@ fun WatchlistPopUpMenu(
         )
     )
 
-    DropdownMenu(
-        expanded = showMenu,
-        onDismissRequest = onDismissRequest,
-        modifier = Modifier.background(color = MaterialTheme.colorScheme.primary)
-    ) {
-        menuItems.forEach { menuItem ->
-            DropdownMenuItem(
-                text = {
-                    Text(
-                        text = menuItem.title,
-                        color = MaterialTheme.colorScheme.onPrimary,
-                        style = MaterialTheme.typography.labelSmall
-                    )
-                },
-                onClick = {
-                    menuItem.onClick()
-                    onDismissRequest()
-                }
-            )
-        }
-    }
+    GenericPopupMenu(showMenu, onDismissRequest, menuItems)
 }

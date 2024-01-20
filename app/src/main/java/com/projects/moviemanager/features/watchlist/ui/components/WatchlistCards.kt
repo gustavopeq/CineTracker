@@ -23,7 +23,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -31,8 +30,11 @@ import androidx.compose.ui.unit.dp
 import com.projects.moviemanager.R
 import com.projects.moviemanager.common.domain.MediaType
 import com.projects.moviemanager.common.theme.MainBarGreyColor
+import com.projects.moviemanager.common.theme.PrimaryYellowColor_90
 import com.projects.moviemanager.common.ui.components.NetworkImage
 import com.projects.moviemanager.common.ui.components.RatingComponent
+import com.projects.moviemanager.common.ui.components.popup.GenericPopupMenu
+import com.projects.moviemanager.common.ui.components.popup.PopupMenuItem
 import com.projects.moviemanager.common.ui.util.UiConstants.BROWSE_CARD_DEFAULT_ELEVATION
 import com.projects.moviemanager.common.ui.util.UiConstants.POSTER_ASPECT_RATIO_MULTIPLY
 import com.projects.moviemanager.common.ui.util.UiConstants.SMALL_PADDING
@@ -96,7 +98,7 @@ fun WatchlistCard(
                 Box(
                     modifier = Modifier
                         .defaultMinSize(minWidth = 50.dp)
-                        .background(color = Color(0xE6FA9F26)),
+                        .background(color = PrimaryYellowColor_90),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
@@ -129,5 +131,25 @@ fun WatchlistCard(
             }
         }
     }
+}
+
+@Composable
+fun MoreOptionsPopUpMenu(
+    showMenu: Boolean,
+    onDismissRequest: () -> Unit,
+    onRemoveClick: () -> Unit
+) {
+    val menuItems = listOf(
+        PopupMenuItem(
+            title = stringResource(id = R.string.remove_option_popup_menu),
+            onClick = onRemoveClick
+        )
+    )
+
+    GenericPopupMenu(
+        showMenu = showMenu,
+        onDismissRequest = onDismissRequest,
+        menuItems = menuItems
+    )
 }
 

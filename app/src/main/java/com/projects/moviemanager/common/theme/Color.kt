@@ -3,6 +3,7 @@ package com.projects.moviemanager.common.theme
 import androidx.compose.ui.graphics.Color
 
 val PrimaryYellowColor = Color(0xFFFA9F26)
+val PrimaryYellowColor_90 = Color(0xE6FA9F26)
 val PrimaryBlackColor = Color(0xFF000000)
 val PrimaryGreyColor = Color(0xFFDCDCDC)
 val PrimaryGreyColor_55 = Color(0x8C24252A)
