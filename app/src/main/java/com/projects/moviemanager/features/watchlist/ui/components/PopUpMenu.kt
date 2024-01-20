@@ -7,13 +7,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import com.projects.moviemanager.R
 
 @Composable
 fun MoreOptionsPopUpMenu(
     showMenu: Boolean,
     onDismissRequest: () -> Unit,
-    onRemoveClick: () -> Unit,
-    onMoveClick: () -> Unit
+    onRemoveClick: () -> Unit
 ) {
     DropdownMenu(
         expanded = showMenu,
@@ -22,19 +23,14 @@ fun MoreOptionsPopUpMenu(
     ) {
         DropdownMenuItem(
             text = {
-                Text("Remove from Watchlist")
+                Text(
+                    stringResource(id = R.string.remove_options_popup_menu),
+                    color = MaterialTheme.colorScheme.onPrimary,
+                    style = MaterialTheme.typography.labelSmall
+                )
             },
             onClick = {
                 onRemoveClick()
-                onDismissRequest()
-            }
-        )
-        DropdownMenuItem(
-            text = {
-                Text("Move to other list")
-            },
-            onClick = {
-                onMoveClick()
                 onDismissRequest()
             }
         )

@@ -12,8 +12,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -125,10 +123,7 @@ fun WatchlistCard(
                         showPopupMenu = false
                     },
                     onRemoveClick = {
-
-                    },
-                    onMoveClick = {
-
+                        onRemoveClick()
                     }
                 )
             }

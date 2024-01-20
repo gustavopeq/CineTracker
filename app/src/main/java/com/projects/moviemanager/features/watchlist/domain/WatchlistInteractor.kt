@@ -53,4 +53,14 @@ class WatchlistInteractor @Inject constructor(
         }
         return contentDetails
     }
+
+    suspend fun removeContentFromDatabase(
+        contentId: Int,
+        mediaType: MediaType
+    ) {
+        databaseRepository.deleteItem(
+            contentId = contentId,
+            mediaType = mediaType
+        )
+    }
 }

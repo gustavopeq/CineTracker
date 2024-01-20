@@ -21,6 +21,7 @@ import com.projects.moviemanager.common.ui.util.UiConstants.SMALL_MARGIN
 import com.projects.moviemanager.domain.models.content.DetailedMediaInfo
 import com.projects.moviemanager.domain.models.content.MovieDetailsInfo
 import com.projects.moviemanager.domain.models.content.ShowDetailsInfo
+import com.projects.moviemanager.features.watchlist.events.WatchlistEvent
 import com.projects.moviemanager.features.watchlist.ui.components.WatchlistCard
 import com.projects.moviemanager.features.watchlist.ui.components.WatchlistTabItem
 
@@ -48,11 +49,18 @@ private fun Watchlist(
 
     val (tabList, selectedTabIndex, updateSelectedTab) = setupTabs(availableTabs)
 
+    val removeItem: (Int, MediaType) -> Unit = { contentId, mediaType ->
+        viewModel.onEvent(
+            WatchlistEvent.RemoveItem(contentId, mediaType)
+        )
+    }
+
     Column(modifier = Modifier.fillMaxSize()) {
         GenericTabRow(selectedTabIndex.value, tabList, updateSelectedTab)
         WatchlistBody(
             watchlist = watchlist,
-            goToDetails = goToDetails
+            goToDetails = goToDetails,
+            removeItem = removeItem
         )
     }
 }
@@ -60,7 +68,8 @@ private fun Watchlist(
 @Composable
 private fun WatchlistBody(
     watchlist: List<DetailedMediaInfo>,
-    goToDetails: (Int, MediaType) -> Unit
+    goToDetails: (Int, MediaType) -> Unit,
+    removeItem: (Int, MediaType) -> Unit
 ) {
     LazyColumn(
         contentPadding = PaddingValues(all = SMALL_MARGIN.dp)
@@ -80,7 +89,9 @@ private fun WatchlistBody(
                 onCardClick = {
                     goToDetails(mediaInfo.id, mediaInfo.mediaType)
                 },
-                onRemoveClick = { }
+                onRemoveClick = {
+                    removeItem(mediaInfo.id, mediaInfo.mediaType)
+                }
             )
             Spacer(modifier = Modifier.height(DEFAULT_PADDING.dp))
         }
