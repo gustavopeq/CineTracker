@@ -12,6 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @HiltViewModel
 class WatchlistViewModel @Inject constructor(
@@ -26,6 +27,7 @@ class WatchlistViewModel @Inject constructor(
             val watchlistDatabaseItems = watchlistInteractor.getAllItems()
 
             val watchlistDetails = watchlistDatabaseItems.mapNotNull {
+                Timber.tag("print").d("watchlist: ${it.contentId} - ${it.listId}")
                 watchlistInteractor.getContentDetailsById(
                     contentId = it.contentId,
                     mediaType = MediaType.getType(it.mediaType)

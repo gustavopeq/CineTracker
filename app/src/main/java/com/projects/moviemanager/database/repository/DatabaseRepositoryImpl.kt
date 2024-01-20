@@ -3,17 +3,18 @@ package com.projects.moviemanager.database.repository
 import com.projects.moviemanager.common.domain.MediaType
 import com.projects.moviemanager.database.dao.ContentEntityDao
 import com.projects.moviemanager.database.model.ContentEntity
-import timber.log.Timber
 
 class DatabaseRepositoryImpl(
     private val contentEntityDao: ContentEntityDao
 ) : DatabaseRepository {
 
-    override suspend fun insertItem(contentId: Int, mediaType: MediaType) {
+    override suspend fun insertItem(contentId: Int, mediaType: MediaType, listId: String) {
         val item = ContentEntity(
             contentId = contentId,
-            mediaType = mediaType.name
+            mediaType = mediaType.name,
+            listId = listId
         )
+
         contentEntityDao.insert(item)
     }
 

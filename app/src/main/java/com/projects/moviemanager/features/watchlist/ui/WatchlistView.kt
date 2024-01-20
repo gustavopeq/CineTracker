@@ -14,13 +14,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.projects.moviemanager.common.domain.MediaType
+import com.projects.moviemanager.common.ui.components.GridContentList
 import com.projects.moviemanager.common.ui.components.tab.GenericTabRow
 import com.projects.moviemanager.common.ui.components.tab.setupTabs
+import com.projects.moviemanager.common.ui.util.UiConstants
 import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_PADDING
 import com.projects.moviemanager.common.ui.util.UiConstants.SMALL_MARGIN
 import com.projects.moviemanager.domain.models.content.DetailedMediaInfo
 import com.projects.moviemanager.domain.models.content.MovieDetailsInfo
 import com.projects.moviemanager.domain.models.content.ShowDetailsInfo
+import com.projects.moviemanager.features.details.ui.components.moreoptions.MoreOptionsTabItem
+import com.projects.moviemanager.features.details.ui.components.moreoptions.VideoList
 import com.projects.moviemanager.features.watchlist.events.WatchlistEvent
 import com.projects.moviemanager.features.watchlist.ui.components.WatchlistCard
 import com.projects.moviemanager.features.watchlist.ui.components.WatchlistTabItem
@@ -57,11 +61,15 @@ private fun Watchlist(
 
     Column(modifier = Modifier.fillMaxSize()) {
         GenericTabRow(selectedTabIndex.value, tabList, updateSelectedTab)
-        WatchlistBody(
-            watchlist = watchlist,
-            goToDetails = goToDetails,
-            removeItem = removeItem
-        )
+        when (tabList[selectedTabIndex.value].tabIndex) {
+            WatchlistTabItem.WatchlistTab.tabIndex -> {
+                WatchlistBody(
+                    watchlist = watchlist,
+                    goToDetails = goToDetails,
+                    removeItem = removeItem
+                )
+            }
+        }
     }
 }
 

@@ -16,6 +16,7 @@ import com.projects.moviemanager.domain.models.content.toShowDetailsInfo
 import com.projects.moviemanager.domain.models.content.toVideos
 import com.projects.moviemanager.domain.models.person.PersonImage
 import com.projects.moviemanager.domain.models.person.toPersonImage
+import com.projects.moviemanager.features.watchlist.model.DefaultLists
 import com.projects.moviemanager.network.repository.movie.MovieRepository
 import com.projects.moviemanager.network.repository.person.PersonRepository
 import com.projects.moviemanager.network.repository.show.ShowRepository
@@ -202,7 +203,8 @@ class DetailsInteractor @Inject constructor(
     ) {
         databaseRepository.insertItem(
             contentId = contentId,
-            mediaType = mediaType
+            mediaType = mediaType,
+            listId = DefaultLists.WATCHLIST.listId
         )
     }
 

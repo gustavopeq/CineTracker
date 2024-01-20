@@ -7,5 +7,6 @@ import androidx.room.PrimaryKey
 data class ContentEntity(
     @PrimaryKey(autoGenerate = true) val contentEntityDbId: Int = 0,
     val contentId: Int,
-    val mediaType: String
+    val mediaType: String,
+    val listId: String
 )
