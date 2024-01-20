@@ -24,16 +24,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.projects.moviemanager.R
 import com.projects.moviemanager.common.ui.components.classicVerticalGradientBrush
+import com.projects.moviemanager.common.ui.components.popup.PopupMenuItem
 import com.projects.moviemanager.common.ui.util.UiConstants
 import com.projects.moviemanager.features.watchlist.model.DefaultLists
-import com.projects.moviemanager.features.watchlist.ui.components.MoreOptionsPopUpMenu
 
 @Composable
 fun DetailsTopBar(
     showWatchlistButton: Boolean,
-    isContentInWatchlist: Boolean,
+    contentInWatchlistStatus: Map<String, Boolean>,
     onBackBtnPress: () -> Unit,
-    onWatchlistBtnPress: (String) -> Unit
+    toggleWatchlist: (String) -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -54,8 +54,8 @@ fun DetailsTopBar(
         if (showWatchlistButton) {
             Spacer(modifier = Modifier.weight(1f))
             WatchlistButtonIcon(
-                isContentInWatchlist = isContentInWatchlist,
-                onClick = onWatchlistBtnPress
+                contentInWatchlistStatus = contentInWatchlistStatus,
+                toggleWatchlist = toggleWatchlist
             )
         }
     }
@@ -63,14 +63,15 @@ fun DetailsTopBar(
 
 @Composable
 private fun WatchlistButtonIcon(
-    isContentInWatchlist: Boolean,
-    onClick: (String) -> Unit
+    contentInWatchlistStatus: Map<String, Boolean>,
+    toggleWatchlist: (String) -> Unit
 ) {
-    val watchlistAddIcon = R.drawable.ic_baseline_bookmark_add
-    val watchlistRemoveIcon = R.drawable.ic_baseline_bookmark_remove
-    val iconId = if (isContentInWatchlist) watchlistRemoveIcon else watchlistAddIcon
-
     var showPopupMenu by remember { mutableStateOf(false) }
+    val color = if (contentInWatchlistStatus.values.contains(true)) {
+        MaterialTheme.colorScheme.secondary
+    } else {
+        MaterialTheme.colorScheme.onPrimary
+    }
 
     IconButton(
         onClick = {
@@ -78,17 +79,17 @@ private fun WatchlistButtonIcon(
         }
     ) {
         Icon(
-            painter = painterResource(id = iconId),
+            painter = painterResource(id = R.drawable.ic_watchlist),
             contentDescription = null,
-            tint = MaterialTheme.colorScheme.secondary
+            tint = color
         )
         WatchlistPopUpMenu(
             showMenu = showPopupMenu,
+            contentInWatchlistStatus = contentInWatchlistStatus,
             onDismissRequest = {
                 showPopupMenu = false
             },
-            onAddToWatchlist = onClick,
-            onAddToWatched = onClick
+            toggleWatchlist = toggleWatchlist
         )
     }
 }
@@ -96,40 +97,55 @@ private fun WatchlistButtonIcon(
 @Composable
 fun WatchlistPopUpMenu(
     showMenu: Boolean,
+    contentInWatchlistStatus: Map<String, Boolean>,
     onDismissRequest: () -> Unit,
-    onAddToWatchlist: (String) -> Unit,
-    onAddToWatched: (String) -> Unit
+    toggleWatchlist: (String) -> Unit
 ) {
+    val watchlistMenuTitle = if (contentInWatchlistStatus[DefaultLists.WATCHLIST.listId] == true) {
+        "Remove from Watchlist"
+    } else {
+        "Add to Watchlist"
+    }
+    val watchedMenuTitle = if (contentInWatchlistStatus[DefaultLists.WATCHED.listId] == true) {
+        "Remove from Watched"
+    } else {
+        "Add to Watched"
+    }
+
+    val menuItems = listOf(
+        PopupMenuItem(
+            title = watchlistMenuTitle,
+            onClick = {
+                toggleWatchlist(DefaultLists.WATCHLIST.listId)
+            }
+        ),
+        PopupMenuItem(
+            title = watchedMenuTitle,
+            onClick = {
+                toggleWatchlist(DefaultLists.WATCHED.listId)
+            }
+        )
+    )
+
     DropdownMenu(
         expanded = showMenu,
         onDismissRequest = onDismissRequest,
         modifier = Modifier.background(color = MaterialTheme.colorScheme.primary)
     ) {
-        DropdownMenuItem(
-            text = {
-                Text(
-                    text = "Add to Watchlist",
-                    color = MaterialTheme.colorScheme.onPrimary,
-                    style = MaterialTheme.typography.labelSmall
-                )
-            },
-            onClick = {
-                onAddToWatchlist(DefaultLists.WATCHLIST.listId)
-                onDismissRequest()
-            }
-        )
-        DropdownMenuItem(
-            text = {
-                Text(
-                    text = "Add to Watched",
-                    color = MaterialTheme.colorScheme.onPrimary,
-                    style = MaterialTheme.typography.labelSmall
-                )
-            },
-            onClick = {
-                onAddToWatched(DefaultLists.WATCHED.listId)
-                onDismissRequest()
-            }
-        )
+        menuItems.forEach { menuItem ->
+            DropdownMenuItem(
+                text = {
+                    Text(
+                        text = menuItem.title,
+                        color = MaterialTheme.colorScheme.onPrimary,
+                        style = MaterialTheme.typography.labelSmall
+                    )
+                },
+                onClick = {
+                    menuItem.onClick()
+                    onDismissRequest()
+                }
+            )
+        }
     }
 }

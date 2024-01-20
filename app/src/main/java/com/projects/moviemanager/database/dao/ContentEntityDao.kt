@@ -21,8 +21,7 @@ interface ContentEntityDao {
     fun delete(contentId: Int, mediaType: String, listId: String)
 
     @Query(
-        "SELECT * FROM content_entity " +
-            "WHERE contentId=:contentId AND mediaType = :mediaType AND listId = :listId"
+        "SELECT * FROM content_entity WHERE contentId=:contentId AND mediaType = :mediaType"
     )
-    fun searchItem(contentId: Int, mediaType: String, listId: String): ContentEntity?
+    fun searchItems(contentId: Int, mediaType: String): List<ContentEntity>
 }

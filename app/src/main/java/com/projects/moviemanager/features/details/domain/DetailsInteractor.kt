@@ -1,7 +1,6 @@
 package com.projects.moviemanager.features.details.domain
 
 import com.projects.moviemanager.common.domain.MediaType
-import com.projects.moviemanager.database.model.ContentEntity
 import com.projects.moviemanager.database.repository.DatabaseRepository
 import com.projects.moviemanager.domain.models.content.ContentCast
 import com.projects.moviemanager.domain.models.content.DetailedMediaInfo
@@ -25,8 +24,8 @@ import com.projects.moviemanager.network.response.content.show.ShowApiResponse
 import com.projects.moviemanager.network.response.person.PersonDetailsResponse
 import com.projects.moviemanager.network.util.Left
 import com.projects.moviemanager.network.util.Right
-import timber.log.Timber
 import javax.inject.Inject
+import timber.log.Timber
 
 class DetailsInteractor @Inject constructor(
     private val movieRepository: MovieRepository,
@@ -187,15 +186,24 @@ class DetailsInteractor @Inject constructor(
         return imageList
     }
 
-    suspend fun isInWatchlist(
+    suspend fun verifyContentInLists(
         contentId: Int,
         mediaType: MediaType
-    ): Boolean {
-        return databaseRepository.searchItem(
+    ): Map<String, Boolean> {
+        val result = databaseRepository.searchItems(
             contentId = contentId,
-            mediaType = mediaType,
-            listId = DefaultLists.WATCHLIST.listId
-        ) != null
+            mediaType = mediaType
+        )
+        val contentInListMap = mutableMapOf(
+            DefaultLists.WATCHLIST.listId to false,
+            DefaultLists.WATCHED.listId to false
+        )
+
+        result.forEach { content ->
+            contentInListMap[content.listId] = true
+        }
+
+        return contentInListMap
     }
 
     suspend fun addToWatchlist(
@@ -212,12 +220,13 @@ class DetailsInteractor @Inject constructor(
 
     suspend fun removeFromWatchlist(
         contentId: Int,
-        mediaType: MediaType
+        mediaType: MediaType,
+        listId: String
     ) {
         databaseRepository.deleteItem(
             contentId = contentId,
             mediaType = mediaType,
-            listId = DefaultLists.WATCHLIST.listId
+            listId = listId
         )
     }
 }

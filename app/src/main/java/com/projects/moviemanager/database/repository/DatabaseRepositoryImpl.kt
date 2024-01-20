@@ -38,15 +38,13 @@ class DatabaseRepositoryImpl(
         return contentEntityDao.getAllItems(listId)
     }
 
-    override suspend fun searchItem(
+    override suspend fun searchItems(
         contentId: Int,
-        mediaType: MediaType,
-        listId: String
-    ): ContentEntity? {
-        return contentEntityDao.searchItem(
+        mediaType: MediaType
+    ): List<ContentEntity> {
+        return contentEntityDao.searchItems(
             contentId = contentId,
-            mediaType = mediaType.name,
-            listId = listId
+            mediaType = mediaType.name
         )
     }
 }

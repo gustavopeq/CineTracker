@@ -70,7 +70,7 @@ private fun Details(
     val contentDetails by viewModel.contentDetails.collectAsState()
     var currentHeaderPosY by rememberSaveable { mutableFloatStateOf(0f) }
     var initialHeaderPosY by rememberSaveable { mutableFloatStateOf(0f) }
-    val isInWatchlist by viewModel.contentInWatchlist.collectAsState()
+    val contentInListStatus by viewModel.contentInListStatus.collectAsState()
 
     val updateHeaderPosition: (Float) -> Unit = {
         if (it > initialHeaderPosY) {
@@ -81,9 +81,9 @@ private fun Details(
 
     val contentPosterUrl = BASE_ORIGINAL_IMAGE_URL + contentDetails?.poster_path
 
-    val onWatchlistBtnPressed: (String) -> Unit = { listId ->
+    val onToggleWatchlist: (String) -> Unit = { listId ->
         contentDetails?.let { mediaInfo ->
-            viewModel.toggleWatchlistStatus(
+            viewModel.toggleContentFromList(
                 contentId = mediaInfo.id,
                 mediaType = mediaInfo.mediaType,
                 listId = listId
@@ -102,8 +102,8 @@ private fun Details(
     DetailsTopBar(
         onBackBtnPress = onBackPress,
         showWatchlistButton = contentDetails?.mediaType != MediaType.PERSON,
-        isContentInWatchlist = isInWatchlist,
-        onWatchlistBtnPress = onWatchlistBtnPressed
+        contentInWatchlistStatus = contentInListStatus,
+        toggleWatchlist = onToggleWatchlist
     )
 
     DimensionSubcomposeLayout(

@@ -10,5 +10,5 @@ interface DatabaseRepository {
 
     suspend fun getAllItemsByListId(listId: String): List<ContentEntity>
 
-    suspend fun searchItem(contentId: Int, mediaType: MediaType, listId: String): ContentEntity?
+    suspend fun searchItems(contentId: Int, mediaType: MediaType): List<ContentEntity>
 }
