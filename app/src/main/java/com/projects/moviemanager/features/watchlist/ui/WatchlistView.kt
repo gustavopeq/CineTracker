@@ -8,25 +8,19 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.projects.moviemanager.common.domain.MediaType
-import com.projects.moviemanager.common.ui.components.GridContentList
 import com.projects.moviemanager.common.ui.components.tab.GenericTabRow
-import com.projects.moviemanager.common.ui.components.tab.TabItem
 import com.projects.moviemanager.common.ui.components.tab.setupTabs
-import com.projects.moviemanager.common.ui.util.UiConstants
 import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_PADDING
 import com.projects.moviemanager.common.ui.util.UiConstants.SMALL_MARGIN
 import com.projects.moviemanager.domain.models.content.DetailedMediaInfo
 import com.projects.moviemanager.domain.models.content.MovieDetailsInfo
 import com.projects.moviemanager.domain.models.content.ShowDetailsInfo
-import com.projects.moviemanager.features.details.ui.components.moreoptions.MoreOptionsTabItem
-import com.projects.moviemanager.features.details.ui.components.moreoptions.VideoList
 import com.projects.moviemanager.features.watchlist.events.WatchlistEvent
 import com.projects.moviemanager.features.watchlist.ui.components.WatchlistCard
 import com.projects.moviemanager.features.watchlist.ui.components.WatchlistTabItem
@@ -48,6 +42,7 @@ private fun Watchlist(
 ) {
     val watchlist by viewModel.watchlist.collectAsState()
     val watchedList by viewModel.watchedList.collectAsState()
+    val selectedList by viewModel.selectedList
 
     val availableTabs = listOf(
         WatchlistTabItem.WatchlistTab,
@@ -75,6 +70,7 @@ private fun Watchlist(
             WatchlistTabItem.WatchlistTab.tabIndex -> {
                 WatchlistBody(
                     watchlist = watchlist,
+                    selectedList = selectedList,
                     goToDetails = goToDetails,
                     removeItem = removeItem
                 )
@@ -83,6 +79,7 @@ private fun Watchlist(
             WatchlistTabItem.WatchedTab.tabIndex -> {
                 WatchlistBody(
                     watchlist = watchedList,
+                    selectedList = selectedList,
                     goToDetails = goToDetails,
                     removeItem = removeItem
                 )
@@ -94,6 +91,7 @@ private fun Watchlist(
 @Composable
 private fun WatchlistBody(
     watchlist: List<DetailedMediaInfo>,
+    selectedList: String,
     goToDetails: (Int, MediaType) -> Unit,
     removeItem: (Int, MediaType) -> Unit
 ) {
@@ -112,6 +110,7 @@ private fun WatchlistBody(
                 rating = rating ?: 0.0,
                 posterUrl = mediaInfo.poster_path,
                 mediaType = mediaInfo.mediaType,
+                selectedList = selectedList,
                 onCardClick = {
                     goToDetails(mediaInfo.id, mediaInfo.mediaType)
                 },

@@ -3,19 +3,17 @@ package com.projects.moviemanager.features.watchlist.ui
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bumptech.glide.Glide.init
 import com.projects.moviemanager.common.domain.MediaType
 import com.projects.moviemanager.domain.models.content.DetailedMediaInfo
 import com.projects.moviemanager.features.watchlist.domain.WatchlistInteractor
 import com.projects.moviemanager.features.watchlist.events.WatchlistEvent
 import com.projects.moviemanager.features.watchlist.model.DefaultLists
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import timber.log.Timber
+import javax.inject.Inject
 
 @HiltViewModel
 class WatchlistViewModel @Inject constructor(
@@ -28,7 +26,7 @@ class WatchlistViewModel @Inject constructor(
     private val _watchedList = MutableStateFlow(listOf<DetailedMediaInfo>())
     val watchedList: StateFlow<List<DetailedMediaInfo>> get() = _watchedList
 
-    private val selectedList = mutableStateOf(DefaultLists.WATCHLIST.listId)
+    val selectedList = mutableStateOf(DefaultLists.WATCHLIST.listId)
 
     init {
         viewModelScope.launch(Dispatchers.IO) {

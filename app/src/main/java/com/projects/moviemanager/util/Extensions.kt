@@ -74,3 +74,9 @@ fun Modifier.removeParentPadding(
         }
     }
 }
+
+fun String.capitalized(): String {
+    return this.replaceFirstChar {
+        if (it.isLowerCase()) it.titlecase() else it.toString()
+    }
+}

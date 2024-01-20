@@ -40,6 +40,7 @@ import com.projects.moviemanager.common.ui.util.UiConstants.POSTER_ASPECT_RATIO_
 import com.projects.moviemanager.common.ui.util.UiConstants.SMALL_PADDING
 import com.projects.moviemanager.common.ui.util.UiConstants.WATCHLIST_IMAGE_WIDTH
 import com.projects.moviemanager.util.Constants.BASE_300_IMAGE_URL
+import com.projects.moviemanager.util.capitalized
 
 @Composable
 fun WatchlistCard(
@@ -47,6 +48,7 @@ fun WatchlistCard(
     rating: Double,
     posterUrl: String?,
     mediaType: MediaType,
+    selectedList: String,
     onCardClick: () -> Unit,
     onRemoveClick: () -> Unit
 ) {
@@ -121,6 +123,7 @@ fun WatchlistCard(
                 )
                 MoreOptionsPopUpMenu(
                     showMenu = showPopupMenu,
+                    selectedList = selectedList,
                     onDismissRequest = {
                         showPopupMenu = false
                     },
@@ -136,12 +139,16 @@ fun WatchlistCard(
 @Composable
 fun MoreOptionsPopUpMenu(
     showMenu: Boolean,
+    selectedList: String,
     onDismissRequest: () -> Unit,
     onRemoveClick: () -> Unit
 ) {
     val menuItems = listOf(
         PopupMenuItem(
-            title = stringResource(id = R.string.remove_option_popup_menu),
+            title = stringResource(
+                id = R.string.remove_option_popup_menu,
+                selectedList.capitalized()
+            ),
             onClick = onRemoveClick
         )
     )
@@ -152,4 +159,3 @@ fun MoreOptionsPopUpMenu(
         menuItems = menuItems
     )
 }
-
