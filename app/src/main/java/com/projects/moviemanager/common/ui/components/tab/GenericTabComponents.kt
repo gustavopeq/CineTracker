@@ -34,7 +34,10 @@ import com.projects.moviemanager.common.ui.util.UiConstants
 import com.projects.moviemanager.util.removeParentPadding
 
 @Composable
-fun setupTabs(tabList: List<TabItem>): Triple<List<TabItem>, State<Int>, (Int) -> Unit> {
+fun setupTabs(
+    tabList: List<TabItem>,
+    onTabSelected: (Int) -> Unit = {}
+): Triple<List<TabItem>, State<Int>, (Int) -> Unit> {
     tabList.forEachIndexed { index, tabItem ->
         tabItem.tabIndex = index
     }
@@ -45,6 +48,7 @@ fun setupTabs(tabList: List<TabItem>): Triple<List<TabItem>, State<Int>, (Int) -
 
     val updateSelectedTab: (Int) -> Unit = { index ->
         selectedTabIndex.intValue = index
+        onTabSelected(index)
     }
 
     return Triple(tabList, selectedTabIndex, updateSelectedTab)

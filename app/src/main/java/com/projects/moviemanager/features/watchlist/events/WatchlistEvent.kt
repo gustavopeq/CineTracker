@@ -7,4 +7,7 @@ sealed class WatchlistEvent {
         val contentId: Int,
         val mediaType: MediaType
     ) : WatchlistEvent()
+    data class SelectList(
+        val list: String
+    ) : WatchlistEvent()
 }

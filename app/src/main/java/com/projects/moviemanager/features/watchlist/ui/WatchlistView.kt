@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -16,6 +17,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.projects.moviemanager.common.domain.MediaType
 import com.projects.moviemanager.common.ui.components.GridContentList
 import com.projects.moviemanager.common.ui.components.tab.GenericTabRow
+import com.projects.moviemanager.common.ui.components.tab.TabItem
 import com.projects.moviemanager.common.ui.components.tab.setupTabs
 import com.projects.moviemanager.common.ui.util.UiConstants
 import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_PADDING
@@ -45,13 +47,21 @@ private fun Watchlist(
     goToDetails: (Int, MediaType) -> Unit
 ) {
     val watchlist by viewModel.watchlist.collectAsState()
+    val watchedList by viewModel.watchedList.collectAsState()
 
     val availableTabs = listOf(
         WatchlistTabItem.WatchlistTab,
         WatchlistTabItem.WatchedTab
     )
 
-    val (tabList, selectedTabIndex, updateSelectedTab) = setupTabs(availableTabs)
+    val (tabList, selectedTabIndex, updateSelectedTab) = setupTabs(
+        tabList = availableTabs,
+        onTabSelected = { index ->
+            viewModel.onEvent(
+                WatchlistEvent.SelectList(availableTabs[index].listId)
+            )
+        }
+    )
 
     val removeItem: (Int, MediaType) -> Unit = { contentId, mediaType ->
         viewModel.onEvent(
@@ -65,6 +75,14 @@ private fun Watchlist(
             WatchlistTabItem.WatchlistTab.tabIndex -> {
                 WatchlistBody(
                     watchlist = watchlist,
+                    goToDetails = goToDetails,
+                    removeItem = removeItem
+                )
+            }
+
+            WatchlistTabItem.WatchedTab.tabIndex -> {
+                WatchlistBody(
+                    watchlist = watchedList,
                     goToDetails = goToDetails,
                     removeItem = removeItem
                 )

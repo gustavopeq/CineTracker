@@ -8,7 +8,11 @@ class DatabaseRepositoryImpl(
     private val contentEntityDao: ContentEntityDao
 ) : DatabaseRepository {
 
-    override suspend fun insertItem(contentId: Int, mediaType: MediaType, listId: String) {
+    override suspend fun insertItem(
+        contentId: Int,
+        mediaType: MediaType,
+        listId: String
+    ) {
         val item = ContentEntity(
             contentId = contentId,
             mediaType = mediaType.name,
@@ -20,25 +24,29 @@ class DatabaseRepositoryImpl(
 
     override suspend fun deleteItem(
         contentId: Int,
-        mediaType: MediaType
+        mediaType: MediaType,
+        listId: String
     ) {
         contentEntityDao.delete(
             contentId = contentId,
-            mediaType = mediaType.name
+            mediaType = mediaType.name,
+            listId = listId
         )
     }
 
-    override suspend fun getAllItems(): List<ContentEntity> {
-        return contentEntityDao.getAllItems()
+    override suspend fun getAllItemsByListId(listId: String): List<ContentEntity> {
+        return contentEntityDao.getAllItems(listId)
     }
 
     override suspend fun searchItem(
         contentId: Int,
-        mediaType: MediaType
+        mediaType: MediaType,
+        listId: String
     ): ContentEntity? {
         return contentEntityDao.searchItem(
             contentId = contentId,
-            mediaType = mediaType.name
+            mediaType = mediaType.name,
+            listId = listId
         )
     }
 }

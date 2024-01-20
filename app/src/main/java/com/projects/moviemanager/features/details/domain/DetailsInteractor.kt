@@ -193,18 +193,20 @@ class DetailsInteractor @Inject constructor(
     ): Boolean {
         return databaseRepository.searchItem(
             contentId = contentId,
-            mediaType = mediaType
+            mediaType = mediaType,
+            listId = DefaultLists.WATCHLIST.listId
         ) != null
     }
 
     suspend fun addToWatchlist(
         contentId: Int,
-        mediaType: MediaType
+        mediaType: MediaType,
+        listId: String
     ) {
         databaseRepository.insertItem(
             contentId = contentId,
             mediaType = mediaType,
-            listId = DefaultLists.WATCHLIST.listId
+            listId = listId
         )
     }
 
@@ -214,7 +216,8 @@ class DetailsInteractor @Inject constructor(
     ) {
         databaseRepository.deleteItem(
             contentId = contentId,
-            mediaType = mediaType
+            mediaType = mediaType,
+            listId = DefaultLists.WATCHLIST.listId
         )
     }
 }

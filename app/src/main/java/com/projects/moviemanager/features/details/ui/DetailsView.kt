@@ -81,11 +81,12 @@ private fun Details(
 
     val contentPosterUrl = BASE_ORIGINAL_IMAGE_URL + contentDetails?.poster_path
 
-    val onWatchlistBtnPressed: () -> Unit = {
-        contentDetails?.let {
+    val onWatchlistBtnPressed: (String) -> Unit = { listId ->
+        contentDetails?.let { mediaInfo ->
             viewModel.toggleWatchlistStatus(
-                contentId = it.id,
-                mediaType = it.mediaType
+                contentId = mediaInfo.id,
+                mediaType = mediaInfo.mediaType,
+                listId = listId
             )
         }
     }

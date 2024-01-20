@@ -6,9 +6,9 @@ import com.projects.moviemanager.database.model.ContentEntity
 interface DatabaseRepository {
     suspend fun insertItem(contentId: Int, mediaType: MediaType, listId: String)
 
-    suspend fun deleteItem(contentId: Int, mediaType: MediaType)
+    suspend fun deleteItem(contentId: Int, mediaType: MediaType, listId: String)
 
-    suspend fun getAllItems(): List<ContentEntity>
+    suspend fun getAllItemsByListId(listId: String): List<ContentEntity>
 
-    suspend fun searchItem(contentId: Int, mediaType: MediaType): ContentEntity?
+    suspend fun searchItem(contentId: Int, mediaType: MediaType, listId: String): ContentEntity?
 }

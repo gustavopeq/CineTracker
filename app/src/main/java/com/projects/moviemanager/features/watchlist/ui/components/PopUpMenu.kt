@@ -24,7 +24,7 @@ fun MoreOptionsPopUpMenu(
         DropdownMenuItem(
             text = {
                 Text(
-                    stringResource(id = R.string.remove_options_popup_menu),
+                    text = stringResource(id = R.string.remove_options_popup_menu),
                     color = MaterialTheme.colorScheme.onPrimary,
                     style = MaterialTheme.typography.labelSmall
                 )

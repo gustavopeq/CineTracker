@@ -89,18 +89,19 @@ class DetailsViewModel @Inject constructor(
         }
     }
 
-    fun toggleWatchlistStatus(contentId: Int, mediaType: MediaType) {
+    fun toggleWatchlistStatus(contentId: Int, mediaType: MediaType, listId: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            when (contentInWatchlist.value) {
-                true -> {
-                    detailsInteractor.removeFromWatchlist(contentId, mediaType)
-                    _contentInWatchlist.value = false
-                }
-                false -> {
-                    detailsInteractor.addToWatchlist(contentId, mediaType)
-                    _contentInWatchlist.value = true
-                }
-            }
+            detailsInteractor.addToWatchlist(contentId, mediaType, listId)
+//            when (contentInWatchlist.value) {
+//                true -> {
+//                    detailsInteractor.removeFromWatchlist(contentId, mediaType)
+//                    _contentInWatchlist.value = false
+//                }
+//                false -> {
+//                    detailsInteractor.addToWatchlist(contentId, mediaType)
+//                    _contentInWatchlist.value = true
+//                }
+//            }
         }
     }
 }

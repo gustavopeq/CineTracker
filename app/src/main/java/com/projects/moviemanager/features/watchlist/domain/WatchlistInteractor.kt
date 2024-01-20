@@ -5,13 +5,12 @@ import com.projects.moviemanager.database.model.ContentEntity
 import com.projects.moviemanager.database.repository.DatabaseRepository
 import com.projects.moviemanager.domain.models.content.DetailedMediaInfo
 import com.projects.moviemanager.domain.models.content.toMovieDetailsInfo
-import com.projects.moviemanager.domain.models.content.toPersonDetailsInfo
 import com.projects.moviemanager.domain.models.content.toShowDetailsInfo
+import com.projects.moviemanager.features.watchlist.model.DefaultLists
 import com.projects.moviemanager.network.repository.movie.MovieRepository
 import com.projects.moviemanager.network.repository.show.ShowRepository
 import com.projects.moviemanager.network.response.content.movie.MovieApiResponse
 import com.projects.moviemanager.network.response.content.show.ShowApiResponse
-import com.projects.moviemanager.network.response.person.PersonDetailsResponse
 import com.projects.moviemanager.network.util.Left
 import com.projects.moviemanager.network.util.Right
 import javax.inject.Inject
@@ -22,8 +21,8 @@ class WatchlistInteractor @Inject constructor(
     private val movieRepository: MovieRepository,
     private val showRepository: ShowRepository
 ) {
-    suspend fun getAllItems(): List<ContentEntity> {
-        return databaseRepository.getAllItems()
+    suspend fun getAllItems(listId: String): List<ContentEntity> {
+        return databaseRepository.getAllItemsByListId(listId = listId)
     }
 
     suspend fun getContentDetailsById(
@@ -56,11 +55,13 @@ class WatchlistInteractor @Inject constructor(
 
     suspend fun removeContentFromDatabase(
         contentId: Int,
-        mediaType: MediaType
+        mediaType: MediaType,
+        listId: String
     ) {
         databaseRepository.deleteItem(
             contentId = contentId,
-            mediaType = mediaType
+            mediaType = mediaType,
+            listId = listId
         )
     }
 }
