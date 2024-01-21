@@ -22,8 +22,6 @@ import com.projects.moviemanager.common.ui.theme.placeholderGrey2
 
 @Composable
 fun ComponentPlaceholder(
-    widthDp: Dp,
-    heightDp: Dp,
     modifier: Modifier = Modifier,
     initialValue: Float = -1000F,
     targetValue: Float = 2000F,
@@ -58,8 +56,6 @@ fun ComponentPlaceholder(
 
     Spacer(
         modifier = modifier
-            .width(widthDp)
-            .height(heightDp)
             .background(brush)
     )
 }

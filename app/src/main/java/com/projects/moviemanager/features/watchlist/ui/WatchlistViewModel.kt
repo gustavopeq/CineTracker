@@ -8,18 +8,24 @@ import com.projects.moviemanager.common.domain.MediaType
 import com.projects.moviemanager.domain.models.content.DetailedMediaInfo
 import com.projects.moviemanager.features.watchlist.domain.WatchlistInteractor
 import com.projects.moviemanager.features.watchlist.events.WatchlistEvent
+import com.projects.moviemanager.features.watchlist.model.DataLoadState
 import com.projects.moviemanager.features.watchlist.model.DefaultLists
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltViewModel
 class WatchlistViewModel @Inject constructor(
     private val watchlistInteractor: WatchlistInteractor
 ) : ViewModel() {
+
+    private val _loadState: MutableStateFlow<DataLoadState> = MutableStateFlow(
+        DataLoadState.Loading
+    )
+    val loadState: StateFlow<DataLoadState> get() = _loadState
 
     private val _watchlist = MutableStateFlow(listOf<DetailedMediaInfo>())
     val watchlist: StateFlow<List<DetailedMediaInfo>> get() = _watchlist
@@ -56,6 +62,8 @@ class WatchlistViewModel @Inject constructor(
                 )
             }
             _watchedList.value = watchedDetails
+
+            _loadState.value = DataLoadState.Success
         }
     }
 

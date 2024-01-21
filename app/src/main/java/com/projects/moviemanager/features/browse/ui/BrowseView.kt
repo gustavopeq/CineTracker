@@ -261,16 +261,16 @@ private fun BrowseBodyPlaceholder(
                     )
             ) {
                 ComponentPlaceholder(
-                    widthDp = cardWidth,
-                    heightDp = cardWidth * POSTER_ASPECT_RATIO_MULTIPLY,
                     modifier = Modifier
+                        .width(cardWidth)
+                        .height(cardWidth * POSTER_ASPECT_RATIO_MULTIPLY)
                         .clip(RoundCornerShapes.small)
                 )
                 Spacer(modifier = Modifier.height(SMALL_PADDING.dp))
                 ComponentPlaceholder(
-                    widthDp = cardWidth,
-                    heightDp = 50.dp,
                     modifier = Modifier
+                        .width(cardWidth)
+                        .height(50.dp)
                         .clip(RoundCornerShapes.extraSmall)
                 )
             }
