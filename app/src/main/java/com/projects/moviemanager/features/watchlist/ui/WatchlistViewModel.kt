@@ -37,7 +37,18 @@ class WatchlistViewModel @Inject constructor(
 
     private val sortType: MutableState<MediaType?> = mutableStateOf(null)
 
-    init {
+    fun onEvent(
+        event: WatchlistEvent
+    ) {
+        when (event) {
+            is WatchlistEvent.LoadWatchlistData -> loadWatchlistData()
+            is WatchlistEvent.RemoveItem -> removeListItem(event.contentId, event.mediaType)
+            is WatchlistEvent.SelectList -> selectedList.value = event.list
+            is WatchlistEvent.UpdateSortType -> sortType.value = event.mediaType
+        }
+    }
+
+    private fun loadWatchlistData() {
         viewModelScope.launch(Dispatchers.IO) {
             val watchlistDatabaseItems = watchlistInteractor.getAllItems(
                 listId = DefaultLists.WATCHLIST.listId
@@ -64,16 +75,6 @@ class WatchlistViewModel @Inject constructor(
             _watchedList.value = watchedDetails
 
             _loadState.value = DataLoadState.Success
-        }
-    }
-
-    fun onEvent(
-        event: WatchlistEvent
-    ) {
-        when (event) {
-            is WatchlistEvent.RemoveItem -> removeListItem(event.contentId, event.mediaType)
-            is WatchlistEvent.SelectList -> selectedList.value = event.list
-            is WatchlistEvent.UpdateSortType -> sortType.value = event.mediaType
         }
     }
 

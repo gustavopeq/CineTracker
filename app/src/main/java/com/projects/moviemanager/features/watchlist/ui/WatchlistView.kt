@@ -94,6 +94,12 @@ private fun Watchlist(
         )
     }
 
+    LaunchedEffect(Unit) {
+        viewModel.onEvent(
+            WatchlistEvent.LoadWatchlistData
+        )
+    }
+
     Column(modifier = Modifier.fillMaxSize()) {
         GenericTabRow(selectedTabIndex.value, tabList, updateSelectedTab)
         when (loadState) {
@@ -229,19 +235,19 @@ private fun WatchlistBodyPlaceholder() {
                         )
                         Spacer(modifier = Modifier.width(DEFAULT_PADDING.dp))
                     }
-                    Spacer(modifier = Modifier.height(DEFAULT_PADDING.dp))
+                    Spacer(modifier = Modifier.height(10.dp))
                     // Rating
                     ComponentPlaceholder(
                         modifier = Modifier
-                            .width(40.dp)
-                            .height(20.dp)
+                            .width(50.dp)
+                            .height(17.dp)
                     )
                     Spacer(modifier = Modifier.weight(1f))
                     // Content Type Tag
                     ComponentPlaceholder(
                         modifier = Modifier
                             .width(50.dp)
-                            .height(20.dp)
+                            .height(19.dp)
                     )
                 }
             }

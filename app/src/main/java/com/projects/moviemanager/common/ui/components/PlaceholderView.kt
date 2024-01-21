@@ -25,7 +25,7 @@ fun ComponentPlaceholder(
     modifier: Modifier = Modifier,
     initialValue: Float = -1000F,
     targetValue: Float = 2000F,
-    durationMillis: Int = 2000,
+    durationMillis: Int = 3000,
     shimmerColorShades: List<Color> = listOf(
         placeholderGrey,
         placeholderGrey,
