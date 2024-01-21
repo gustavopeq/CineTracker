@@ -60,6 +60,7 @@ fun MainApp() {
                 ) {
                     TopNavBar(
                         currentScreen = currentScreen,
+                        mainViewModel = mainViewModel,
                         displaySortScreen = displaySortScreen
                     )
                 }

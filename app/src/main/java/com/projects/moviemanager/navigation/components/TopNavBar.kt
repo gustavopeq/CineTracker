@@ -7,6 +7,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
+import com.projects.moviemanager.common.ui.MainViewModel
 import com.projects.moviemanager.common.ui.components.button.SortIconButton
 import com.projects.moviemanager.features.browse.BrowseScreen
 import com.projects.moviemanager.features.home.HomeScreen
@@ -18,6 +19,7 @@ import com.projects.moviemanager.features.watchlist.WatchlistScreen
 @Composable
 fun TopNavBar(
     currentScreen: String?,
+    mainViewModel: MainViewModel,
     displaySortScreen: (Boolean) -> Unit
 ) {
     val title = currentScreen.getScreenNameRes()?.let { stringResource(id = it) }
@@ -36,7 +38,11 @@ fun TopNavBar(
         },
         actions = {
             if (currentScreen == BrowseScreen.route() || currentScreen == WatchlistScreen.route()) {
-                SortIconButton(displaySortScreen)
+                SortIconButton(
+                    mainViewModel = mainViewModel,
+                    currentScreen = currentScreen,
+                    displaySortScreen = displaySortScreen
+                )
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(

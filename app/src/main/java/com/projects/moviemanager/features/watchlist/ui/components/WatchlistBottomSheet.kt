@@ -1,7 +1,6 @@
 package com.projects.moviemanager.features.watchlist.ui.components
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -19,13 +18,20 @@ import com.projects.moviemanager.util.Constants.UNSELECTED_OPTION_INDEX
 @Composable
 fun WatchlistSortBottomSheet(
     mainViewModel: MainViewModel,
+    selectedWatchlistSortType: MediaType?,
     displaySortScreen: (Boolean) -> Unit
 ) {
-    var selectedIndex by remember { mutableIntStateOf(UNSELECTED_OPTION_INDEX) }
     val sortOptions = listOf(
         WatchlistSortTypeItem.MovieOnly,
         WatchlistSortTypeItem.ShowOnly
     )
+
+    val initialIndex = when (selectedWatchlistSortType) {
+        MediaType.MOVIE -> sortOptions.indexOf(WatchlistSortTypeItem.MovieOnly)
+        MediaType.SHOW -> sortOptions.indexOf(WatchlistSortTypeItem.ShowOnly)
+        else -> UNSELECTED_OPTION_INDEX
+    }
+    var selectedIndex by remember { mutableIntStateOf(initialIndex) }
 
     val dismissBottomSheet: () -> Unit = {
         displaySortScreen(false)
@@ -43,6 +49,7 @@ fun WatchlistSortBottomSheet(
             sortTypeItem = sortItem
         )
         mainViewModel.updateWatchlistSort(sortMediaType)
+        dismissBottomSheet()
     }
 
     BackHandler { dismissBottomSheet() }
@@ -75,6 +82,7 @@ fun selectSortMediaType(
         when (sortTypeItem) {
             is WatchlistSortTypeItem.MovieOnly -> MediaType.MOVIE
             is WatchlistSortTypeItem.ShowOnly -> MediaType.SHOW
+            else -> null
         }
     } else {
         null
