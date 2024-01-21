@@ -1,8 +1,8 @@
 package com.projects.moviemanager.domain.models.content
 
 import com.projects.moviemanager.common.domain.MediaType
-import com.projects.moviemanager.network.response.content.common.BaseMediaContentResponse
-import com.projects.moviemanager.network.response.person.CastResponse
+import com.projects.moviemanager.network.models.content.common.BaseMediaContentResponse
+import com.projects.moviemanager.network.models.person.CastResponse
 
 data class MediaContent(
     override val id: Int,

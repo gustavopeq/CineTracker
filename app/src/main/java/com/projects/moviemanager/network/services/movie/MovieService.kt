@@ -1,9 +1,9 @@
 package com.projects.moviemanager.network.services.movie
 
-import com.projects.moviemanager.network.response.content.common.ContentCreditsResponse
-import com.projects.moviemanager.network.response.content.common.ContentListPageResponse
-import com.projects.moviemanager.network.response.content.movie.MovieApiResponse
-import com.projects.moviemanager.network.response.content.common.VideosByIdResponse
+import com.projects.moviemanager.network.models.content.common.ContentCreditsResponse
+import com.projects.moviemanager.network.models.content.common.ContentListPageResponse
+import com.projects.moviemanager.network.models.content.movie.MovieApiResponse
+import com.projects.moviemanager.network.models.content.common.VideosByIdResponse
 import com.projects.moviemanager.util.Constants
 import com.projects.moviemanager.util.Constants.ENGLISH_LANGUAGE_CODE
 import retrofit2.Response

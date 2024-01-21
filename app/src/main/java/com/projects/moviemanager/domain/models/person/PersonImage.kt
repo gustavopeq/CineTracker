@@ -1,6 +1,6 @@
 package com.projects.moviemanager.domain.models.person
 
-import com.projects.moviemanager.network.response.person.PersonProfileResponse
+import com.projects.moviemanager.network.models.person.PersonProfileResponse
 
 data class PersonImage(
     val aspectRatio: Double?,

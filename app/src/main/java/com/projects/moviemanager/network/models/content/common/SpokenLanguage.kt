@@ -1,4 +1,4 @@
-package com.projects.moviemanager.network.response.content.common
+package com.projects.moviemanager.network.models.content.common
 
 data class SpokenLanguage(
     val english_name: String?,

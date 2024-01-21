@@ -1,11 +1,11 @@
-package com.projects.moviemanager.network.response.content.show
+package com.projects.moviemanager.network.models.content.show
 
 import com.projects.moviemanager.common.domain.MediaType
-import com.projects.moviemanager.network.response.content.common.ContentGenre
-import com.projects.moviemanager.network.response.content.common.ProductionCompany
-import com.projects.moviemanager.network.response.content.common.ProductionCountry
-import com.projects.moviemanager.network.response.content.common.SpokenLanguage
-import com.projects.moviemanager.network.response.content.common.BaseMediaContentResponse
+import com.projects.moviemanager.network.models.content.common.ContentGenre
+import com.projects.moviemanager.network.models.content.common.ProductionCompany
+import com.projects.moviemanager.network.models.content.common.ProductionCountry
+import com.projects.moviemanager.network.models.content.common.SpokenLanguage
+import com.projects.moviemanager.network.models.content.common.BaseMediaContentResponse
 import com.squareup.moshi.Json
 
 data class ShowApiResponse(

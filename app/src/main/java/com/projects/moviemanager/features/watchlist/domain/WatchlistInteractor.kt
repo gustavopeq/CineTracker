@@ -9,8 +9,8 @@ import com.projects.moviemanager.domain.models.content.toShowDetailsInfo
 import com.projects.moviemanager.features.watchlist.model.DefaultLists
 import com.projects.moviemanager.network.repository.movie.MovieRepository
 import com.projects.moviemanager.network.repository.show.ShowRepository
-import com.projects.moviemanager.network.response.content.movie.MovieApiResponse
-import com.projects.moviemanager.network.response.content.show.ShowApiResponse
+import com.projects.moviemanager.network.models.content.movie.MovieApiResponse
+import com.projects.moviemanager.network.models.content.show.ShowApiResponse
 import com.projects.moviemanager.network.util.Left
 import com.projects.moviemanager.network.util.Right
 import javax.inject.Inject

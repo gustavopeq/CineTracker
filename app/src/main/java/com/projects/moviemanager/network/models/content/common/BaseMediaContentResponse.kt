@@ -1,4 +1,4 @@
-package com.projects.moviemanager.network.response.content.common
+package com.projects.moviemanager.network.models.content.common
 
 import com.projects.moviemanager.common.domain.MediaType
 

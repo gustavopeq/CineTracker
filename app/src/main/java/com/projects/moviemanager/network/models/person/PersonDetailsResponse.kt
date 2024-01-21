@@ -1,4 +1,4 @@
-package com.projects.moviemanager.network.response.person
+package com.projects.moviemanager.network.models.person
 
 data class PersonDetailsResponse(
     val id: Int,

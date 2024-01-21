@@ -30,8 +30,8 @@ import com.projects.moviemanager.domain.models.content.MovieDetailsInfo
 import com.projects.moviemanager.domain.models.content.PersonDetailsInfo
 import com.projects.moviemanager.domain.models.content.ShowDetailsInfo
 import com.projects.moviemanager.features.details.util.stringFormat
-import com.projects.moviemanager.network.response.content.common.ContentGenre
-import com.projects.moviemanager.network.response.content.common.ProductionCountry
+import com.projects.moviemanager.network.models.content.common.ContentGenre
+import com.projects.moviemanager.network.models.content.common.ProductionCountry
 import com.projects.moviemanager.util.formatDate
 
 @Composable
