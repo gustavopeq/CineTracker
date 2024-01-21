@@ -8,12 +8,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.projects.moviemanager.common.domain.MediaType
+import com.projects.moviemanager.common.ui.MainViewModel
 import com.projects.moviemanager.common.ui.components.tab.GenericTabRow
 import com.projects.moviemanager.common.ui.components.tab.setupTabs
 import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_PADDING
@@ -31,6 +33,7 @@ fun Watchlist(
 ) {
     Watchlist(
         viewModel = hiltViewModel(),
+        mainViewModel = hiltViewModel(),
         goToDetails = goToDetails
     )
 }
@@ -38,11 +41,13 @@ fun Watchlist(
 @Composable
 private fun Watchlist(
     viewModel: WatchlistViewModel,
+    mainViewModel: MainViewModel,
     goToDetails: (Int, MediaType) -> Unit
 ) {
     val watchlist by viewModel.watchlist.collectAsState()
     val watchedList by viewModel.watchedList.collectAsState()
     val selectedList by viewModel.selectedList
+    val sortType by mainViewModel.watchlistSort.collectAsState()
 
     val availableTabs = listOf(
         WatchlistTabItem.WatchlistTab,
@@ -64,12 +69,19 @@ private fun Watchlist(
         )
     }
 
+    LaunchedEffect(sortType) {
+        viewModel.onEvent(
+            WatchlistEvent.UpdateSortType(sortType)
+        )
+    }
+
     Column(modifier = Modifier.fillMaxSize()) {
         GenericTabRow(selectedTabIndex.value, tabList, updateSelectedTab)
         when (tabList[selectedTabIndex.value].tabIndex) {
             WatchlistTabItem.WatchlistTab.tabIndex -> {
                 WatchlistBody(
                     watchlist = watchlist,
+                    sortType = sortType,
                     selectedList = selectedList,
                     goToDetails = goToDetails,
                     removeItem = removeItem
@@ -79,6 +91,7 @@ private fun Watchlist(
             WatchlistTabItem.WatchedTab.tabIndex -> {
                 WatchlistBody(
                     watchlist = watchedList,
+                    sortType = sortType,
                     selectedList = selectedList,
                     goToDetails = goToDetails,
                     removeItem = removeItem
@@ -91,14 +104,20 @@ private fun Watchlist(
 @Composable
 private fun WatchlistBody(
     watchlist: List<DetailedMediaInfo>,
+    sortType: MediaType?,
     selectedList: String,
     goToDetails: (Int, MediaType) -> Unit,
     removeItem: (Int, MediaType) -> Unit
 ) {
+    val sortedItems = if (sortType != null) {
+        watchlist.filter { it.mediaType == sortType }
+    } else {
+        watchlist
+    }
     LazyColumn(
         contentPadding = PaddingValues(all = SMALL_MARGIN.dp)
     ) {
-        items(watchlist) { mediaInfo ->
+        items(sortedItems) { mediaInfo ->
             val rating = when (mediaInfo) {
                 is MovieDetailsInfo -> mediaInfo.voteAverage
                 is ShowDetailsInfo -> mediaInfo.voteAverage

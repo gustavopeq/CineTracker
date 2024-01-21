@@ -16,7 +16,6 @@ import com.projects.moviemanager.common.ui.components.bottomsheet.GenericBottomS
 import com.projects.moviemanager.common.ui.components.bottomsheet.SortButton
 import com.projects.moviemanager.util.Constants.UNSELECTED_OPTION_INDEX
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WatchlistSortBottomSheet(
     mainViewModel: MainViewModel,

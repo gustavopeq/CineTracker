@@ -10,4 +10,7 @@ sealed class WatchlistEvent {
     data class SelectList(
         val list: String
     ) : WatchlistEvent()
+    data class UpdateSortType(
+        val mediaType: MediaType?
+    ) : WatchlistEvent()
 }

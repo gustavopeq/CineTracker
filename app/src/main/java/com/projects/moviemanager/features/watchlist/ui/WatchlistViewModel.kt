@@ -1,5 +1,6 @@
 package com.projects.moviemanager.features.watchlist.ui
 
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -27,6 +28,8 @@ class WatchlistViewModel @Inject constructor(
     val watchedList: StateFlow<List<DetailedMediaInfo>> get() = _watchedList
 
     val selectedList = mutableStateOf(DefaultLists.WATCHLIST.listId)
+
+    private val sortType: MutableState<MediaType?> = mutableStateOf(null)
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
@@ -62,6 +65,7 @@ class WatchlistViewModel @Inject constructor(
         when (event) {
             is WatchlistEvent.RemoveItem -> removeListItem(event.contentId, event.mediaType)
             is WatchlistEvent.SelectList -> selectedList.value = event.list
+            is WatchlistEvent.UpdateSortType -> sortType.value = event.mediaType
         }
     }
 
