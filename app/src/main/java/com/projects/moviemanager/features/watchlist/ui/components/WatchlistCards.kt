@@ -36,6 +36,7 @@ import com.projects.moviemanager.common.ui.components.RatingComponent
 import com.projects.moviemanager.common.ui.components.popup.GenericPopupMenu
 import com.projects.moviemanager.common.ui.components.popup.PopupMenuItem
 import com.projects.moviemanager.common.ui.util.UiConstants.BROWSE_CARD_DEFAULT_ELEVATION
+import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_PADDING
 import com.projects.moviemanager.common.ui.util.UiConstants.POSTER_ASPECT_RATIO_MULTIPLY
 import com.projects.moviemanager.common.ui.util.UiConstants.SMALL_PADDING
 import com.projects.moviemanager.common.ui.util.UiConstants.WATCHLIST_IMAGE_WIDTH
@@ -85,7 +86,7 @@ fun WatchlistCard(
             Column(
                 modifier = Modifier
                     .weight(1f)
-                    .padding(all = SMALL_PADDING.dp)
+                    .padding(all = DEFAULT_PADDING.dp)
             ) {
                 Text(
                     text = title,

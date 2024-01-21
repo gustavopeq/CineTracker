@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.projects.moviemanager.common.domain.MediaType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import com.projects.moviemanager.common.ui.components.SortTypeItem
+import com.projects.moviemanager.features.home.HomeScreen
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
@@ -20,6 +21,12 @@ class MainViewModel @Inject constructor() : ViewModel() {
     private val _currentMediaTypeSelected = MutableStateFlow(MediaType.MOVIE)
     val currentMediaTypeSelected: StateFlow<MediaType> get() = _currentMediaTypeSelected
 
+    private val _currentScreen = MutableStateFlow(HomeScreen.route())
+    val currentScreen: StateFlow<String> get() = _currentScreen
+
+    private val _watchlistSort = MutableStateFlow<MediaType?>(null)
+    val watchlistSort: StateFlow<MediaType?> get() = _watchlistSort
+
     fun updateSortType(
         sortTypeItem: SortTypeItem
     ) {
@@ -34,5 +41,17 @@ class MainViewModel @Inject constructor() : ViewModel() {
         mediaType: MediaType
     ) {
         _currentMediaTypeSelected.value = mediaType
+    }
+
+    fun updateCurrentScreen(
+        screen: String
+    ) {
+        _currentScreen.value = screen
+    }
+
+    fun updateWatchlistSort(
+        mediaType: MediaType?
+    ) {
+        _watchlistSort.value = mediaType
     }
 }

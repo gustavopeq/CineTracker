@@ -27,6 +27,7 @@ import com.projects.moviemanager.navigation.components.MainNavBar
 import com.projects.moviemanager.navigation.components.MainNavBarItem
 import com.projects.moviemanager.navigation.components.TopNavBar
 import com.projects.moviemanager.common.theme.MovieManagerTheme
+import com.projects.moviemanager.features.watchlist.WatchlistScreen
 
 @Composable
 fun MainApp() {
@@ -72,6 +73,7 @@ fun MainApp() {
                 ) {
                     MainNavBar(
                         navController = navController,
+                        mainViewModel = mainViewModel,
                         navBarItems = navItems
                     )
                 }

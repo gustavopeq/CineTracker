@@ -19,4 +19,6 @@ object Constants {
     const val PAGE_SIZE = 20
     const val PREFETCH_DISTANCE = PAGE_SIZE * 2
     const val ENGLISH_LANGUAGE_CODE = "en-US"
+
+    const val UNSELECTED_OPTION_INDEX = -1
 }

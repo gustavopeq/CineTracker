@@ -34,6 +34,7 @@ import com.projects.moviemanager.common.ui.components.SystemNavBarSpacer
 import com.projects.moviemanager.common.ui.util.UiConstants.SMALL_MARGIN
 import com.projects.moviemanager.common.ui.util.UiConstants.SMALL_PADDING
 import com.projects.moviemanager.common.theme.MainBarGreyColor
+import com.projects.moviemanager.common.ui.components.button.SortButton
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -111,36 +112,6 @@ fun SortBottomSheet(
         }
         Spacer(modifier = Modifier.height(SMALL_PADDING.dp))
         SystemNavBarSpacer()
-    }
-}
-
-@Composable
-fun SortButton(
-    text: String,
-    isSelected: Boolean = false,
-    textColor: Color,
-    onClick: () -> Unit
-) {
-    Button(
-        contentPadding = PaddingValues(horizontal = SMALL_MARGIN.dp),
-        colors = ButtonDefaults.buttonColors(
-            containerColor = Color.Transparent
-        ),
-        onClick = onClick
-    ) {
-        Text(
-            text = text,
-            style = MaterialTheme.typography.bodyMedium,
-            color = if (isSelected) MaterialTheme.colorScheme.onSurfaceVariant else textColor
-        )
-        Spacer(modifier = Modifier.weight(1f))
-        if (isSelected) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_check),
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.secondary
-            )
-        }
     }
 }
 

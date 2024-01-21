@@ -3,10 +3,11 @@ package com.projects.moviemanager.features.details.ui.components.moreoptions
 import androidx.annotation.StringRes
 import com.projects.moviemanager.R
 import com.projects.moviemanager.common.ui.components.tab.TabItem
+import com.projects.moviemanager.util.Constants.UNSELECTED_OPTION_INDEX
 
 sealed class MoreOptionsTabItem(
     @StringRes override val tabResId: Int,
-    override var tabIndex: Int = -1
+    override var tabIndex: Int = UNSELECTED_OPTION_INDEX
 ) : TabItem {
     data object VideosTab : MoreOptionsTabItem(
         tabResId = R.string.more_options_videos
