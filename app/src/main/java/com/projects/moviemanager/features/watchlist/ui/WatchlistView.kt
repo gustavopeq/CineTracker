@@ -103,6 +103,9 @@ private fun Watchlist(
     Column(modifier = Modifier.fillMaxSize()) {
         GenericTabRow(selectedTabIndex.value, tabList, updateSelectedTab)
         when (loadState) {
+            DataLoadState.Empty -> {
+                // Display empty screen
+            }
             DataLoadState.Loading -> {
                 WatchlistBodyPlaceholder()
             }

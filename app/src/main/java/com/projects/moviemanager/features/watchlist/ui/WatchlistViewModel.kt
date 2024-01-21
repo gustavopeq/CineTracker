@@ -22,9 +22,7 @@ class WatchlistViewModel @Inject constructor(
     private val watchlistInteractor: WatchlistInteractor
 ) : ViewModel() {
 
-    private val _loadState: MutableStateFlow<DataLoadState> = MutableStateFlow(
-        DataLoadState.Loading
-    )
+    private val _loadState: MutableStateFlow<DataLoadState> = MutableStateFlow(DataLoadState.Empty)
     val loadState: StateFlow<DataLoadState> get() = _loadState
 
     private val _watchlist = MutableStateFlow(listOf<DetailedMediaInfo>())
@@ -53,6 +51,9 @@ class WatchlistViewModel @Inject constructor(
             val watchlistDatabaseItems = watchlistInteractor.getAllItems(
                 listId = DefaultLists.WATCHLIST.listId
             )
+            if (watchlistDatabaseItems.isNotEmpty()) {
+                _loadState.value = DataLoadState.Loading
+            }
 
             val watchlistDetails = watchlistDatabaseItems.mapNotNull {
                 watchlistInteractor.getContentDetailsById(
