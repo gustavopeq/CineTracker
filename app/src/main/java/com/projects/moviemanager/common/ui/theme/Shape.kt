@@ -1,4 +1,4 @@
-package com.projects.moviemanager.common.theme
+package com.projects.moviemanager.common.ui.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Shapes

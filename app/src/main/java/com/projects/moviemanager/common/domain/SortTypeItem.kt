@@ -1,4 +1,4 @@
-package com.projects.moviemanager.common.ui.components
+package com.projects.moviemanager.common.domain
 
 import androidx.annotation.StringRes
 import com.projects.moviemanager.R

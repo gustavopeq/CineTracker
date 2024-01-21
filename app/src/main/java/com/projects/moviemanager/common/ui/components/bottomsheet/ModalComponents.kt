@@ -1,11 +1,11 @@
-package com.projects.moviemanager.common.ui.components
+package com.projects.moviemanager.common.ui.components.bottomsheet
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import com.projects.moviemanager.common.ui.MainViewModel
 import com.projects.moviemanager.features.browse.BrowseScreen
-import com.projects.moviemanager.features.browse.ui.components.SortBottomSheet
+import com.projects.moviemanager.features.browse.ui.components.BrowseSortBottomSheet
 import com.projects.moviemanager.features.watchlist.WatchlistScreen
 import com.projects.moviemanager.features.watchlist.ui.components.WatchlistSortBottomSheet
 
@@ -23,7 +23,7 @@ fun ModalComponents(
     if (showSortBottomSheet) {
         when (currentScreen) {
             BrowseScreen.route() -> {
-                SortBottomSheet(
+                BrowseSortBottomSheet(
                     mainViewModel = mainViewModel,
                     selectedMovieSortType = selectedMovieSortType,
                     selectedShowSortType = selectedShowSortType,

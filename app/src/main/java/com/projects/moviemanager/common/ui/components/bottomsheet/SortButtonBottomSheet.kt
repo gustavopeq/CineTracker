@@ -1,4 +1,4 @@
-package com.projects.moviemanager.common.ui.components.button
+package com.projects.moviemanager.common.ui.components.bottomsheet
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer

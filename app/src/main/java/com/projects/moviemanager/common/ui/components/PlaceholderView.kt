@@ -17,8 +17,8 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
-import com.projects.moviemanager.common.theme.placeholderGrey
-import com.projects.moviemanager.common.theme.placeholderGrey2
+import com.projects.moviemanager.common.ui.theme.placeholderGrey
+import com.projects.moviemanager.common.ui.theme.placeholderGrey2
 
 @Composable
 fun ComponentPlaceholder(

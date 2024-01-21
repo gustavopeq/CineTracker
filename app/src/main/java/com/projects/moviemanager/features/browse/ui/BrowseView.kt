@@ -41,11 +41,11 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.projects.moviemanager.R
 import com.projects.moviemanager.common.domain.MediaType
-import com.projects.moviemanager.common.theme.RoundCornerShapes
+import com.projects.moviemanager.common.ui.theme.RoundCornerShapes
 import com.projects.moviemanager.common.ui.MainViewModel
 import com.projects.moviemanager.common.ui.components.ComponentPlaceholder
 import com.projects.moviemanager.common.ui.components.ContentCard
-import com.projects.moviemanager.common.ui.components.SortTypeItem
+import com.projects.moviemanager.common.domain.SortTypeItem
 import com.projects.moviemanager.common.ui.util.UiConstants.BROWSE_CARD_PADDING_HORIZONTAL
 import com.projects.moviemanager.common.ui.util.UiConstants.BROWSE_CARD_PADDING_VERTICAL
 import com.projects.moviemanager.common.ui.util.UiConstants.BROWSE_MIN_CARD_WIDTH

@@ -29,8 +29,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.projects.moviemanager.R
 import com.projects.moviemanager.common.domain.MediaType
-import com.projects.moviemanager.common.theme.MainBarGreyColor
-import com.projects.moviemanager.common.theme.PrimaryYellowColor_90
+import com.projects.moviemanager.common.ui.theme.MainBarGreyColor
+import com.projects.moviemanager.common.ui.theme.PrimaryYellowColor_90
 import com.projects.moviemanager.common.ui.components.NetworkImage
 import com.projects.moviemanager.common.ui.components.RatingComponent
 import com.projects.moviemanager.common.ui.components.popup.GenericPopupMenu

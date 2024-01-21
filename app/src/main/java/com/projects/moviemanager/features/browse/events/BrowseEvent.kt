@@ -1,7 +1,7 @@
 package com.projects.moviemanager.features.browse.events
 
 import com.projects.moviemanager.common.domain.MediaType
-import com.projects.moviemanager.common.ui.components.SortTypeItem
+import com.projects.moviemanager.common.domain.SortTypeItem
 
 sealed class BrowseEvent {
     data class UpdateSortType(
