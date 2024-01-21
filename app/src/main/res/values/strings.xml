@@ -69,4 +69,6 @@
     <string name="remove_option_popup_menu">Remove from %s</string>
     <string name="add_option_popup_menu">Add to %s</string>
     <string name="watchlist_sort_button">%s only</string>
+    <string name="empty_list_header">Your list is Empty</string>
+    <string name="empty_list_message">Add to this list by searching for a movie or show.</string>
 </resources>

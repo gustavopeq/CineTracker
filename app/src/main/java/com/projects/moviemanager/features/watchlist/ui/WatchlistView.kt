@@ -1,13 +1,10 @@
 package com.projects.moviemanager.features.watchlist.ui
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.defaultMinSize
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -25,20 +22,20 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.projects.moviemanager.R
 import com.projects.moviemanager.common.domain.MediaType
 import com.projects.moviemanager.common.ui.MainViewModel
 import com.projects.moviemanager.common.ui.components.ComponentPlaceholder
 import com.projects.moviemanager.common.ui.components.tab.GenericTabRow
 import com.projects.moviemanager.common.ui.components.tab.setupTabs
-import com.projects.moviemanager.common.ui.theme.PrimaryYellowColor_90
-import com.projects.moviemanager.common.ui.util.UiConstants
 import com.projects.moviemanager.common.ui.util.UiConstants.CARD_ROUND_CORNER
 import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_PADDING
 import com.projects.moviemanager.common.ui.util.UiConstants.POSTER_ASPECT_RATIO_MULTIPLY
 import com.projects.moviemanager.common.ui.util.UiConstants.SMALL_MARGIN
-import com.projects.moviemanager.common.ui.util.UiConstants.SMALL_PADDING
 import com.projects.moviemanager.common.ui.util.UiConstants.WATCHLIST_IMAGE_WIDTH
 import com.projects.moviemanager.domain.models.content.DetailedMediaInfo
 import com.projects.moviemanager.domain.models.content.MovieDetailsInfo
@@ -107,17 +104,16 @@ private fun Watchlist(
                 when (tabList[selectedTabIndex.value].tabIndex) {
                     WatchlistTabItem.WatchlistTab.tabIndex -> {
                         WatchlistBody(
-                            watchlist = watchlist,
+                            contentList = watchlist,
                             sortType = sortType,
                             selectedList = selectedList,
                             goToDetails = goToDetails,
                             removeItem = removeItem
                         )
                     }
-
                     WatchlistTabItem.WatchedTab.tabIndex -> {
                         WatchlistBody(
-                            watchlist = watchedList,
+                            contentList = watchedList,
                             sortType = sortType,
                             selectedList = selectedList,
                             goToDetails = goToDetails,
@@ -135,16 +131,37 @@ private fun Watchlist(
 
 @Composable
 private fun WatchlistBody(
-    watchlist: List<DetailedMediaInfo>,
+    contentList: List<DetailedMediaInfo>,
     sortType: MediaType?,
     selectedList: String,
     goToDetails: (Int, MediaType) -> Unit,
     removeItem: (Int, MediaType) -> Unit
 ) {
-    val sortedItems = if (sortType != null) {
-        watchlist.filter { it.mediaType == sortType }
+    if (contentList.isNotEmpty()) {
+        WatchlistContentLazyList(
+            sortType = sortType,
+            contentList = contentList,
+            selectedList = selectedList,
+            goToDetails = goToDetails,
+            removeItem = removeItem
+        )
     } else {
-        watchlist
+        EmptyListMessage()
+    }
+}
+
+@Composable
+private fun WatchlistContentLazyList(
+    sortType: MediaType?,
+    contentList: List<DetailedMediaInfo>,
+    selectedList: String,
+    goToDetails: (Int, MediaType) -> Unit,
+    removeItem: (Int, MediaType) -> Unit
+) {
+    val sortedItems = if (sortType != null) {
+        contentList.filter { it.mediaType == sortType }
+    } else {
+        contentList
     }
     LazyColumn(
         contentPadding = PaddingValues(all = SMALL_MARGIN.dp)
@@ -181,7 +198,7 @@ private fun WatchlistBodyPlaceholder() {
     LazyColumn(
         contentPadding = PaddingValues(all = SMALL_MARGIN.dp)
     ) {
-        items(4) {
+        items(5) {
             // Card row
             Row {
                 // Image
@@ -230,5 +247,30 @@ private fun WatchlistBodyPlaceholder() {
             }
             Spacer(modifier = Modifier.height(DEFAULT_PADDING.dp))
         }
+    }
+}
+
+@Composable
+private fun EmptyListMessage() {
+    Column(
+        modifier = Modifier
+            .fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Spacer(modifier = Modifier.weight(0.3f))
+        Text(
+            text = stringResource(id = R.string.empty_list_header),
+            style = MaterialTheme.typography.titleLarge,
+            color = MaterialTheme.colorScheme.onPrimary,
+            textAlign = TextAlign.Center
+        )
+        Text(
+            text = stringResource(id = R.string.empty_list_message),
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onPrimary,
+            textAlign = TextAlign.Center
+        )
+        Spacer(modifier = Modifier.weight(0.7f))
     }
 }
