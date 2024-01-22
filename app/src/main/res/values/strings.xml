@@ -35,16 +35,19 @@
     <string name="december">December</string>
 
     <!-- Jetpack migration -->
+
+    <!-- Main Navigation -->
     <string name="main_nav_home">Home</string>
     <string name="main_nav_browse">Browse</string>
-    <string name="main_nav_watchlist">Watchlist</string>
+    <string name="main_nav_watchlist">My Lists</string>
     <string name="main_nav_search">Search</string>
 
     <string name="common_error">Sorry, something went wrong! Try again...</string>
+
+    <!-- Browse screen -->
     <string name="movies_tab">Movies</string>
     <string name="shows_tab">Shows</string>
     <string name="sort_by_header">Sort by</string>
-
     <string name="now_playing">Now Playing</string>
     <string name="upcoming_movies">Upcoming</string>
     <string name="popular_movies">Popular</string>
