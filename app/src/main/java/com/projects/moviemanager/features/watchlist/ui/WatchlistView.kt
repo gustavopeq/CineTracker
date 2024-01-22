@@ -183,34 +183,38 @@ private fun WatchlistContentLazyList(
     } else {
         contentList
     }
-    LazyColumn(
-        contentPadding = PaddingValues(all = SMALL_MARGIN.dp)
-    ) {
-        items(sortedItems) { mediaInfo ->
-            val rating = when (mediaInfo) {
-                is MovieDetailsInfo -> mediaInfo.voteAverage
-                is ShowDetailsInfo -> mediaInfo.voteAverage
-                else -> 0.0
-            }
-
-            WatchlistCard(
-                title = mediaInfo.title,
-                rating = rating ?: 0.0,
-                posterUrl = mediaInfo.poster_path,
-                mediaType = mediaInfo.mediaType,
-                selectedList = selectedList,
-                onCardClick = {
-                    goToDetails(mediaInfo.id, mediaInfo.mediaType)
-                },
-                onRemoveClick = {
-                    removeItem(mediaInfo.id, mediaInfo.mediaType)
-                },
-                onMoveItemToList = {
-                    moveItemToList(mediaInfo.id, mediaInfo.mediaType)
+    if (sortedItems.isNotEmpty()) {
+        LazyColumn(
+            contentPadding = PaddingValues(all = SMALL_MARGIN.dp)
+        ) {
+            items(sortedItems) { mediaInfo ->
+                val rating = when (mediaInfo) {
+                    is MovieDetailsInfo -> mediaInfo.voteAverage
+                    is ShowDetailsInfo -> mediaInfo.voteAverage
+                    else -> 0.0
                 }
-            )
-            Spacer(modifier = Modifier.height(DEFAULT_PADDING.dp))
+
+                WatchlistCard(
+                    title = mediaInfo.title,
+                    rating = rating ?: 0.0,
+                    posterUrl = mediaInfo.poster_path,
+                    mediaType = mediaInfo.mediaType,
+                    selectedList = selectedList,
+                    onCardClick = {
+                        goToDetails(mediaInfo.id, mediaInfo.mediaType)
+                    },
+                    onRemoveClick = {
+                        removeItem(mediaInfo.id, mediaInfo.mediaType)
+                    },
+                    onMoveItemToList = {
+                        moveItemToList(mediaInfo.id, mediaInfo.mediaType)
+                    }
+                )
+                Spacer(modifier = Modifier.height(DEFAULT_PADDING.dp))
+            }
         }
+    } else {
+        EmptyListMessage(mediaType = sortType)
     }
 }
 
@@ -274,7 +278,14 @@ private fun WatchlistBodyPlaceholder() {
 }
 
 @Composable
-private fun EmptyListMessage() {
+private fun EmptyListMessage(
+    mediaType: MediaType? = null
+) {
+    val messageText = when (mediaType) {
+        MediaType.MOVIE -> stringResource(id = R.string.empty_movie_list_message)
+        MediaType.SHOW -> stringResource(id = R.string.empty_show_list_message)
+        else -> stringResource(id = R.string.empty_list_message)
+    }
     Column(
         modifier = Modifier
             .fillMaxSize(),
@@ -289,7 +300,7 @@ private fun EmptyListMessage() {
             textAlign = TextAlign.Center
         )
         Text(
-            text = stringResource(id = R.string.empty_list_message),
+            text = messageText,
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onPrimary,
             textAlign = TextAlign.Center
