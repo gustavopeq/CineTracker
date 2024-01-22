@@ -29,17 +29,18 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.projects.moviemanager.R
 import com.projects.moviemanager.common.domain.MediaType
-import com.projects.moviemanager.common.ui.theme.MainBarGreyColor
-import com.projects.moviemanager.common.ui.theme.PrimaryYellowColor_90
 import com.projects.moviemanager.common.ui.components.NetworkImage
 import com.projects.moviemanager.common.ui.components.RatingComponent
 import com.projects.moviemanager.common.ui.components.popup.GenericPopupMenu
 import com.projects.moviemanager.common.ui.components.popup.PopupMenuItem
+import com.projects.moviemanager.common.ui.theme.MainBarGreyColor
+import com.projects.moviemanager.common.ui.theme.PrimaryYellowColor_90
 import com.projects.moviemanager.common.ui.util.UiConstants.BROWSE_CARD_DEFAULT_ELEVATION
 import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_PADDING
 import com.projects.moviemanager.common.ui.util.UiConstants.POSTER_ASPECT_RATIO_MULTIPLY
 import com.projects.moviemanager.common.ui.util.UiConstants.SMALL_PADDING
 import com.projects.moviemanager.common.ui.util.UiConstants.WATCHLIST_IMAGE_WIDTH
+import com.projects.moviemanager.features.watchlist.model.DefaultLists.Companion.getOtherList
 import com.projects.moviemanager.util.Constants.BASE_300_IMAGE_URL
 import com.projects.moviemanager.util.capitalized
 
@@ -51,7 +52,8 @@ fun WatchlistCard(
     mediaType: MediaType,
     selectedList: String,
     onCardClick: () -> Unit,
-    onRemoveClick: () -> Unit
+    onRemoveClick: () -> Unit,
+    onMoveItemToList: () -> Unit
 ) {
     val fullImageUrl = BASE_300_IMAGE_URL + posterUrl
     val imageWidth = WATCHLIST_IMAGE_WIDTH.dp
@@ -128,9 +130,8 @@ fun WatchlistCard(
                     onDismissRequest = {
                         showPopupMenu = false
                     },
-                    onRemoveClick = {
-                        onRemoveClick()
-                    }
+                    onRemoveClick = onRemoveClick,
+                    onMoveItemToList = onMoveItemToList
                 )
             }
         }
@@ -142,7 +143,8 @@ fun MoreOptionsPopUpMenu(
     showMenu: Boolean,
     selectedList: String,
     onDismissRequest: () -> Unit,
-    onRemoveClick: () -> Unit
+    onRemoveClick: () -> Unit,
+    onMoveItemToList: () -> Unit
 ) {
     val menuItems = listOf(
         PopupMenuItem(
@@ -151,6 +153,13 @@ fun MoreOptionsPopUpMenu(
                 selectedList.capitalized()
             ),
             onClick = onRemoveClick
+        ),
+        PopupMenuItem(
+            title = stringResource(
+                id = R.string.move_to_list_option_popup_menu,
+                getOtherList(selectedList).listId.capitalized()
+            ),
+            onClick = onMoveItemToList
         )
     )
 

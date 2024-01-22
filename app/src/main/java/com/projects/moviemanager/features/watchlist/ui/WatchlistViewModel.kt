@@ -10,6 +10,7 @@ import com.projects.moviemanager.features.watchlist.domain.WatchlistInteractor
 import com.projects.moviemanager.features.watchlist.events.WatchlistEvent
 import com.projects.moviemanager.features.watchlist.model.DataLoadState
 import com.projects.moviemanager.features.watchlist.model.DefaultLists
+import com.projects.moviemanager.features.watchlist.model.DefaultLists.Companion.getOtherList
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
@@ -39,19 +40,24 @@ class WatchlistViewModel @Inject constructor(
         event: WatchlistEvent
     ) {
         when (event) {
-            is WatchlistEvent.LoadWatchlistData -> loadWatchlistData()
+            is WatchlistEvent.LoadWatchlistData -> loadWatchlistData(showLoadingState = true)
             is WatchlistEvent.RemoveItem -> removeListItem(event.contentId, event.mediaType)
             is WatchlistEvent.SelectList -> selectedList.value = event.list
             is WatchlistEvent.UpdateSortType -> sortType.value = event.mediaType
+            is WatchlistEvent.UpdateItemListId -> {
+                updateItemListId(event.contentId, event.mediaType)
+            }
         }
     }
 
-    private fun loadWatchlistData() {
+    private fun loadWatchlistData(
+        showLoadingState: Boolean
+    ) {
         viewModelScope.launch(Dispatchers.IO) {
             val watchlistDatabaseItems = watchlistInteractor.getAllItems(
                 listId = DefaultLists.WATCHLIST.listId
             )
-            if (watchlistDatabaseItems.isNotEmpty()) {
+            if (showLoadingState && watchlistDatabaseItems.isNotEmpty()) {
                 _loadState.value = DataLoadState.Loading
             }
 
@@ -89,20 +95,39 @@ class WatchlistViewModel @Inject constructor(
                 mediaType = mediaType,
                 listId = selectedList.value
             )
-            when (selectedList.value) {
-                DefaultLists.WATCHLIST.listId -> {
-                    val updatedList = _watchlist.value.filterNot {
-                        it.id == contentId && it.mediaType == mediaType
-                    }
-                    _watchlist.value = updatedList
-                }
-                DefaultLists.WATCHED.listId -> {
-                    val updatedList = _watchedList.value.filterNot {
-                        it.id == contentId && it.mediaType == mediaType
-                    }
-                    _watchedList.value = updatedList
-                }
-            }
+            removeContentFromUiList(contentId, mediaType)
         }
+    }
+
+    private fun updateItemListId(
+        contentId: Int,
+        mediaType: MediaType
+    ) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val otherListId = getOtherList(selectedList.value).listId
+            watchlistInteractor.moveItemToList(
+                contentId = contentId,
+                mediaType = mediaType,
+                currentListId = selectedList.value,
+                newListId = otherListId
+            )
+            loadWatchlistData(showLoadingState = false)
+        }
+    }
+
+    private fun removeContentFromUiList(
+        contentId: Int,
+        mediaType: MediaType
+    ) {
+        val currentList = when (selectedList.value) {
+            DefaultLists.WATCHLIST.listId -> _watchlist
+            DefaultLists.WATCHED.listId -> _watchedList
+            else -> return
+        }
+
+        val updatedList = currentList.value.filterNot {
+            it.id == contentId && it.mediaType == mediaType
+        }
+        currentList.value = updatedList
     }
 }

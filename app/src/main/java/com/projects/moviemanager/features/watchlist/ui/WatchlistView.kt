@@ -88,6 +88,12 @@ private fun Watchlist(
         )
     }
 
+    val moveItemToList: (Int, MediaType) -> Unit = { contentId, mediaType ->
+        viewModel.onEvent(
+            WatchlistEvent.UpdateItemListId(contentId, mediaType)
+        )
+    }
+
     LaunchedEffect(sortType) {
         viewModel.onEvent(
             WatchlistEvent.UpdateSortType(sortType)
@@ -117,7 +123,8 @@ private fun Watchlist(
                             sortType = sortType,
                             selectedList = selectedList,
                             goToDetails = goToDetails,
-                            removeItem = removeItem
+                            removeItem = removeItem,
+                            moveItemToList = moveItemToList
                         )
                     }
                     WatchlistTabItem.WatchedTab.tabIndex -> {
@@ -126,7 +133,8 @@ private fun Watchlist(
                             sortType = sortType,
                             selectedList = selectedList,
                             goToDetails = goToDetails,
-                            removeItem = removeItem
+                            removeItem = removeItem,
+                            moveItemToList = moveItemToList
                         )
                     }
                 }
@@ -144,7 +152,8 @@ private fun WatchlistBody(
     sortType: MediaType?,
     selectedList: String,
     goToDetails: (Int, MediaType) -> Unit,
-    removeItem: (Int, MediaType) -> Unit
+    removeItem: (Int, MediaType) -> Unit,
+    moveItemToList: (Int, MediaType) -> Unit
 ) {
     if (contentList.isNotEmpty()) {
         WatchlistContentLazyList(
@@ -152,7 +161,8 @@ private fun WatchlistBody(
             contentList = contentList,
             selectedList = selectedList,
             goToDetails = goToDetails,
-            removeItem = removeItem
+            removeItem = removeItem,
+            moveItemToList = moveItemToList
         )
     } else {
         EmptyListMessage()
@@ -165,7 +175,8 @@ private fun WatchlistContentLazyList(
     contentList: List<DetailedMediaInfo>,
     selectedList: String,
     goToDetails: (Int, MediaType) -> Unit,
-    removeItem: (Int, MediaType) -> Unit
+    removeItem: (Int, MediaType) -> Unit,
+    moveItemToList: (Int, MediaType) -> Unit
 ) {
     val sortedItems = if (sortType != null) {
         contentList.filter { it.mediaType == sortType }
@@ -193,6 +204,9 @@ private fun WatchlistContentLazyList(
                 },
                 onRemoveClick = {
                     removeItem(mediaInfo.id, mediaInfo.mediaType)
+                },
+                onMoveItemToList = {
+                    moveItemToList(mediaInfo.id, mediaInfo.mediaType)
                 }
             )
             Spacer(modifier = Modifier.height(DEFAULT_PADDING.dp))

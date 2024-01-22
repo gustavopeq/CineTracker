@@ -11,4 +11,11 @@ interface DatabaseRepository {
     suspend fun getAllItemsByListId(listId: String): List<ContentEntity>
 
     suspend fun searchItems(contentId: Int, mediaType: MediaType): List<ContentEntity>
+
+    suspend fun moveItemToList(
+        contentId: Int,
+        mediaType: MediaType,
+        currentListId: String,
+        newListId: String
+    )
 }

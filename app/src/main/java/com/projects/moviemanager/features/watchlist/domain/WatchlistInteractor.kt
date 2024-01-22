@@ -6,7 +6,6 @@ import com.projects.moviemanager.database.repository.DatabaseRepository
 import com.projects.moviemanager.domain.models.content.DetailedMediaInfo
 import com.projects.moviemanager.domain.models.content.toMovieDetailsInfo
 import com.projects.moviemanager.domain.models.content.toShowDetailsInfo
-import com.projects.moviemanager.features.watchlist.model.DefaultLists
 import com.projects.moviemanager.network.repository.movie.MovieRepository
 import com.projects.moviemanager.network.repository.show.ShowRepository
 import com.projects.moviemanager.network.models.content.movie.MovieApiResponse
@@ -62,6 +61,19 @@ class WatchlistInteractor @Inject constructor(
             contentId = contentId,
             mediaType = mediaType,
             listId = listId
+        )
+    }
+    suspend fun moveItemToList(
+        contentId: Int,
+        mediaType: MediaType,
+        currentListId: String,
+        newListId: String
+    ) {
+        databaseRepository.moveItemToList(
+            contentId = contentId,
+            mediaType = mediaType,
+            currentListId = currentListId,
+            newListId = newListId
         )
     }
 }

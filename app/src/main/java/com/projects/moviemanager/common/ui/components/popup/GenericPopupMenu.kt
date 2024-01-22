@@ -25,7 +25,7 @@ fun GenericPopupMenu(
                     Text(
                         text = menuItem.title,
                         color = MaterialTheme.colorScheme.onPrimary,
-                        style = MaterialTheme.typography.labelSmall
+                        style = MaterialTheme.typography.bodySmall
                     )
                 },
                 onClick = {

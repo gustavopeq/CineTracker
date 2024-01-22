@@ -47,4 +47,27 @@ class DatabaseRepositoryImpl(
             mediaType = mediaType.name
         )
     }
+
+    override suspend fun moveItemToList(
+        contentId: Int,
+        mediaType: MediaType,
+        currentListId: String,
+        newListId: String
+    ) {
+        deleteItem(
+            contentId = contentId,
+            mediaType = mediaType,
+            listId = newListId
+        )
+        insertItem(
+            contentId = contentId,
+            mediaType = mediaType,
+            listId = newListId
+        )
+        deleteItem(
+            contentId = contentId,
+            mediaType = mediaType,
+            listId = currentListId
+        )
+    }
 }
