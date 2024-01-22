@@ -1,6 +1,7 @@
 package com.projects.moviemanager.features.details.domain
 
 import com.projects.moviemanager.common.domain.MediaType
+import com.projects.moviemanager.database.repository.DatabaseRepository
 import com.projects.moviemanager.domain.models.content.ContentCast
 import com.projects.moviemanager.domain.models.content.DetailedMediaInfo
 import com.projects.moviemanager.domain.models.content.MediaContent
@@ -14,21 +15,23 @@ import com.projects.moviemanager.domain.models.content.toShowDetailsInfo
 import com.projects.moviemanager.domain.models.content.toVideos
 import com.projects.moviemanager.domain.models.person.PersonImage
 import com.projects.moviemanager.domain.models.person.toPersonImage
+import com.projects.moviemanager.features.watchlist.model.DefaultLists
 import com.projects.moviemanager.network.repository.movie.MovieRepository
 import com.projects.moviemanager.network.repository.person.PersonRepository
 import com.projects.moviemanager.network.repository.show.ShowRepository
-import com.projects.moviemanager.network.response.content.movie.MovieApiResponse
-import com.projects.moviemanager.network.response.content.show.ShowApiResponse
-import com.projects.moviemanager.network.response.person.PersonDetailsResponse
+import com.projects.moviemanager.network.models.content.movie.MovieApiResponse
+import com.projects.moviemanager.network.models.content.show.ShowApiResponse
+import com.projects.moviemanager.network.models.person.PersonDetailsResponse
 import com.projects.moviemanager.network.util.Left
 import com.projects.moviemanager.network.util.Right
-import timber.log.Timber
 import javax.inject.Inject
+import timber.log.Timber
 
 class DetailsInteractor @Inject constructor(
     private val movieRepository: MovieRepository,
     private val showRepository: ShowRepository,
-    private val personRepository: PersonRepository
+    private val personRepository: PersonRepository,
+    private val databaseRepository: DatabaseRepository
 ) {
     suspend fun getContentDetailsById(
         contentId: Int,
@@ -181,5 +184,49 @@ class DetailsInteractor @Inject constructor(
             }
         }
         return imageList
+    }
+
+    suspend fun verifyContentInLists(
+        contentId: Int,
+        mediaType: MediaType
+    ): Map<String, Boolean> {
+        val result = databaseRepository.searchItems(
+            contentId = contentId,
+            mediaType = mediaType
+        )
+        val contentInListMap = mutableMapOf(
+            DefaultLists.WATCHLIST.listId to false,
+            DefaultLists.WATCHED.listId to false
+        )
+
+        result.forEach { content ->
+            contentInListMap[content.listId] = true
+        }
+
+        return contentInListMap
+    }
+
+    suspend fun addToWatchlist(
+        contentId: Int,
+        mediaType: MediaType,
+        listId: String
+    ) {
+        databaseRepository.insertItem(
+            contentId = contentId,
+            mediaType = mediaType,
+            listId = listId
+        )
+    }
+
+    suspend fun removeFromWatchlist(
+        contentId: Int,
+        mediaType: MediaType,
+        listId: String
+    ) {
+        databaseRepository.deleteItem(
+            contentId = contentId,
+            mediaType = mediaType,
+            listId = listId
+        )
     }
 }

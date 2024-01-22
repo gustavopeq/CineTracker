@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.projects.moviemanager.common.domain.MediaType
-import com.projects.moviemanager.common.ui.components.SortTypeItem
+import com.projects.moviemanager.common.domain.SortTypeItem
 import com.projects.moviemanager.domain.models.content.DetailedMediaInfo
 import com.projects.moviemanager.domain.models.util.ContentListType
 import com.projects.moviemanager.features.browse.domain.BrowseInteractor

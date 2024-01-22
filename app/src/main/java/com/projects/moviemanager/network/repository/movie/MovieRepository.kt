@@ -2,10 +2,10 @@ package com.projects.moviemanager.network.repository.movie
 
 import com.projects.moviemanager.domain.models.util.ContentListType
 import com.projects.moviemanager.network.models.ApiError
-import com.projects.moviemanager.network.response.content.common.ContentCreditsResponse
-import com.projects.moviemanager.network.response.content.common.ContentListPageResponse
-import com.projects.moviemanager.network.response.content.movie.MovieApiResponse
-import com.projects.moviemanager.network.response.content.common.VideosByIdResponse
+import com.projects.moviemanager.network.models.content.common.ContentCreditsResponse
+import com.projects.moviemanager.network.models.content.common.ContentListPageResponse
+import com.projects.moviemanager.network.models.content.movie.MovieApiResponse
+import com.projects.moviemanager.network.models.content.common.VideosByIdResponse
 import com.projects.moviemanager.network.util.Either
 import kotlinx.coroutines.flow.Flow
 

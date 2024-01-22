@@ -1,22 +1,14 @@
 package com.projects.moviemanager.navigation.components
 
-import androidx.compose.foundation.layout.size
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
-import com.projects.moviemanager.R
-import com.projects.moviemanager.common.ui.util.UiConstants.BROWSE_SORT_ICON_SIZE
+import com.projects.moviemanager.common.ui.MainViewModel
+import com.projects.moviemanager.common.ui.components.button.SortIconButton
 import com.projects.moviemanager.features.browse.BrowseScreen
 import com.projects.moviemanager.features.home.HomeScreen
 import com.projects.moviemanager.features.home.ui.components.HomeLogoAnimation
@@ -27,6 +19,7 @@ import com.projects.moviemanager.features.watchlist.WatchlistScreen
 @Composable
 fun TopNavBar(
     currentScreen: String?,
+    mainViewModel: MainViewModel,
     displaySortScreen: (Boolean) -> Unit
 ) {
     val title = currentScreen.getScreenNameRes()?.let { stringResource(id = it) }
@@ -44,17 +37,12 @@ fun TopNavBar(
             )
         },
         actions = {
-            if (currentScreen == BrowseScreen.route()) {
-                IconButton(
-                    onClick = { displaySortScreen(true) }
-                ) {
-                    Icon(
-                        modifier = Modifier.size(BROWSE_SORT_ICON_SIZE.dp),
-                        painter = painterResource(id = R.drawable.ic_sort),
-                        tint = MaterialTheme.colorScheme.onPrimary,
-                        contentDescription = null
-                    )
-                }
+            if (currentScreen == BrowseScreen.route() || currentScreen == WatchlistScreen.route()) {
+                SortIconButton(
+                    mainViewModel = mainViewModel,
+                    currentScreen = currentScreen,
+                    displaySortScreen = displaySortScreen
+                )
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(

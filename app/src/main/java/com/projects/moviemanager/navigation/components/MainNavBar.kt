@@ -19,11 +19,13 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.projects.moviemanager.common.ui.util.UiConstants.BUTTON_NAVIGATION_BAR_HEIGHT
-import com.projects.moviemanager.common.theme.MainBarGreyColor
+import com.projects.moviemanager.common.ui.theme.MainBarGreyColor
+import com.projects.moviemanager.common.ui.MainViewModel
 
 @Composable
 fun MainNavBar(
     navController: NavController,
+    mainViewModel: MainViewModel,
     navBarItems: List<MainNavBarItem>
 ) {
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
@@ -39,6 +41,7 @@ fun MainNavBar(
             NavigationBarItem(
                 selected = currentScreen == item.screen.route(),
                 onClick = {
+                    mainViewModel.updateCurrentScreen(item.screen.route())
                     navController.navigate(item.screen.route()) {
                         launchSingleTop = true
                     }

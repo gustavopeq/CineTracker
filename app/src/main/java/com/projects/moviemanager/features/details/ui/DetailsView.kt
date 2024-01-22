@@ -1,7 +1,6 @@
 package com.projects.moviemanager.features.details.ui
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
@@ -10,8 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -22,30 +19,25 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.projects.moviemanager.R
 import com.projects.moviemanager.common.domain.MediaType
 import com.projects.moviemanager.common.ui.components.DimensionSubcomposeLayout
 import com.projects.moviemanager.common.ui.components.NetworkImage
-import com.projects.moviemanager.common.ui.components.classicVerticalGradientBrush
 import com.projects.moviemanager.common.ui.util.UiConstants.BACKGROUND_INDEX
 import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_MARGIN
 import com.projects.moviemanager.common.ui.util.UiConstants.DETAILS_TITLE_IMAGE_OFFSET_PERCENT
-import com.projects.moviemanager.common.ui.util.UiConstants.FOREGROUND_INDEX
 import com.projects.moviemanager.common.ui.util.UiConstants.POSTER_ASPECT_RATIO
-import com.projects.moviemanager.common.ui.util.UiConstants.RETURN_TOP_BAR_HEIGHT
 import com.projects.moviemanager.common.ui.util.UiConstants.SECTION_PADDING
 import com.projects.moviemanager.domain.models.content.DetailedMediaInfo
 import com.projects.moviemanager.features.details.ui.components.CastCarousel
 import com.projects.moviemanager.features.details.ui.components.DetailsDescriptionBody
 import com.projects.moviemanager.features.details.ui.components.DetailsDescriptionHeader
-import com.projects.moviemanager.features.details.ui.components.MoreOptionsTab
-import com.projects.moviemanager.features.details.ui.components.PersonMoreOptionsTab
+import com.projects.moviemanager.features.details.ui.components.DetailsTopBar
+import com.projects.moviemanager.features.details.ui.components.moreoptions.MoreOptionsTab
+import com.projects.moviemanager.features.details.ui.components.moreoptions.PersonMoreOptionsTab
 import com.projects.moviemanager.features.details.util.mapValueToRange
 import com.projects.moviemanager.util.Constants.BASE_ORIGINAL_IMAGE_URL
 import timber.log.Timber
@@ -78,6 +70,7 @@ private fun Details(
     val contentDetails by viewModel.contentDetails.collectAsState()
     var currentHeaderPosY by rememberSaveable { mutableFloatStateOf(0f) }
     var initialHeaderPosY by rememberSaveable { mutableFloatStateOf(0f) }
+    val contentInListStatus by viewModel.contentInListStatus.collectAsState()
 
     val updateHeaderPosition: (Float) -> Unit = {
         if (it > initialHeaderPosY) {
@@ -88,6 +81,16 @@ private fun Details(
 
     val contentPosterUrl = BASE_ORIGINAL_IMAGE_URL + contentDetails?.poster_path
 
+    val onToggleWatchlist: (String) -> Unit = { listId ->
+        contentDetails?.let { mediaInfo ->
+            viewModel.toggleContentFromList(
+                contentId = mediaInfo.id,
+                mediaType = mediaInfo.mediaType,
+                listId = listId
+            )
+        }
+    }
+
     LaunchedEffect(Unit) {
         if (contentId != null) {
             viewModel.fetchDetails(contentId, mediaType)
@@ -96,7 +99,12 @@ private fun Details(
         }
     }
 
-    ReturnTopBar(onBackPress)
+    DetailsTopBar(
+        onBackBtnPress = onBackPress,
+        showWatchlistButton = contentDetails?.mediaType != MediaType.PERSON,
+        contentInWatchlistStatus = contentInListStatus,
+        toggleWatchlist = onToggleWatchlist
+    )
 
     DimensionSubcomposeLayout(
         mainContent = { BackgroundPoster(contentPosterUrl, currentHeaderPosY, initialHeaderPosY) },
@@ -113,26 +121,6 @@ private fun Details(
             }
         }
     )
-}
-
-@Composable
-private fun ReturnTopBar(onBackPress: () -> Unit) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(RETURN_TOP_BAR_HEIGHT.dp)
-            .classicVerticalGradientBrush()
-            .zIndex(FOREGROUND_INDEX)
-    ) {
-        IconButton(
-            onClick = { onBackPress() }
-        ) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_back_arrow),
-                contentDescription = stringResource(id = R.string.back_arrow_description)
-            )
-        }
-    }
 }
 
 @Composable
@@ -177,7 +165,7 @@ private fun DetailsComponent(
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(DEFAULT_MARGIN.dp)
+                        .padding(horizontal = DEFAULT_MARGIN.dp, vertical = 0.dp)
                 ) {
                     DetailsDescriptionBody(
                         contentDetails = mediaInfo

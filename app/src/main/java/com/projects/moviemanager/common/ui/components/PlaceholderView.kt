@@ -17,17 +17,15 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
-import com.projects.moviemanager.common.theme.placeholderGrey
-import com.projects.moviemanager.common.theme.placeholderGrey2
+import com.projects.moviemanager.common.ui.theme.placeholderGrey
+import com.projects.moviemanager.common.ui.theme.placeholderGrey2
 
 @Composable
 fun ComponentPlaceholder(
-    widthDp: Dp,
-    heightDp: Dp,
     modifier: Modifier = Modifier,
     initialValue: Float = -1000F,
     targetValue: Float = 2000F,
-    durationMillis: Int = 2000,
+    durationMillis: Int = 3000,
     shimmerColorShades: List<Color> = listOf(
         placeholderGrey,
         placeholderGrey,
@@ -58,8 +56,6 @@ fun ComponentPlaceholder(
 
     Spacer(
         modifier = modifier
-            .width(widthDp)
-            .height(heightDp)
             .background(brush)
     )
 }

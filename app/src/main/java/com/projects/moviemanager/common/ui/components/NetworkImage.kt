@@ -4,7 +4,9 @@ import android.graphics.drawable.Drawable
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -81,9 +83,7 @@ fun NetworkImage(
         }
         if (!loadingSuccess) {
             ComponentPlaceholder(
-                widthDp = widthDp,
-                heightDp = heightDp,
-                modifier = modifier
+                modifier = modifier.width(widthDp).height(heightDp)
             )
         }
     }
