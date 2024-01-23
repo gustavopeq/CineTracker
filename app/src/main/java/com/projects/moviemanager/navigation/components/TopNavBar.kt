@@ -23,8 +23,9 @@ fun TopNavBar(
     displaySortScreen: (Boolean) -> Unit
 ) {
     val title = currentScreen.getScreenNameRes()?.let { stringResource(id = it) }
+    val showTopBar = screensWithTopBar.contains(currentScreen)
 
-    if (screensWithTopBar.contains(currentScreen)) {
+    if (showTopBar) {
         TopAppBar(
             navigationIcon = {
                 if (currentScreen == HomeScreen.route()) {

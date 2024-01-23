@@ -1,8 +1,12 @@
 package com.projects.moviemanager.navigation
 
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -18,6 +22,7 @@ import com.projects.moviemanager.navigation.screens.DetailsScreenUI
 import com.projects.moviemanager.navigation.screens.HomeScreenUI
 import com.projects.moviemanager.navigation.screens.SearchScreenUI
 import com.projects.moviemanager.navigation.screens.WatchlistScreenUI
+import timber.log.Timber
 
 private val mainNavDestinations: Map<Screen, ScreenUI> = mapOf(
     HomeScreen to HomeScreenUI(),
@@ -34,8 +39,29 @@ fun MainNavGraph(
     NavHost(
         navController = navController,
         startDestination = HomeScreen.route(),
-        enterTransition = { fadeIn(animationSpec = tween(0)) },
-        exitTransition = { fadeOut(animationSpec = tween(0)) }
+        enterTransition = {
+            if (targetState.destination.route == SearchScreen.route()) {
+                slideInVertically(
+                    initialOffsetY = { -it }, // Start from above the screen
+                    animationSpec = tween(300)
+                ) + fadeIn(animationSpec = tween(300))
+            } else {
+                if (initialState.destination.route == SearchScreen.route()) {
+                    fadeIn(animationSpec = tween(300))
+                } else {
+                    EnterTransition.None
+                }
+            }
+        },
+        exitTransition = {
+            if (initialState.destination.route == SearchScreen.route()) {
+                slideOutVertically( // Start from above the screen
+                    animationSpec = tween(300)
+                )
+            } else {
+                ExitTransition.None
+            }
+        }
     ) {
         mainNavDestinations.forEach { (screen, screenUI) ->
             composable(screen.route(), screen.arguments) {
