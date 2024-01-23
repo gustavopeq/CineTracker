@@ -77,4 +77,7 @@
     <string name="empty_list_message">Add to this list by searching for a movie or show.</string>
     <string name="empty_movie_list_message">Add to this list by searching for movie.</string>
     <string name="empty_show_list_message">Add to this list by searching for a show.</string>
+
+    <!-- Watchlist screen -->
+    <string name="search_bar_placeholder">Search movies, shows or people...</string>
 </resources>

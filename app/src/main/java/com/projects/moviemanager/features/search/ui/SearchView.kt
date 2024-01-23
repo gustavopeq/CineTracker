@@ -1,21 +1,21 @@
 package com.projects.moviemanager.features.search.ui
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.projects.moviemanager.features.search.ui.components.SearchBar
 
 @Composable
 fun Search() {
-    Box(modifier = Modifier.fillMaxSize()) {
-        Text(
-            text = "Search Screen",
-            modifier = Modifier.align(Alignment.Center),
-            style = TextStyle(color = Color.Red)
-        )
-    }
+    Search(
+        viewModel = hiltViewModel()
+    )
+}
+
+@Composable
+private fun Search(
+    viewModel: SearchViewModel
+) {
+    SearchBar(
+        viewModel = viewModel
+    )
 }

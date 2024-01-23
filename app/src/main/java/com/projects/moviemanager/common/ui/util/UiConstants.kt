@@ -39,4 +39,6 @@ object UiConstants {
 
     // Watchlist
     const val WATCHLIST_IMAGE_WIDTH = 100
+
+    // Search
 }
