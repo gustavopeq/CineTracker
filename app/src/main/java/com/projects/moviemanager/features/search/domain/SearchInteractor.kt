@@ -1,62 +1,29 @@
 package com.projects.moviemanager.features.search.domain
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.projects.moviemanager.common.domain.MediaType
 import com.projects.moviemanager.domain.models.content.GenericSearchContent
-import com.projects.moviemanager.domain.models.content.toGenericSearchContent
+import com.projects.moviemanager.features.search.ui.paging.SearchPagingSource
 import com.projects.moviemanager.network.repository.search.SearchRepository
-import com.projects.moviemanager.network.util.Left
-import com.projects.moviemanager.network.util.Right
+import com.projects.moviemanager.util.Constants
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
-import timber.log.Timber
 
 class SearchInteractor @Inject constructor(
     private val searchRepository: SearchRepository
 ) {
-    suspend fun onSearchQuery(
+    fun onSearchQuery(
         query: String,
-        page: Int,
         mediaType: MediaType?
-    ): List<GenericSearchContent> {
-        val result = when (mediaType) {
-            MediaType.MOVIE -> {
-                searchRepository.onSearchMovieByQuery(
-                    query = query,
-                    page = page
-                )
-            }
-            MediaType.SHOW -> {
-                searchRepository.onSearchShowByQuery(
-                    query = query,
-                    page = page
-                )
-            }
-            MediaType.PERSON -> {
-                searchRepository.onSearchPersonByQuery(
-                    query = query,
-                    page = page
-                )
-            }
-            else -> {
-                searchRepository.onSearchMultiByQuery(
-                    query = query,
-                    page = page
-                )
-            }
-        }
-
-        var responseList: List<GenericSearchContent> = emptyList()
-        result.collect { response ->
-            when (response) {
-                is Right -> {
-                    Timber.e("onSearchQuery failed with error: ${response.error}")
-                }
-                is Left -> {
-                    responseList = response.value.results.mapNotNull {
-                        it.toGenericSearchContent()
-                    }
-                }
-            }
-        }
-        return responseList
+    ): Flow<PagingData<GenericSearchContent>> {
+        return Pager(PagingConfig(pageSize = Constants.PAGE_SIZE)) {
+            SearchPagingSource(
+                searchRepository,
+                query,
+                mediaType
+            )
+        }.flow
     }
 }

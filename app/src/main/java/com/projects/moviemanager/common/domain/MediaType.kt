@@ -1,5 +1,7 @@
 package com.projects.moviemanager.common.domain
 
+import timber.log.Timber
+
 enum class MediaType {
     MOVIE,
     SHOW,
@@ -8,6 +10,7 @@ enum class MediaType {
 
     companion object {
         fun getType(typeName: String?): MediaType {
+            Timber.tag("print").d("gettingType: $typeName")
             return when (typeName?.lowercase()) {
                 "movie" -> MOVIE
                 "show", "tv" -> SHOW

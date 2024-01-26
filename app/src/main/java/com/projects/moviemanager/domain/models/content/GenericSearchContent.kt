@@ -23,7 +23,7 @@ fun BaseContentResponse.toGenericSearchContent(): GenericSearchContent? {
         else -> { MediaType.UNKNOWN }
     }
 
-    if (poster_path.isNullOrEmpty() || mediaType == MediaType.UNKNOWN) return null
+    if (mediaType == MediaType.UNKNOWN || poster_path.isNullOrEmpty()) return null
 
     return GenericSearchContent(
         id = this.id,
