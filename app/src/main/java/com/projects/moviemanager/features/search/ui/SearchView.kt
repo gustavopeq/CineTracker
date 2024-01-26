@@ -1,5 +1,6 @@
 package com.projects.moviemanager.features.search.ui
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,15 +32,19 @@ import com.projects.moviemanager.features.search.ui.components.SearchBar
 import com.projects.moviemanager.util.Constants.BASE_300_IMAGE_URL
 
 @Composable
-fun Search() {
+fun Search(
+    goToDetails: (Int, MediaType) -> Unit
+) {
     Search(
-        viewModel = hiltViewModel()
+        viewModel = hiltViewModel(),
+        goToDetails = goToDetails
     )
 }
 
 @Composable
 private fun Search(
-    viewModel: SearchViewModel
+    viewModel: SearchViewModel,
+    goToDetails: (Int, MediaType) -> Unit
 ) {
     val searchResults = viewModel.searchResult.collectAsLazyPagingItems()
     SetStatusBarColor()
@@ -97,6 +102,11 @@ private fun Search(
                                 contentAlignment = Alignment.Center
                             ) {
                                 NetworkImage(
+                                    modifier = Modifier.clickable(
+                                        onClick = {
+                                            goToDetails(item.id, item.mediaType)
+                                        }
+                                    ),
                                     imageUrl = fullImageUrl,
                                     widthDp = imageWidth,
                                     heightDp = imageWidth * POSTER_ASPECT_RATIO_MULTIPLY
