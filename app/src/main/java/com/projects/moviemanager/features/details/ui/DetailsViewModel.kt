@@ -79,6 +79,7 @@ class DetailsViewModel @Inject constructor(
                     _personCredits.value = detailsInteractor.getPersonCreditsById(contentId)
                     _personImages.value = detailsInteractor.getPersonImages(contentId)
                 }
+                else -> {}
             }
         }
     }

@@ -33,7 +33,7 @@ class MainViewModel @Inject constructor() : ViewModel() {
         when (_currentMediaTypeSelected.value) {
             MediaType.MOVIE -> _movieSortType.value = sortTypeItem
             MediaType.SHOW -> _showSortType.value = sortTypeItem
-            MediaType.PERSON -> {}
+            else -> {}
         }
     }
 

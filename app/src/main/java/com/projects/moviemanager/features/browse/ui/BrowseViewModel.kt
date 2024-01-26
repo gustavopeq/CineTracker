@@ -51,7 +51,7 @@ class BrowseViewModel @Inject constructor(
         val currentSortType = when (mediaType) {
             MediaType.MOVIE -> movieSortTypeSelected
             MediaType.SHOW -> showSortTypeSelected
-            MediaType.PERSON -> return
+            else -> return
         }
 
         if (sortTypeItem.listType != currentSortType) {
@@ -72,7 +72,7 @@ class BrowseViewModel @Inject constructor(
                                 showSortTypeSelected = sortTypeItem.listType
                                 _showPager.value = it
                             }
-                            MediaType.PERSON -> {}
+                            else -> {}
                         }
                     }
             }
