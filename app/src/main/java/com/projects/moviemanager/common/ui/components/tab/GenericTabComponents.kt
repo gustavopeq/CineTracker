@@ -15,6 +15,8 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRowDefaults
+import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
@@ -64,9 +66,9 @@ fun GenericTabRow(
         modifier = Modifier.fillMaxWidth(),
         selectedTabIndex = selectedTabIndex,
         indicator = { tabPositions ->
-            GenericTabIndicator(
-                width = tabPositions[selectedTabIndex].width,
-                left = tabPositions[selectedTabIndex].left
+            TabRowDefaults.Indicator(
+                Modifier.tabIndicatorOffset(tabPositions[selectedTabIndex]),
+                color = MaterialTheme.colorScheme.secondary
             )
         },
         divider = { },
@@ -119,24 +121,3 @@ fun GenericTab(
     }
 }
 
-@Composable
-fun GenericTabIndicator(
-    width: Dp,
-    left: Dp
-) {
-    val animateIndicatorOffset by animateIntOffsetAsState(
-        targetValue = IntOffset(x = left.value.toInt(), 0),
-        animationSpec = tween(100),
-        label = "indicatorAnimation"
-    )
-
-    Box(
-        modifier = Modifier
-            .wrapContentSize(Alignment.BottomStart)
-            .offset(x = animateIndicatorOffset.x.dp)
-            .width(width)
-            .height(2.dp)
-            .background(color = MaterialTheme.colorScheme.secondary)
-            .zIndex(UiConstants.FOREGROUND_INDEX)
-    )
-}

@@ -10,9 +10,12 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -29,9 +32,17 @@ fun SearchBar(
     viewModel: SearchViewModel
 ) {
     val searchBarValue by viewModel.searchQuery
+    val textFieldFocus = remember { FocusRequester() }
+
+    LaunchedEffect(Unit) {
+        textFieldFocus.requestFocus()
+    }
 
     TextField(
-        modifier = Modifier.fillMaxWidth().background(color = Color.Black),
+        modifier = Modifier
+            .fillMaxWidth()
+            .focusRequester(textFieldFocus)
+            .background(color = MaterialTheme.colorScheme.primary),
         value = searchBarValue,
         onValueChange = { query ->
             viewModel.onEvent(SearchEvent.SearchQuery(query))

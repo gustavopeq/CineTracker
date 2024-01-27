@@ -78,6 +78,11 @@
     <string name="empty_movie_list_message">Add to this list by searching for movie.</string>
     <string name="empty_show_list_message">Add to this list by searching for a show.</string>
 
-    <!-- Watchlist screen -->
+    <!-- Search screen -->
     <string name="search_bar_placeholder">Search movies, shows or people...</string>
+    <string name="search_top_results_tab">Top Results</string>
+    <string name="search_movies_tab">Movies</string>
+    <string name="search_shows_tab">Shows</string>
+    <string name="search_person_tab">Person</string>
+
 </resources>
