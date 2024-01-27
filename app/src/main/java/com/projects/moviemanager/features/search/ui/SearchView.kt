@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -35,6 +36,7 @@ import com.projects.moviemanager.domain.models.content.GenericSearchContent
 import com.projects.moviemanager.features.search.events.SearchEvent
 import com.projects.moviemanager.features.search.ui.components.SearchBar
 import com.projects.moviemanager.features.search.ui.components.SearchFiltersRow
+import com.projects.moviemanager.features.search.ui.components.SearchTypeFilterItem
 import com.projects.moviemanager.util.Constants.BASE_300_IMAGE_URL
 
 @Composable
@@ -53,19 +55,28 @@ private fun Search(
     goToDetails: (Int, MediaType) -> Unit
 ) {
     val searchResults = viewModel.searchResult.collectAsLazyPagingItems()
-    SetStatusBarColor()
+    val searchTypeSelected by viewModel.searchFilterSelected
 
-    val onFilterTypeSelected: (MediaType?) -> Unit = {
+    val onFilterTypeSelected: (SearchTypeFilterItem) -> Unit = {
         viewModel.onEvent(
             SearchEvent.FilterTypeSelected(it)
         )
     }
 
+    SetStatusBarColor()
+
     Column(modifier = Modifier.fillMaxSize()) {
         SearchBar(
             viewModel = viewModel
         )
-        SearchFiltersRow(onFilterTypeSelected)
+        if (
+            viewModel.searchQuery.value.isNotEmpty()
+        ) {
+            SearchFiltersRow(
+                searchTypeSelected = searchTypeSelected,
+                onFilterTypeSelected = onFilterTypeSelected
+            )
+        }
 
         when {
             searchResults.loadState.refresh is LoadState.Loading &&

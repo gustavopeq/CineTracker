@@ -7,11 +7,14 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.projects.moviemanager.common.domain.MediaType
+import com.projects.moviemanager.common.ui.util.UiConstants.SEARCH_DEBOUNCE_TIME_MS
 import com.projects.moviemanager.domain.models.content.GenericSearchContent
 import com.projects.moviemanager.features.search.domain.SearchInteractor
 import com.projects.moviemanager.features.search.events.SearchEvent
+import com.projects.moviemanager.features.search.ui.components.SearchTypeFilterItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -29,11 +32,16 @@ class SearchViewModel @Inject constructor(
         MutableStateFlow(PagingData.empty())
     val searchResult: StateFlow<PagingData<GenericSearchContent>> get() = _searchResults
 
+    private val _searchFilterSelected: MutableState<SearchTypeFilterItem> = mutableStateOf(
+        SearchTypeFilterItem.TopResults
+    )
+    val searchFilterSelected: MutableState<SearchTypeFilterItem> get() = _searchFilterSelected
+
     fun onEvent(event: SearchEvent) {
         when (event) {
             is SearchEvent.ClearSearchBar -> onClearSearchBar()
-            is SearchEvent.SearchQuery -> onSearchQuery(event.query)
-            is SearchEvent.FilterTypeSelected -> onFilterTypeSelected(event.mediaType)
+            is SearchEvent.SearchQuery -> onStartDebounceSearch(event.query)
+            is SearchEvent.FilterTypeSelected -> onFilterTypeSelected(event.searchFilter)
         }
     }
 
@@ -45,40 +53,52 @@ class SearchViewModel @Inject constructor(
         }
     }
 
-    private fun onSearchQuery(
+    private fun onStartDebounceSearch(
         query: String
     ) {
+        if (query.isEmpty()) {
+            onClearSearchBar()
+            return
+        }
+
         _searchQuery.value = query
+
+        val lastSearchedQuery = _searchQuery.value
+
+        viewModelScope.launch {
+            delay(SEARCH_DEBOUNCE_TIME_MS)
+            if (query != lastSearchedQuery) return@launch
+
+            onSearchQuery(query)
+        }
+    }
+
+    private fun onSearchQuery(
+        query: String,
+        mediaType: MediaType? = null
+    ) {
         if (query.isNotEmpty()) {
-            search(_searchQuery.value)
+            viewModelScope.launch {
+                interactor.onSearchQuery(
+                    query = query,
+                    mediaType = mediaType
+                )
+                    .distinctUntilChanged()
+                    .cachedIn(viewModelScope)
+                    .collect {
+                        _searchResults.value = it
+                    }
+            }
         }
     }
 
     private fun onFilterTypeSelected(
-        mediaType: MediaType?
+        searchFilter: SearchTypeFilterItem
     ) {
-        if (_searchQuery.value.isNotEmpty()) {
-            search(
-                _searchQuery.value,
-                mediaType
-            )
-        }
-    }
-
-    private fun search(
-        query: String,
-        mediaType: MediaType? = null
-    ) {
-        viewModelScope.launch {
-            interactor.onSearchQuery(
-                query = query,
-                mediaType = mediaType
-            )
-                .distinctUntilChanged()
-                .cachedIn(viewModelScope)
-                .collect {
-                    _searchResults.value = it
-                }
-        }
+        _searchFilterSelected.value = searchFilter
+        onSearchQuery(
+            query = _searchQuery.value,
+            mediaType = searchFilter.mediaType
+        )
     }
 }

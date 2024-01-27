@@ -35,7 +35,9 @@ fun SearchBar(
     val textFieldFocus = remember { FocusRequester() }
 
     LaunchedEffect(Unit) {
-        textFieldFocus.requestFocus()
+        if (searchBarValue.isEmpty()) {
+            textFieldFocus.requestFocus()
+        }
     }
 
     TextField(

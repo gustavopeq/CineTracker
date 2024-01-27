@@ -1,6 +1,6 @@
 package com.projects.moviemanager.features.search.events
 
-import com.projects.moviemanager.common.domain.MediaType
+import com.projects.moviemanager.features.search.ui.components.SearchTypeFilterItem
 
 sealed class SearchEvent {
     data object ClearSearchBar : SearchEvent()
@@ -8,6 +8,6 @@ sealed class SearchEvent {
         val query: String
     ) : SearchEvent()
     data class FilterTypeSelected(
-        val mediaType: MediaType?
+        val searchFilter: SearchTypeFilterItem
     ) : SearchEvent()
 }

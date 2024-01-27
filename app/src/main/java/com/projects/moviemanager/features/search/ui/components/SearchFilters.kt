@@ -32,15 +32,18 @@ import com.projects.moviemanager.common.ui.util.UiConstants.SEARCH_FILTER_BUTTON
 
 @Composable
 fun SearchFiltersRow(
-    onFilterTypeSelected: (MediaType?) -> Unit
+    searchTypeSelected: SearchTypeFilterItem,
+    onFilterTypeSelected: (SearchTypeFilterItem) -> Unit
 ) {
-    var selectedTabIndex by remember { mutableIntStateOf(0) }
     val searchFilters = listOf(
         SearchTypeFilterItem.TopResults,
         SearchTypeFilterItem.Movies,
         SearchTypeFilterItem.Shows,
         SearchTypeFilterItem.Person
     )
+    var selectedTabIndex by remember {
+        mutableIntStateOf(searchFilters.indexOf(searchTypeSelected))
+    }
 
     Box(
         modifier = Modifier
@@ -65,7 +68,7 @@ fun SearchFiltersRow(
                     isSelected = index == selectedTabIndex,
                     searchTypeItem = filterItem,
                     onFilterTypeSelected = {
-                        onFilterTypeSelected(it)
+                        onFilterTypeSelected(filterItem)
                         selectedTabIndex = index
                     }
                 )
