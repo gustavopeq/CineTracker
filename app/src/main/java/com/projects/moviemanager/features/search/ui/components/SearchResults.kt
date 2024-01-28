@@ -1,5 +1,6 @@
 package com.projects.moviemanager.features.search.ui.components
 
+import android.view.inputmethod.InputMethodManager.HIDE_NOT_ALWAYS
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,6 +15,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
@@ -23,6 +27,8 @@ import com.projects.moviemanager.R
 import com.projects.moviemanager.common.domain.MediaType
 import com.projects.moviemanager.common.ui.components.NetworkImage
 import com.projects.moviemanager.common.ui.util.UiConstants
+import com.projects.moviemanager.common.ui.util.forceKeyboardAction
+import com.projects.moviemanager.common.ui.util.rememberNestedScrollConnection
 import com.projects.moviemanager.domain.models.content.GenericSearchContent
 import com.projects.moviemanager.util.Constants
 
@@ -33,8 +39,21 @@ fun SearchResultsGrid(
     adjustedCardSize: Dp,
     goToDetails: (Int, MediaType) -> Unit
 ) {
+    val context = LocalContext.current
+    val currentFocusedView = LocalView.current
+
     LazyVerticalGrid(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .nestedScroll(
+                rememberNestedScrollConnection {
+                    forceKeyboardAction(
+                        context = context,
+                        currentFocusedView = currentFocusedView,
+                        keyboardAction = HIDE_NOT_ALWAYS
+                    )
+                }
+            ),
         columns = GridCells.Fixed(numCardsPerRow),
         horizontalArrangement = Arrangement.Center
     ) {
