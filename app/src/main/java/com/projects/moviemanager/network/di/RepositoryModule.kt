@@ -1,5 +1,7 @@
 package com.projects.moviemanager.network.di
 
+import com.projects.moviemanager.network.repository.home.HomeRepository
+import com.projects.moviemanager.network.repository.home.HomeRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -12,6 +14,7 @@ import com.projects.moviemanager.network.repository.search.SearchRepository
 import com.projects.moviemanager.network.repository.search.SearchRepositoryImpl
 import com.projects.moviemanager.network.repository.show.ShowRepository
 import com.projects.moviemanager.network.repository.show.ShowRepositoryImpl
+import com.projects.moviemanager.network.services.home.HomeService
 import com.projects.moviemanager.network.services.movie.MovieService
 import com.projects.moviemanager.network.services.person.PersonService
 import com.projects.moviemanager.network.services.search.SearchService
@@ -52,5 +55,13 @@ object RepositoryModule {
         searchService: SearchService
     ): SearchRepository {
         return SearchRepositoryImpl(searchService)
+    }
+
+    @Singleton
+    @Provides
+    fun provideHomeRepository(
+        homeService: HomeService
+    ): HomeRepository {
+        return HomeRepositoryImpl(homeService)
     }
 }

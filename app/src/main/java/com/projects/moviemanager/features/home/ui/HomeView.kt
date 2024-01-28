@@ -8,9 +8,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
+import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
 fun Home() {
+    Home(
+        viewModel = hiltViewModel()
+    )
+}
+
+@Composable
+private fun Home(
+    viewModel: HomeViewModel
+) {
     Box(modifier = Modifier.fillMaxSize()) {
         Text(
             text = "Home Screen",

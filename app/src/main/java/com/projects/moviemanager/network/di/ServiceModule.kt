@@ -1,5 +1,6 @@
 package com.projects.moviemanager.network.di
 
+import com.projects.moviemanager.network.services.home.HomeService
 import com.projects.moviemanager.network.services.movie.MovieService
 import com.projects.moviemanager.network.services.person.PersonService
 import com.projects.moviemanager.network.services.search.SearchService
@@ -36,5 +37,11 @@ object ServiceModule {
     @Provides
     fun provideSearchService(retrofit: Retrofit): SearchService {
         return retrofit.create(SearchService::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun provideHomeService(retrofit: Retrofit): HomeService {
+        return retrofit.create(HomeService::class.java)
     }
 }
