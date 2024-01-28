@@ -13,13 +13,13 @@ import com.projects.moviemanager.features.search.domain.SearchInteractor
 import com.projects.moviemanager.features.search.events.SearchEvent
 import com.projects.moviemanager.features.search.ui.components.SearchTypeFilterItem
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
@@ -38,7 +38,7 @@ class SearchViewModel @Inject constructor(
     )
     val searchFilterSelected: MutableState<SearchTypeFilterItem> get() = _searchFilterSelected
 
-    private var searchDebounceJob: Job? = null
+    var searchDebounceJob: Job? = null
 
     fun onEvent(event: SearchEvent) {
         when (event) {
@@ -73,7 +73,10 @@ class SearchViewModel @Inject constructor(
             delay(SEARCH_DEBOUNCE_TIME_MS)
 
             if (_searchQuery.value == query) {
-                onSearchQuery(query)
+                onSearchQuery(
+                    query = query,
+                    mediaType = _searchFilterSelected.value.mediaType
+                )
             }
         }
     }

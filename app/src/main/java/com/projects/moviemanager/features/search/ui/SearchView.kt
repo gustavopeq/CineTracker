@@ -49,6 +49,7 @@ private fun Search(
     val searchQuery by viewModel.searchQuery
     val searchTypeSelected by viewModel.searchFilterSelected
     val searchResults = viewModel.searchResult.collectAsLazyPagingItems()
+    val isDebounceActive = viewModel.searchDebounceJob?.isActive ?: false
 
     val onFilterTypeSelected: (SearchTypeFilterItem) -> Unit = {
         viewModel.onEvent(
@@ -80,6 +81,7 @@ private fun Search(
                 SearchBody(
                     searchQuery = searchQuery,
                     searchResults = searchResults,
+                    isDebounceActive = isDebounceActive,
                     goToDetails = goToDetails
                 )
             }
@@ -91,6 +93,7 @@ private fun Search(
 private fun SearchBody(
     searchQuery: String,
     searchResults: LazyPagingItems<GenericSearchContent>,
+    isDebounceActive: Boolean,
     goToDetails: (Int, MediaType) -> Unit
 ) {
     val density = LocalDensity.current
@@ -112,7 +115,7 @@ private fun SearchBody(
             adjustedCardSize = adjustedCardSize,
             goToDetails = goToDetails
         )
-    } else if (searchQuery.isNotEmpty()) {
+    } else if (searchQuery.isNotEmpty() && !isDebounceActive) {
         NoResultsFound()
     }
 }
