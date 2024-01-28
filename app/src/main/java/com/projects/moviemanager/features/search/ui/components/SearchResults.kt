@@ -1,0 +1,104 @@
+package com.projects.moviemanager.features.search.ui.components
+
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
+import androidx.paging.compose.LazyPagingItems
+import com.projects.moviemanager.R
+import com.projects.moviemanager.common.domain.MediaType
+import com.projects.moviemanager.common.ui.components.NetworkImage
+import com.projects.moviemanager.common.ui.util.UiConstants
+import com.projects.moviemanager.domain.models.content.GenericSearchContent
+import com.projects.moviemanager.util.Constants
+
+@Composable
+fun SearchResultsGrid(
+    numCardsPerRow: Int,
+    searchResults: LazyPagingItems<GenericSearchContent>,
+    adjustedCardSize: Dp,
+    goToDetails: (Int, MediaType) -> Unit
+) {
+    LazyVerticalGrid(
+        modifier = Modifier.fillMaxSize(),
+        columns = GridCells.Fixed(numCardsPerRow),
+        horizontalArrangement = Arrangement.Center
+    ) {
+        items(searchResults.itemCount) { index ->
+            val item = searchResults[index]
+            item?.let {
+                SearchResultCard(
+                    item = item,
+                    adjustedCardSize = adjustedCardSize,
+                    goToDetails = goToDetails
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun SearchResultCard(
+    item: GenericSearchContent,
+    adjustedCardSize: Dp,
+    goToDetails: (Int, MediaType) -> Unit
+) {
+    val fullImageUrl = Constants.BASE_300_IMAGE_URL + item.posterPath
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .clip(MaterialTheme.shapes.medium)
+            .clickable(
+                onClick = {
+                    goToDetails(item.id, item.mediaType)
+                }
+            ),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        NetworkImage(
+            modifier = Modifier
+                .clip(MaterialTheme.shapes.medium),
+            imageUrl = fullImageUrl,
+            widthDp = adjustedCardSize,
+            heightDp = adjustedCardSize * UiConstants.POSTER_ASPECT_RATIO_MULTIPLY
+        )
+        Spacer(modifier = Modifier.height(UiConstants.DEFAULT_PADDING.dp))
+    }
+}
+
+@Composable
+fun NoResultsFound() {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Spacer(modifier = Modifier.weight(0.3f))
+        Text(
+            text = stringResource(id = R.string.search_error_title_message),
+            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.displayMedium,
+            color = MaterialTheme.colorScheme.onPrimary
+        )
+        Text(
+            text = stringResource(id = R.string.search_error_description_message),
+            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.titleLarge,
+            color = MaterialTheme.colorScheme.surface
+        )
+        Spacer(modifier = Modifier.weight(0.7f))
+    }
+}
