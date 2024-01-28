@@ -23,33 +23,36 @@ fun TopNavBar(
     displaySortScreen: (Boolean) -> Unit
 ) {
     val title = currentScreen.getScreenNameRes()?.let { stringResource(id = it) }
+    val showTopBar = screensWithTopBar.contains(currentScreen)
 
-    TopAppBar(
-        navigationIcon = {
-            if (currentScreen == HomeScreen.route()) {
-                HomeLogoAnimation()
-            }
-        },
-        title = {
-            Text(
-                text = title.orEmpty(),
-                style = MaterialTheme.typography.headlineLarge
-            )
-        },
-        actions = {
-            if (currentScreen == BrowseScreen.route() || currentScreen == WatchlistScreen.route()) {
-                SortIconButton(
-                    mainViewModel = mainViewModel,
-                    currentScreen = currentScreen,
-                    displaySortScreen = displaySortScreen
+    if (showTopBar) {
+        TopAppBar(
+            navigationIcon = {
+                if (currentScreen == HomeScreen.route()) {
+                    HomeLogoAnimation()
+                }
+            },
+            title = {
+                Text(
+                    text = title.orEmpty(),
+                    style = MaterialTheme.typography.headlineLarge
                 )
-            }
-        },
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primary,
-            titleContentColor = MaterialTheme.colorScheme.onPrimary
+            },
+            actions = {
+                if (screensWithSortIcon.contains(currentScreen)) {
+                    SortIconButton(
+                        mainViewModel = mainViewModel,
+                        currentScreen = currentScreen.orEmpty(),
+                        displaySortScreen = displaySortScreen
+                    )
+                }
+            },
+            colors = TopAppBarDefaults.topAppBarColors(
+                containerColor = MaterialTheme.colorScheme.primary,
+                titleContentColor = MaterialTheme.colorScheme.onPrimary
+            )
         )
-    )
+    }
 }
 
 private fun String?.getScreenNameRes(): Int? {
@@ -61,3 +64,14 @@ private fun String?.getScreenNameRes(): Int? {
         else -> null
     }
 }
+
+private val screensWithTopBar = listOf(
+    HomeScreen.route(),
+    BrowseScreen.route(),
+    WatchlistScreen.route()
+)
+
+private val screensWithSortIcon = listOf(
+    BrowseScreen.route(),
+    WatchlistScreen.route()
+)

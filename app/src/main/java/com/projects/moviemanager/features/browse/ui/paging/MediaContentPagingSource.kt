@@ -34,7 +34,7 @@ class MediaContentPagingSource(
                 MediaType.SHOW -> {
                     showRepository.getShowList(contentListType.type, pageNumber).first()
                 }
-                MediaType.PERSON -> {
+                else -> {
                     throw IllegalStateException("Invalid media type for paging source: $mediaType")
                 }
             }

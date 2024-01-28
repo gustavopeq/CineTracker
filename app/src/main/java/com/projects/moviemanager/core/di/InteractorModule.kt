@@ -4,9 +4,11 @@ import com.projects.moviemanager.database.repository.DatabaseRepository
 import com.projects.moviemanager.database.repository.DatabaseRepositoryImpl
 import com.projects.moviemanager.features.browse.domain.BrowseInteractor
 import com.projects.moviemanager.features.details.domain.DetailsInteractor
+import com.projects.moviemanager.features.search.domain.SearchInteractor
 import com.projects.moviemanager.features.watchlist.domain.WatchlistInteractor
 import com.projects.moviemanager.network.repository.movie.MovieRepository
 import com.projects.moviemanager.network.repository.person.PersonRepository
+import com.projects.moviemanager.network.repository.search.SearchRepository
 import com.projects.moviemanager.network.repository.show.ShowRepository
 import dagger.Module
 import dagger.Provides
@@ -56,6 +58,16 @@ object InteractorModule {
             databaseRepository = databaseRepository,
             movieRepository = movieRepository,
             showRepository = showRepository
+        )
+    }
+
+    @Singleton
+    @Provides
+    fun provideSearchInteractor(
+        searchRepository: SearchRepository
+    ): SearchInteractor {
+        return SearchInteractor(
+            searchRepository = searchRepository
         )
     }
 }

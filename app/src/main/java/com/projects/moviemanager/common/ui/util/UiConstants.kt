@@ -39,4 +39,9 @@ object UiConstants {
 
     // Watchlist
     const val WATCHLIST_IMAGE_WIDTH = 100
+
+    // Search
+    const val SEARCH_FILTER_BUTTON_HEIGHT = 30
+    const val SEARCH_CARDS_WIDTH = 300
+    const val SEARCH_DEBOUNCE_TIME_MS = 1500L
 }

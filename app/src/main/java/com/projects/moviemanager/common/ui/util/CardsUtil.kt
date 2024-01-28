@@ -13,7 +13,7 @@ fun calculateCardsPerRow(
     // Calculate the number of cards that can fit in a row
     val numCardsPerRow = floor(
         (screenWidth + spacing).toFloat() /
-            (minCardSize + spacing)
+            (minCardSize)
     ).coerceAtLeast(1f).toInt()
 
     // Calculate the adjusted size for each card

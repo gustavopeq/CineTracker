@@ -2,6 +2,7 @@ package com.projects.moviemanager.network.di
 
 import com.projects.moviemanager.network.services.movie.MovieService
 import com.projects.moviemanager.network.services.person.PersonService
+import com.projects.moviemanager.network.services.search.SearchService
 import com.projects.moviemanager.network.services.show.ShowService
 import dagger.Module
 import dagger.Provides
@@ -29,5 +30,11 @@ object ServiceModule {
     @Provides
     fun providePersonService(retrofit: Retrofit): PersonService {
         return retrofit.create(PersonService::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun provideSearchService(retrofit: Retrofit): SearchService {
+        return retrofit.create(SearchService::class.java)
     }
 }

@@ -194,6 +194,7 @@ private fun DetailsComponent(
                                 openContentDetails = openDetails
                             )
                         }
+                        else -> {}
                     }
                 }
             }

@@ -41,6 +41,7 @@ class DetailsInteractor @Inject constructor(
             MediaType.MOVIE -> movieRepository.getMovieDetailsById(contentId)
             MediaType.SHOW -> showRepository.getShowDetailsById(contentId)
             MediaType.PERSON -> personRepository.getPersonDetailsById(contentId)
+            else -> return null
         }
 
         var contentDetails: DetailedMediaInfo? = null
@@ -55,6 +56,9 @@ class DetailsInteractor @Inject constructor(
                         MediaType.SHOW -> (response.value as ShowApiResponse).toShowDetailsInfo()
                         MediaType.PERSON -> {
                             (response.value as PersonDetailsResponse).toPersonDetailsInfo()
+                        }
+                        else -> {
+                            null
                         }
                     }
                 }
@@ -134,7 +138,9 @@ class DetailsInteractor @Inject constructor(
                 }
                 is Left -> {
                     listOfSimilar = response.value.results
-                        .filter { it.poster_path?.isNotEmpty() == true }
+                        .filter {
+                            it.poster_path?.isNotEmpty() == true && it.title?.isNotEmpty() == true
+                        }
                         .map {
                             it.toMediaContent()
                         }

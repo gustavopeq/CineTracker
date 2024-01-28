@@ -67,7 +67,7 @@ fun BrowseSortBottomSheet(
                     dismissBottomSheet = dismissBottomSheet
                 )
             }
-            MediaType.PERSON -> {}
+            else -> {}
         }
     }
 }

@@ -18,8 +18,6 @@
     <string name="person_details_movies_label">Movies</string>
     <string name="person_details_images_label">Images</string>
     <string name="empty_search_title_message">Type to search!</string>
-    <string name="search_error_title_message">Sorry… :(</string>
-    <string name="search_error_description_message">No results found</string>
     <string name="empty_watchlist_message">Add movies to watch later!</string>
     <string name="january">January</string>
     <string name="february">February</string>
@@ -77,4 +75,14 @@
     <string name="empty_list_message">Add to this list by searching for a movie or show.</string>
     <string name="empty_movie_list_message">Add to this list by searching for movie.</string>
     <string name="empty_show_list_message">Add to this list by searching for a show.</string>
+
+    <!-- Search screen -->
+    <string name="search_bar_placeholder">Search movies, shows or people...</string>
+    <string name="search_top_results_tab">Top Results</string>
+    <string name="search_movies_tab">Movies</string>
+    <string name="search_shows_tab">Shows</string>
+    <string name="search_person_tab">Person</string>
+    <string name="search_error_title_message">Sorry… No results found :(</string>
+    <string name="search_error_description_message">Try searching for another movie, show or person.</string>
+
 </resources>

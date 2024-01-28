@@ -8,10 +8,13 @@ import com.projects.moviemanager.network.repository.movie.MovieRepository
 import com.projects.moviemanager.network.repository.movie.MovieRepositoryImpl
 import com.projects.moviemanager.network.repository.person.PersonRepository
 import com.projects.moviemanager.network.repository.person.PersonRepositoryImpl
+import com.projects.moviemanager.network.repository.search.SearchRepository
+import com.projects.moviemanager.network.repository.search.SearchRepositoryImpl
 import com.projects.moviemanager.network.repository.show.ShowRepository
 import com.projects.moviemanager.network.repository.show.ShowRepositoryImpl
 import com.projects.moviemanager.network.services.movie.MovieService
 import com.projects.moviemanager.network.services.person.PersonService
+import com.projects.moviemanager.network.services.search.SearchService
 import com.projects.moviemanager.network.services.show.ShowService
 import javax.inject.Singleton
 
@@ -41,5 +44,13 @@ object RepositoryModule {
         personService: PersonService
     ): PersonRepository {
         return PersonRepositoryImpl(personService)
+    }
+
+    @Singleton
+    @Provides
+    fun provideSearchRepository(
+        searchService: SearchService
+    ): SearchRepository {
+        return SearchRepositoryImpl(searchService)
     }
 }
