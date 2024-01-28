@@ -50,6 +50,7 @@ class SearchViewModel @Inject constructor(
 
     private fun onClearSearchBar() {
         _searchQuery.value = ""
+        searchDebounceJob?.cancel()
 
         viewModelScope.launch {
             _searchResults.emit(PagingData.empty())
@@ -104,5 +105,11 @@ class SearchViewModel @Inject constructor(
             query = _searchQuery.value,
             mediaType = searchFilter.mediaType
         )
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        searchDebounceJob?.cancel()
+        searchDebounceJob = null
     }
 }
