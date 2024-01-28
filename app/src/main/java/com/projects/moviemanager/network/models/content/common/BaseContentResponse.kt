@@ -26,7 +26,8 @@ data class MultiResponse(
     val release_date: String?,
     val video: Boolean?,
     val vote_average: Double?,
-    val vote_count: Int?
+    val vote_count: Int?,
+    val profile_path: String?
 ) : BaseContentResponse
 
 data class MovieResponse(

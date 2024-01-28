@@ -15,20 +15,26 @@ data class GenericSearchContent(
 )
 
 fun BaseContentResponse.toGenericSearchContent(): GenericSearchContent? {
-    val mediaType = when (this) {
-        is MovieResponse -> MediaType.MOVIE
-        is ShowResponse -> MediaType.SHOW
-        is PersonResponse -> MediaType.PERSON
-        is MultiResponse -> MediaType.getType(this.media_type)
-        else -> { MediaType.UNKNOWN }
+    var mediaType: MediaType = MediaType.UNKNOWN
+    var posterPath: String? = this.poster_path
+    when (this) {
+        is MovieResponse -> mediaType = MediaType.MOVIE
+        is ShowResponse -> mediaType = MediaType.SHOW
+        is PersonResponse -> mediaType = MediaType.PERSON
+        is MultiResponse -> {
+            mediaType = MediaType.getType(this.media_type)
+            if (mediaType == MediaType.PERSON) {
+                posterPath = this.profile_path
+            }
+        }
     }
 
-    if (mediaType == MediaType.UNKNOWN || poster_path.isNullOrEmpty()) return null
+    if (mediaType == MediaType.UNKNOWN || posterPath.isNullOrEmpty()) return null
 
     return GenericSearchContent(
         id = this.id,
         name = this.title,
-        posterPath = this.poster_path,
+        posterPath = posterPath,
         mediaType = mediaType
     )
 }
