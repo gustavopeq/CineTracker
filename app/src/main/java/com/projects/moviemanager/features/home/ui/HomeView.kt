@@ -1,5 +1,6 @@
 package com.projects.moviemanager.features.home.ui
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,7 +28,9 @@ import com.projects.moviemanager.R
 import com.projects.moviemanager.common.domain.MediaType
 import com.projects.moviemanager.common.ui.components.ContentCard
 import com.projects.moviemanager.common.ui.components.DimensionSubcomposeLayout
+import com.projects.moviemanager.common.ui.util.UiConstants.CAROUSEL_CARDS_WIDTH
 import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_MARGIN
+import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_PADDING
 import com.projects.moviemanager.common.ui.util.UiConstants.HOME_BACKGROUND_OFFSET_PERCENT
 import com.projects.moviemanager.domain.models.content.GenericSearchContent
 import com.projects.moviemanager.features.home.ui.components.featured.FeaturedBackgroundImage
@@ -51,6 +54,7 @@ private fun Home(
     goToDetails: (Int, MediaType) -> Unit
 ) {
     val trendingMulti by viewModel.trendingMulti.collectAsState()
+    val myWatchlist by viewModel.myWatchlist.collectAsState()
     val localDensity = LocalDensity.current
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -62,7 +66,7 @@ private fun Home(
                 dependentContent = { size ->
                     val mainBgOffset = localDensity.run { size.height.toDp() }
 
-                    HomeBody(mainBgOffset, trendingMulti, goToDetails)
+                    HomeBody(mainBgOffset, trendingMulti, myWatchlist, goToDetails)
                 }
             )
         }
@@ -73,6 +77,7 @@ private fun Home(
 private fun HomeBody(
     mainBgOffset: Dp,
     trendingMulti: List<GenericSearchContent>,
+    myWatchlist: List<GenericSearchContent>,
     goToDetails: (Int, MediaType) -> Unit
 ) {
     val secondaryTrendingItems = trendingMulti.drop(1)
@@ -89,40 +94,58 @@ private fun HomeBody(
                 mainContent = trendingMulti[0],
                 goToDetails = goToDetails
             )
-            Box(
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(600.dp)
                     .background(MaterialTheme.colorScheme.primary)
             ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(horizontal = DEFAULT_MARGIN.dp)
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.trending_today_header).uppercase(),
-                        style = MaterialTheme.typography.headlineMedium
-                    )
-                    LazyRow(
-                        modifier = Modifier.removeParentPadding(DEFAULT_MARGIN.dp)
-                    ) {
-                        item {
-                            Spacer(modifier = Modifier.width(DEFAULT_MARGIN.dp))
-                        }
-                        items(secondaryTrendingItems) { item ->
-                            ContentCard(
-                                cardWidth = 150.dp,
-                                imageUrl = item.posterPath,
-                                title = item.name,
-                                rating = item.rating,
-                                goToDetails = {
-                                    goToDetails(item.id, item.mediaType)
-                                }
-                            )
-                        }
+                ClassicCarousel(
+                    carouselHeaderRes = R.string.trending_today_header,
+                    itemList = secondaryTrendingItems,
+                    goToDetails = goToDetails
+                )
+                Spacer(modifier = Modifier.height(DEFAULT_PADDING.dp))
+                ClassicCarousel(
+                    carouselHeaderRes = R.string.home_my_watchlist_header,
+                    itemList = myWatchlist,
+                    goToDetails = goToDetails
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun ClassicCarousel(
+    @StringRes carouselHeaderRes: Int,
+    itemList: List<GenericSearchContent>,
+    goToDetails: (Int, MediaType) -> Unit
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = DEFAULT_MARGIN.dp)
+    ) {
+        Text(
+            text = stringResource(id = carouselHeaderRes).uppercase(),
+            style = MaterialTheme.typography.headlineMedium
+        )
+        LazyRow(
+            modifier = Modifier.removeParentPadding(DEFAULT_MARGIN.dp)
+        ) {
+            item {
+                Spacer(modifier = Modifier.width(DEFAULT_MARGIN.dp))
+            }
+            items(itemList) { item ->
+                ContentCard(
+                    cardWidth = CAROUSEL_CARDS_WIDTH.dp,
+                    imageUrl = item.posterPath,
+                    title = item.name,
+                    rating = item.rating,
+                    goToDetails = {
+                        goToDetails(item.id, item.mediaType)
                     }
-                }
+                )
             }
         }
     }

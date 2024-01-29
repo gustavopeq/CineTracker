@@ -88,5 +88,6 @@
     <!-- Home screen -->
     <string name="see_details_button_text">See Details</string>
     <string name="trending_today_header">Trending Today</string>
+    <string name="home_my_watchlist_header">My Watchlist</string>
 
 </resources>

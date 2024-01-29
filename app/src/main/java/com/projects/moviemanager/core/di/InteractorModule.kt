@@ -76,10 +76,16 @@ object InteractorModule {
     @Singleton
     @Provides
     fun provideHomeInteractor(
-        homeRepository: HomeRepository
+        homeRepository: HomeRepository,
+        databaseRepository: DatabaseRepository,
+        movieRepository: MovieRepository,
+        showRepository: ShowRepository
     ): HomeInteractor {
         return HomeInteractor(
-            homeRepository = homeRepository
+            homeRepository = homeRepository,
+            databaseRepository = databaseRepository,
+            movieRepository = movieRepository,
+            showRepository = showRepository
         )
     }
 }

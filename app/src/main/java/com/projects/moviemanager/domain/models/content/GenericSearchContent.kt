@@ -6,6 +6,8 @@ import com.projects.moviemanager.network.models.content.common.MovieResponse
 import com.projects.moviemanager.network.models.content.common.MultiResponse
 import com.projects.moviemanager.network.models.content.common.PersonResponse
 import com.projects.moviemanager.network.models.content.common.ShowResponse
+import com.projects.moviemanager.network.models.content.movie.MovieApiResponse
+import com.projects.moviemanager.network.models.content.show.ShowApiResponse
 
 data class GenericSearchContent(
     val id: Int,
@@ -31,6 +33,36 @@ fun BaseContentResponse.toGenericSearchContent(): GenericSearchContent? {
     return GenericSearchContent(
         id = this.id,
         name = name,
+        rating = this.vote_average,
+        posterPath = posterPath,
+        mediaType = mediaType
+    )
+}
+
+fun MovieApiResponse.toGenericSearchContent(): GenericSearchContent? {
+    val mediaType = this.mediaType
+    val posterPath = this.poster_path
+
+    if (mediaType == MediaType.UNKNOWN || posterPath.isNullOrEmpty()) return null
+
+    return GenericSearchContent(
+        id = this.id,
+        name = this.title,
+        rating = this.vote_average,
+        posterPath = posterPath,
+        mediaType = mediaType
+    )
+}
+
+fun ShowApiResponse.toGenericSearchContent(): GenericSearchContent? {
+    val mediaType = this.mediaType ?: MediaType.UNKNOWN
+    val posterPath = this.poster_path
+
+    if (mediaType == MediaType.UNKNOWN || posterPath.isNullOrEmpty()) return null
+
+    return GenericSearchContent(
+        id = this.id,
+        name = this.title,
         rating = this.vote_average,
         posterPath = posterPath,
         mediaType = mediaType
