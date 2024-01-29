@@ -44,4 +44,8 @@ object UiConstants {
     const val SEARCH_FILTER_BUTTON_HEIGHT = 30
     const val SEARCH_CARDS_WIDTH = 300
     const val SEARCH_DEBOUNCE_TIME_MS = 1500L
+
+    // Home
+    const val HOME_BACKGROUND_OFFSET_PERCENT = 0.5f
+    const val HOME_BACKGROUND_ALPHA = 0.3f
 }

@@ -6,6 +6,7 @@ import com.projects.moviemanager.network.models.content.common.MovieResponse
 import com.projects.moviemanager.network.models.content.common.MultiResponse
 import com.projects.moviemanager.network.models.content.common.PersonResponse
 import com.projects.moviemanager.network.models.content.common.ShowResponse
+import timber.log.Timber
 
 data class GenericSearchContent(
     val id: Int,

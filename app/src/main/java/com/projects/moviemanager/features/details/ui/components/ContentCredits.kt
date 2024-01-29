@@ -46,6 +46,9 @@ fun CastCarousel(
     LazyRow(
         modifier = Modifier.removeParentPadding(DEFAULT_MARGIN.dp)
     ) {
+        item {
+            Spacer(modifier = Modifier.width(DEFAULT_MARGIN.dp))
+        }
         items(contentCredits) { cast ->
             val castImageUrl = Constants.BASE_500_IMAGE_URL + cast.profilePoster
 

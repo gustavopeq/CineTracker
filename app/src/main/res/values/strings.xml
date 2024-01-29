@@ -85,4 +85,8 @@
     <string name="search_error_title_message">Sorry… No results found :(</string>
     <string name="search_error_description_message">Try searching for another movie, show or person.</string>
 
+    <!-- Home screen -->
+    <string name="see_details_button_text">See Details</string>
+    <string name="trending_today_header">Trending Today</string>
+
 </resources>

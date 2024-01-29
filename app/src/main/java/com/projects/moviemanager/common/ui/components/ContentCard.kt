@@ -43,7 +43,8 @@ fun ContentCard(
         modifier = modifier.padding(
             horizontal = BROWSE_CARD_PADDING_HORIZONTAL.dp,
             vertical = BROWSE_CARD_PADDING_VERTICAL.dp
-        ),
+        )
+            .width(cardWidth),
         onClick = goToDetails,
         colors = CardDefaults.cardColors(
             containerColor = MainBarGreyColor
