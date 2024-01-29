@@ -115,7 +115,7 @@ private fun HomeBody(
                                 cardWidth = 150.dp,
                                 imageUrl = item.posterPath,
                                 title = item.name,
-                                rating = 0.0,
+                                rating = item.rating,
                                 goToDetails = {
                                     goToDetails(item.id, item.mediaType)
                                 }
