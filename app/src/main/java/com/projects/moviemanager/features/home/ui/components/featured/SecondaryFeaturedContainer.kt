@@ -18,10 +18,12 @@ import androidx.compose.ui.unit.dp
 import com.projects.moviemanager.common.domain.MediaType
 import com.projects.moviemanager.common.ui.components.NetworkImage
 import com.projects.moviemanager.common.ui.theme.MainBarGreyColor
-import com.projects.moviemanager.common.ui.util.UiConstants
+import com.projects.moviemanager.common.ui.util.UiConstants.BACKDROP_ASPECT_RATIO
 import com.projects.moviemanager.common.ui.util.UiConstants.BROWSE_CARD_DEFAULT_ELEVATION
+import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_MARGIN
+import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_PADDING
 import com.projects.moviemanager.domain.models.content.GenericContent
-import com.projects.moviemanager.util.Constants
+import com.projects.moviemanager.util.Constants.BASE_ORIGINAL_IMAGE_URL
 
 @Composable
 fun SecondaryFeaturedInfo(
@@ -29,10 +31,10 @@ fun SecondaryFeaturedInfo(
     goToDetails: (Int, MediaType) -> Unit
 ) {
     featuredItem?.let {
-        val fullImageUrl = Constants.BASE_ORIGINAL_IMAGE_URL + featuredItem.backdropPath
+        val fullImageUrl = BASE_ORIGINAL_IMAGE_URL + featuredItem.backdropPath
 
         Column(
-            modifier = Modifier.padding(horizontal = UiConstants.DEFAULT_MARGIN.dp)
+            modifier = Modifier.padding(horizontal = DEFAULT_MARGIN.dp)
         ) {
             Card(
                 modifier = Modifier.clickable(
@@ -48,18 +50,18 @@ fun SecondaryFeaturedInfo(
                 NetworkImage(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .aspectRatio(UiConstants.BACKDROP_ASPECT_RATIO),
+                        .aspectRatio(BACKDROP_ASPECT_RATIO),
                     imageUrl = fullImageUrl
                 )
 
                 Column(
-                    modifier = Modifier.padding(UiConstants.DEFAULT_PADDING.dp)
+                    modifier = Modifier.padding(DEFAULT_PADDING.dp)
                 ) {
                     Text(
                         text = featuredItem.name.orEmpty(),
                         color = MaterialTheme.colorScheme.onPrimary
                     )
-                    Spacer(modifier = Modifier.height(UiConstants.DEFAULT_PADDING.dp))
+                    Spacer(modifier = Modifier.height(DEFAULT_PADDING.dp))
                     Text(
                         text = featuredItem.overview.orEmpty(),
                         style = MaterialTheme.typography.bodyMedium,
