@@ -1,4 +1,4 @@
-package com.projects.moviemanager.features.home.ui.components.featured
+package com.projects.moviemanager.features.home.ui.components.carousel
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
@@ -20,7 +20,10 @@ import androidx.compose.ui.unit.dp
 import com.projects.moviemanager.R
 import com.projects.moviemanager.common.domain.MediaType
 import com.projects.moviemanager.common.ui.components.cards.DefaultContentCard
-import com.projects.moviemanager.common.ui.util.UiConstants
+import com.projects.moviemanager.common.ui.util.UiConstants.CAROUSEL_CARDS_WIDTH
+import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_MARGIN
+import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_PADDING
+import com.projects.moviemanager.common.ui.util.UiConstants.SMALL_MARGIN
 import com.projects.moviemanager.domain.models.content.GenericContent
 import com.projects.moviemanager.util.removeParentPadding
 
@@ -37,7 +40,12 @@ fun TrendingCarousel(
         goToDetails = goToDetails
     ) { item, goToDetails ->
         DefaultContentCard(
-            cardWidth = UiConstants.CAROUSEL_CARDS_WIDTH.dp,
+            modifier = Modifier.padding(
+                top = DEFAULT_PADDING.dp,
+                bottom = DEFAULT_PADDING.dp,
+                end = DEFAULT_PADDING.dp
+            ),
+            cardWidth = CAROUSEL_CARDS_WIDTH.dp,
             imageUrl = item.posterPath,
             title = item.name,
             rating = item.rating,
@@ -53,7 +61,7 @@ fun ClassicCarousel(
     @StringRes carouselHeaderRes: Int,
     itemList: List<GenericContent>,
     currentScreenWidth: Int,
-    itemSizeDp: Dp = UiConstants.CAROUSEL_CARDS_WIDTH.dp,
+    itemSizeDp: Dp = CAROUSEL_CARDS_WIDTH.dp,
     goToDetails: (Int, MediaType) -> Unit,
     headerAdditionalAction: @Composable () -> Unit = {},
     contentCard: @Composable (GenericContent, (Int, MediaType) -> Unit) -> Unit
@@ -63,23 +71,22 @@ fun ClassicCarousel(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(start = UiConstants.DEFAULT_MARGIN.dp, end = UiConstants.SMALL_MARGIN.dp)
+            .padding(start = DEFAULT_MARGIN.dp, end = SMALL_MARGIN.dp)
     ) {
         CarouselHeaderRow(carouselHeaderRes, headerAdditionalAction)
 
         LazyRow(
-            modifier = Modifier
-                .removeParentPadding(UiConstants.DEFAULT_MARGIN.dp)
+            modifier = Modifier.removeParentPadding(DEFAULT_MARGIN.dp)
         ) {
             if (itemList.size >= cardsCountInScreen) {
                 item {
-                    Spacer(modifier = Modifier.width(UiConstants.DEFAULT_MARGIN.dp))
+                    Spacer(modifier = Modifier.width(DEFAULT_MARGIN.dp))
                 }
             }
             items(itemList) { item ->
                 contentCard(item, goToDetails)
                 if (item == itemList.lastOrNull()) {
-                    Spacer(modifier = Modifier.width(UiConstants.DEFAULT_MARGIN.dp))
+                    Spacer(modifier = Modifier.width(DEFAULT_MARGIN.dp))
                 }
             }
         }

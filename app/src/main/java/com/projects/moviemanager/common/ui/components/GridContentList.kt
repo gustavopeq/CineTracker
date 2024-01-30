@@ -3,6 +3,7 @@ package com.projects.moviemanager.common.ui.components
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -14,6 +15,8 @@ import androidx.compose.ui.unit.dp
 import com.projects.moviemanager.common.domain.MediaType
 import com.projects.moviemanager.common.ui.components.cards.DefaultContentCard
 import com.projects.moviemanager.common.ui.components.cards.PersonImages
+import com.projects.moviemanager.common.ui.util.UiConstants.BROWSE_CARD_PADDING_HORIZONTAL
+import com.projects.moviemanager.common.ui.util.UiConstants.BROWSE_CARD_PADDING_VERTICAL
 import com.projects.moviemanager.common.ui.util.UiConstants.BROWSE_MIN_CARD_WIDTH
 import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_MARGIN
 import com.projects.moviemanager.common.ui.util.calculateCardsPerRow
@@ -69,7 +72,12 @@ fun GridContentList(
         maxCardsNumber = maxCardsNumber ?: mediaContentList.size
     ) { content, size ->
         DefaultContentCard(
-            modifier = Modifier.width(size),
+            modifier = Modifier
+                .width(size)
+                .padding(
+                    horizontal = BROWSE_CARD_PADDING_HORIZONTAL.dp,
+                    vertical = BROWSE_CARD_PADDING_VERTICAL.dp
+                ),
             cardWidth = size,
             imageUrl = content.poster_path,
             title = content.title,

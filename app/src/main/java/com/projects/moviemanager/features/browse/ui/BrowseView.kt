@@ -225,7 +225,12 @@ private fun BrowseBody(
                                 }
                             }
                             DefaultContentCard(
-                                modifier = Modifier.width(adjustedCardSize),
+                                modifier = Modifier
+                                    .width(adjustedCardSize)
+                                    .padding(
+                                        horizontal = BROWSE_CARD_PADDING_HORIZONTAL.dp,
+                                        vertical = BROWSE_CARD_PADDING_VERTICAL.dp
+                                    ),
                                 cardWidth = adjustedCardSize,
                                 imageUrl = content.poster_path,
                                 title = content.title,

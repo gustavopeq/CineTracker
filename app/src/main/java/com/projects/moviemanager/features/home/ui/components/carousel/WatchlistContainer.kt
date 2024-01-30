@@ -1,4 +1,4 @@
-package com.projects.moviemanager.features.home.ui.components.featured
+package com.projects.moviemanager.features.home.ui.components.carousel
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
@@ -21,10 +21,9 @@ import androidx.compose.ui.unit.dp
 import com.projects.moviemanager.R
 import com.projects.moviemanager.common.domain.MediaType
 import com.projects.moviemanager.common.ui.components.cards.ImageContentCard
-import com.projects.moviemanager.common.ui.util.UiConstants.BROWSE_CARD_PADDING_HORIZONTAL
-import com.projects.moviemanager.common.ui.util.UiConstants.BROWSE_CARD_PADDING_VERTICAL
 import com.projects.moviemanager.common.ui.util.UiConstants.CAROUSEL_CARDS_WIDTH
 import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_MARGIN
+import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_PADDING
 import com.projects.moviemanager.common.ui.util.UiConstants.LARGE_PADDING
 import com.projects.moviemanager.common.ui.util.UiConstants.SMALL_PADDING
 import com.projects.moviemanager.domain.models.content.GenericContent
@@ -50,8 +49,9 @@ fun WatchlistCarousel(
         ) { item, goToDetails ->
             ImageContentCard(
                 modifier = Modifier.padding(
-                    horizontal = BROWSE_CARD_PADDING_HORIZONTAL.dp,
-                    vertical = BROWSE_CARD_PADDING_VERTICAL.dp
+                    top = DEFAULT_PADDING.dp,
+                    bottom = DEFAULT_PADDING.dp,
+                    end = DEFAULT_PADDING.dp
                 ),
                 item = item,
                 adjustedCardSize = CAROUSEL_CARDS_WIDTH.dp,

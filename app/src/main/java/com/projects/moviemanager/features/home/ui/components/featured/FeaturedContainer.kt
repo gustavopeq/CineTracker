@@ -24,12 +24,16 @@ import com.projects.moviemanager.common.domain.MediaType
 import com.projects.moviemanager.common.ui.components.GradientDirections
 import com.projects.moviemanager.common.ui.components.NetworkImage
 import com.projects.moviemanager.common.ui.components.classicVerticalGradientBrush
-import com.projects.moviemanager.common.ui.util.UiConstants
+import com.projects.moviemanager.common.ui.util.UiConstants.BACKGROUND_INDEX
+import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_MARGIN
+import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_PADDING
+import com.projects.moviemanager.common.ui.util.UiConstants.HOME_BACKGROUND_ALPHA
+import com.projects.moviemanager.common.ui.util.UiConstants.POSTER_ASPECT_RATIO
 import com.projects.moviemanager.domain.models.content.GenericContent
 
 @Composable
 fun FeaturedInfo(
-    mainContent: GenericContent,
+    featuredContent: GenericContent,
     goToDetails: (Int, MediaType) -> Unit
 ) {
     Column(
@@ -40,25 +44,23 @@ fun FeaturedInfo(
             )
     ) {
         Column(
-            modifier = Modifier.padding(UiConstants.DEFAULT_MARGIN.dp)
+            modifier = Modifier.padding(DEFAULT_MARGIN.dp)
         ) {
             Text(
-                text = mainContent.name.orEmpty(),
+                text = featuredContent.name.orEmpty(),
                 style = MaterialTheme.typography.displayLarge
             )
-            Spacer(modifier = Modifier.height(UiConstants.DEFAULT_PADDING.dp))
+            Spacer(modifier = Modifier.height(DEFAULT_PADDING.dp))
             Text(
-                text = "Aquaman, an exhilarating underwater adventure movie, dives into the " +
-                    "visually stunning world of Atlantis. The story revolves around Arthur " +
-                    "Curry, the reluctant ruler of the underwater kingdom.",
+                text = featuredContent.overview.orEmpty(),
                 style = MaterialTheme.typography.bodyMedium,
                 maxLines = 3,
                 overflow = TextOverflow.Ellipsis
             )
-            Spacer(modifier = Modifier.height(UiConstants.DEFAULT_PADDING.dp))
+            Spacer(modifier = Modifier.height(DEFAULT_PADDING.dp))
             Button(
                 onClick = {
-                    goToDetails(mainContent.id, mainContent.mediaType)
+                    goToDetails(featuredContent.id, featuredContent.mediaType)
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.secondary
@@ -71,7 +73,7 @@ fun FeaturedInfo(
                     color = MaterialTheme.colorScheme.primary
                 )
             }
-            Spacer(modifier = Modifier.height(UiConstants.DEFAULT_PADDING.dp))
+            Spacer(modifier = Modifier.height(DEFAULT_PADDING.dp))
         }
     }
 }
@@ -85,14 +87,14 @@ fun FeaturedBackgroundImage(
             imageUrl = imageUrl,
             modifier = Modifier
                 .fillMaxWidth()
-                .zIndex(UiConstants.BACKGROUND_INDEX)
-                .aspectRatio(UiConstants.POSTER_ASPECT_RATIO)
+                .zIndex(BACKGROUND_INDEX)
+                .aspectRatio(POSTER_ASPECT_RATIO)
         )
         Box(
             modifier = Modifier
                 .matchParentSize()
                 .background(
-                    MaterialTheme.colorScheme.primary.copy(UiConstants.HOME_BACKGROUND_ALPHA)
+                    MaterialTheme.colorScheme.primary.copy(HOME_BACKGROUND_ALPHA)
                 )
         )
     }

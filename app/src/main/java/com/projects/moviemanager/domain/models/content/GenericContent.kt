@@ -13,12 +13,15 @@ data class GenericContent(
     val id: Int,
     val name: String?,
     val rating: Double?,
+    val overview: String?,
     val posterPath: String?,
+    val backdropPath: String?,
     val mediaType: MediaType
 )
 
 fun BaseContentResponse.toGenericSearchContent(): GenericContent? {
     val posterPath: String? = this.poster_path ?: this.profile_path
+    val backdropPath: String? = this.backdrop_path
     val name: String? = this.title ?: this.name
     val mediaType = when (this) {
         is MovieResponse -> MediaType.MOVIE
@@ -28,13 +31,19 @@ fun BaseContentResponse.toGenericSearchContent(): GenericContent? {
         else -> { MediaType.UNKNOWN }
     }
 
-    if (mediaType == MediaType.UNKNOWN || posterPath.isNullOrEmpty()) return null
+    if (mediaType == MediaType.UNKNOWN ||
+        posterPath.isNullOrEmpty() || backdropPath.isNullOrEmpty()
+    ) {
+        return null
+    }
 
     return GenericContent(
         id = this.id,
         name = name,
         rating = this.vote_average,
+        overview = this.overview,
         posterPath = posterPath,
+        backdropPath = backdropPath,
         mediaType = mediaType
     )
 }
@@ -42,6 +51,7 @@ fun BaseContentResponse.toGenericSearchContent(): GenericContent? {
 fun MovieApiResponse.toGenericSearchContent(): GenericContent? {
     val mediaType = this.mediaType
     val posterPath = this.poster_path
+    val backdropPath = this.backdrop_path
 
     if (mediaType == MediaType.UNKNOWN || posterPath.isNullOrEmpty()) return null
 
@@ -49,7 +59,9 @@ fun MovieApiResponse.toGenericSearchContent(): GenericContent? {
         id = this.id,
         name = this.title,
         rating = this.vote_average,
+        overview = this.overview,
         posterPath = posterPath,
+        backdropPath = backdropPath,
         mediaType = mediaType
     )
 }
@@ -57,6 +69,7 @@ fun MovieApiResponse.toGenericSearchContent(): GenericContent? {
 fun ShowApiResponse.toGenericSearchContent(): GenericContent? {
     val mediaType = this.mediaType ?: MediaType.UNKNOWN
     val posterPath = this.poster_path
+    val backdropPath = this.backdrop_path
 
     if (mediaType == MediaType.UNKNOWN || posterPath.isNullOrEmpty()) return null
 
@@ -64,7 +77,9 @@ fun ShowApiResponse.toGenericSearchContent(): GenericContent? {
         id = this.id,
         name = this.title,
         rating = this.vote_average,
+        overview = this.overview,
         posterPath = posterPath,
+        backdropPath = backdropPath,
         mediaType = mediaType
     )
 }

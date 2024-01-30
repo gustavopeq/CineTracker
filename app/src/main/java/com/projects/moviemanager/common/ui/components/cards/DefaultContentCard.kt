@@ -42,10 +42,7 @@ fun DefaultContentCard(
     val imageHeight = cardWidth * POSTER_ASPECT_RATIO_MULTIPLY
 
     Card(
-        modifier = modifier.padding(
-            horizontal = BROWSE_CARD_PADDING_HORIZONTAL.dp,
-            vertical = BROWSE_CARD_PADDING_VERTICAL.dp
-        )
+        modifier = modifier
             .width(cardWidth),
         onClick = goToDetails,
         colors = CardDefaults.cardColors(
