@@ -65,16 +65,7 @@ fun ClassicCarousel(
             .fillMaxSize()
             .padding(start = UiConstants.DEFAULT_MARGIN.dp, end = UiConstants.SMALL_MARGIN.dp)
     ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = stringResource(id = carouselHeaderRes).uppercase(),
-                style = MaterialTheme.typography.headlineMedium
-            )
-            Spacer(modifier = Modifier.weight(1f))
-            headerAdditionalAction()
-        }
+        CarouselHeaderRow(carouselHeaderRes, headerAdditionalAction)
 
         LazyRow(
             modifier = Modifier
@@ -93,4 +84,26 @@ fun ClassicCarousel(
             }
         }
     }
+}
+
+@Composable
+fun CarouselHeaderRow(
+    carouselHeaderRes: Int,
+    headerAdditionalAction: @Composable () -> Unit
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        CarouselHeader(carouselHeaderRes)
+        Spacer(modifier = Modifier.weight(1f))
+        headerAdditionalAction()
+    }
+}
+
+@Composable
+fun CarouselHeader(carouselHeaderRes: Int) {
+    Text(
+        text = stringResource(id = carouselHeaderRes).uppercase(),
+        style = MaterialTheme.typography.headlineMedium
+    )
 }

@@ -90,5 +90,6 @@
     <string name="trending_today_header">Trending Today</string>
     <string name="home_my_watchlist_header">My Watchlist</string>
     <string name="carousel_see_all_button">See All</string>
+    <string name="watchlist_carousel_empty_message">See something you like? Keep track of everything you want to watch by adding it to your Watchlist.</string>
 
 </resources>
