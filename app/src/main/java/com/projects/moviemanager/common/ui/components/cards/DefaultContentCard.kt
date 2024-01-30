@@ -1,4 +1,4 @@
-package com.projects.moviemanager.common.ui.components
+package com.projects.moviemanager.common.ui.components.cards
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -17,6 +17,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.projects.moviemanager.common.ui.components.NetworkImage
+import com.projects.moviemanager.common.ui.components.RatingComponent
 import com.projects.moviemanager.common.ui.theme.MainBarGreyColor
 import com.projects.moviemanager.common.ui.theme.RoundCornerShapes
 import com.projects.moviemanager.common.ui.util.UiConstants.BROWSE_CARD_DEFAULT_ELEVATION
@@ -28,7 +30,7 @@ import com.projects.moviemanager.util.Constants
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ContentCard(
+fun DefaultContentCard(
     modifier: Modifier = Modifier,
     cardWidth: Dp,
     imageUrl: String?,

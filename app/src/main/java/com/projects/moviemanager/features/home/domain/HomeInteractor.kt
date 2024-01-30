@@ -2,11 +2,8 @@ package com.projects.moviemanager.features.home.domain
 
 import com.projects.moviemanager.common.domain.MediaType
 import com.projects.moviemanager.database.repository.DatabaseRepository
-import com.projects.moviemanager.domain.models.content.DetailedMediaInfo
-import com.projects.moviemanager.domain.models.content.GenericSearchContent
+import com.projects.moviemanager.domain.models.content.GenericContent
 import com.projects.moviemanager.domain.models.content.toGenericSearchContent
-import com.projects.moviemanager.domain.models.content.toMovieDetailsInfo
-import com.projects.moviemanager.domain.models.content.toShowDetailsInfo
 import com.projects.moviemanager.features.watchlist.model.DefaultLists
 import com.projects.moviemanager.network.models.content.movie.MovieApiResponse
 import com.projects.moviemanager.network.models.content.show.ShowApiResponse
@@ -24,10 +21,10 @@ class HomeInteractor @Inject constructor(
     private val movieRepository: MovieRepository,
     private val showRepository: ShowRepository
 ) {
-    suspend fun getTrendingMulti(): List<GenericSearchContent> {
+    suspend fun getTrendingMulti(): List<GenericContent> {
         val result = homeRepository.getTrendingMulti()
 
-        var listResults: List<GenericSearchContent> = emptyList()
+        var listResults: List<GenericContent> = emptyList()
         result.collect { response ->
             when (response) {
                 is Right -> {
@@ -43,7 +40,7 @@ class HomeInteractor @Inject constructor(
         return listResults
     }
 
-    suspend fun getAllWatchlist(): List<GenericSearchContent> {
+    suspend fun getAllWatchlist(): List<GenericContent> {
         val result = databaseRepository.getAllItemsByListId(
             listId = DefaultLists.WATCHLIST.listId
         )
@@ -59,14 +56,14 @@ class HomeInteractor @Inject constructor(
     private suspend fun getContentDetailsById(
         contentId: Int,
         mediaType: MediaType
-    ): GenericSearchContent? {
+    ): GenericContent? {
         val result = when (mediaType) {
             MediaType.MOVIE -> movieRepository.getMovieDetailsById(contentId)
             MediaType.SHOW -> showRepository.getShowDetailsById(contentId)
             else -> return null
         }
 
-        var contentDetails: GenericSearchContent? = null
+        var contentDetails: GenericContent? = null
         result.collect { response ->
             when (response) {
                 is Right -> {

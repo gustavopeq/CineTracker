@@ -4,7 +4,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.projects.moviemanager.common.domain.MediaType
-import com.projects.moviemanager.domain.models.content.GenericSearchContent
+import com.projects.moviemanager.domain.models.content.GenericContent
 import com.projects.moviemanager.features.search.ui.paging.SearchPagingSource
 import com.projects.moviemanager.network.repository.search.SearchRepository
 import com.projects.moviemanager.util.Constants
@@ -17,7 +17,7 @@ class SearchInteractor @Inject constructor(
     fun onSearchQuery(
         query: String,
         mediaType: MediaType?
-    ): Flow<PagingData<GenericSearchContent>> {
+    ): Flow<PagingData<GenericContent>> {
         return Pager(PagingConfig(pageSize = Constants.PAGE_SIZE)) {
             SearchPagingSource(
                 searchRepository,

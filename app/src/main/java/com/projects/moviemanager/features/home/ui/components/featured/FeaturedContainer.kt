@@ -25,11 +25,11 @@ import com.projects.moviemanager.common.ui.components.GradientDirections
 import com.projects.moviemanager.common.ui.components.NetworkImage
 import com.projects.moviemanager.common.ui.components.classicVerticalGradientBrush
 import com.projects.moviemanager.common.ui.util.UiConstants
-import com.projects.moviemanager.domain.models.content.GenericSearchContent
+import com.projects.moviemanager.domain.models.content.GenericContent
 
 @Composable
 fun FeaturedInfo(
-    mainContent: GenericSearchContent,
+    mainContent: GenericContent,
     goToDetails: (Int, MediaType) -> Unit
 ) {
     Column(

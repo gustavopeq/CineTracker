@@ -1,4 +1,4 @@
-package com.projects.moviemanager.common.ui.components
+package com.projects.moviemanager.common.ui.components.cards
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.projects.moviemanager.common.ui.components.NetworkImage
 import com.projects.moviemanager.common.ui.theme.MainBarGreyColor
 import com.projects.moviemanager.common.ui.theme.RoundCornerShapes
 import com.projects.moviemanager.common.ui.util.UiConstants.BROWSE_CARD_DEFAULT_ELEVATION
@@ -19,7 +20,7 @@ import com.projects.moviemanager.common.ui.util.UiConstants.POSTER_ASPECT_RATIO_
 import com.projects.moviemanager.util.Constants.BASE_500_IMAGE_URL
 
 @Composable
-fun ImageCard(
+fun PersonImages(
     modifier: Modifier = Modifier,
     cardWidth: Dp,
     imageUrl: String?

@@ -9,7 +9,7 @@ import com.projects.moviemanager.network.models.content.common.ShowResponse
 import com.projects.moviemanager.network.models.content.movie.MovieApiResponse
 import com.projects.moviemanager.network.models.content.show.ShowApiResponse
 
-data class GenericSearchContent(
+data class GenericContent(
     val id: Int,
     val name: String?,
     val rating: Double?,
@@ -17,7 +17,7 @@ data class GenericSearchContent(
     val mediaType: MediaType
 )
 
-fun BaseContentResponse.toGenericSearchContent(): GenericSearchContent? {
+fun BaseContentResponse.toGenericSearchContent(): GenericContent? {
     val posterPath: String? = this.poster_path ?: this.profile_path
     val name: String? = this.title ?: this.name
     val mediaType = when (this) {
@@ -30,7 +30,7 @@ fun BaseContentResponse.toGenericSearchContent(): GenericSearchContent? {
 
     if (mediaType == MediaType.UNKNOWN || posterPath.isNullOrEmpty()) return null
 
-    return GenericSearchContent(
+    return GenericContent(
         id = this.id,
         name = name,
         rating = this.vote_average,
@@ -39,13 +39,13 @@ fun BaseContentResponse.toGenericSearchContent(): GenericSearchContent? {
     )
 }
 
-fun MovieApiResponse.toGenericSearchContent(): GenericSearchContent? {
+fun MovieApiResponse.toGenericSearchContent(): GenericContent? {
     val mediaType = this.mediaType
     val posterPath = this.poster_path
 
     if (mediaType == MediaType.UNKNOWN || posterPath.isNullOrEmpty()) return null
 
-    return GenericSearchContent(
+    return GenericContent(
         id = this.id,
         name = this.title,
         rating = this.vote_average,
@@ -54,13 +54,13 @@ fun MovieApiResponse.toGenericSearchContent(): GenericSearchContent? {
     )
 }
 
-fun ShowApiResponse.toGenericSearchContent(): GenericSearchContent? {
+fun ShowApiResponse.toGenericSearchContent(): GenericContent? {
     val mediaType = this.mediaType ?: MediaType.UNKNOWN
     val posterPath = this.poster_path
 
     if (mediaType == MediaType.UNKNOWN || posterPath.isNullOrEmpty()) return null
 
-    return GenericSearchContent(
+    return GenericContent(
         id = this.id,
         name = this.title,
         rating = this.vote_average,
