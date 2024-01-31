@@ -31,9 +31,7 @@ fun BaseContentResponse.toGenericSearchContent(): GenericContent? {
         else -> { MediaType.UNKNOWN }
     }
 
-    if (mediaType == MediaType.UNKNOWN ||
-        posterPath.isNullOrEmpty() || backdropPath.isNullOrEmpty()
-    ) {
+    if (mediaType == MediaType.UNKNOWN || posterPath.isNullOrEmpty()) {
         return null
     }
 
