@@ -1,5 +1,6 @@
 package com.projects.moviemanager.network.services.home
 
+import com.projects.moviemanager.network.models.content.common.MovieResponse
 import com.projects.moviemanager.network.models.content.common.MultiResponse
 import com.projects.moviemanager.network.models.content.common.PersonResponse
 import com.projects.moviemanager.network.models.search.SearchPageResponse
@@ -18,4 +19,11 @@ interface HomeService {
     suspend fun getDayTrendingPerson(
         @Query("language") language: String = Constants.ENGLISH_LANGUAGE_CODE
     ): Response<SearchPageResponse<PersonResponse>>
+
+    @GET("discover/movie?api_key=${Constants.API_KEY}")
+    suspend fun getMoviesComingSoon(
+        @Query("language") language: String = Constants.ENGLISH_LANGUAGE_CODE,
+        @Query("primary_release_date.gte") primaryReleaseDateStart: String,
+        @Query("primary_release_date.lte") primaryReleaseDateEnd: String
+    ): Response<SearchPageResponse<MovieResponse>>
 }

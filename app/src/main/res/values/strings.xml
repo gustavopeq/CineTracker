@@ -93,5 +93,6 @@
     <string name="watchlist_carousel_empty_message">See something you like? Keep track of everything you want to watch by adding it to your Watchlist.</string>
     <string name="person_featured_card_role_header">Role</string>
     <string name="person_featured_card_known_for_header">Known for</string>
+    <string name="coming_soon_header">Coming Soon</string>
 
 </resources>

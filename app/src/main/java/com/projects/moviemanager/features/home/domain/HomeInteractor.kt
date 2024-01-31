@@ -105,4 +105,26 @@ class HomeInteractor @Inject constructor(
         }
         return listResults
     }
+
+    suspend fun getMoviesComingSoon(): List<GenericContent> {
+        val result = homeRepository.getMoviesComingSoon(
+            primaryReleaseDateStart = "2024-01-30",
+            primaryReleaseDateEnd = "2024-02-30"
+        )
+
+        var listResults: List<GenericContent> = emptyList()
+        result.collect { response ->
+            when (response) {
+                is Right -> {
+                    Timber.e("getMoviesComingSoon failed with error: ${response.error}")
+                }
+                is Left -> {
+                    listResults = response.value.results.mapNotNull {
+                        it.toGenericSearchContent()
+                    }
+                }
+            }
+        }
+        return listResults
+    }
 }

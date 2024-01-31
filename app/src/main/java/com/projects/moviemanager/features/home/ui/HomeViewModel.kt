@@ -32,10 +32,16 @@ class HomeViewModel @Inject constructor(
     )
     val trendingPerson: StateFlow<List<PersonDetails>> get() = _trendingPerson
 
+    private val _moviesComingSoon: MutableStateFlow<List<GenericContent>> = MutableStateFlow(
+        emptyList()
+    )
+    val moviesComingSoon: StateFlow<List<GenericContent>> get() = _moviesComingSoon
+
     init {
         viewModelScope.launch {
             _trendingMulti.value = homeInteractor.getTrendingMulti()
             _trendingPerson.value = homeInteractor.getTrendingPerson()
+            _moviesComingSoon.value = homeInteractor.getMoviesComingSoon()
         }
 
         viewModelScope.launch(Dispatchers.IO) {

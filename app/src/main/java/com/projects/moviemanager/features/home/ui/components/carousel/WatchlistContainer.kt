@@ -66,6 +66,8 @@ fun WatchlistCarousel(
             }
         )
     }
+
+    Spacer(modifier = Modifier.height(DEFAULT_PADDING.dp))
 }
 
 @Composable

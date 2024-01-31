@@ -69,5 +69,7 @@ fun SecondaryFeaturedInfo(
                 }
             }
         }
+
+        Spacer(modifier = Modifier.height(DEFAULT_MARGIN.dp))
     }
 }

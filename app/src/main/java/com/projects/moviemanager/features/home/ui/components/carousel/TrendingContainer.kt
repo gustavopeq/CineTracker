@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
@@ -33,26 +34,30 @@ fun TrendingCarousel(
     currentScreenWidth: Int,
     goToDetails: (Int, MediaType) -> Unit
 ) {
-    ClassicCarousel(
-        carouselHeaderRes = R.string.trending_today_header,
-        itemList = trendingItems,
-        currentScreenWidth = currentScreenWidth,
-        goToDetails = goToDetails
-    ) { item, goToDetails ->
-        DefaultContentCard(
-            modifier = Modifier.padding(
-                top = DEFAULT_PADDING.dp,
-                bottom = DEFAULT_PADDING.dp,
-                end = DEFAULT_PADDING.dp
-            ),
-            cardWidth = CAROUSEL_CARDS_WIDTH.dp,
-            imageUrl = item.posterPath,
-            title = item.name,
-            rating = item.rating,
-            goToDetails = {
-                goToDetails(item.id, item.mediaType)
-            }
-        )
+    if (trendingItems.isNotEmpty()) {
+        ClassicCarousel(
+            carouselHeaderRes = R.string.trending_today_header,
+            itemList = trendingItems,
+            currentScreenWidth = currentScreenWidth,
+            goToDetails = goToDetails
+        ) { item, goToDetails ->
+            DefaultContentCard(
+                modifier = Modifier.padding(
+                    top = DEFAULT_PADDING.dp,
+                    bottom = DEFAULT_PADDING.dp,
+                    end = DEFAULT_PADDING.dp
+                ),
+                cardWidth = CAROUSEL_CARDS_WIDTH.dp,
+                imageUrl = item.posterPath,
+                title = item.name,
+                rating = item.rating,
+                goToDetails = {
+                    goToDetails(item.id, item.mediaType)
+                }
+            )
+        }
+
+        Spacer(modifier = Modifier.height(DEFAULT_PADDING.dp))
     }
 }
 

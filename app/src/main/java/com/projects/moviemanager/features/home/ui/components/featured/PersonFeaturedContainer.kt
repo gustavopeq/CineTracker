@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -56,45 +57,7 @@ fun PersonFeaturedInfo(
                 )
             ) {
                 Row {
-                    Column(
-                        modifier = Modifier
-                            .padding(UiConstants.DEFAULT_PADDING.dp)
-                            .weight(1f)
-                    ) {
-                        HomeCardTitle(title = trendingPerson.title)
-                        Spacer(modifier = Modifier.weight(1f))
-
-                        CardHeader(
-                            headerRes = R.string.person_featured_card_role_header
-                        )
-                        Spacer(modifier = Modifier.height(UiConstants.SMALL_PADDING.dp))
-                        Text(
-                            text = trendingPerson.knownForDepartment.orEmpty(),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onPrimary,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
-                        )
-
-                        Spacer(modifier = Modifier.height(UiConstants.DEFAULT_PADDING.dp))
-
-                        CardHeader(
-                            headerRes = R.string.person_featured_card_known_for_header
-                        )
-                        Spacer(modifier = Modifier.height(UiConstants.SMALL_PADDING.dp))
-                        trendingPerson.knownFor.forEach {
-                            it.title?.let { title ->
-                                Text(
-                                    text = title,
-                                    style = MaterialTheme.typography.bodySmall,
-                                    color = MaterialTheme.colorScheme.onPrimary,
-                                    maxLines = 1,
-                                    overflow = TextOverflow.Ellipsis
-                                )
-                            }
-                        }
-                        Spacer(modifier = Modifier.weight(1f))
-                    }
+                    PersonFeaturedInfo(trendingPerson)
                     NetworkImage(
                         modifier = Modifier.clip(
                             RoundedCornerShape(
@@ -109,6 +72,49 @@ fun PersonFeaturedInfo(
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun RowScope.PersonFeaturedInfo(trendingPerson: PersonDetails) {
+    Column(
+        modifier = Modifier
+            .padding(UiConstants.DEFAULT_PADDING.dp)
+            .weight(1f)
+    ) {
+        HomeCardTitle(title = trendingPerson.title)
+        Spacer(modifier = Modifier.weight(1f))
+
+        CardHeader(
+            headerRes = R.string.person_featured_card_role_header
+        )
+        Spacer(modifier = Modifier.height(UiConstants.SMALL_PADDING.dp))
+        Text(
+            text = trendingPerson.knownForDepartment.orEmpty(),
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onPrimary,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
+
+        Spacer(modifier = Modifier.height(UiConstants.DEFAULT_PADDING.dp))
+
+        CardHeader(
+            headerRes = R.string.person_featured_card_known_for_header
+        )
+        Spacer(modifier = Modifier.height(UiConstants.SMALL_PADDING.dp))
+        trendingPerson.knownFor.forEach {
+            it.title?.let { title ->
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onPrimary,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
+        }
+        Spacer(modifier = Modifier.weight(1f))
     }
 }
 
