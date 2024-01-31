@@ -49,4 +49,5 @@ object UiConstants {
     const val HOME_BACKGROUND_OFFSET_PERCENT = 0.5f
     const val HOME_BACKGROUND_ALPHA = 0.3f
     const val CAROUSEL_CARDS_WIDTH = 150
+    const val PERSON_FEATURED_IMAGE_WIDTH = 150
 }

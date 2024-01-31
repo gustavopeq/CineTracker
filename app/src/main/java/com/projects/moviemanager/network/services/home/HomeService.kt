@@ -1,6 +1,7 @@
 package com.projects.moviemanager.network.services.home
 
 import com.projects.moviemanager.network.models.content.common.MultiResponse
+import com.projects.moviemanager.network.models.content.common.PersonResponse
 import com.projects.moviemanager.network.models.search.SearchPageResponse
 import com.projects.moviemanager.util.Constants
 import retrofit2.Response
@@ -12,4 +13,9 @@ interface HomeService {
     suspend fun getDayTrendingMulti(
         @Query("language") language: String = Constants.ENGLISH_LANGUAGE_CODE
     ): Response<SearchPageResponse<MultiResponse>>
+
+    @GET("trending/person/day?api_key=${Constants.API_KEY}")
+    suspend fun getDayTrendingPerson(
+        @Query("language") language: String = Constants.ENGLISH_LANGUAGE_CODE
+    ): Response<SearchPageResponse<PersonResponse>>
 }

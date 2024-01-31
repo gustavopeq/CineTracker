@@ -3,6 +3,7 @@ package com.projects.moviemanager.features.home.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.projects.moviemanager.domain.models.content.GenericContent
+import com.projects.moviemanager.domain.models.person.PersonDetails
 import com.projects.moviemanager.features.home.domain.HomeInteractor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -26,9 +27,15 @@ class HomeViewModel @Inject constructor(
     )
     val myWatchlist: StateFlow<List<GenericContent>> get() = _myWatchlist
 
+    private val _trendingPerson: MutableStateFlow<List<PersonDetails>> = MutableStateFlow(
+        emptyList()
+    )
+    val trendingPerson: StateFlow<List<PersonDetails>> get() = _trendingPerson
+
     init {
         viewModelScope.launch {
             _trendingMulti.value = homeInteractor.getTrendingMulti()
+            _trendingPerson.value = homeInteractor.getTrendingPerson()
         }
 
         viewModelScope.launch(Dispatchers.IO) {

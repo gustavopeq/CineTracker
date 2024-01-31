@@ -57,10 +57,7 @@ fun SecondaryFeaturedInfo(
                 Column(
                     modifier = Modifier.padding(DEFAULT_PADDING.dp)
                 ) {
-                    Text(
-                        text = featuredItem.name.orEmpty(),
-                        color = MaterialTheme.colorScheme.onPrimary
-                    )
+                    HomeCardTitle(title = featuredItem.name.orEmpty())
                     Spacer(modifier = Modifier.height(DEFAULT_PADDING.dp))
                     Text(
                         text = featuredItem.overview.orEmpty(),

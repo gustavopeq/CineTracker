@@ -4,6 +4,8 @@ import com.projects.moviemanager.common.domain.MediaType
 import com.projects.moviemanager.database.repository.DatabaseRepository
 import com.projects.moviemanager.domain.models.content.GenericContent
 import com.projects.moviemanager.domain.models.content.toGenericSearchContent
+import com.projects.moviemanager.domain.models.person.PersonDetails
+import com.projects.moviemanager.domain.models.person.toPersonDetails
 import com.projects.moviemanager.features.watchlist.model.DefaultLists
 import com.projects.moviemanager.network.models.content.movie.MovieApiResponse
 import com.projects.moviemanager.network.models.content.show.ShowApiResponse
@@ -71,13 +73,36 @@ class HomeInteractor @Inject constructor(
                 }
                 is Left -> {
                     contentDetails = when (mediaType) {
-                        MediaType.MOVIE -> (response.value as MovieApiResponse).toGenericSearchContent()
-                        MediaType.SHOW -> (response.value as ShowApiResponse).toGenericSearchContent()
+                        MediaType.MOVIE -> {
+                            (response.value as MovieApiResponse).toGenericSearchContent()
+                        }
+                        MediaType.SHOW -> {
+                            (response.value as ShowApiResponse).toGenericSearchContent()
+                        }
                         else -> return@collect
                     }
                 }
             }
         }
         return contentDetails
+    }
+
+    suspend fun getTrendingPerson(): List<PersonDetails> {
+        val result = homeRepository.getTrendingPerson()
+
+        var listResults: List<PersonDetails> = emptyList()
+        result.collect { response ->
+            when (response) {
+                is Right -> {
+                    Timber.e("getTrendingPerson failed with error: ${response.error}")
+                }
+                is Left -> {
+                    listResults = response.value.results.map {
+                        it.toPersonDetails()
+                    }
+                }
+            }
+        }
+        return listResults
     }
 }

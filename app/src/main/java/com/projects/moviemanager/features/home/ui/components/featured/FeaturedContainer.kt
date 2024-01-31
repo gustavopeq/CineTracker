@@ -33,47 +33,49 @@ import com.projects.moviemanager.domain.models.content.GenericContent
 
 @Composable
 fun FeaturedInfo(
-    featuredContent: GenericContent,
+    featuredContent: GenericContent?,
     goToDetails: (Int, MediaType) -> Unit
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .classicVerticalGradientBrush(
-                direction = GradientDirections.UP
-            )
-    ) {
+    featuredContent?.let {
         Column(
-            modifier = Modifier.padding(DEFAULT_MARGIN.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .classicVerticalGradientBrush(
+                    direction = GradientDirections.UP
+                )
         ) {
-            Text(
-                text = featuredContent.name.orEmpty(),
-                style = MaterialTheme.typography.displayLarge
-            )
-            Spacer(modifier = Modifier.height(DEFAULT_PADDING.dp))
-            Text(
-                text = featuredContent.overview.orEmpty(),
-                style = MaterialTheme.typography.bodyMedium,
-                maxLines = 3,
-                overflow = TextOverflow.Ellipsis
-            )
-            Spacer(modifier = Modifier.height(DEFAULT_PADDING.dp))
-            Button(
-                onClick = {
-                    goToDetails(featuredContent.id, featuredContent.mediaType)
-                },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.secondary
-                ),
-                shape = RoundedCornerShape(4.dp)
+            Column(
+                modifier = Modifier.padding(DEFAULT_MARGIN.dp)
             ) {
                 Text(
-                    text = stringResource(id = R.string.see_details_button_text),
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.primary
+                    text = featuredContent.name.orEmpty(),
+                    style = MaterialTheme.typography.displayLarge
                 )
+                Spacer(modifier = Modifier.height(DEFAULT_PADDING.dp))
+                Text(
+                    text = featuredContent.overview.orEmpty(),
+                    style = MaterialTheme.typography.bodyMedium,
+                    maxLines = 3,
+                    overflow = TextOverflow.Ellipsis
+                )
+                Spacer(modifier = Modifier.height(DEFAULT_PADDING.dp))
+                Button(
+                    onClick = {
+                        goToDetails(featuredContent.id, featuredContent.mediaType)
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.secondary
+                    ),
+                    shape = RoundedCornerShape(4.dp)
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.see_details_button_text),
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+                Spacer(modifier = Modifier.height(DEFAULT_PADDING.dp))
             }
-            Spacer(modifier = Modifier.height(DEFAULT_PADDING.dp))
         }
     }
 }
