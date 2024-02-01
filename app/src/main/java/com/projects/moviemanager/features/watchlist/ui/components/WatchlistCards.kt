@@ -125,6 +125,7 @@ fun WatchlistCard(
 
 @Composable
 fun MediaTypeTag(
+    modifier: Modifier = Modifier,
     mediaType: MediaType
 ) {
     val mediaTypeTag = if (mediaType == MediaType.MOVIE) {
@@ -134,7 +135,7 @@ fun MediaTypeTag(
     }
 
     Box(
-        modifier = Modifier
+        modifier = modifier
             .defaultMinSize(minWidth = 50.dp)
             .background(color = PrimaryYellowColor_90),
         contentAlignment = Alignment.Center

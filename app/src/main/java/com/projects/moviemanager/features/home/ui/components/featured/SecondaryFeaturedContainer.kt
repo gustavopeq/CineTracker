@@ -1,6 +1,7 @@
 package com.projects.moviemanager.features.home.ui.components.featured
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
@@ -12,6 +13,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -25,6 +27,7 @@ import com.projects.moviemanager.common.ui.util.UiConstants.BROWSE_CARD_DEFAULT_
 import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_MARGIN
 import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_PADDING
 import com.projects.moviemanager.domain.models.content.GenericContent
+import com.projects.moviemanager.features.watchlist.ui.components.MediaTypeTag
 import com.projects.moviemanager.util.Constants.BASE_ORIGINAL_IMAGE_URL
 
 @Composable
@@ -49,12 +52,19 @@ fun SecondaryFeaturedInfo(
                     defaultElevation = BROWSE_CARD_DEFAULT_ELEVATION.dp
                 )
             ) {
-                NetworkImage(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .aspectRatio(BACKDROP_ASPECT_RATIO),
-                    imageUrl = fullImageUrl
-                )
+                Box {
+                    NetworkImage(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .aspectRatio(BACKDROP_ASPECT_RATIO),
+                        imageUrl = fullImageUrl
+                    )
+                    MediaTypeTag(
+                        modifier = Modifier
+                            .align(Alignment.TopEnd),
+                        mediaType = featuredItem.mediaType
+                    )
+                }
 
                 Column(
                     modifier = Modifier.padding(DEFAULT_PADDING.dp)
