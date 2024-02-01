@@ -22,6 +22,7 @@ import com.projects.moviemanager.R
 import com.projects.moviemanager.common.domain.MediaType
 import com.projects.moviemanager.common.ui.components.cards.DefaultContentCard
 import com.projects.moviemanager.common.ui.util.UiConstants.CAROUSEL_CARDS_WIDTH
+import com.projects.moviemanager.common.ui.util.UiConstants.CAROUSEL_RATING_STAR_SIZE
 import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_MARGIN
 import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_PADDING
 import com.projects.moviemanager.common.ui.util.UiConstants.SMALL_MARGIN
@@ -51,6 +52,8 @@ fun TrendingCarousel(
                 imageUrl = item.posterPath,
                 title = item.name,
                 rating = item.rating,
+                textStyle = MaterialTheme.typography.bodyMedium,
+                ratingIconSize = CAROUSEL_RATING_STAR_SIZE,
                 goToDetails = {
                     goToDetails(item.id, item.mediaType)
                 }

@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -22,11 +23,9 @@ import com.projects.moviemanager.common.ui.components.RatingComponent
 import com.projects.moviemanager.common.ui.theme.MainBarGreyColor
 import com.projects.moviemanager.common.ui.theme.RoundCornerShapes
 import com.projects.moviemanager.common.ui.util.UiConstants.BROWSE_CARD_DEFAULT_ELEVATION
-import com.projects.moviemanager.common.ui.util.UiConstants.BROWSE_CARD_PADDING_HORIZONTAL
-import com.projects.moviemanager.common.ui.util.UiConstants.BROWSE_CARD_PADDING_VERTICAL
 import com.projects.moviemanager.common.ui.util.UiConstants.POSTER_ASPECT_RATIO_MULTIPLY
 import com.projects.moviemanager.common.ui.util.UiConstants.SMALL_PADDING
-import com.projects.moviemanager.util.Constants
+import com.projects.moviemanager.util.Constants.BASE_500_IMAGE_URL
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -36,9 +35,11 @@ fun DefaultContentCard(
     imageUrl: String?,
     title: String?,
     rating: Double?,
+    textStyle: TextStyle = MaterialTheme.typography.titleMedium,
+    ratingIconSize: Int? = null,
     goToDetails: () -> Unit
 ) {
-    val fullImageUrl = Constants.BASE_500_IMAGE_URL + imageUrl
+    val fullImageUrl = BASE_500_IMAGE_URL + imageUrl
     val imageHeight = cardWidth * POSTER_ASPECT_RATIO_MULTIPLY
 
     Card(
@@ -67,11 +68,15 @@ fun DefaultContentCard(
             Text(
                 text = title.orEmpty(),
                 color = MaterialTheme.colorScheme.onPrimary,
-                style = MaterialTheme.typography.titleMedium,
+                style = textStyle,
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1
             )
-            RatingComponent(rating = rating)
+            RatingComponent(
+                rating = rating,
+                textStyle = textStyle,
+                ratingIconSize = ratingIconSize
+            )
             Spacer(modifier = Modifier.height(4.dp))
         }
     }
