@@ -44,7 +44,7 @@ import com.projects.moviemanager.common.domain.MediaType
 import com.projects.moviemanager.common.ui.theme.RoundCornerShapes
 import com.projects.moviemanager.common.ui.MainViewModel
 import com.projects.moviemanager.common.ui.components.ComponentPlaceholder
-import com.projects.moviemanager.common.ui.components.cards.DefaultContentCard
+import com.projects.moviemanager.common.ui.components.card.DefaultContentCard
 import com.projects.moviemanager.common.domain.SortTypeItem
 import com.projects.moviemanager.common.ui.util.UiConstants.BROWSE_CARD_PADDING_HORIZONTAL
 import com.projects.moviemanager.common.ui.util.UiConstants.BROWSE_CARD_PADDING_VERTICAL

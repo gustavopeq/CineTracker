@@ -1,4 +1,4 @@
-package com.projects.moviemanager.common.ui.components.cards
+package com.projects.moviemanager.common.ui.components.card
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column

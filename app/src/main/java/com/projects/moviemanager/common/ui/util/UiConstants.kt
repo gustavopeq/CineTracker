@@ -17,6 +17,7 @@ object UiConstants {
     const val FOREGROUND_INDEX = 1f
     const val BACKGROUND_INDEX = -1f
     const val RATING_STAR_DEFAULT_SIZE = 22
+    const val CLASSIC_BUTTON_BORDER_SIZE = 4
 
     // Home
     const val HOME_LOGO_SIZE = 36

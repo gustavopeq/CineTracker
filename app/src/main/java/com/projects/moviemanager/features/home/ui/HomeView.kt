@@ -7,20 +7,26 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.projects.moviemanager.R
 import com.projects.moviemanager.common.domain.MediaType
 import com.projects.moviemanager.common.ui.components.DimensionSubcomposeLayout
+import com.projects.moviemanager.common.ui.components.button.ClassicButton
 import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_MARGIN
 import com.projects.moviemanager.common.ui.util.UiConstants.HOME_BACKGROUND_OFFSET_PERCENT
 import com.projects.moviemanager.domain.models.content.GenericContent
@@ -37,12 +43,14 @@ import com.projects.moviemanager.util.Constants.BASE_ORIGINAL_IMAGE_URL
 @Composable
 fun Home(
     goToDetails: (Int, MediaType) -> Unit,
-    goToWatchlist: () -> Unit
+    goToWatchlist: () -> Unit,
+    goToBrowse: () -> Unit
 ) {
     Home(
         viewModel = hiltViewModel(),
         goToDetails = goToDetails,
-        goToWatchlist = goToWatchlist
+        goToWatchlist = goToWatchlist,
+        goToBrowse = goToBrowse
     )
 }
 
@@ -50,7 +58,8 @@ fun Home(
 private fun Home(
     viewModel: HomeViewModel,
     goToDetails: (Int, MediaType) -> Unit,
-    goToWatchlist: () -> Unit
+    goToWatchlist: () -> Unit,
+    goToBrowse: () -> Unit
 ) {
     val trendingMultiList by viewModel.trendingMulti.collectAsState()
     val myWatchlist by viewModel.myWatchlist.collectAsState()
@@ -74,7 +83,8 @@ private fun Home(
                         trendingPersonList,
                         moviesComingSoonList,
                         goToDetails,
-                        goToWatchlist
+                        goToWatchlist,
+                        goToBrowse
                     )
                 }
             )
@@ -90,7 +100,8 @@ private fun HomeBody(
     trendingPersonList: List<PersonDetails>,
     moviesComingSoonList: List<GenericContent>,
     goToDetails: (Int, MediaType) -> Unit,
-    goToWatchlist: () -> Unit
+    goToWatchlist: () -> Unit,
+    goToBrowse: () -> Unit
 ) {
     val currentScreenWidth = LocalConfiguration.current.screenWidthDp
     val featuredItem = trendingMultiList.firstOrNull()
@@ -149,9 +160,36 @@ private fun HomeBody(
                     trendingPerson = trendingPerson,
                     goToDetails = goToDetails
                 )
+                HomeBrowseButton(
+                    goToBrowse = goToBrowse
+                )
                 Spacer(modifier = Modifier.height(DEFAULT_MARGIN.dp))
             }
         }
     }
 }
 
+@Composable
+fun HomeBrowseButton(
+    goToBrowse: () -> Unit
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = DEFAULT_MARGIN.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Spacer(modifier = Modifier.height(DEFAULT_MARGIN.dp))
+        Text(
+            text = stringResource(id = R.string.home_bottom_screen_message),
+            style = MaterialTheme.typography.titleMedium,
+            color = MaterialTheme.colorScheme.onPrimary,
+            textAlign = TextAlign.Center
+        )
+        Spacer(modifier = Modifier.height(DEFAULT_MARGIN.dp))
+        ClassicButton(
+            buttonText = stringResource(id = R.string.home_discover_more_button),
+            onClick = goToBrowse
+        )
+    }
+}

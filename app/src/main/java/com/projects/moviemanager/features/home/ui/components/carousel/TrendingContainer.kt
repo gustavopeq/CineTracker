@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.projects.moviemanager.R
 import com.projects.moviemanager.common.domain.MediaType
-import com.projects.moviemanager.common.ui.components.cards.DefaultContentCard
+import com.projects.moviemanager.common.ui.components.card.DefaultContentCard
 import com.projects.moviemanager.common.ui.util.UiConstants.CAROUSEL_CARDS_WIDTH
 import com.projects.moviemanager.common.ui.util.UiConstants.CAROUSEL_RATING_STAR_SIZE
 import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_MARGIN

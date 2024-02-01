@@ -13,8 +13,8 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.projects.moviemanager.common.domain.MediaType
-import com.projects.moviemanager.common.ui.components.cards.DefaultContentCard
-import com.projects.moviemanager.common.ui.components.cards.PersonImages
+import com.projects.moviemanager.common.ui.components.card.DefaultContentCard
+import com.projects.moviemanager.common.ui.components.card.PersonImages
 import com.projects.moviemanager.common.ui.util.UiConstants.BROWSE_CARD_PADDING_HORIZONTAL
 import com.projects.moviemanager.common.ui.util.UiConstants.BROWSE_CARD_PADDING_VERTICAL
 import com.projects.moviemanager.common.ui.util.UiConstants.BROWSE_MIN_CARD_WIDTH

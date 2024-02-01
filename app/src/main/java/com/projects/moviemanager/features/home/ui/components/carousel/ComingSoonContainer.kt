@@ -8,9 +8,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.projects.moviemanager.common.domain.MediaType
-import com.projects.moviemanager.common.ui.components.cards.ImageContentCard
+import com.projects.moviemanager.common.ui.components.card.ImageContentCard
 import com.projects.moviemanager.common.ui.util.UiConstants.CAROUSEL_CARDS_WIDTH
-import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_MARGIN
 import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_PADDING
 import com.projects.moviemanager.domain.models.content.GenericContent
 
@@ -39,6 +38,6 @@ fun ComingSoonCarousel(
                 goToDetails = goToDetails
             )
         }
-        Spacer(modifier = Modifier.height(DEFAULT_MARGIN.dp))
+        Spacer(modifier = Modifier.height(DEFAULT_PADDING.dp))
     }
 }

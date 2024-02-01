@@ -20,7 +20,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.projects.moviemanager.R
 import com.projects.moviemanager.common.domain.MediaType
-import com.projects.moviemanager.common.ui.components.cards.ImageContentCard
+import com.projects.moviemanager.common.ui.components.card.ImageContentCard
 import com.projects.moviemanager.common.ui.util.UiConstants.CAROUSEL_CARDS_WIDTH
 import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_MARGIN
 import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_PADDING

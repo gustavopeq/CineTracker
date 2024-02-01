@@ -1,5 +1,6 @@
 package com.projects.moviemanager.features.home.ui.components.featured
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,8 +24,10 @@ import com.projects.moviemanager.R
 import com.projects.moviemanager.common.domain.MediaType
 import com.projects.moviemanager.common.ui.components.GradientDirections
 import com.projects.moviemanager.common.ui.components.NetworkImage
+import com.projects.moviemanager.common.ui.components.button.ClassicButton
 import com.projects.moviemanager.common.ui.components.classicVerticalGradientBrush
 import com.projects.moviemanager.common.ui.util.UiConstants.BACKGROUND_INDEX
+import com.projects.moviemanager.common.ui.util.UiConstants.CLASSIC_BUTTON_BORDER_SIZE
 import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_MARGIN
 import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_PADDING
 import com.projects.moviemanager.common.ui.util.UiConstants.HOME_BACKGROUND_ALPHA
@@ -59,21 +62,12 @@ fun FeaturedInfo(
                     overflow = TextOverflow.Ellipsis
                 )
                 Spacer(modifier = Modifier.height(DEFAULT_PADDING.dp))
-                Button(
+                ClassicButton(
+                    buttonText = stringResource(id = R.string.see_details_button_text),
                     onClick = {
                         goToDetails(featuredContent.id, featuredContent.mediaType)
-                    },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.secondary
-                    ),
-                    shape = RoundedCornerShape(4.dp)
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.see_details_button_text),
-                        style = MaterialTheme.typography.titleMedium,
-                        color = MaterialTheme.colorScheme.primary
-                    )
-                }
+                    }
+                )
                 Spacer(modifier = Modifier.height(DEFAULT_PADDING.dp))
             }
         }

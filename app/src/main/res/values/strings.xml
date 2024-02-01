@@ -94,5 +94,7 @@
     <string name="person_featured_card_role_header">Role</string>
     <string name="person_featured_card_known_for_header">Known for</string>
     <string name="coming_soon_header">Coming Soon</string>
+    <string name="home_bottom_screen_message">Looks like you\'ve caught up with everything here!</string>
+    <string name="home_discover_more_button">Discover More</string>
 
 </resources>

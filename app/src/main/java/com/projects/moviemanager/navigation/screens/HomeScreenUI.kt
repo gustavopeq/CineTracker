@@ -3,6 +3,7 @@ package com.projects.moviemanager.navigation.screens
 import android.os.Bundle
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
+import com.projects.moviemanager.features.browse.BrowseScreen
 import com.projects.moviemanager.features.details.DetailsScreen
 import com.projects.moviemanager.features.home.ui.Home
 import com.projects.moviemanager.features.watchlist.WatchlistScreen
@@ -19,6 +20,9 @@ class HomeScreenUI : ScreenUI {
             },
             goToWatchlist = {
                 navController.navigate(WatchlistScreen.route())
+            },
+            goToBrowse = {
+                navController.navigate(BrowseScreen.route())
             }
         )
     }

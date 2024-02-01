@@ -1,4 +1,4 @@
-package com.projects.moviemanager.common.ui.components.cards
+package com.projects.moviemanager.common.ui.components.card
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
