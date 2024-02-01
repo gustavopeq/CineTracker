@@ -3,6 +3,7 @@ package com.projects.moviemanager.common.ui.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -11,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.projects.moviemanager.R
+import com.projects.moviemanager.common.ui.util.UiConstants.RATING_STAR_SIZE
 import com.projects.moviemanager.util.formatRating
 
 @Composable
@@ -23,6 +25,7 @@ fun RatingComponent(
         modifier = modifier.offset(x = (-0.5).dp)
     ) {
         Image(
+            modifier = Modifier.size(RATING_STAR_SIZE.dp),
             painter = painterResource(id = R.drawable.ic_star),
             contentDescription = null
         )

@@ -24,11 +24,16 @@ import com.projects.moviemanager.R
 import com.projects.moviemanager.common.domain.MediaType
 import com.projects.moviemanager.common.ui.components.NetworkImage
 import com.projects.moviemanager.common.ui.theme.MainBarGreyColor
-import com.projects.moviemanager.common.ui.util.UiConstants
 import com.projects.moviemanager.common.ui.util.UiConstants.BROWSE_CARD_DEFAULT_ELEVATION
+import com.projects.moviemanager.common.ui.util.UiConstants.CARD_ROUND_CORNER
+import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_MARGIN
+import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_PADDING
 import com.projects.moviemanager.common.ui.util.UiConstants.PERSON_FEATURED_IMAGE_WIDTH
+import com.projects.moviemanager.common.ui.util.UiConstants.PERSON_FEATURED_TITLE_MAX_LINES
+import com.projects.moviemanager.common.ui.util.UiConstants.POSTER_ASPECT_RATIO_MULTIPLY
+import com.projects.moviemanager.common.ui.util.UiConstants.SMALL_PADDING
 import com.projects.moviemanager.domain.models.person.PersonDetails
-import com.projects.moviemanager.util.Constants
+import com.projects.moviemanager.util.Constants.BASE_ORIGINAL_IMAGE_URL
 
 @Composable
 fun PersonFeaturedInfo(
@@ -36,12 +41,12 @@ fun PersonFeaturedInfo(
     goToDetails: (Int, MediaType) -> Unit
 ) {
     trendingPerson?.let {
-        val fullImagePath = Constants.BASE_ORIGINAL_IMAGE_URL + trendingPerson.posterPath
+        val fullImagePath = BASE_ORIGINAL_IMAGE_URL + trendingPerson.posterPath
         val imageWidth = PERSON_FEATURED_IMAGE_WIDTH.dp
-        val imageHeight = imageWidth * UiConstants.POSTER_ASPECT_RATIO_MULTIPLY
+        val imageHeight = imageWidth * POSTER_ASPECT_RATIO_MULTIPLY
 
         Box(
-            modifier = Modifier.padding(horizontal = UiConstants.DEFAULT_MARGIN.dp)
+            modifier = Modifier.padding(horizontal = DEFAULT_MARGIN.dp)
         ) {
             Card(
                 modifier = Modifier
@@ -61,8 +66,8 @@ fun PersonFeaturedInfo(
                     NetworkImage(
                         modifier = Modifier.clip(
                             RoundedCornerShape(
-                                topEnd = UiConstants.CARD_ROUND_CORNER.dp,
-                                bottomEnd = UiConstants.CARD_ROUND_CORNER.dp
+                                topEnd = CARD_ROUND_CORNER.dp,
+                                bottomEnd = CARD_ROUND_CORNER.dp
                             )
                         ),
                         imageUrl = fullImagePath,
@@ -79,16 +84,19 @@ fun PersonFeaturedInfo(
 private fun RowScope.PersonFeaturedInfo(trendingPerson: PersonDetails) {
     Column(
         modifier = Modifier
-            .padding(UiConstants.DEFAULT_PADDING.dp)
+            .padding(DEFAULT_PADDING.dp)
             .weight(1f)
     ) {
-        HomeCardTitle(title = trendingPerson.title)
+        HomeCardTitle(
+            title = trendingPerson.title,
+            maxLines = PERSON_FEATURED_TITLE_MAX_LINES
+        )
         Spacer(modifier = Modifier.weight(1f))
 
         CardHeader(
             headerRes = R.string.person_featured_card_role_header
         )
-        Spacer(modifier = Modifier.height(UiConstants.SMALL_PADDING.dp))
+        Spacer(modifier = Modifier.height(SMALL_PADDING.dp))
         Text(
             text = trendingPerson.knownForDepartment.orEmpty(),
             style = MaterialTheme.typography.bodySmall,
@@ -97,22 +105,20 @@ private fun RowScope.PersonFeaturedInfo(trendingPerson: PersonDetails) {
             overflow = TextOverflow.Ellipsis
         )
 
-        Spacer(modifier = Modifier.height(UiConstants.DEFAULT_PADDING.dp))
+        Spacer(modifier = Modifier.height(DEFAULT_PADDING.dp))
 
         CardHeader(
             headerRes = R.string.person_featured_card_known_for_header
         )
-        Spacer(modifier = Modifier.height(UiConstants.SMALL_PADDING.dp))
+        Spacer(modifier = Modifier.height(SMALL_PADDING.dp))
         trendingPerson.knownFor.forEach {
-            it.title?.let { title ->
-                Text(
-                    text = title,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onPrimary,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-            }
+            Text(
+                text = it.title ?: it.name ?: "",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onPrimary,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
         }
         Spacer(modifier = Modifier.weight(1f))
     }
@@ -120,13 +126,18 @@ private fun RowScope.PersonFeaturedInfo(trendingPerson: PersonDetails) {
 
 @Composable
 fun HomeCardTitle(
-    title: String
+    title: String,
+    maxLines: Int = Int.MAX_VALUE
 ) {
-    Text(
-        text = title,
-        style = MaterialTheme.typography.bodyLarge,
-        color = MaterialTheme.colorScheme.onPrimary
-    )
+    Column {
+        Text(
+            text = title,
+            style = MaterialTheme.typography.bodyLarge,
+            color = MaterialTheme.colorScheme.onPrimary,
+            overflow = TextOverflow.Ellipsis,
+            maxLines = maxLines
+        )
+    }
 }
 
 @Composable

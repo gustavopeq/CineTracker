@@ -17,7 +17,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.projects.moviemanager.common.domain.MediaType
 import com.projects.moviemanager.common.ui.components.NetworkImage
+import com.projects.moviemanager.common.ui.components.RatingComponent
 import com.projects.moviemanager.common.ui.theme.MainBarGreyColor
+import com.projects.moviemanager.common.ui.util.UiConstants
 import com.projects.moviemanager.common.ui.util.UiConstants.BACKDROP_ASPECT_RATIO
 import com.projects.moviemanager.common.ui.util.UiConstants.BROWSE_CARD_DEFAULT_ELEVATION
 import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_MARGIN
@@ -57,7 +59,13 @@ fun SecondaryFeaturedInfo(
                 Column(
                     modifier = Modifier.padding(DEFAULT_PADDING.dp)
                 ) {
-                    HomeCardTitle(title = featuredItem.name.orEmpty())
+                    HomeCardTitle(
+                        title = featuredItem.name.orEmpty()
+                    )
+                    if (featuredItem.rating != null && featuredItem.rating > 0.0) {
+                        Spacer(modifier = Modifier.height(UiConstants.SMALL_PADDING.dp))
+                        RatingComponent(rating = featuredItem.rating)
+                    }
                     Spacer(modifier = Modifier.height(DEFAULT_PADDING.dp))
                     Text(
                         text = featuredItem.overview.orEmpty(),

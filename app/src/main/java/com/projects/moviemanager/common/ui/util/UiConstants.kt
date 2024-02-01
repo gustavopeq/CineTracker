@@ -16,6 +16,7 @@ object UiConstants {
     const val BACKDROP_ASPECT_RATIO = 16f / 9f
     const val FOREGROUND_INDEX = 1f
     const val BACKGROUND_INDEX = -1f
+    const val RATING_STAR_SIZE = 22
 
     // Home
     const val HOME_LOGO_SIZE = 36
@@ -50,4 +51,5 @@ object UiConstants {
     const val HOME_BACKGROUND_ALPHA = 0.3f
     const val CAROUSEL_CARDS_WIDTH = 150
     const val PERSON_FEATURED_IMAGE_WIDTH = 150
+    const val PERSON_FEATURED_TITLE_MAX_LINES = 2
 }
