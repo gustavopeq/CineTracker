@@ -23,7 +23,7 @@ interface HomeService {
     @GET("discover/movie?api_key=${Constants.API_KEY}")
     suspend fun getMoviesComingSoon(
         @Query("language") language: String = Constants.ENGLISH_LANGUAGE_CODE,
-        @Query("primary_release_date.gte") primaryReleaseDateStart: String,
-        @Query("primary_release_date.lte") primaryReleaseDateEnd: String
+        @Query("primary_release_date.gte") releaseDateGte: String,
+        @Query("primary_release_date.lte") releaseDateLte: String
     ): Response<SearchPageResponse<MovieResponse>>
 }

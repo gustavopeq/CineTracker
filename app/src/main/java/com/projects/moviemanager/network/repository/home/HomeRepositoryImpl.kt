@@ -30,13 +30,13 @@ class HomeRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getMoviesComingSoon(
-        primaryReleaseDateStart: String,
-        primaryReleaseDateEnd: String
+        releaseDateGte: String,
+        releaseDateLte: String
     ): Flow<Either<SearchPageResponse<MovieResponse>, ApiError>> {
         return toApiResult {
             homeService.getMoviesComingSoon(
-                primaryReleaseDateStart = primaryReleaseDateStart,
-                primaryReleaseDateEnd = primaryReleaseDateEnd
+                releaseDateGte = releaseDateGte,
+                releaseDateLte = releaseDateLte
             )
         }.asFlow()
     }

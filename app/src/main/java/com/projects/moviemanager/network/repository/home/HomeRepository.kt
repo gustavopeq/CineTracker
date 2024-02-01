@@ -12,7 +12,7 @@ interface HomeRepository {
     suspend fun getTrendingMulti(): Flow<Either<SearchPageResponse<MultiResponse>, ApiError>>
     suspend fun getTrendingPerson(): Flow<Either<SearchPageResponse<PersonResponse>, ApiError>>
     suspend fun getMoviesComingSoon(
-        primaryReleaseDateStart: String,
-        primaryReleaseDateEnd: String
+        releaseDateGte: String,
+        releaseDateLte: String
     ): Flow<Either<SearchPageResponse<MovieResponse>, ApiError>>
 }

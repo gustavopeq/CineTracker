@@ -1,6 +1,5 @@
 package com.projects.moviemanager.features.home.ui
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -8,7 +7,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -23,14 +21,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.projects.moviemanager.R
 import com.projects.moviemanager.common.domain.MediaType
 import com.projects.moviemanager.common.ui.components.DimensionSubcomposeLayout
-import com.projects.moviemanager.common.ui.components.cards.ImageContentCard
-import com.projects.moviemanager.common.ui.util.UiConstants
 import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_MARGIN
-import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_PADDING
 import com.projects.moviemanager.common.ui.util.UiConstants.HOME_BACKGROUND_OFFSET_PERCENT
 import com.projects.moviemanager.domain.models.content.GenericContent
 import com.projects.moviemanager.domain.models.person.PersonDetails
-import com.projects.moviemanager.features.home.ui.components.carousel.ClassicCarousel
 import com.projects.moviemanager.features.home.ui.components.carousel.ComingSoonCarousel
 import com.projects.moviemanager.features.home.ui.components.carousel.TrendingCarousel
 import com.projects.moviemanager.features.home.ui.components.carousel.WatchlistCarousel

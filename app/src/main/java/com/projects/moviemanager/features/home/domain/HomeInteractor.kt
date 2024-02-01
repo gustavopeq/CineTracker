@@ -14,8 +14,11 @@ import com.projects.moviemanager.network.repository.movie.MovieRepository
 import com.projects.moviemanager.network.repository.show.ShowRepository
 import com.projects.moviemanager.network.util.Left
 import com.projects.moviemanager.network.util.Right
-import javax.inject.Inject
 import timber.log.Timber
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
+import javax.inject.Inject
 
 class HomeInteractor @Inject constructor(
     private val homeRepository: HomeRepository,
@@ -107,9 +110,11 @@ class HomeInteractor @Inject constructor(
     }
 
     suspend fun getMoviesComingSoon(): List<GenericContent> {
+        val (releaseDateGte, releaseDateLte) = getComingSoonDates()
+
         val result = homeRepository.getMoviesComingSoon(
-            primaryReleaseDateStart = "2024-01-30",
-            primaryReleaseDateEnd = "2024-02-30"
+            releaseDateGte = releaseDateGte,
+            releaseDateLte = releaseDateLte
         )
 
         var listResults: List<GenericContent> = emptyList()
@@ -126,5 +131,15 @@ class HomeInteractor @Inject constructor(
             }
         }
         return listResults
+    }
+
+    private fun getComingSoonDates(): Pair<String, String> {
+        val calendar = Calendar.getInstance()
+
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val releaseDateGte = dateFormat.format(calendar.time)
+        calendar.add(Calendar.MONTH, 1)
+        val releaseDateLte = dateFormat.format(calendar.time)
+        return Pair(releaseDateGte, releaseDateLte)
     }
 }
