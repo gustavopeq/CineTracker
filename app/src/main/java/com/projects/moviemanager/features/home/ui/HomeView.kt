@@ -12,6 +12,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -41,6 +42,7 @@ import com.projects.moviemanager.features.home.ui.components.featured.FeaturedIn
 import com.projects.moviemanager.features.home.ui.components.featured.PersonFeaturedInfo
 import com.projects.moviemanager.features.home.ui.components.featured.SecondaryFeaturedInfo
 import com.projects.moviemanager.util.Constants.BASE_ORIGINAL_IMAGE_URL
+import timber.log.Timber
 
 @Composable
 fun Home(
@@ -69,6 +71,10 @@ private fun Home(
     val trendingPersonList by viewModel.trendingPerson.collectAsState()
     val moviesComingSoonList by viewModel.moviesComingSoon.collectAsState()
     val localDensity = LocalDensity.current
+
+    LaunchedEffect(Unit) {
+        viewModel.loadHomeScreen()
+    }
 
     Box(modifier = Modifier.fillMaxSize()) {
         when (loadState) {

@@ -24,7 +24,9 @@ import com.projects.moviemanager.common.ui.util.UiConstants.ERROR_ANIMATION_SIZE
 import com.projects.moviemanager.common.ui.util.UiConstants.SECTION_PADDING
 
 @Composable
-fun ErrorScreen() {
+fun ErrorScreen(
+    onTryAgain: () -> Unit
+) {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -41,7 +43,7 @@ fun ErrorScreen() {
 
         ClassicButton(
             buttonText = stringResource(id = R.string.try_again_button),
-            onClick = {}
+            onClick = onTryAgain
         )
         Spacer(modifier = Modifier.weight(0.65f))
     }

@@ -11,11 +11,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    homeInteractor: HomeInteractor
+    private val homeInteractor: HomeInteractor
 ) : ViewModel() {
     private val _loadState: MutableStateFlow<DataLoadState> = MutableStateFlow(
         DataLoadState.Loading
@@ -42,7 +43,7 @@ class HomeViewModel @Inject constructor(
     )
     val moviesComingSoon: StateFlow<List<GenericContent>> get() = _moviesComingSoon
 
-    init {
+    fun loadHomeScreen() {
         viewModelScope.launch {
             _trendingMulti.value = homeInteractor.getTrendingMulti()
             this.launch(Dispatchers.IO) {

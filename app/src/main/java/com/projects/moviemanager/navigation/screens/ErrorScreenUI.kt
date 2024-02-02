@@ -9,6 +9,10 @@ import com.projects.moviemanager.navigation.ScreenUI
 class ErrorScreenUI : ScreenUI {
     @Composable
     override fun UI(navController: NavController, navArguments: Bundle?) {
-        ErrorScreen()
+        ErrorScreen(
+            onTryAgain = {
+                navController.popBackStack()
+            }
+        )
     }
 }
