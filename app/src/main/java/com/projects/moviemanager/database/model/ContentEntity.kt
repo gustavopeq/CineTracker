@@ -8,5 +8,6 @@ data class ContentEntity(
     @PrimaryKey(autoGenerate = true) val contentEntityDbId: Int = 0,
     val contentId: Int,
     val mediaType: String,
-    val listId: String
+    val listId: String,
+    val createdAt: Long = System.currentTimeMillis()
 )
