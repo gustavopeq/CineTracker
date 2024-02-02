@@ -199,7 +199,7 @@ private fun BrowseBody(
             }
             is LoadState.Error -> {
                 Text(
-                    text = stringResource(id = R.string.common_error),
+                    text = stringResource(id = R.string.generic_error_message),
                     modifier = Modifier
                         .align(Alignment.Center)
                         .fillMaxWidth(),
