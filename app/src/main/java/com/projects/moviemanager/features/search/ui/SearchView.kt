@@ -17,13 +17,14 @@ import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.projects.moviemanager.common.domain.MediaType
+import com.projects.moviemanager.common.ui.components.ClassicLoadingIndicator
 import com.projects.moviemanager.common.ui.components.SetStatusBarColor
 import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_PADDING
 import com.projects.moviemanager.common.ui.util.UiConstants.SEARCH_CARDS_WIDTH
 import com.projects.moviemanager.common.ui.util.calculateCardsPerRow
 import com.projects.moviemanager.common.ui.util.dpToPx
 import com.projects.moviemanager.common.ui.util.pxToDp
-import com.projects.moviemanager.domain.models.content.GenericSearchContent
+import com.projects.moviemanager.domain.models.content.GenericContent
 import com.projects.moviemanager.features.search.events.SearchEvent
 import com.projects.moviemanager.features.search.ui.components.NoResultsFound
 import com.projects.moviemanager.features.search.ui.components.SearchBar
@@ -92,7 +93,7 @@ private fun Search(
 @Composable
 private fun SearchBody(
     searchQuery: String,
-    searchResults: LazyPagingItems<GenericSearchContent>,
+    searchResults: LazyPagingItems<GenericContent>,
     isDebounceActive: Boolean,
     goToDetails: (Int, MediaType) -> Unit
 ) {
@@ -127,9 +128,7 @@ private fun SearchLoadingIndicator() {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.weight(0.3f))
-        CircularProgressIndicator(
-            color = MaterialTheme.colorScheme.secondary
-        )
+        ClassicLoadingIndicator()
         Spacer(modifier = Modifier.weight(0.7f))
     }
 }

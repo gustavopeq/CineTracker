@@ -1,4 +1,4 @@
-package com.projects.moviemanager.features.watchlist.model
+package com.projects.moviemanager.domain.models.util
 
 sealed class DataLoadState {
     data object Empty : DataLoadState()

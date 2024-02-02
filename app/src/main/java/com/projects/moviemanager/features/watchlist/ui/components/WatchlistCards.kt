@@ -58,11 +58,7 @@ fun WatchlistCard(
     val fullImageUrl = BASE_300_IMAGE_URL + posterUrl
     val imageWidth = WATCHLIST_IMAGE_WIDTH.dp
     val imageHeight = imageWidth * POSTER_ASPECT_RATIO_MULTIPLY
-    val mediaTypeTag = if (mediaType == MediaType.MOVIE) {
-        stringResource(id = R.string.movie_tag)
-    } else {
-        stringResource(id = R.string.show_tag)
-    }
+
 
     var showPopupMenu by remember { mutableStateOf(false) }
 
@@ -100,20 +96,9 @@ fun WatchlistCard(
                 Spacer(modifier = Modifier.height(SMALL_PADDING.dp))
                 RatingComponent(rating = rating)
                 Spacer(modifier = Modifier.weight(1f))
-                Box(
-                    modifier = Modifier
-                        .defaultMinSize(minWidth = 50.dp)
-                        .background(color = PrimaryYellowColor_90),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = mediaTypeTag,
-                        color = MaterialTheme.colorScheme.primary,
-                        style = MaterialTheme.typography.titleSmall,
-                        maxLines = 1,
-                        modifier = Modifier.padding(horizontal = 2.dp)
-                    )
-                }
+                MediaTypeTag(
+                    mediaType = mediaType
+                )
             }
             IconButton(
                 onClick = {
@@ -135,6 +120,33 @@ fun WatchlistCard(
                 )
             }
         }
+    }
+}
+
+@Composable
+fun MediaTypeTag(
+    modifier: Modifier = Modifier,
+    mediaType: MediaType
+) {
+    val mediaTypeTag = if (mediaType == MediaType.MOVIE) {
+        stringResource(id = R.string.movie_tag)
+    } else {
+        stringResource(id = R.string.show_tag)
+    }
+
+    Box(
+        modifier = modifier
+            .defaultMinSize(minWidth = 50.dp)
+            .background(color = PrimaryYellowColor_90),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = mediaTypeTag,
+            color = MaterialTheme.colorScheme.primary,
+            style = MaterialTheme.typography.titleSmall,
+            maxLines = 1,
+            modifier = Modifier.padding(horizontal = 2.dp)
+        )
     }
 }
 

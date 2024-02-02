@@ -16,6 +16,8 @@ object UiConstants {
     const val BACKDROP_ASPECT_RATIO = 16f / 9f
     const val FOREGROUND_INDEX = 1f
     const val BACKGROUND_INDEX = -1f
+    const val RATING_STAR_DEFAULT_SIZE = 22
+    const val CLASSIC_BUTTON_BORDER_SIZE = 4
 
     // Home
     const val HOME_LOGO_SIZE = 36
@@ -44,4 +46,12 @@ object UiConstants {
     const val SEARCH_FILTER_BUTTON_HEIGHT = 30
     const val SEARCH_CARDS_WIDTH = 300
     const val SEARCH_DEBOUNCE_TIME_MS = 1500L
+
+    // Home
+    const val HOME_BACKGROUND_OFFSET_PERCENT = 0.5f
+    const val HOME_BACKGROUND_ALPHA = 0.3f
+    const val CAROUSEL_CARDS_WIDTH = 150
+    const val PERSON_FEATURED_IMAGE_WIDTH = 150
+    const val PERSON_FEATURED_TITLE_MAX_LINES = 2
+    const val CAROUSEL_RATING_STAR_SIZE = 18
 }

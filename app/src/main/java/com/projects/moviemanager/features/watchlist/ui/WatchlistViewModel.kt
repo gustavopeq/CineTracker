@@ -8,7 +8,7 @@ import com.projects.moviemanager.common.domain.MediaType
 import com.projects.moviemanager.domain.models.content.DetailedMediaInfo
 import com.projects.moviemanager.features.watchlist.domain.WatchlistInteractor
 import com.projects.moviemanager.features.watchlist.events.WatchlistEvent
-import com.projects.moviemanager.features.watchlist.model.DataLoadState
+import com.projects.moviemanager.domain.models.util.DataLoadState
 import com.projects.moviemanager.features.watchlist.model.DefaultLists
 import com.projects.moviemanager.features.watchlist.model.DefaultLists.Companion.getOtherList
 import dagger.hilt.android.lifecycle.HiltViewModel

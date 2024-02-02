@@ -3,7 +3,7 @@ package com.projects.moviemanager.features.search.ui.paging
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.projects.moviemanager.common.domain.MediaType
-import com.projects.moviemanager.domain.models.content.GenericSearchContent
+import com.projects.moviemanager.domain.models.content.GenericContent
 import com.projects.moviemanager.domain.models.content.toGenericSearchContent
 import com.projects.moviemanager.network.repository.search.SearchRepository
 import com.projects.moviemanager.network.util.Left
@@ -15,8 +15,8 @@ class SearchPagingSource(
     private val searchRepository: SearchRepository,
     private val query: String,
     private val mediaType: MediaType?
-) : PagingSource<Int, GenericSearchContent>() {
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, GenericSearchContent> {
+) : PagingSource<Int, GenericContent>() {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, GenericContent> {
         return try {
             val pageNumber = params.key ?: 1
             val previousKey = if (pageNumber == 1) {
@@ -76,6 +76,6 @@ class SearchPagingSource(
         }
     }
 
-    override fun getRefreshKey(state: PagingState<Int, GenericSearchContent>): Int =
+    override fun getRefreshKey(state: PagingState<Int, GenericContent>): Int =
         ((state.anchorPosition ?: 0) - state.config.initialLoadSize / 2).coerceAtLeast(0)
 }

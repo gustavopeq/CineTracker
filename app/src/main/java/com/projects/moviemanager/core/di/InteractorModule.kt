@@ -4,8 +4,10 @@ import com.projects.moviemanager.database.repository.DatabaseRepository
 import com.projects.moviemanager.database.repository.DatabaseRepositoryImpl
 import com.projects.moviemanager.features.browse.domain.BrowseInteractor
 import com.projects.moviemanager.features.details.domain.DetailsInteractor
+import com.projects.moviemanager.features.home.domain.HomeInteractor
 import com.projects.moviemanager.features.search.domain.SearchInteractor
 import com.projects.moviemanager.features.watchlist.domain.WatchlistInteractor
+import com.projects.moviemanager.network.repository.home.HomeRepository
 import com.projects.moviemanager.network.repository.movie.MovieRepository
 import com.projects.moviemanager.network.repository.person.PersonRepository
 import com.projects.moviemanager.network.repository.search.SearchRepository
@@ -68,6 +70,22 @@ object InteractorModule {
     ): SearchInteractor {
         return SearchInteractor(
             searchRepository = searchRepository
+        )
+    }
+
+    @Singleton
+    @Provides
+    fun provideHomeInteractor(
+        homeRepository: HomeRepository,
+        databaseRepository: DatabaseRepository,
+        movieRepository: MovieRepository,
+        showRepository: ShowRepository
+    ): HomeInteractor {
+        return HomeInteractor(
+            homeRepository = homeRepository,
+            databaseRepository = databaseRepository,
+            movieRepository = movieRepository,
+            showRepository = showRepository
         )
     }
 }

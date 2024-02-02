@@ -8,7 +8,7 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.projects.moviemanager.common.domain.MediaType
 import com.projects.moviemanager.common.ui.util.UiConstants.SEARCH_DEBOUNCE_TIME_MS
-import com.projects.moviemanager.domain.models.content.GenericSearchContent
+import com.projects.moviemanager.domain.models.content.GenericContent
 import com.projects.moviemanager.features.search.domain.SearchInteractor
 import com.projects.moviemanager.features.search.events.SearchEvent
 import com.projects.moviemanager.features.search.ui.components.SearchTypeFilterItem
@@ -29,9 +29,9 @@ class SearchViewModel @Inject constructor(
     private val _searchQuery = mutableStateOf("")
     val searchQuery: MutableState<String> get() = _searchQuery
 
-    private val _searchResults: MutableStateFlow<PagingData<GenericSearchContent>> =
+    private val _searchResults: MutableStateFlow<PagingData<GenericContent>> =
         MutableStateFlow(PagingData.empty())
-    val searchResult: StateFlow<PagingData<GenericSearchContent>> get() = _searchResults
+    val searchResult: StateFlow<PagingData<GenericContent>> get() = _searchResults
 
     private val _searchFilterSelected: MutableState<SearchTypeFilterItem> = mutableStateOf(
         SearchTypeFilterItem.TopResults

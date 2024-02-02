@@ -3,6 +3,7 @@ package com.projects.moviemanager.common.ui.components
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -12,9 +13,12 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.projects.moviemanager.common.domain.MediaType
+import com.projects.moviemanager.common.ui.components.card.DefaultContentCard
+import com.projects.moviemanager.common.ui.components.card.PersonImages
+import com.projects.moviemanager.common.ui.util.UiConstants.BROWSE_CARD_PADDING_HORIZONTAL
+import com.projects.moviemanager.common.ui.util.UiConstants.BROWSE_CARD_PADDING_VERTICAL
 import com.projects.moviemanager.common.ui.util.UiConstants.BROWSE_MIN_CARD_WIDTH
 import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_MARGIN
-import com.projects.moviemanager.common.ui.util.UiConstants.MAX_COUNT_DETAILS_CARDS
 import com.projects.moviemanager.common.ui.util.calculateCardsPerRow
 import com.projects.moviemanager.common.ui.util.dpToPx
 import com.projects.moviemanager.common.ui.util.pxToDp
@@ -67,8 +71,13 @@ fun GridContentList(
         itemList = mediaContentList,
         maxCardsNumber = maxCardsNumber ?: mediaContentList.size
     ) { content, size ->
-        ContentCard(
-            modifier = Modifier.width(size),
+        DefaultContentCard(
+            modifier = Modifier
+                .width(size)
+                .padding(
+                    horizontal = BROWSE_CARD_PADDING_HORIZONTAL.dp,
+                    vertical = BROWSE_CARD_PADDING_VERTICAL.dp
+                ),
             cardWidth = size,
             imageUrl = content.poster_path,
             title = content.title,
@@ -89,7 +98,7 @@ fun GridImageList(
         itemList = personImageList,
         maxCardsNumber = maxCardsNumber ?: personImageList.size
     ) { personImage, size ->
-        ImageCard(
+        PersonImages(
             modifier = Modifier.width(size),
             cardWidth = size,
             imageUrl = personImage.filePath

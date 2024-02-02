@@ -85,4 +85,16 @@
     <string name="search_error_title_message">Sorry… No results found :(</string>
     <string name="search_error_description_message">Try searching for another movie, show or person.</string>
 
+    <!-- Home screen -->
+    <string name="see_details_button_text">See Details</string>
+    <string name="trending_today_header">Trending Today</string>
+    <string name="home_my_watchlist_header">My Watchlist</string>
+    <string name="carousel_see_all_button">See All</string>
+    <string name="watchlist_carousel_empty_message">See something you like? Keep track of everything you want to watch by adding it to your Watchlist.</string>
+    <string name="person_featured_card_role_header">Role</string>
+    <string name="person_featured_card_known_for_header">Known for</string>
+    <string name="coming_soon_header">Coming Soon</string>
+    <string name="home_bottom_screen_message">Looks like you\'ve caught up with everything here!</string>
+    <string name="home_discover_more_button">Discover More</string>
+
 </resources>
