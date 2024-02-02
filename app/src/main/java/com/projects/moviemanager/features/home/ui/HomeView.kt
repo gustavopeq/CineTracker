@@ -25,12 +25,14 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.projects.moviemanager.R
 import com.projects.moviemanager.common.domain.MediaType
+import com.projects.moviemanager.common.ui.components.ClassicLoadingIndicator
 import com.projects.moviemanager.common.ui.components.DimensionSubcomposeLayout
 import com.projects.moviemanager.common.ui.components.button.ClassicButton
 import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_MARGIN
 import com.projects.moviemanager.common.ui.util.UiConstants.HOME_BACKGROUND_OFFSET_PERCENT
 import com.projects.moviemanager.domain.models.content.GenericContent
 import com.projects.moviemanager.domain.models.person.PersonDetails
+import com.projects.moviemanager.domain.models.util.DataLoadState
 import com.projects.moviemanager.features.home.ui.components.carousel.ComingSoonCarousel
 import com.projects.moviemanager.features.home.ui.components.carousel.TrendingCarousel
 import com.projects.moviemanager.features.home.ui.components.carousel.WatchlistCarousel
@@ -61,6 +63,7 @@ private fun Home(
     goToWatchlist: () -> Unit,
     goToBrowse: () -> Unit
 ) {
+    val loadState by viewModel.loadState.collectAsState()
     val trendingMultiList by viewModel.trendingMulti.collectAsState()
     val myWatchlist by viewModel.myWatchlist.collectAsState()
     val trendingPersonList by viewModel.trendingPerson.collectAsState()
@@ -68,26 +71,38 @@ private fun Home(
     val localDensity = LocalDensity.current
 
     Box(modifier = Modifier.fillMaxSize()) {
-        if (trendingMultiList.isNotEmpty()) {
-            val homePosterUrl = BASE_ORIGINAL_IMAGE_URL + trendingMultiList[0].posterPath
+        when (loadState) {
+            is DataLoadState.Loading -> {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    ClassicLoadingIndicator()
+                }
+            }
+            else -> {
+                if (trendingMultiList.isNotEmpty()) {
+                    val homePosterUrl = BASE_ORIGINAL_IMAGE_URL + trendingMultiList[0].posterPath
 
-            DimensionSubcomposeLayout(
-                mainContent = { FeaturedBackgroundImage(imageUrl = homePosterUrl) },
-                dependentContent = { size ->
-                    val mainBgOffset = localDensity.run { size.height.toDp() }
+                    DimensionSubcomposeLayout(
+                        mainContent = { FeaturedBackgroundImage(imageUrl = homePosterUrl) },
+                        dependentContent = { size ->
+                            val mainBgOffset = localDensity.run { size.height.toDp() }
 
-                    HomeBody(
-                        mainBgOffset,
-                        trendingMultiList,
-                        myWatchlist,
-                        trendingPersonList,
-                        moviesComingSoonList,
-                        goToDetails,
-                        goToWatchlist,
-                        goToBrowse
+                            HomeBody(
+                                mainBgOffset,
+                                trendingMultiList,
+                                myWatchlist,
+                                trendingPersonList,
+                                moviesComingSoonList,
+                                goToDetails,
+                                goToWatchlist,
+                                goToBrowse
+                            )
+                        }
                     )
                 }
-            )
+            }
         }
     }
 }

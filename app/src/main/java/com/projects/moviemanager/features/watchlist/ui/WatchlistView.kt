@@ -41,7 +41,7 @@ import com.projects.moviemanager.domain.models.content.DetailedMediaInfo
 import com.projects.moviemanager.domain.models.content.MovieDetailsInfo
 import com.projects.moviemanager.domain.models.content.ShowDetailsInfo
 import com.projects.moviemanager.features.watchlist.events.WatchlistEvent
-import com.projects.moviemanager.features.watchlist.model.DataLoadState
+import com.projects.moviemanager.domain.models.util.DataLoadState
 import com.projects.moviemanager.features.watchlist.ui.components.WatchlistCard
 import com.projects.moviemanager.features.watchlist.ui.components.WatchlistTabItem
 

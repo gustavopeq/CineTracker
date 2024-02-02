@@ -17,6 +17,7 @@ import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.projects.moviemanager.common.domain.MediaType
+import com.projects.moviemanager.common.ui.components.ClassicLoadingIndicator
 import com.projects.moviemanager.common.ui.components.SetStatusBarColor
 import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_PADDING
 import com.projects.moviemanager.common.ui.util.UiConstants.SEARCH_CARDS_WIDTH
@@ -127,9 +128,7 @@ private fun SearchLoadingIndicator() {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.weight(0.3f))
-        CircularProgressIndicator(
-            color = MaterialTheme.colorScheme.secondary
-        )
+        ClassicLoadingIndicator()
         Spacer(modifier = Modifier.weight(0.7f))
     }
 }
