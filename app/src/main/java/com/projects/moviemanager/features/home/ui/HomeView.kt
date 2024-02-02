@@ -42,7 +42,6 @@ import com.projects.moviemanager.features.home.ui.components.featured.FeaturedIn
 import com.projects.moviemanager.features.home.ui.components.featured.PersonFeaturedInfo
 import com.projects.moviemanager.features.home.ui.components.featured.SecondaryFeaturedInfo
 import com.projects.moviemanager.util.Constants.BASE_ORIGINAL_IMAGE_URL
-import timber.log.Timber
 
 @Composable
 fun Home(
