@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
@@ -15,37 +14,31 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.projects.moviemanager.R
 import com.projects.moviemanager.common.domain.MediaType
-import com.projects.moviemanager.common.ui.theme.RoundCornerShapes
+import com.projects.moviemanager.common.domain.SortTypeItem
 import com.projects.moviemanager.common.ui.MainViewModel
 import com.projects.moviemanager.common.ui.components.ComponentPlaceholder
 import com.projects.moviemanager.common.ui.components.card.DefaultContentCard
-import com.projects.moviemanager.common.domain.SortTypeItem
+import com.projects.moviemanager.common.ui.theme.RoundCornerShapes
 import com.projects.moviemanager.common.ui.util.UiConstants.BROWSE_CARD_PADDING_HORIZONTAL
 import com.projects.moviemanager.common.ui.util.UiConstants.BROWSE_CARD_PADDING_VERTICAL
 import com.projects.moviemanager.common.ui.util.UiConstants.BROWSE_MIN_CARD_WIDTH
@@ -66,12 +59,14 @@ import timber.log.Timber
 
 @Composable
 fun Browse(
-    goToDetails: (Int, MediaType) -> Unit
+    goToDetails: (Int, MediaType) -> Unit,
+    goToErrorScreen: () -> Unit
 ) {
     Browse(
         viewModel = hiltViewModel(),
         mainViewModel = hiltViewModel(),
-        goToDetails = goToDetails
+        goToDetails = goToDetails,
+        goToErrorScreen = goToErrorScreen
     )
 }
 
@@ -80,7 +75,9 @@ fun Browse(
 private fun Browse(
     viewModel: BrowseViewModel,
     mainViewModel: MainViewModel,
-    goToDetails: (Int, MediaType) -> Unit
+    goToDetails: (Int, MediaType) -> Unit,
+    goToErrorScreen: () -> Unit
+
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
     val currentMediaTypeSelected by mainViewModel.currentMediaTypeSelected.collectAsState()
@@ -145,7 +142,8 @@ private fun Browse(
                             mediaType = MediaType.MOVIE,
                             pagingData = listOfMovies,
                             sortTypeItem = movieSortType,
-                            goToDetails = goToDetails
+                            goToDetails = goToDetails,
+                            goToErrorScreen = goToErrorScreen
                         )
                     }
                     1 -> {
@@ -154,7 +152,8 @@ private fun Browse(
                             mediaType = MediaType.SHOW,
                             pagingData = listOfShows,
                             sortTypeItem = showSortType,
-                            goToDetails = goToDetails
+                            goToDetails = goToDetails,
+                            goToErrorScreen = goToErrorScreen
                         )
                     }
                 }
@@ -169,7 +168,8 @@ private fun BrowseBody(
     mediaType: MediaType,
     pagingData: LazyPagingItems<DetailedMediaInfo>,
     sortTypeItem: SortTypeItem,
-    goToDetails: (Int, MediaType) -> Unit
+    goToDetails: (Int, MediaType) -> Unit,
+    goToErrorScreen: () -> Unit
 ) {
     LaunchedEffect(sortTypeItem) {
         viewModel.onEvent(BrowseEvent.UpdateSortType(sortTypeItem, mediaType))
@@ -198,15 +198,8 @@ private fun BrowseBody(
                 )
             }
             is LoadState.Error -> {
-                Text(
-                    text = stringResource(id = R.string.generic_error_message),
-                    modifier = Modifier
-                        .align(Alignment.Center)
-                        .fillMaxWidth(),
-                    style = MaterialTheme.typography.titleMedium,
-                    textAlign = TextAlign.Center,
-                    color = MaterialTheme.colorScheme.onPrimary
-                )
+                viewModel.onEvent(BrowseEvent.OnError)
+                goToErrorScreen()
             }
             else -> {
                 LazyVerticalGrid(
@@ -219,10 +212,7 @@ private fun BrowseBody(
                             val contentVoteAverage = when (content) {
                                 is MovieDetailsInfo -> content.voteAverage
                                 is ShowDetailsInfo -> content.voteAverage
-                                else -> {
-                                    Timber.tag("print").d("content else")
-                                    null
-                                }
+                                else -> { null }
                             }
                             DefaultContentCard(
                                 modifier = Modifier

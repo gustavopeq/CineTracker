@@ -11,4 +11,5 @@ sealed class BrowseEvent {
     data class UpdateMediaType(
         val mediaType: MediaType
     ) : BrowseEvent()
+    data object OnError : BrowseEvent()
 }

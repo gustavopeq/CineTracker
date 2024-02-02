@@ -41,6 +41,7 @@ class BrowseViewModel @Inject constructor(
         when (event) {
             is BrowseEvent.UpdateSortType -> updateSortType(event.movieListType, event.mediaType)
             is BrowseEvent.UpdateMediaType -> updateMediaType(event.mediaType)
+            is BrowseEvent.OnError -> resetBrowse()
         }
     }
 
@@ -83,5 +84,12 @@ class BrowseViewModel @Inject constructor(
         mediaType: MediaType
     ) {
         _mediaTypeSelected.value = mediaType
+    }
+
+    private fun resetBrowse() {
+        movieSortTypeSelected = null
+        showSortTypeSelected = null
+        _moviePager.value = PagingData.empty()
+        _showPager.value = PagingData.empty()
     }
 }
