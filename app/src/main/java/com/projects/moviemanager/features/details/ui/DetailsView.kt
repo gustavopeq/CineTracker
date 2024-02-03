@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.projects.moviemanager.common.domain.MediaType
+import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.common.ui.components.DimensionSubcomposeLayout
 import com.projects.moviemanager.common.ui.components.NetworkImage
 import com.projects.moviemanager.common.ui.util.UiConstants.BACKGROUND_INDEX
@@ -33,7 +33,7 @@ import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_MARGIN
 import com.projects.moviemanager.common.ui.util.UiConstants.DETAILS_TITLE_IMAGE_OFFSET_PERCENT
 import com.projects.moviemanager.common.ui.util.UiConstants.POSTER_ASPECT_RATIO
 import com.projects.moviemanager.common.ui.util.UiConstants.SECTION_PADDING
-import com.projects.moviemanager.domain.models.content.DetailedMediaInfo
+import com.projects.moviemanager.common.domain.models.content.DetailedMediaInfo
 import com.projects.moviemanager.features.details.ui.components.CastCarousel
 import com.projects.moviemanager.features.details.ui.components.DetailsDescriptionBody
 import com.projects.moviemanager.features.details.ui.components.DetailsDescriptionHeader

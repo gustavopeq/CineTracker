@@ -33,8 +33,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.projects.moviemanager.common.domain.MediaType
-import com.projects.moviemanager.common.domain.SortTypeItem
+import com.projects.moviemanager.common.domain.models.util.MediaType
+import com.projects.moviemanager.common.domain.models.util.SortTypeItem
 import com.projects.moviemanager.common.ui.MainViewModel
 import com.projects.moviemanager.common.ui.components.ComponentPlaceholder
 import com.projects.moviemanager.common.ui.components.card.DefaultContentCard
@@ -50,12 +50,11 @@ import com.projects.moviemanager.common.ui.util.UiConstants.SMALL_PADDING
 import com.projects.moviemanager.common.ui.util.calculateCardsPerRow
 import com.projects.moviemanager.common.ui.util.dpToPx
 import com.projects.moviemanager.common.ui.util.pxToDp
-import com.projects.moviemanager.domain.models.content.DetailedMediaInfo
-import com.projects.moviemanager.domain.models.content.MovieDetailsInfo
-import com.projects.moviemanager.domain.models.content.ShowDetailsInfo
+import com.projects.moviemanager.common.domain.models.content.DetailedMediaInfo
+import com.projects.moviemanager.common.domain.models.content.MovieDetailsInfo
+import com.projects.moviemanager.common.domain.models.content.ShowDetailsInfo
 import com.projects.moviemanager.features.browse.events.BrowseEvent
 import com.projects.moviemanager.features.browse.ui.components.CollapsingTabRow
-import timber.log.Timber
 
 @Composable
 fun Browse(

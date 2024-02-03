@@ -1,8 +1,7 @@
-package com.projects.moviemanager.common.domain
+package com.projects.moviemanager.common.domain.models.util
 
 import androidx.annotation.StringRes
 import com.projects.moviemanager.R
-import com.projects.moviemanager.domain.models.util.ContentListType
 
 sealed class SortTypeItem(
     @StringRes val titleRes: Int,

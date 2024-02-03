@@ -2,7 +2,7 @@ package com.projects.moviemanager.database.migration
 
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.projects.moviemanager.common.domain.MediaType
+import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.features.watchlist.model.DefaultLists
 
 val MIGRATION_1_2: Migration = object : Migration(1, 2) {

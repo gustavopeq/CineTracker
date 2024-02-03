@@ -2,11 +2,11 @@ package com.projects.moviemanager.features.browse.ui.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.projects.moviemanager.common.domain.MediaType
-import com.projects.moviemanager.domain.models.content.DetailedMediaInfo
-import com.projects.moviemanager.domain.models.content.toMovieDetailsInfo
-import com.projects.moviemanager.domain.models.content.toShowDetailsInfo
-import com.projects.moviemanager.domain.models.util.ContentListType
+import com.projects.moviemanager.common.domain.models.util.MediaType
+import com.projects.moviemanager.common.domain.models.content.DetailedMediaInfo
+import com.projects.moviemanager.common.domain.models.content.toMovieDetailsInfo
+import com.projects.moviemanager.common.domain.models.content.toShowDetailsInfo
+import com.projects.moviemanager.common.domain.models.util.ContentListType
 import com.projects.moviemanager.network.repository.movie.MovieRepository
 import com.projects.moviemanager.network.repository.show.ShowRepository
 import com.projects.moviemanager.network.util.Left

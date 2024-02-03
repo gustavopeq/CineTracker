@@ -6,9 +6,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.projects.moviemanager.common.domain.MediaType
+import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.common.ui.util.UiConstants.SEARCH_DEBOUNCE_TIME_MS
-import com.projects.moviemanager.domain.models.content.GenericContent
+import com.projects.moviemanager.common.domain.models.content.GenericContent
 import com.projects.moviemanager.features.search.domain.SearchInteractor
 import com.projects.moviemanager.features.search.events.SearchEvent
 import com.projects.moviemanager.features.search.ui.components.SearchTypeFilterItem

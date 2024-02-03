@@ -1,6 +1,6 @@
-package com.projects.moviemanager.domain.models.person
+package com.projects.moviemanager.common.domain.models.person
 
-import com.projects.moviemanager.common.domain.MediaType
+import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.network.models.content.common.MultiResponse
 import com.projects.moviemanager.network.models.content.common.PersonResponse
 

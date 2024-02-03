@@ -1,19 +1,20 @@
 package com.projects.moviemanager.features.watchlist.domain
 
-import com.projects.moviemanager.common.domain.MediaType
+import com.projects.moviemanager.common.domain.models.content.DetailedMediaInfo
+import com.projects.moviemanager.common.domain.models.content.toMovieDetailsInfo
+import com.projects.moviemanager.common.domain.models.content.toShowDetailsInfo
+import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.database.model.ContentEntity
 import com.projects.moviemanager.database.repository.DatabaseRepository
-import com.projects.moviemanager.domain.models.content.DetailedMediaInfo
-import com.projects.moviemanager.domain.models.content.toMovieDetailsInfo
-import com.projects.moviemanager.domain.models.content.toShowDetailsInfo
-import com.projects.moviemanager.network.repository.movie.MovieRepository
-import com.projects.moviemanager.network.repository.show.ShowRepository
+import com.projects.moviemanager.features.watchlist.ui.state.WatchlistState
 import com.projects.moviemanager.network.models.content.movie.MovieApiResponse
 import com.projects.moviemanager.network.models.content.show.ShowApiResponse
+import com.projects.moviemanager.network.repository.movie.MovieRepository
+import com.projects.moviemanager.network.repository.show.ShowRepository
 import com.projects.moviemanager.network.util.Left
 import com.projects.moviemanager.network.util.Right
-import javax.inject.Inject
 import timber.log.Timber
+import javax.inject.Inject
 
 class WatchlistInteractor @Inject constructor(
     private val databaseRepository: DatabaseRepository,
@@ -24,7 +25,27 @@ class WatchlistInteractor @Inject constructor(
         return databaseRepository.getAllItemsByListId(listId = listId)
     }
 
-    suspend fun getContentDetailsById(
+    suspend fun fetchListDetails(
+        entityList: List<ContentEntity>
+    ): WatchlistState {
+        val watchlistState = WatchlistState()
+        try {
+            val detailedWatchlist = entityList.mapNotNull { entity ->
+                getContentDetailsById(
+                    contentId = entity.contentId,
+                    mediaType = MediaType.getType(entity.mediaType)
+                )
+            }
+            watchlistState.listItems.value = detailedWatchlist
+        } catch (e: IllegalStateException) {
+            watchlistState.setError(
+                errorCode = e.message
+            )
+        }
+        return watchlistState
+    }
+
+    private suspend fun getContentDetailsById(
         contentId: Int,
         mediaType: MediaType
     ): DetailedMediaInfo? {
@@ -39,6 +60,10 @@ class WatchlistInteractor @Inject constructor(
             when (response) {
                 is Right -> {
                     Timber.e("getContentDetailsById failed with error: ${response.error}")
+                    throw IllegalStateException(
+                        response.error.code,
+                        response.error.exception
+                    )
                 }
                 is Left -> {
                     contentDetails = when (mediaType) {

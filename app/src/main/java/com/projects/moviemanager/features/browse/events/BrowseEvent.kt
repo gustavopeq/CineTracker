@@ -1,7 +1,7 @@
 package com.projects.moviemanager.features.browse.events
 
-import com.projects.moviemanager.common.domain.MediaType
-import com.projects.moviemanager.common.domain.SortTypeItem
+import com.projects.moviemanager.common.domain.models.util.MediaType
+import com.projects.moviemanager.common.domain.models.util.SortTypeItem
 
 sealed class BrowseEvent {
     data class UpdateSortType(

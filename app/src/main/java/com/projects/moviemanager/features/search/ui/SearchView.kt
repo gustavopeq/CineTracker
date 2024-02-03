@@ -3,8 +3,6 @@ package com.projects.moviemanager.features.search.ui
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -16,7 +14,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.projects.moviemanager.common.domain.MediaType
+import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.common.ui.components.ClassicLoadingIndicator
 import com.projects.moviemanager.common.ui.components.SetStatusBarColor
 import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_PADDING
@@ -24,7 +22,7 @@ import com.projects.moviemanager.common.ui.util.UiConstants.SEARCH_CARDS_WIDTH
 import com.projects.moviemanager.common.ui.util.calculateCardsPerRow
 import com.projects.moviemanager.common.ui.util.dpToPx
 import com.projects.moviemanager.common.ui.util.pxToDp
-import com.projects.moviemanager.domain.models.content.GenericContent
+import com.projects.moviemanager.common.domain.models.content.GenericContent
 import com.projects.moviemanager.features.search.events.SearchEvent
 import com.projects.moviemanager.features.search.ui.components.NoResultsFound
 import com.projects.moviemanager.features.search.ui.components.SearchBar

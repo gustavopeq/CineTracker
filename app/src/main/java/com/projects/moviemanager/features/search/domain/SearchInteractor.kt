@@ -3,8 +3,8 @@ package com.projects.moviemanager.features.search.domain
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.projects.moviemanager.common.domain.MediaType
-import com.projects.moviemanager.domain.models.content.GenericContent
+import com.projects.moviemanager.common.domain.models.util.MediaType
+import com.projects.moviemanager.common.domain.models.content.GenericContent
 import com.projects.moviemanager.features.search.ui.paging.SearchPagingSource
 import com.projects.moviemanager.network.repository.search.SearchRepository
 import com.projects.moviemanager.util.Constants

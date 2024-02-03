@@ -1,6 +1,6 @@
 package com.projects.moviemanager.network.repository.movie
 
-import com.projects.moviemanager.domain.models.util.ContentListType
+import com.projects.moviemanager.common.domain.models.util.ContentListType
 import com.projects.moviemanager.network.models.ApiError
 import com.projects.moviemanager.network.models.content.common.ContentCreditsResponse
 import com.projects.moviemanager.network.models.content.common.ContentListPageResponse

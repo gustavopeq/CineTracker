@@ -2,13 +2,13 @@ package com.projects.moviemanager.features.details.ui.components.moreoptions
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
-import com.projects.moviemanager.common.domain.MediaType
+import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.common.ui.components.GridContentList
 import com.projects.moviemanager.common.ui.components.GridImageList
 import com.projects.moviemanager.common.ui.components.tab.GenericTabRow
 import com.projects.moviemanager.common.ui.components.tab.setupTabs
-import com.projects.moviemanager.domain.models.content.MediaContent
-import com.projects.moviemanager.domain.models.person.PersonImage
+import com.projects.moviemanager.common.domain.models.content.MediaContent
+import com.projects.moviemanager.common.domain.models.person.PersonImage
 
 @Composable
 fun PersonMoreOptionsTab(

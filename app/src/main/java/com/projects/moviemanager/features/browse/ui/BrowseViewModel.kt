@@ -4,10 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.projects.moviemanager.common.domain.MediaType
-import com.projects.moviemanager.common.domain.SortTypeItem
-import com.projects.moviemanager.domain.models.content.DetailedMediaInfo
-import com.projects.moviemanager.domain.models.util.ContentListType
+import com.projects.moviemanager.common.domain.models.util.MediaType
+import com.projects.moviemanager.common.domain.models.util.SortTypeItem
+import com.projects.moviemanager.common.domain.models.content.DetailedMediaInfo
+import com.projects.moviemanager.common.domain.models.util.ContentListType
 import com.projects.moviemanager.features.browse.domain.BrowseInteractor
 import com.projects.moviemanager.features.browse.events.BrowseEvent
 import dagger.hilt.android.lifecycle.HiltViewModel

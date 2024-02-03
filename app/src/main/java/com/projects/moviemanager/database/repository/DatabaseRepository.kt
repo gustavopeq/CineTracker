@@ -1,6 +1,6 @@
 package com.projects.moviemanager.database.repository
 
-import com.projects.moviemanager.common.domain.MediaType
+import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.database.model.ContentEntity
 
 interface DatabaseRepository {

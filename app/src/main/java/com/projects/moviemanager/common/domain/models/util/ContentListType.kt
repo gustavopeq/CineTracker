@@ -1,4 +1,4 @@
-package com.projects.moviemanager.domain.models.util
+package com.projects.moviemanager.common.domain.models.util
 
 enum class ContentListType(val type: String) {
     MOVIE_NOW_PLAYING("now_playing"),

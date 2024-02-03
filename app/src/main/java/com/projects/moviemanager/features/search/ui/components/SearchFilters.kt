@@ -24,7 +24,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.projects.moviemanager.common.domain.MediaType
+import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.common.ui.theme.SecondaryGreyColor
 import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_MARGIN
 import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_PADDING

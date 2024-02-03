@@ -1,6 +1,6 @@
 package com.projects.moviemanager.network.models.content.movie
 
-import com.projects.moviemanager.common.domain.MediaType
+import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.network.models.content.common.ContentGenre
 import com.projects.moviemanager.network.models.content.common.ProductionCompany
 import com.projects.moviemanager.network.models.content.common.ProductionCountry

@@ -1,9 +1,9 @@
 package com.projects.moviemanager.common.ui
 
 import androidx.lifecycle.ViewModel
-import com.projects.moviemanager.common.domain.MediaType
+import com.projects.moviemanager.common.domain.models.util.MediaType
 import dagger.hilt.android.lifecycle.HiltViewModel
-import com.projects.moviemanager.common.domain.SortTypeItem
+import com.projects.moviemanager.common.domain.models.util.SortTypeItem
 import com.projects.moviemanager.features.home.HomeScreen
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

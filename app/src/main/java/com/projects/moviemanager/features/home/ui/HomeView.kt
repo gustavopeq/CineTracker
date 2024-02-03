@@ -25,15 +25,15 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.projects.moviemanager.R
-import com.projects.moviemanager.common.domain.MediaType
+import com.projects.moviemanager.common.domain.models.content.GenericContent
+import com.projects.moviemanager.common.domain.models.person.PersonDetails
+import com.projects.moviemanager.common.domain.models.util.DataLoadStatus
+import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.common.ui.components.ClassicLoadingIndicator
 import com.projects.moviemanager.common.ui.components.DimensionSubcomposeLayout
 import com.projects.moviemanager.common.ui.components.button.ClassicButton
 import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_MARGIN
 import com.projects.moviemanager.common.ui.util.UiConstants.HOME_BACKGROUND_OFFSET_PERCENT
-import com.projects.moviemanager.domain.models.content.GenericContent
-import com.projects.moviemanager.domain.models.person.PersonDetails
-import com.projects.moviemanager.domain.models.util.DataLoadState
 import com.projects.moviemanager.features.home.ui.components.carousel.ComingSoonCarousel
 import com.projects.moviemanager.features.home.ui.components.carousel.TrendingCarousel
 import com.projects.moviemanager.features.home.ui.components.carousel.WatchlistCarousel
@@ -77,7 +77,7 @@ private fun Home(
 
     Box(modifier = Modifier.fillMaxSize()) {
         when (loadState) {
-            is DataLoadState.Loading -> {
+            is DataLoadStatus.Loading -> {
                 Box(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center

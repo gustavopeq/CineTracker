@@ -1,4 +1,4 @@
-package com.projects.moviemanager.common.domain
+package com.projects.moviemanager.common.domain.models.util
 
 enum class MediaType {
     MOVIE,

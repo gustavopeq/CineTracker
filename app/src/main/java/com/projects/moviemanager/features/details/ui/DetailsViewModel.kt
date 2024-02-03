@@ -2,12 +2,12 @@ package com.projects.moviemanager.features.details.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.projects.moviemanager.common.domain.MediaType
-import com.projects.moviemanager.domain.models.content.ContentCast
-import com.projects.moviemanager.domain.models.content.DetailedMediaInfo
-import com.projects.moviemanager.domain.models.content.MediaContent
-import com.projects.moviemanager.domain.models.content.Videos
-import com.projects.moviemanager.domain.models.person.PersonImage
+import com.projects.moviemanager.common.domain.models.util.MediaType
+import com.projects.moviemanager.common.domain.models.content.ContentCast
+import com.projects.moviemanager.common.domain.models.content.DetailedMediaInfo
+import com.projects.moviemanager.common.domain.models.content.MediaContent
+import com.projects.moviemanager.common.domain.models.content.Videos
+import com.projects.moviemanager.common.domain.models.person.PersonImage
 import com.projects.moviemanager.features.details.domain.DetailsInteractor
 import com.projects.moviemanager.features.watchlist.model.DefaultLists
 import dagger.hilt.android.lifecycle.HiltViewModel

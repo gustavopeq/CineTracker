@@ -1,4 +1,4 @@
-package com.projects.moviemanager.domain.models.content
+package com.projects.moviemanager.common.domain.models.content
 
 import com.projects.moviemanager.network.models.content.common.VideoResponse
 

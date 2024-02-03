@@ -4,11 +4,11 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.projects.moviemanager.common.domain.MediaType
-import com.projects.moviemanager.domain.models.content.DetailedMediaInfo
+import com.projects.moviemanager.common.domain.models.content.DetailedMediaInfo
+import com.projects.moviemanager.common.domain.models.util.DataLoadStatus
+import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.features.watchlist.domain.WatchlistInteractor
 import com.projects.moviemanager.features.watchlist.events.WatchlistEvent
-import com.projects.moviemanager.domain.models.util.DataLoadState
 import com.projects.moviemanager.features.watchlist.model.DefaultLists
 import com.projects.moviemanager.features.watchlist.model.DefaultLists.Companion.getOtherList
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,14 +17,17 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @HiltViewModel
 class WatchlistViewModel @Inject constructor(
     private val watchlistInteractor: WatchlistInteractor
 ) : ViewModel() {
 
-    private val _loadState: MutableStateFlow<DataLoadState> = MutableStateFlow(DataLoadState.Empty)
-    val loadState: StateFlow<DataLoadState> get() = _loadState
+    private val _loadState: MutableStateFlow<DataLoadStatus> = MutableStateFlow(
+        DataLoadStatus.Empty
+    )
+    val loadState: StateFlow<DataLoadStatus> get() = _loadState
 
     private val _watchlist = MutableStateFlow(listOf<DetailedMediaInfo>())
     val watchlist: StateFlow<List<DetailedMediaInfo>> get() = _watchlist
@@ -58,30 +61,28 @@ class WatchlistViewModel @Inject constructor(
                 listId = DefaultLists.WATCHLIST.listId
             )
             if (showLoadingState && watchlistDatabaseItems.isNotEmpty()) {
-                _loadState.value = DataLoadState.Loading
+                _loadState.value = DataLoadStatus.Loading
             }
 
-            val watchlistDetails = watchlistDatabaseItems.mapNotNull {
-                watchlistInteractor.getContentDetailsById(
-                    contentId = it.contentId,
-                    mediaType = MediaType.getType(it.mediaType)
-                )
+            val watchlistState = watchlistInteractor.fetchListDetails(watchlistDatabaseItems)
+            if (watchlistState.isFailed()) {
+                _loadState.value = DataLoadStatus.Failed
+                return@launch
             }
-            _watchlist.value = watchlistDetails
+            _watchlist.value = watchlistState.listItems.value
 
             val watchedDatabaseItems = watchlistInteractor.getAllItems(
                 listId = DefaultLists.WATCHED.listId
             )
 
-            val watchedDetails = watchedDatabaseItems.mapNotNull {
-                watchlistInteractor.getContentDetailsById(
-                    contentId = it.contentId,
-                    mediaType = MediaType.getType(it.mediaType)
-                )
+            val watchedState = watchlistInteractor.fetchListDetails(watchedDatabaseItems)
+            if (watchedState.isFailed()) {
+                _loadState.value = DataLoadStatus.Failed
+                return@launch
             }
-            _watchedList.value = watchedDetails
+            _watchedList.value = watchedState.listItems.value
 
-            _loadState.value = DataLoadState.Success
+            _loadState.value = DataLoadStatus.Success
         }
     }
 

@@ -1,11 +1,11 @@
 package com.projects.moviemanager.features.home.domain
 
-import com.projects.moviemanager.common.domain.MediaType
+import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.database.repository.DatabaseRepository
-import com.projects.moviemanager.domain.models.content.GenericContent
-import com.projects.moviemanager.domain.models.content.toGenericSearchContent
-import com.projects.moviemanager.domain.models.person.PersonDetails
-import com.projects.moviemanager.domain.models.person.toPersonDetails
+import com.projects.moviemanager.common.domain.models.content.GenericContent
+import com.projects.moviemanager.common.domain.models.content.toGenericSearchContent
+import com.projects.moviemanager.common.domain.models.person.PersonDetails
+import com.projects.moviemanager.common.domain.models.person.toPersonDetails
 import com.projects.moviemanager.features.watchlist.model.DefaultLists
 import com.projects.moviemanager.network.models.content.movie.MovieApiResponse
 import com.projects.moviemanager.network.models.content.show.ShowApiResponse

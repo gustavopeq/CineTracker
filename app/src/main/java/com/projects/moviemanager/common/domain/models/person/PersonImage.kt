@@ -1,4 +1,4 @@
-package com.projects.moviemanager.domain.models.person
+package com.projects.moviemanager.common.domain.models.person
 
 import com.projects.moviemanager.network.models.person.PersonProfileResponse
 

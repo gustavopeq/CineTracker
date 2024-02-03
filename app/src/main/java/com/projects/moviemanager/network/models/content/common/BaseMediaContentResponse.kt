@@ -1,6 +1,6 @@
 package com.projects.moviemanager.network.models.content.common
 
-import com.projects.moviemanager.common.domain.MediaType
+import com.projects.moviemanager.common.domain.models.util.MediaType
 
 interface BaseMediaContentResponse {
     val id: Int

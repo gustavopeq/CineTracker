@@ -2,26 +2,25 @@ package com.projects.moviemanager.features.home.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.projects.moviemanager.domain.models.content.GenericContent
-import com.projects.moviemanager.domain.models.person.PersonDetails
-import com.projects.moviemanager.domain.models.util.DataLoadState
+import com.projects.moviemanager.common.domain.models.content.GenericContent
+import com.projects.moviemanager.common.domain.models.person.PersonDetails
+import com.projects.moviemanager.common.domain.models.util.DataLoadStatus
 import com.projects.moviemanager.features.home.domain.HomeInteractor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val homeInteractor: HomeInteractor
 ) : ViewModel() {
-    private val _loadState: MutableStateFlow<DataLoadState> = MutableStateFlow(
-        DataLoadState.Loading
+    private val _loadState: MutableStateFlow<DataLoadStatus> = MutableStateFlow(
+        DataLoadStatus.Loading
     )
-    val loadState: StateFlow<DataLoadState> get() = _loadState
+    val loadState: StateFlow<DataLoadStatus> get() = _loadState
 
     private val _trendingMulti: MutableStateFlow<List<GenericContent>> = MutableStateFlow(
         emptyList()
@@ -51,7 +50,7 @@ class HomeViewModel @Inject constructor(
             }
             _trendingPerson.value = homeInteractor.getTrendingPerson()
             _moviesComingSoon.value = homeInteractor.getMoviesComingSoon()
-            _loadState.value = DataLoadState.Success
+            _loadState.value = DataLoadStatus.Success
         }
     }
 }
