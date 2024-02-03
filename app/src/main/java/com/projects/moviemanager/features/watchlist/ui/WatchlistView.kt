@@ -27,6 +27,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.projects.moviemanager.R
+import com.projects.moviemanager.common.domain.models.content.DetailedMediaInfo
+import com.projects.moviemanager.common.domain.models.content.MovieDetailsInfo
+import com.projects.moviemanager.common.domain.models.content.ShowDetailsInfo
+import com.projects.moviemanager.common.domain.models.util.DataLoadStatus
 import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.common.ui.MainViewModel
 import com.projects.moviemanager.common.ui.components.ComponentPlaceholder
@@ -37,11 +41,7 @@ import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_PADDING
 import com.projects.moviemanager.common.ui.util.UiConstants.POSTER_ASPECT_RATIO_MULTIPLY
 import com.projects.moviemanager.common.ui.util.UiConstants.SMALL_MARGIN
 import com.projects.moviemanager.common.ui.util.UiConstants.WATCHLIST_IMAGE_WIDTH
-import com.projects.moviemanager.common.domain.models.content.DetailedMediaInfo
-import com.projects.moviemanager.common.domain.models.content.MovieDetailsInfo
-import com.projects.moviemanager.common.domain.models.content.ShowDetailsInfo
 import com.projects.moviemanager.features.watchlist.events.WatchlistEvent
-import com.projects.moviemanager.common.domain.models.util.DataLoadStatus
 import com.projects.moviemanager.features.watchlist.ui.components.WatchlistCard
 import com.projects.moviemanager.features.watchlist.ui.components.WatchlistTabItem
 
