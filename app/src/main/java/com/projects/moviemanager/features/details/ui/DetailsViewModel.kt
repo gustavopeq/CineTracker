@@ -5,7 +5,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bumptech.glide.Glide.init
 import com.projects.moviemanager.common.domain.models.content.ContentCast
 import com.projects.moviemanager.common.domain.models.content.DetailedMediaInfo
 import com.projects.moviemanager.common.domain.models.content.MediaContent
@@ -13,9 +12,10 @@ import com.projects.moviemanager.common.domain.models.content.Videos
 import com.projects.moviemanager.common.domain.models.person.PersonImage
 import com.projects.moviemanager.common.domain.models.util.DataLoadStatus
 import com.projects.moviemanager.common.domain.models.util.MediaType
-import com.projects.moviemanager.features.details.DetailsScreen.ARG_ID
+import com.projects.moviemanager.features.details.DetailsScreen.ARG_CONTENT_ID
 import com.projects.moviemanager.features.details.DetailsScreen.ARG_MEDIA_TYPE
 import com.projects.moviemanager.features.details.domain.DetailsInteractor
+import com.projects.moviemanager.features.details.ui.events.DetailsEvents
 import com.projects.moviemanager.features.watchlist.model.DefaultLists
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -23,14 +23,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 @HiltViewModel
 class DetailsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val detailsInteractor: DetailsInteractor
 ) : ViewModel() {
-    private val contentId: Int = savedStateHandle[ARG_ID] ?: -1
+    private val contentId: Int = savedStateHandle[ARG_CONTENT_ID] ?: -1
     private val mediaType: MediaType = MediaType.getType(savedStateHandle[ARG_MEDIA_TYPE])
 
     private val _loadState: MutableStateFlow<DataLoadStatus> = MutableStateFlow(
@@ -74,42 +73,43 @@ class DetailsViewModel @Inject constructor(
         initFetchDetails()
     }
 
-    fun initFetchDetails() {
+    fun onEvent(
+        event: DetailsEvents
+    ) {
+        when (event) {
+            is DetailsEvents.FetchDetails -> initFetchDetails()
+            is DetailsEvents.ToggleContentFromList -> {
+                toggleContentFromList(
+                    listId = event.listId
+                )
+            }
+            is DetailsEvents.OnError -> resetDetails()
+        }
+    }
+
+    private fun initFetchDetails() {
         _detailsFailedLoading.value = false
         viewModelScope.launch {
-            fetchDetails(
-                contentId = contentId,
-                mediaType = mediaType
-            )
+            fetchDetails()
             if (_loadState.value == DataLoadStatus.Success) {
-                fetchAdditionalInfo(
-                    contentId = contentId,
-                    mediaType = mediaType
-                )
+                fetchAdditionalInfo()
             }
         }
     }
 
-    private suspend fun fetchDetails(contentId: Int, mediaType: MediaType) {
+    private suspend fun fetchDetails() {
         val detailsState = detailsInteractor.getContentDetailsById(contentId, mediaType)
 
         if (detailsState.isFailed()) {
             _loadState.value = DataLoadStatus.Failed
         } else {
             _contentDetails.value = detailsState.detailsInfo.value
-            verifyContentInLists(
-                contentId = contentId,
-                mediaType = mediaType
-            )
-            fetchCastDetails(
-                contentId = contentId,
-                mediaType = mediaType
-            )
-            _loadState.value = DataLoadStatus.Success
+            verifyContentInLists()
+            fetchCastDetails()
         }
     }
 
-    private suspend fun fetchCastDetails(contentId: Int, mediaType: MediaType) {
+    private suspend fun fetchCastDetails() {
         val castDetailsState = detailsInteractor.getContentCreditsById(contentId, mediaType)
         if (castDetailsState.isFailed()) {
             _loadState.value = DataLoadStatus.Failed
@@ -119,7 +119,7 @@ class DetailsViewModel @Inject constructor(
         }
     }
 
-    private suspend fun fetchAdditionalInfo(contentId: Int, mediaType: MediaType) {
+    private suspend fun fetchAdditionalInfo() {
         when (mediaType) {
             MediaType.MOVIE, MediaType.SHOW -> {
                 _contentVideos.value = detailsInteractor.getContentVideosById(
@@ -142,10 +142,7 @@ class DetailsViewModel @Inject constructor(
     /**
      * Verify if content is present in any of the database list.
      */
-    private fun verifyContentInLists(
-        contentId: Int,
-        mediaType: MediaType
-    ) {
+    private fun verifyContentInLists() {
         viewModelScope.launch(Dispatchers.IO) {
             _contentInListStatus.value = detailsInteractor.verifyContentInLists(
                 contentId = contentId,
@@ -158,7 +155,7 @@ class DetailsViewModel @Inject constructor(
      * Function to Add or Remove content from database list. If the item is currently in the list,
      * it'll be removed. If it's not, it'll be added.
      */
-    fun toggleContentFromList(contentId: Int, mediaType: MediaType, listId: String) {
+    private fun toggleContentFromList(listId: String) {
         viewModelScope.launch(Dispatchers.IO) {
             val currentStatus = _contentInListStatus.value[listId] ?: false
             val updatedWatchlistStatus = _contentInListStatus.value.toMutableMap()
@@ -178,7 +175,7 @@ class DetailsViewModel @Inject constructor(
         }
     }
 
-    fun resetDetails() {
+    private fun resetDetails() {
         _loadState.value = DataLoadStatus.Loading
         _detailsFailedLoading.value = true
     }

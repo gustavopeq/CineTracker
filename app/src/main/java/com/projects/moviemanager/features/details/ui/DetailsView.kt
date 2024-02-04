@@ -43,6 +43,7 @@ import com.projects.moviemanager.features.details.ui.components.DetailsDescripti
 import com.projects.moviemanager.features.details.ui.components.DetailsTopBar
 import com.projects.moviemanager.features.details.ui.components.moreoptions.MoreOptionsTab
 import com.projects.moviemanager.features.details.ui.components.moreoptions.PersonMoreOptionsTab
+import com.projects.moviemanager.features.details.ui.events.DetailsEvents
 import com.projects.moviemanager.features.details.util.mapValueToRange
 import com.projects.moviemanager.util.Constants.BASE_ORIGINAL_IMAGE_URL
 
@@ -77,17 +78,19 @@ private fun Details(
 
     val onToggleWatchlist: (String) -> Unit = { listId ->
         contentDetails?.let { mediaInfo ->
-            viewModel.toggleContentFromList(
-                contentId = mediaInfo.id,
-                mediaType = mediaInfo.mediaType,
-                listId = listId
+            viewModel.onEvent(
+                DetailsEvents.ToggleContentFromList(
+                    listId = listId
+                )
             )
         }
     }
 
     LaunchedEffect(Unit) {
         if (detailsFailedLoading) {
-            viewModel.initFetchDetails()
+            viewModel.onEvent(
+                DetailsEvents.FetchDetails
+            )
         }
     }
 
@@ -108,7 +111,7 @@ private fun Details(
             )
         }
         else -> {
-            viewModel.resetDetails()
+            viewModel.onEvent(DetailsEvents.OnError)
             goToErrorScreen()
         }
     }
