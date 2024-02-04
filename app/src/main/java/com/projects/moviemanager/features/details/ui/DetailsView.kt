@@ -25,7 +25,11 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavBackStackEntry
+import com.projects.moviemanager.common.domain.models.content.DetailedMediaInfo
+import com.projects.moviemanager.common.domain.models.util.DataLoadStatus
 import com.projects.moviemanager.common.domain.models.util.MediaType
+import com.projects.moviemanager.common.ui.components.ClassicLoadingIndicator
 import com.projects.moviemanager.common.ui.components.DimensionSubcomposeLayout
 import com.projects.moviemanager.common.ui.components.NetworkImage
 import com.projects.moviemanager.common.ui.util.UiConstants.BACKGROUND_INDEX
@@ -33,7 +37,6 @@ import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_MARGIN
 import com.projects.moviemanager.common.ui.util.UiConstants.DETAILS_TITLE_IMAGE_OFFSET_PERCENT
 import com.projects.moviemanager.common.ui.util.UiConstants.POSTER_ASPECT_RATIO
 import com.projects.moviemanager.common.ui.util.UiConstants.SECTION_PADDING
-import com.projects.moviemanager.common.domain.models.content.DetailedMediaInfo
 import com.projects.moviemanager.features.details.ui.components.CastCarousel
 import com.projects.moviemanager.features.details.ui.components.DetailsDescriptionBody
 import com.projects.moviemanager.features.details.ui.components.DetailsDescriptionHeader
@@ -42,22 +45,20 @@ import com.projects.moviemanager.features.details.ui.components.moreoptions.More
 import com.projects.moviemanager.features.details.ui.components.moreoptions.PersonMoreOptionsTab
 import com.projects.moviemanager.features.details.util.mapValueToRange
 import com.projects.moviemanager.util.Constants.BASE_ORIGINAL_IMAGE_URL
-import timber.log.Timber
 
 @Composable
 fun Details(
-    contentId: Int?,
-    mediaType: MediaType,
+    navBackStackEntry: NavBackStackEntry,
     onBackPress: () -> Unit,
-    openSimilarContent: (Int, MediaType) -> Unit
+    openSimilarContent: (Int, MediaType) -> Unit,
+    goToErrorScreen: () -> Unit
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         Details(
-            viewModel = hiltViewModel(),
-            contentId = contentId,
-            mediaType = mediaType,
+            viewModel = hiltViewModel(navBackStackEntry),
             onBackPress = onBackPress,
-            openSimilarContent = openSimilarContent
+            openSimilarContent = openSimilarContent,
+            goToErrorScreen = goToErrorScreen
         )
     }
 }
@@ -65,25 +66,14 @@ fun Details(
 @Composable
 private fun Details(
     viewModel: DetailsViewModel,
-    contentId: Int?,
-    mediaType: MediaType,
     onBackPress: () -> Unit,
-    openSimilarContent: (Int, MediaType) -> Unit
+    openSimilarContent: (Int, MediaType) -> Unit,
+    goToErrorScreen: () -> Unit
 ) {
-    val localDensity = LocalDensity.current
     val contentDetails by viewModel.contentDetails.collectAsState()
-    var currentHeaderPosY by rememberSaveable { mutableFloatStateOf(0f) }
-    var initialHeaderPosY by rememberSaveable { mutableFloatStateOf(0f) }
     val contentInListStatus by viewModel.contentInListStatus.collectAsState()
-
-    val updateHeaderPosition: (Float) -> Unit = {
-        if (it > initialHeaderPosY) {
-            initialHeaderPosY = it
-        }
-        currentHeaderPosY = it
-    }
-
-    val contentPosterUrl = BASE_ORIGINAL_IMAGE_URL + contentDetails?.poster_path
+    val loadState by viewModel.loadState.collectAsState()
+    val detailsFailedLoading by viewModel.detailsFailedLoading
 
     val onToggleWatchlist: (String) -> Unit = { listId ->
         contentDetails?.let { mediaInfo ->
@@ -96,10 +86,8 @@ private fun Details(
     }
 
     LaunchedEffect(Unit) {
-        if (contentId != null) {
-            viewModel.fetchDetails(contentId, mediaType)
-        } else {
-            Timber.tag("print").d("ContentId is null!")
+        if (detailsFailedLoading) {
+            viewModel.initFetchDetails()
         }
     }
 
@@ -109,6 +97,40 @@ private fun Details(
         contentInWatchlistStatus = contentInListStatus,
         toggleWatchlist = onToggleWatchlist
     )
+
+    when (loadState) {
+        is DataLoadStatus.Loading -> ClassicLoadingIndicator()
+        is DataLoadStatus.Success -> {
+            DetailsBody(
+                viewModel = viewModel,
+                contentDetails = contentDetails,
+                openSimilarContent = openSimilarContent
+            )
+        }
+        else -> {
+            viewModel.resetDetails()
+            goToErrorScreen()
+        }
+    }
+}
+
+@Composable
+private fun DetailsBody(
+    viewModel: DetailsViewModel,
+    contentDetails: DetailedMediaInfo?,
+    openSimilarContent: (Int, MediaType) -> Unit
+) {
+    val localDensity = LocalDensity.current
+    var currentHeaderPosY by rememberSaveable { mutableFloatStateOf(0f) }
+    var initialHeaderPosY by rememberSaveable { mutableFloatStateOf(0f) }
+    val contentPosterUrl = BASE_ORIGINAL_IMAGE_URL + contentDetails?.poster_path
+
+    val updateHeaderPosition: (Float) -> Unit = {
+        if (it > initialHeaderPosY) {
+            initialHeaderPosY = it
+        }
+        currentHeaderPosY = it
+    }
 
     DimensionSubcomposeLayout(
         mainContent = { BackgroundPoster(contentPosterUrl, currentHeaderPosY, initialHeaderPosY) },
@@ -140,10 +162,6 @@ private fun DetailsComponent(
     val contentSimilarList by viewModel.contentSimilar.collectAsState()
     val personContentList by viewModel.personCredits.collectAsState()
     val personImageList by viewModel.personImages.collectAsState()
-
-    LaunchedEffect(Unit) {
-        viewModel.fetchAdditionalInfo(mediaInfo.id, mediaInfo.mediaType)
-    }
 
     LazyColumn(
         modifier = Modifier

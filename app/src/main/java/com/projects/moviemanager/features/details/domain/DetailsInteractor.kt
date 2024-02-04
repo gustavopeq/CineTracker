@@ -1,9 +1,5 @@
 package com.projects.moviemanager.features.details.domain
 
-import com.projects.moviemanager.common.domain.models.util.MediaType
-import com.projects.moviemanager.database.repository.DatabaseRepository
-import com.projects.moviemanager.common.domain.models.content.ContentCast
-import com.projects.moviemanager.common.domain.models.content.DetailedMediaInfo
 import com.projects.moviemanager.common.domain.models.content.MediaContent
 import com.projects.moviemanager.common.domain.models.content.Videos
 import com.projects.moviemanager.common.domain.models.content.toContentCast
@@ -15,17 +11,20 @@ import com.projects.moviemanager.common.domain.models.content.toShowDetailsInfo
 import com.projects.moviemanager.common.domain.models.content.toVideos
 import com.projects.moviemanager.common.domain.models.person.PersonImage
 import com.projects.moviemanager.common.domain.models.person.toPersonImage
+import com.projects.moviemanager.common.domain.models.util.MediaType
+import com.projects.moviemanager.database.repository.DatabaseRepository
+import com.projects.moviemanager.features.details.ui.state.DetailsState
 import com.projects.moviemanager.features.watchlist.model.DefaultLists
-import com.projects.moviemanager.network.repository.movie.MovieRepository
-import com.projects.moviemanager.network.repository.person.PersonRepository
-import com.projects.moviemanager.network.repository.show.ShowRepository
 import com.projects.moviemanager.network.models.content.movie.MovieApiResponse
 import com.projects.moviemanager.network.models.content.show.ShowApiResponse
 import com.projects.moviemanager.network.models.person.PersonDetailsResponse
+import com.projects.moviemanager.network.repository.movie.MovieRepository
+import com.projects.moviemanager.network.repository.person.PersonRepository
+import com.projects.moviemanager.network.repository.show.ShowRepository
 import com.projects.moviemanager.network.util.Left
 import com.projects.moviemanager.network.util.Right
-import javax.inject.Inject
 import timber.log.Timber
+import javax.inject.Inject
 
 class DetailsInteractor @Inject constructor(
     private val movieRepository: MovieRepository,
@@ -36,22 +35,23 @@ class DetailsInteractor @Inject constructor(
     suspend fun getContentDetailsById(
         contentId: Int,
         mediaType: MediaType
-    ): DetailedMediaInfo? {
+    ): DetailsState {
+        val detailsState = DetailsState()
         val result = when (mediaType) {
             MediaType.MOVIE -> movieRepository.getMovieDetailsById(contentId)
             MediaType.SHOW -> showRepository.getShowDetailsById(contentId)
             MediaType.PERSON -> personRepository.getPersonDetailsById(contentId)
-            else -> return null
+            else -> return detailsState
         }
 
-        var contentDetails: DetailedMediaInfo? = null
         result.collect { response ->
             when (response) {
                 is Right -> {
                     Timber.e("getContentDetailsById failed with error: ${response.error}")
+                    detailsState.setError(errorCode = response.error.code)
                 }
                 is Left -> {
-                    contentDetails = when (mediaType) {
+                    detailsState.detailsInfo.value = when (mediaType) {
                         MediaType.MOVIE -> (response.value as MovieApiResponse).toMovieDetailsInfo()
                         MediaType.SHOW -> (response.value as ShowApiResponse).toShowDetailsInfo()
                         MediaType.PERSON -> {
@@ -64,33 +64,35 @@ class DetailsInteractor @Inject constructor(
                 }
             }
         }
-        return contentDetails
+        return detailsState
     }
 
     suspend fun getContentCreditsById(
         contentId: Int,
         mediaType: MediaType
-    ): List<ContentCast> {
+    ): DetailsState {
+        val detailsState = DetailsState()
+
         val result = when (mediaType) {
             MediaType.MOVIE -> movieRepository.getMovieCreditsById(contentId)
             MediaType.SHOW -> showRepository.getShowCreditsById(contentId)
-            else -> return emptyList()
+            else -> return detailsState
         }
 
-        var contentCastList: List<ContentCast> = emptyList()
         result.collect { response ->
             when (response) {
                 is Right -> {
                     Timber.e("getContentCreditsById failed with error: ${response.error}")
+                    detailsState.setError(errorCode = response.error.code)
                 }
                 is Left -> {
-                    contentCastList = response.value.cast.map {
+                    detailsState.detailsCast.value = response.value.cast.map {
                         it.toContentCast()
                     }
                 }
             }
         }
-        return contentCastList
+        return detailsState
     }
 
     suspend fun getContentVideosById(
