@@ -6,6 +6,7 @@ import com.projects.moviemanager.common.domain.models.content.GenericContent
 import com.projects.moviemanager.common.domain.models.person.PersonDetails
 import com.projects.moviemanager.common.domain.models.util.DataLoadStatus
 import com.projects.moviemanager.features.home.domain.HomeInteractor
+import com.projects.moviemanager.features.home.events.HomeEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -42,15 +43,37 @@ class HomeViewModel @Inject constructor(
     )
     val moviesComingSoon: StateFlow<List<GenericContent>> get() = _moviesComingSoon
 
-    fun loadHomeScreen() {
+    fun onEvent(event: HomeEvent) {
+        when (event) {
+            HomeEvent.LoadHome -> loadHomeScreen()
+            HomeEvent.OnError -> resetHome()
+        }
+    }
+
+    private fun loadHomeScreen() {
         viewModelScope.launch {
-            _trendingMulti.value = homeInteractor.getTrendingMulti()
+            _loadState.value = DataLoadStatus.Loading
+            val homeState = homeInteractor.getTrendingMulti()
+            if (homeState.isFailed()) {
+                _loadState.value = DataLoadStatus.Failed
+                return@launch
+            } else {
+                _trendingMulti.value = homeState.trendingList.value
+            }
             this.launch(Dispatchers.IO) {
                 _myWatchlist.value = homeInteractor.getAllWatchlist()
             }
+
             _trendingPerson.value = homeInteractor.getTrendingPerson()
             _moviesComingSoon.value = homeInteractor.getMoviesComingSoon()
             _loadState.value = DataLoadStatus.Success
         }
+    }
+
+    private fun resetHome() {
+        _loadState.value = DataLoadStatus.Loading
+        _trendingMulti.value = emptyList()
+        _trendingPerson.value = emptyList()
+        _moviesComingSoon.value = emptyList()
     }
 }

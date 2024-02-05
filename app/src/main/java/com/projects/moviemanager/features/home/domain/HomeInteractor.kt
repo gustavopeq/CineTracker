@@ -6,6 +6,7 @@ import com.projects.moviemanager.common.domain.models.content.GenericContent
 import com.projects.moviemanager.common.domain.models.content.toGenericSearchContent
 import com.projects.moviemanager.common.domain.models.person.PersonDetails
 import com.projects.moviemanager.common.domain.models.person.toPersonDetails
+import com.projects.moviemanager.features.home.ui.state.HomeState
 import com.projects.moviemanager.features.watchlist.model.DefaultLists
 import com.projects.moviemanager.network.models.content.movie.MovieApiResponse
 import com.projects.moviemanager.network.models.content.show.ShowApiResponse
@@ -26,23 +27,24 @@ class HomeInteractor @Inject constructor(
     private val movieRepository: MovieRepository,
     private val showRepository: ShowRepository
 ) {
-    suspend fun getTrendingMulti(): List<GenericContent> {
+    suspend fun getTrendingMulti(): HomeState {
+        val homeState = HomeState()
         val result = homeRepository.getTrendingMulti()
 
-        var listResults: List<GenericContent> = emptyList()
         result.collect { response ->
             when (response) {
                 is Right -> {
                     Timber.e("getTrendingMulti failed with error: ${response.error}")
+                    homeState.setError(errorCode = response.error.code)
                 }
                 is Left -> {
-                    listResults = response.value.results.mapNotNull {
+                    homeState.trendingList.value = response.value.results.mapNotNull {
                         it.toGenericSearchContent()
                     }
                 }
             }
         }
-        return listResults
+        return homeState
     }
 
     suspend fun getAllWatchlist(): List<GenericContent> {

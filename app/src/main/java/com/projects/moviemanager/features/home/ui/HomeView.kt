@@ -34,6 +34,7 @@ import com.projects.moviemanager.common.ui.components.DimensionSubcomposeLayout
 import com.projects.moviemanager.common.ui.components.button.ClassicButton
 import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_MARGIN
 import com.projects.moviemanager.common.ui.util.UiConstants.HOME_BACKGROUND_OFFSET_PERCENT
+import com.projects.moviemanager.features.home.events.HomeEvent
 import com.projects.moviemanager.features.home.ui.components.carousel.ComingSoonCarousel
 import com.projects.moviemanager.features.home.ui.components.carousel.TrendingCarousel
 import com.projects.moviemanager.features.home.ui.components.carousel.WatchlistCarousel
@@ -47,13 +48,15 @@ import com.projects.moviemanager.util.Constants.BASE_ORIGINAL_IMAGE_URL
 fun Home(
     goToDetails: (Int, MediaType) -> Unit,
     goToWatchlist: () -> Unit,
-    goToBrowse: () -> Unit
+    goToBrowse: () -> Unit,
+    goToErrorScreen: () -> Unit
 ) {
     Home(
         viewModel = hiltViewModel(),
         goToDetails = goToDetails,
         goToWatchlist = goToWatchlist,
-        goToBrowse = goToBrowse
+        goToBrowse = goToBrowse,
+        goToErrorScreen = goToErrorScreen
     )
 }
 
@@ -62,7 +65,8 @@ private fun Home(
     viewModel: HomeViewModel,
     goToDetails: (Int, MediaType) -> Unit,
     goToWatchlist: () -> Unit,
-    goToBrowse: () -> Unit
+    goToBrowse: () -> Unit,
+    goToErrorScreen: () -> Unit
 ) {
     val loadState by viewModel.loadState.collectAsState()
     val trendingMultiList by viewModel.trendingMulti.collectAsState()
@@ -72,7 +76,7 @@ private fun Home(
     val localDensity = LocalDensity.current
 
     LaunchedEffect(Unit) {
-        viewModel.loadHomeScreen()
+        viewModel.onEvent(HomeEvent.LoadHome)
     }
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -84,6 +88,10 @@ private fun Home(
                 ) {
                     ClassicLoadingIndicator()
                 }
+            }
+            is DataLoadStatus.Failed -> {
+                viewModel.onEvent(HomeEvent.OnError)
+                goToErrorScreen()
             }
             else -> {
                 if (trendingMultiList.isNotEmpty()) {

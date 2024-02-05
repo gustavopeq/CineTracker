@@ -31,6 +31,11 @@ class HomeScreenUI : ScreenUI {
                 if (currentScreen != ErrorScreen.route()) {
                     navController.navigate(BrowseScreen.route())
                 }
+            },
+            goToErrorScreen = {
+                if (currentScreen != ErrorScreen.route()) {
+                    navController.navigate(ErrorScreen.route())
+                }
             }
         )
     }
