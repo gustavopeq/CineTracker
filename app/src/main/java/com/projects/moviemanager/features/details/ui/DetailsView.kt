@@ -11,11 +11,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -28,6 +31,8 @@ import com.projects.moviemanager.common.domain.models.content.DetailedMediaInfo
 import com.projects.moviemanager.common.domain.models.util.DataLoadStatus
 import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.common.ui.components.NetworkImage
+import com.projects.moviemanager.common.ui.components.popup.ClassicSnackbar
+import com.projects.moviemanager.common.util.Constants.BASE_ORIGINAL_IMAGE_URL
 import com.projects.moviemanager.common.util.UiConstants.BACKGROUND_INDEX
 import com.projects.moviemanager.common.util.UiConstants.DEFAULT_MARGIN
 import com.projects.moviemanager.common.util.UiConstants.DETAILS_TITLE_IMAGE_OFFSET_PERCENT
@@ -43,7 +48,7 @@ import com.projects.moviemanager.features.details.ui.components.moreoptions.More
 import com.projects.moviemanager.features.details.ui.components.moreoptions.PersonMoreOptionsTab
 import com.projects.moviemanager.features.details.ui.events.DetailsEvents
 import com.projects.moviemanager.features.details.util.mapValueToRange
-import com.projects.moviemanager.common.util.Constants.BASE_ORIGINAL_IMAGE_URL
+import kotlinx.coroutines.launch
 
 @Composable
 fun Details(
@@ -73,6 +78,10 @@ private fun Details(
     val contentInListStatus by viewModel.contentInListStatus.collectAsState()
     val loadState by viewModel.loadState.collectAsState()
     val detailsFailedLoading by viewModel.detailsFailedLoading
+
+    val scope = rememberCoroutineScope()
+    val snackbarHostState = remember { SnackbarHostState() }
+
     val posterWidth = LocalConfiguration.current.screenWidthDp
     val posterHeight = posterWidth * POSTER_ASPECT_RATIO_MULTIPLY
 
@@ -83,6 +92,11 @@ private fun Details(
                     listId = listId
                 )
             )
+            scope.launch {
+                snackbarHostState.showSnackbar(
+                    "Watchlist updated"
+                )
+            }
         }
     }
 
@@ -101,21 +115,27 @@ private fun Details(
         toggleWatchlist = onToggleWatchlist
     )
 
-    when (loadState) {
-        is DataLoadStatus.Loading -> {
-            DetailBodyPlaceholder(posterHeight)
-        }
-        is DataLoadStatus.Success -> {
-            DetailsBody(
-                posterHeight = posterHeight,
-                viewModel = viewModel,
-                contentDetails = contentDetails,
-                openSimilarContent = openSimilarContent
-            )
-        }
-        else -> {
-            viewModel.onEvent(DetailsEvents.OnError)
-            goToErrorScreen()
+    ClassicSnackbar(
+        snackbarHostState = snackbarHostState
+    ) {
+        when (loadState) {
+            is DataLoadStatus.Loading -> {
+                DetailBodyPlaceholder(posterHeight)
+            }
+
+            is DataLoadStatus.Success -> {
+                DetailsBody(
+                    posterHeight = posterHeight,
+                    viewModel = viewModel,
+                    contentDetails = contentDetails,
+                    openSimilarContent = openSimilarContent
+                )
+            }
+
+            else -> {
+                viewModel.onEvent(DetailsEvents.OnError)
+                goToErrorScreen()
+            }
         }
     }
 }

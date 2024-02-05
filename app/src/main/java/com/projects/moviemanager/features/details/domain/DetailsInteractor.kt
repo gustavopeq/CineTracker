@@ -214,7 +214,23 @@ class DetailsInteractor @Inject constructor(
         return contentInListMap
     }
 
-    suspend fun addToWatchlist(
+    suspend fun toggleWatchlist(
+        currentStatus: Boolean,
+        contentId: Int,
+        mediaType: MediaType,
+        listId: String
+    ) {
+        when (currentStatus) {
+            true -> {
+                removeFromWatchlist(contentId, mediaType, listId)
+            }
+            false -> {
+                addToWatchlist(contentId, mediaType, listId)
+            }
+        }
+    }
+
+    private suspend fun addToWatchlist(
         contentId: Int,
         mediaType: MediaType,
         listId: String

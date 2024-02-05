@@ -12,17 +12,19 @@ import com.projects.moviemanager.common.domain.models.content.Videos
 import com.projects.moviemanager.common.domain.models.person.PersonImage
 import com.projects.moviemanager.common.domain.models.util.DataLoadStatus
 import com.projects.moviemanager.common.domain.models.util.MediaType
+import com.projects.moviemanager.common.util.UiConstants.DELAY_UPDATE_POPUP_TEXT_MS
 import com.projects.moviemanager.features.details.DetailsScreen.ARG_CONTENT_ID
 import com.projects.moviemanager.features.details.DetailsScreen.ARG_MEDIA_TYPE
 import com.projects.moviemanager.features.details.domain.DetailsInteractor
 import com.projects.moviemanager.features.details.ui.events.DetailsEvents
 import com.projects.moviemanager.features.watchlist.model.DefaultLists
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class DetailsViewModel @Inject constructor(
@@ -160,16 +162,14 @@ class DetailsViewModel @Inject constructor(
             val currentStatus = _contentInListStatus.value[listId] ?: false
             val updatedWatchlistStatus = _contentInListStatus.value.toMutableMap()
 
-            when (currentStatus) {
-                true -> {
-                    detailsInteractor.removeFromWatchlist(contentId, mediaType, listId)
-                    updatedWatchlistStatus[listId] = false
-                }
-                false -> {
-                    detailsInteractor.addToWatchlist(contentId, mediaType, listId)
-                    updatedWatchlistStatus[listId] = true
-                }
-            }
+            detailsInteractor.toggleWatchlist(
+                currentStatus = currentStatus,
+                contentId = contentId,
+                mediaType = mediaType,
+                listId = listId
+            )
+            delay(DELAY_UPDATE_POPUP_TEXT_MS)
+            updatedWatchlistStatus[listId] = !currentStatus
 
             _contentInListStatus.value = updatedWatchlistStatus
         }
