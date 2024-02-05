@@ -8,6 +8,7 @@ object UiConstants {
     const val LARGE_PADDING = 12
     const val SMALL_MARGIN = 8
     const val DEFAULT_MARGIN = 16
+    const val LARGE_MARGIN = 20
     const val SECTION_PADDING = 24
     const val UNDEFINED_RATINGS = "N/A"
     const val CARD_ROUND_CORNER = 4
