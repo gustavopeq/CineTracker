@@ -18,10 +18,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.projects.moviemanager.R
@@ -30,10 +28,10 @@ import com.projects.moviemanager.common.domain.models.person.PersonDetails
 import com.projects.moviemanager.common.domain.models.util.DataLoadStatus
 import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.common.ui.components.ClassicLoadingIndicator
-import com.projects.moviemanager.common.ui.components.DimensionSubcomposeLayout
 import com.projects.moviemanager.common.ui.components.button.ClassicButton
 import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_MARGIN
 import com.projects.moviemanager.common.ui.util.UiConstants.HOME_BACKGROUND_OFFSET_PERCENT
+import com.projects.moviemanager.common.ui.util.UiConstants.POSTER_ASPECT_RATIO_MULTIPLY
 import com.projects.moviemanager.features.home.events.HomeEvent
 import com.projects.moviemanager.features.home.ui.components.carousel.ComingSoonCarousel
 import com.projects.moviemanager.features.home.ui.components.carousel.TrendingCarousel
@@ -73,10 +71,14 @@ private fun Home(
     val myWatchlist by viewModel.myWatchlist.collectAsState()
     val trendingPersonList by viewModel.trendingPerson.collectAsState()
     val moviesComingSoonList by viewModel.moviesComingSoon.collectAsState()
-    val localDensity = LocalDensity.current
+    val posterWidth = LocalConfiguration.current.screenWidthDp
+    val posterHeight = posterWidth * POSTER_ASPECT_RATIO_MULTIPLY
 
     LaunchedEffect(Unit) {
-        viewModel.onEvent(HomeEvent.LoadHome)
+        when (loadState) {
+            is DataLoadStatus.Success -> viewModel.onEvent(HomeEvent.ReloadWatchlist)
+            else -> viewModel.onEvent(HomeEvent.LoadHome)
+        }
     }
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -96,23 +98,19 @@ private fun Home(
             else -> {
                 if (trendingMultiList.isNotEmpty()) {
                     val homePosterUrl = BASE_ORIGINAL_IMAGE_URL + trendingMultiList[0].posterPath
-
-                    DimensionSubcomposeLayout(
-                        mainContent = { FeaturedBackgroundImage(imageUrl = homePosterUrl) },
-                        dependentContent = { size ->
-                            val mainBgOffset = localDensity.run { size.height.toDp() }
-
-                            HomeBody(
-                                mainBgOffset,
-                                trendingMultiList,
-                                myWatchlist,
-                                trendingPersonList,
-                                moviesComingSoonList,
-                                goToDetails,
-                                goToWatchlist,
-                                goToBrowse
-                            )
-                        }
+                    FeaturedBackgroundImage(
+                        imageUrl = homePosterUrl,
+                        posterHeight = posterHeight
+                    )
+                    HomeBody(
+                        posterHeight,
+                        trendingMultiList,
+                        myWatchlist,
+                        trendingPersonList,
+                        moviesComingSoonList,
+                        goToDetails,
+                        goToWatchlist,
+                        goToBrowse
                     )
                 }
             }
@@ -122,7 +120,7 @@ private fun Home(
 
 @Composable
 private fun HomeBody(
-    mainBgOffset: Dp,
+    posterHeight: Float,
     trendingMultiList: List<GenericContent>,
     myWatchlist: List<GenericContent>,
     trendingPersonList: List<PersonDetails>,
@@ -144,13 +142,14 @@ private fun HomeBody(
     val trendingPerson = trendingPersonList.firstOrNull {
         it.knownForDepartment?.isNotEmpty() == true && it.knownFor.size >= 3
     }
+    val bgOffset = posterHeight * HOME_BACKGROUND_OFFSET_PERCENT
 
     LazyColumn {
         item {
             Spacer(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(mainBgOffset * HOME_BACKGROUND_OFFSET_PERCENT)
+                    .height(bgOffset.dp)
             )
         }
         item {

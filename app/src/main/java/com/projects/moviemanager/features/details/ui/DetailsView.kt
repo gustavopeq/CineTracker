@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -17,7 +16,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -29,16 +27,13 @@ import androidx.navigation.NavBackStackEntry
 import com.projects.moviemanager.common.domain.models.content.DetailedMediaInfo
 import com.projects.moviemanager.common.domain.models.util.DataLoadStatus
 import com.projects.moviemanager.common.domain.models.util.MediaType
-import com.projects.moviemanager.common.ui.components.ComponentPlaceholder
 import com.projects.moviemanager.common.ui.components.NetworkImage
 import com.projects.moviemanager.common.ui.util.UiConstants.BACKGROUND_INDEX
 import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_MARGIN
 import com.projects.moviemanager.common.ui.util.UiConstants.DETAILS_TITLE_IMAGE_OFFSET_PERCENT
-import com.projects.moviemanager.common.ui.util.UiConstants.LARGE_MARGIN
 import com.projects.moviemanager.common.ui.util.UiConstants.POSTER_ASPECT_RATIO
 import com.projects.moviemanager.common.ui.util.UiConstants.POSTER_ASPECT_RATIO_MULTIPLY
 import com.projects.moviemanager.common.ui.util.UiConstants.SECTION_PADDING
-import com.projects.moviemanager.common.ui.util.UiConstants.SMALL_PADDING
 import com.projects.moviemanager.features.details.ui.components.CastCarousel
 import com.projects.moviemanager.features.details.ui.components.DetailBodyPlaceholder
 import com.projects.moviemanager.features.details.ui.components.DetailsDescriptionBody
@@ -49,7 +44,6 @@ import com.projects.moviemanager.features.details.ui.components.moreoptions.Pers
 import com.projects.moviemanager.features.details.ui.events.DetailsEvents
 import com.projects.moviemanager.features.details.util.mapValueToRange
 import com.projects.moviemanager.util.Constants.BASE_ORIGINAL_IMAGE_URL
-import kotlinx.coroutines.launch
 
 @Composable
 fun Details(
@@ -113,7 +107,6 @@ private fun Details(
         }
         is DataLoadStatus.Success -> {
             DetailsBody(
-                posterWidth = posterWidth,
                 posterHeight = posterHeight,
                 viewModel = viewModel,
                 contentDetails = contentDetails,
@@ -129,7 +122,6 @@ private fun Details(
 
 @Composable
 private fun DetailsBody(
-    posterWidth: Int,
     posterHeight: Float,
     viewModel: DetailsViewModel,
     contentDetails: DetailedMediaInfo?,
@@ -147,7 +139,6 @@ private fun DetailsBody(
     }
 
     BackgroundPoster(
-        posterWidth,
         posterHeight,
         contentPosterUrl,
         currentHeaderPosY,
@@ -241,7 +232,6 @@ private fun DetailsComponent(
 
 @Composable
 private fun BackgroundPoster(
-    posterWidth: Int,
     posterHeight: Float,
     contentPosterUrl: String,
     headerPositionY: Float,
@@ -252,7 +242,7 @@ private fun BackgroundPoster(
     NetworkImage(
         imageUrl = contentPosterUrl,
         modifier = Modifier
-            .width(posterWidth.dp)
+            .fillMaxWidth()
             .height(posterHeight.dp)
             .zIndex(BACKGROUND_INDEX)
             .aspectRatio(POSTER_ASPECT_RATIO),

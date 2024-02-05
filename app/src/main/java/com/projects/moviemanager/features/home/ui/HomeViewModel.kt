@@ -46,6 +46,7 @@ class HomeViewModel @Inject constructor(
     fun onEvent(event: HomeEvent) {
         when (event) {
             HomeEvent.LoadHome -> loadHomeScreen()
+            HomeEvent.ReloadWatchlist -> loadWatchlist()
             HomeEvent.OnError -> resetHome()
         }
     }
@@ -60,13 +61,17 @@ class HomeViewModel @Inject constructor(
             } else {
                 _trendingMulti.value = homeState.trendingList.value
             }
-            this.launch(Dispatchers.IO) {
-                _myWatchlist.value = homeInteractor.getAllWatchlist()
-            }
 
+            loadWatchlist()
             _trendingPerson.value = homeInteractor.getTrendingPerson()
             _moviesComingSoon.value = homeInteractor.getMoviesComingSoon()
             _loadState.value = DataLoadStatus.Success
+        }
+    }
+
+    private fun loadWatchlist() {
+        viewModelScope.launch(Dispatchers.IO) {
+            _myWatchlist.value = homeInteractor.getAllWatchlist()
         }
     }
 
