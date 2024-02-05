@@ -23,11 +23,11 @@ import com.projects.moviemanager.common.ui.components.GradientDirections
 import com.projects.moviemanager.common.ui.components.NetworkImage
 import com.projects.moviemanager.common.ui.components.button.ClassicButton
 import com.projects.moviemanager.common.ui.components.classicVerticalGradientBrush
-import com.projects.moviemanager.common.ui.util.UiConstants.BACKGROUND_INDEX
-import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_MARGIN
-import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_PADDING
-import com.projects.moviemanager.common.ui.util.UiConstants.HOME_BACKGROUND_ALPHA
-import com.projects.moviemanager.common.ui.util.UiConstants.POSTER_ASPECT_RATIO
+import com.projects.moviemanager.common.util.UiConstants.BACKGROUND_INDEX
+import com.projects.moviemanager.common.util.UiConstants.DEFAULT_MARGIN
+import com.projects.moviemanager.common.util.UiConstants.DEFAULT_PADDING
+import com.projects.moviemanager.common.util.UiConstants.HOME_BACKGROUND_ALPHA
+import com.projects.moviemanager.common.util.UiConstants.POSTER_ASPECT_RATIO
 
 @Composable
 fun FeaturedInfo(

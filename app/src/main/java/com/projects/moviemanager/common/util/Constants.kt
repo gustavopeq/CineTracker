@@ -1,4 +1,4 @@
-package com.projects.moviemanager.util
+package com.projects.moviemanager.common.util
 
 object Constants {
 

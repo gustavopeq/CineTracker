@@ -1,11 +1,11 @@
-package com.projects.moviemanager.util
+package com.projects.moviemanager.common.util
 
 import android.content.Context
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.unit.Dp
 import com.projects.moviemanager.R
-import com.projects.moviemanager.common.ui.util.UiConstants.UNDEFINED_RATINGS
+import com.projects.moviemanager.common.util.UiConstants.UNDEFINED_RATINGS
 import timber.log.Timber
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols

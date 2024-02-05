@@ -22,10 +22,10 @@ import com.projects.moviemanager.common.ui.components.NetworkImage
 import com.projects.moviemanager.common.ui.components.RatingComponent
 import com.projects.moviemanager.common.ui.theme.MainBarGreyColor
 import com.projects.moviemanager.common.ui.theme.RoundCornerShapes
-import com.projects.moviemanager.common.ui.util.UiConstants.BROWSE_CARD_DEFAULT_ELEVATION
-import com.projects.moviemanager.common.ui.util.UiConstants.POSTER_ASPECT_RATIO_MULTIPLY
-import com.projects.moviemanager.common.ui.util.UiConstants.SMALL_PADDING
-import com.projects.moviemanager.util.Constants.BASE_500_IMAGE_URL
+import com.projects.moviemanager.common.util.UiConstants.BROWSE_CARD_DEFAULT_ELEVATION
+import com.projects.moviemanager.common.util.UiConstants.POSTER_ASPECT_RATIO_MULTIPLY
+import com.projects.moviemanager.common.util.UiConstants.SMALL_PADDING
+import com.projects.moviemanager.common.util.Constants.BASE_500_IMAGE_URL
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

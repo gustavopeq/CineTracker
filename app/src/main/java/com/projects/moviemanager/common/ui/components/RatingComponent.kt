@@ -13,8 +13,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.projects.moviemanager.R
-import com.projects.moviemanager.common.ui.util.UiConstants.RATING_STAR_DEFAULT_SIZE
-import com.projects.moviemanager.util.formatRating
+import com.projects.moviemanager.common.util.UiConstants.RATING_STAR_DEFAULT_SIZE
+import com.projects.moviemanager.common.util.formatRating
 
 @Composable
 fun RatingComponent(

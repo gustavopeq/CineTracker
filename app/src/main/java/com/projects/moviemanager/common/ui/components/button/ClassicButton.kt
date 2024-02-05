@@ -7,7 +7,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
-import com.projects.moviemanager.common.ui.util.UiConstants.CLASSIC_BUTTON_BORDER_SIZE
+import com.projects.moviemanager.common.util.UiConstants.CLASSIC_BUTTON_BORDER_SIZE
 
 @Composable
 fun ClassicButton(

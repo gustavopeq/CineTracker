@@ -7,8 +7,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -16,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
@@ -24,7 +21,7 @@ import com.projects.moviemanager.R
 import com.projects.moviemanager.common.ui.components.GradientDirections
 import com.projects.moviemanager.common.ui.components.RatingComponent
 import com.projects.moviemanager.common.ui.components.classicVerticalGradientBrush
-import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_MARGIN
+import com.projects.moviemanager.common.util.UiConstants.DEFAULT_MARGIN
 import com.projects.moviemanager.common.domain.models.content.DetailedMediaInfo
 import com.projects.moviemanager.common.domain.models.content.MovieDetailsInfo
 import com.projects.moviemanager.common.domain.models.content.PersonDetailsInfo
@@ -32,7 +29,7 @@ import com.projects.moviemanager.common.domain.models.content.ShowDetailsInfo
 import com.projects.moviemanager.features.details.util.stringFormat
 import com.projects.moviemanager.network.models.content.common.ContentGenre
 import com.projects.moviemanager.network.models.content.common.ProductionCountry
-import com.projects.moviemanager.util.formatDate
+import com.projects.moviemanager.common.util.formatDate
 
 @Composable
 fun DetailsDescriptionHeader(

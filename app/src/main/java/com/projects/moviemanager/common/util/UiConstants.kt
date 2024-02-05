@@ -1,4 +1,4 @@
-package com.projects.moviemanager.common.ui.util
+package com.projects.moviemanager.common.util
 
 object UiConstants {
     // Common

@@ -15,16 +15,16 @@ import androidx.compose.ui.unit.dp
 import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.common.ui.components.card.DefaultContentCard
 import com.projects.moviemanager.common.ui.components.card.PersonImages
-import com.projects.moviemanager.common.ui.util.UiConstants.BROWSE_CARD_PADDING_HORIZONTAL
-import com.projects.moviemanager.common.ui.util.UiConstants.BROWSE_CARD_PADDING_VERTICAL
-import com.projects.moviemanager.common.ui.util.UiConstants.BROWSE_MIN_CARD_WIDTH
-import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_MARGIN
-import com.projects.moviemanager.common.ui.util.calculateCardsPerRow
-import com.projects.moviemanager.common.ui.util.dpToPx
-import com.projects.moviemanager.common.ui.util.pxToDp
+import com.projects.moviemanager.common.util.UiConstants.BROWSE_CARD_PADDING_HORIZONTAL
+import com.projects.moviemanager.common.util.UiConstants.BROWSE_CARD_PADDING_VERTICAL
+import com.projects.moviemanager.common.util.UiConstants.BROWSE_MIN_CARD_WIDTH
+import com.projects.moviemanager.common.util.UiConstants.DEFAULT_MARGIN
+import com.projects.moviemanager.common.util.calculateCardsPerRow
+import com.projects.moviemanager.common.util.dpToPx
+import com.projects.moviemanager.common.util.pxToDp
 import com.projects.moviemanager.common.domain.models.content.MediaContent
 import com.projects.moviemanager.common.domain.models.person.PersonImage
-import com.projects.moviemanager.util.removeParentPadding
+import com.projects.moviemanager.common.util.removeParentPadding
 
 @Composable
 fun <T> GenericGrid(

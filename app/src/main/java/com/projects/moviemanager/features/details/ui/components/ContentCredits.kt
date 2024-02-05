@@ -22,13 +22,13 @@ import androidx.compose.ui.unit.dp
 import com.projects.moviemanager.R
 import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.common.ui.components.NetworkImage
-import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_MARGIN
-import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_PADDING
-import com.projects.moviemanager.common.ui.util.UiConstants.DETAILS_CAST_PICTURE_SIZE
-import com.projects.moviemanager.common.ui.util.UiConstants.SMALL_PADDING
+import com.projects.moviemanager.common.util.UiConstants.DEFAULT_MARGIN
+import com.projects.moviemanager.common.util.UiConstants.DEFAULT_PADDING
+import com.projects.moviemanager.common.util.UiConstants.DETAILS_CAST_PICTURE_SIZE
+import com.projects.moviemanager.common.util.UiConstants.SMALL_PADDING
 import com.projects.moviemanager.common.domain.models.content.ContentCast
-import com.projects.moviemanager.util.Constants
-import com.projects.moviemanager.util.removeParentPadding
+import com.projects.moviemanager.common.util.Constants
+import com.projects.moviemanager.common.util.removeParentPadding
 
 @Composable
 fun CastCarousel(

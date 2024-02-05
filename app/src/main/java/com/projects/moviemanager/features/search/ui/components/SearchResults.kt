@@ -22,8 +22,8 @@ import androidx.paging.compose.LazyPagingItems
 import com.projects.moviemanager.R
 import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.common.ui.components.card.ImageContentCard
-import com.projects.moviemanager.common.ui.util.forceKeyboardAction
-import com.projects.moviemanager.common.ui.util.rememberNestedScrollConnection
+import com.projects.moviemanager.common.util.forceKeyboardAction
+import com.projects.moviemanager.common.util.rememberNestedScrollConnection
 import com.projects.moviemanager.common.domain.models.content.GenericContent
 
 @Composable

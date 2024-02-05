@@ -13,11 +13,11 @@ import androidx.compose.ui.unit.dp
 import com.projects.moviemanager.common.ui.components.NetworkImage
 import com.projects.moviemanager.common.ui.theme.MainBarGreyColor
 import com.projects.moviemanager.common.ui.theme.RoundCornerShapes
-import com.projects.moviemanager.common.ui.util.UiConstants.BROWSE_CARD_DEFAULT_ELEVATION
-import com.projects.moviemanager.common.ui.util.UiConstants.BROWSE_CARD_PADDING_HORIZONTAL
-import com.projects.moviemanager.common.ui.util.UiConstants.BROWSE_CARD_PADDING_VERTICAL
-import com.projects.moviemanager.common.ui.util.UiConstants.POSTER_ASPECT_RATIO_MULTIPLY
-import com.projects.moviemanager.util.Constants.BASE_500_IMAGE_URL
+import com.projects.moviemanager.common.util.UiConstants.BROWSE_CARD_DEFAULT_ELEVATION
+import com.projects.moviemanager.common.util.UiConstants.BROWSE_CARD_PADDING_HORIZONTAL
+import com.projects.moviemanager.common.util.UiConstants.BROWSE_CARD_PADDING_VERTICAL
+import com.projects.moviemanager.common.util.UiConstants.POSTER_ASPECT_RATIO_MULTIPLY
+import com.projects.moviemanager.common.util.Constants.BASE_500_IMAGE_URL
 
 @Composable
 fun PersonImages(

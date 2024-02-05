@@ -9,8 +9,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.common.ui.components.card.ImageContentCard
-import com.projects.moviemanager.common.ui.util.UiConstants.CAROUSEL_CARDS_WIDTH
-import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_PADDING
+import com.projects.moviemanager.common.util.UiConstants.CAROUSEL_CARDS_WIDTH
+import com.projects.moviemanager.common.util.UiConstants.DEFAULT_PADDING
 import com.projects.moviemanager.common.domain.models.content.GenericContent
 
 @Composable

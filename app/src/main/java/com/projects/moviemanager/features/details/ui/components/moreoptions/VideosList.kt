@@ -25,13 +25,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.projects.moviemanager.common.ui.theme.MainBarGreyColor
 import com.projects.moviemanager.common.ui.components.NetworkImage
-import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_PADDING
-import com.projects.moviemanager.common.ui.util.UiConstants.SMALL_PADDING
-import com.projects.moviemanager.common.ui.util.UiConstants.VIDEOS_BORDER_SIZE
+import com.projects.moviemanager.common.util.UiConstants.DEFAULT_PADDING
+import com.projects.moviemanager.common.util.UiConstants.SMALL_PADDING
+import com.projects.moviemanager.common.util.UiConstants.VIDEOS_BORDER_SIZE
 import com.projects.moviemanager.common.domain.models.content.Videos
-import com.projects.moviemanager.util.Constants
-import com.projects.moviemanager.util.Constants.BASE_YOUTUBE_THUMBAIL_URL
-import com.projects.moviemanager.util.Constants.YOUTUBE_THUMBAIL_RESOLUTION
+import com.projects.moviemanager.common.util.Constants
+import com.projects.moviemanager.common.util.Constants.BASE_YOUTUBE_THUMBAIL_URL
+import com.projects.moviemanager.common.util.Constants.YOUTUBE_THUMBAIL_RESOLUTION
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)

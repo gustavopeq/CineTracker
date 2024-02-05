@@ -1,4 +1,4 @@
-package com.projects.moviemanager.common.ui.util
+package com.projects.moviemanager.common.util
 
 import android.content.Context
 import android.view.View

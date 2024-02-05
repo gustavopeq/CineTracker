@@ -36,11 +36,11 @@ import com.projects.moviemanager.common.ui.MainViewModel
 import com.projects.moviemanager.common.ui.components.ComponentPlaceholder
 import com.projects.moviemanager.common.ui.components.tab.GenericTabRow
 import com.projects.moviemanager.common.ui.components.tab.setupTabs
-import com.projects.moviemanager.common.ui.util.UiConstants.CARD_ROUND_CORNER
-import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_PADDING
-import com.projects.moviemanager.common.ui.util.UiConstants.POSTER_ASPECT_RATIO_MULTIPLY
-import com.projects.moviemanager.common.ui.util.UiConstants.SMALL_MARGIN
-import com.projects.moviemanager.common.ui.util.UiConstants.WATCHLIST_IMAGE_WIDTH
+import com.projects.moviemanager.common.util.UiConstants.CARD_ROUND_CORNER
+import com.projects.moviemanager.common.util.UiConstants.DEFAULT_PADDING
+import com.projects.moviemanager.common.util.UiConstants.POSTER_ASPECT_RATIO_MULTIPLY
+import com.projects.moviemanager.common.util.UiConstants.SMALL_MARGIN
+import com.projects.moviemanager.common.util.UiConstants.WATCHLIST_IMAGE_WIDTH
 import com.projects.moviemanager.features.watchlist.events.WatchlistEvent
 import com.projects.moviemanager.features.watchlist.ui.components.WatchlistCard
 import com.projects.moviemanager.features.watchlist.ui.components.WatchlistTabItem

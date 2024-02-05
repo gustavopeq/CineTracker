@@ -29,9 +29,9 @@ import com.projects.moviemanager.common.domain.models.util.DataLoadStatus
 import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.common.ui.components.ClassicLoadingIndicator
 import com.projects.moviemanager.common.ui.components.button.ClassicButton
-import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_MARGIN
-import com.projects.moviemanager.common.ui.util.UiConstants.HOME_BACKGROUND_OFFSET_PERCENT
-import com.projects.moviemanager.common.ui.util.UiConstants.POSTER_ASPECT_RATIO_MULTIPLY
+import com.projects.moviemanager.common.util.UiConstants.DEFAULT_MARGIN
+import com.projects.moviemanager.common.util.UiConstants.HOME_BACKGROUND_OFFSET_PERCENT
+import com.projects.moviemanager.common.util.UiConstants.POSTER_ASPECT_RATIO_MULTIPLY
 import com.projects.moviemanager.features.home.events.HomeEvent
 import com.projects.moviemanager.features.home.ui.components.carousel.ComingSoonCarousel
 import com.projects.moviemanager.features.home.ui.components.carousel.TrendingCarousel
@@ -40,7 +40,7 @@ import com.projects.moviemanager.features.home.ui.components.featured.FeaturedBa
 import com.projects.moviemanager.features.home.ui.components.featured.FeaturedInfo
 import com.projects.moviemanager.features.home.ui.components.featured.PersonFeaturedInfo
 import com.projects.moviemanager.features.home.ui.components.featured.SecondaryFeaturedInfo
-import com.projects.moviemanager.util.Constants.BASE_ORIGINAL_IMAGE_URL
+import com.projects.moviemanager.common.util.Constants.BASE_ORIGINAL_IMAGE_URL
 
 @Composable
 fun Home(

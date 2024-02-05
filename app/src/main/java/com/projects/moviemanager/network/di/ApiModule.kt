@@ -6,7 +6,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import com.projects.moviemanager.util.Constants.BASE_URL_MOVIEDB
+import com.projects.moviemanager.common.util.Constants.BASE_URL_MOVIEDB
 import javax.inject.Singleton
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit

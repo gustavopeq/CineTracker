@@ -4,7 +4,7 @@ import com.projects.moviemanager.network.models.content.common.MovieResponse
 import com.projects.moviemanager.network.models.content.common.MultiResponse
 import com.projects.moviemanager.network.models.content.common.PersonResponse
 import com.projects.moviemanager.network.models.search.SearchPageResponse
-import com.projects.moviemanager.util.Constants
+import com.projects.moviemanager.common.util.Constants
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query

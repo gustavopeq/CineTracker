@@ -28,12 +28,12 @@ import com.projects.moviemanager.common.domain.models.content.DetailedMediaInfo
 import com.projects.moviemanager.common.domain.models.util.DataLoadStatus
 import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.common.ui.components.NetworkImage
-import com.projects.moviemanager.common.ui.util.UiConstants.BACKGROUND_INDEX
-import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_MARGIN
-import com.projects.moviemanager.common.ui.util.UiConstants.DETAILS_TITLE_IMAGE_OFFSET_PERCENT
-import com.projects.moviemanager.common.ui.util.UiConstants.POSTER_ASPECT_RATIO
-import com.projects.moviemanager.common.ui.util.UiConstants.POSTER_ASPECT_RATIO_MULTIPLY
-import com.projects.moviemanager.common.ui.util.UiConstants.SECTION_PADDING
+import com.projects.moviemanager.common.util.UiConstants.BACKGROUND_INDEX
+import com.projects.moviemanager.common.util.UiConstants.DEFAULT_MARGIN
+import com.projects.moviemanager.common.util.UiConstants.DETAILS_TITLE_IMAGE_OFFSET_PERCENT
+import com.projects.moviemanager.common.util.UiConstants.POSTER_ASPECT_RATIO
+import com.projects.moviemanager.common.util.UiConstants.POSTER_ASPECT_RATIO_MULTIPLY
+import com.projects.moviemanager.common.util.UiConstants.SECTION_PADDING
 import com.projects.moviemanager.features.details.ui.components.CastCarousel
 import com.projects.moviemanager.features.details.ui.components.DetailBodyPlaceholder
 import com.projects.moviemanager.features.details.ui.components.DetailsDescriptionBody
@@ -43,7 +43,7 @@ import com.projects.moviemanager.features.details.ui.components.moreoptions.More
 import com.projects.moviemanager.features.details.ui.components.moreoptions.PersonMoreOptionsTab
 import com.projects.moviemanager.features.details.ui.events.DetailsEvents
 import com.projects.moviemanager.features.details.util.mapValueToRange
-import com.projects.moviemanager.util.Constants.BASE_ORIGINAL_IMAGE_URL
+import com.projects.moviemanager.common.util.Constants.BASE_ORIGINAL_IMAGE_URL
 
 @Composable
 fun Details(

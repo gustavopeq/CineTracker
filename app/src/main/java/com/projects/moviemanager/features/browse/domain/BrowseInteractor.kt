@@ -9,7 +9,7 @@ import com.projects.moviemanager.common.domain.models.util.ContentListType
 import com.projects.moviemanager.features.browse.ui.paging.MediaContentPagingSource
 import com.projects.moviemanager.network.repository.movie.MovieRepository
 import com.projects.moviemanager.network.repository.show.ShowRepository
-import com.projects.moviemanager.util.Constants.PAGE_SIZE
+import com.projects.moviemanager.common.util.Constants.PAGE_SIZE
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

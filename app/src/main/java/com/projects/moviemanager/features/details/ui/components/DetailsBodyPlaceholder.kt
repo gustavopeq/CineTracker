@@ -11,10 +11,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.projects.moviemanager.common.ui.components.ComponentPlaceholder
-import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_MARGIN
-import com.projects.moviemanager.common.ui.util.UiConstants.LARGE_MARGIN
-import com.projects.moviemanager.common.ui.util.UiConstants.SECTION_PADDING
-import com.projects.moviemanager.common.ui.util.UiConstants.SMALL_PADDING
+import com.projects.moviemanager.common.util.UiConstants.DEFAULT_MARGIN
+import com.projects.moviemanager.common.util.UiConstants.LARGE_MARGIN
+import com.projects.moviemanager.common.util.UiConstants.SECTION_PADDING
+import com.projects.moviemanager.common.util.UiConstants.SMALL_PADDING
 
 @Composable
 fun DetailBodyPlaceholder(posterHeight: Float) {

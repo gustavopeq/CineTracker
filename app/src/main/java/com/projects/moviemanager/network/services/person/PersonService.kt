@@ -3,8 +3,8 @@ package com.projects.moviemanager.network.services.person
 import com.projects.moviemanager.network.models.person.PersonCreditsResponse
 import com.projects.moviemanager.network.models.person.PersonDetailsResponse
 import com.projects.moviemanager.network.models.person.PersonImagesResponse
-import com.projects.moviemanager.util.Constants
-import com.projects.moviemanager.util.Constants.ENGLISH_LANGUAGE_CODE
+import com.projects.moviemanager.common.util.Constants
+import com.projects.moviemanager.common.util.Constants.ENGLISH_LANGUAGE_CODE
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path

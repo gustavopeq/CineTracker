@@ -4,8 +4,8 @@ import com.projects.moviemanager.network.models.content.common.ContentCreditsRes
 import com.projects.moviemanager.network.models.content.common.ContentListPageResponse
 import com.projects.moviemanager.network.models.content.show.ShowApiResponse
 import com.projects.moviemanager.network.models.content.common.VideosByIdResponse
-import com.projects.moviemanager.util.Constants
-import com.projects.moviemanager.util.Constants.ENGLISH_LANGUAGE_CODE
+import com.projects.moviemanager.common.util.Constants
+import com.projects.moviemanager.common.util.Constants.ENGLISH_LANGUAGE_CODE
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path

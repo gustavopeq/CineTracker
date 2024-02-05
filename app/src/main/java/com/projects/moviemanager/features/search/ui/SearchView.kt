@@ -19,11 +19,11 @@ import com.projects.moviemanager.common.domain.models.content.GenericContent
 import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.common.ui.components.ClassicLoadingIndicator
 import com.projects.moviemanager.common.ui.components.SetStatusBarColor
-import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_PADDING
-import com.projects.moviemanager.common.ui.util.UiConstants.SEARCH_CARDS_WIDTH
-import com.projects.moviemanager.common.ui.util.calculateCardsPerRow
-import com.projects.moviemanager.common.ui.util.dpToPx
-import com.projects.moviemanager.common.ui.util.pxToDp
+import com.projects.moviemanager.common.util.UiConstants.DEFAULT_PADDING
+import com.projects.moviemanager.common.util.UiConstants.SEARCH_CARDS_WIDTH
+import com.projects.moviemanager.common.util.calculateCardsPerRow
+import com.projects.moviemanager.common.util.dpToPx
+import com.projects.moviemanager.common.util.pxToDp
 import com.projects.moviemanager.features.search.events.SearchEvent
 import com.projects.moviemanager.features.search.ui.components.NoResultsFound
 import com.projects.moviemanager.features.search.ui.components.SearchBar

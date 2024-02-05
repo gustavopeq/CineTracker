@@ -19,9 +19,9 @@ import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.projects.moviemanager.R
 import com.projects.moviemanager.common.ui.components.button.ClassicButton
-import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_PADDING
-import com.projects.moviemanager.common.ui.util.UiConstants.ERROR_ANIMATION_SIZE
-import com.projects.moviemanager.common.ui.util.UiConstants.SECTION_PADDING
+import com.projects.moviemanager.common.util.UiConstants.DEFAULT_PADDING
+import com.projects.moviemanager.common.util.UiConstants.ERROR_ANIMATION_SIZE
+import com.projects.moviemanager.common.util.UiConstants.SECTION_PADDING
 
 @Composable
 fun ErrorScreen(

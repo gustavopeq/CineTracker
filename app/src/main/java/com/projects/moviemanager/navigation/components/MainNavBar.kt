@@ -18,7 +18,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.projects.moviemanager.common.ui.util.UiConstants.BUTTON_NAVIGATION_BAR_HEIGHT
+import com.projects.moviemanager.common.util.UiConstants.BUTTON_NAVIGATION_BAR_HEIGHT
 import com.projects.moviemanager.common.ui.theme.MainBarGreyColor
 import com.projects.moviemanager.common.ui.MainViewModel
 

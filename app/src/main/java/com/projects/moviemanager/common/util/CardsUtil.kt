@@ -1,4 +1,4 @@
-package com.projects.moviemanager.common.ui.util
+package com.projects.moviemanager.common.util
 
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
