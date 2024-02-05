@@ -56,6 +56,16 @@ class ShowRepositoryImpl @Inject constructor(
         }.asFlow()
     }
 
+    override suspend fun getRecommendationsShowsById(
+        showId: Int
+    ): Flow<Either<ContentListPageResponse<ShowApiResponse>, ApiError>> {
+        return toApiResult {
+            showService.getRecommendationsShowsById(
+                showId = showId
+            )
+        }.asFlow()
+    }
+
     override suspend fun getSimilarShowsById(
         showId: Int
     ): Flow<Either<ContentListPageResponse<ShowApiResponse>, ApiError>> {

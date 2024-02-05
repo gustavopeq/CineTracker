@@ -26,6 +26,10 @@ interface ShowRepository {
         showId: Int
     ): Flow<Either<VideosByIdResponse, ApiError>>
 
+    suspend fun getRecommendationsShowsById(
+        showId: Int
+    ): Flow<Either<ContentListPageResponse<ShowApiResponse>, ApiError>>
+
     suspend fun getSimilarShowsById(
         showId: Int
     ): Flow<Either<ContentListPageResponse<ShowApiResponse>, ApiError>>

@@ -35,6 +35,11 @@ interface ShowService {
         @Path("show_ID") showId: Int
     ): Response<VideosByIdResponse>
 
+    @GET("tv/{show_ID}/recommendations?api_key=${Constants.API_KEY}")
+    suspend fun getRecommendationsShowsById(
+        @Path("show_ID") showId: Int
+    ): Response<ContentListPageResponse<ShowApiResponse>>
+
     @GET("tv/{show_ID}/similar?api_key=${Constants.API_KEY}")
     suspend fun getSimilarShowsById(
         @Path("show_ID") showId: Int

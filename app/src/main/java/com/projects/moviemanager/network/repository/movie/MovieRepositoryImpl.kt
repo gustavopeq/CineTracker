@@ -59,6 +59,16 @@ class MovieRepositoryImpl @Inject constructor(
         }.asFlow()
     }
 
+    override suspend fun getRecommendationsMoviesById(
+        movieId: Int
+    ): Flow<Either<ContentListPageResponse<MovieApiResponse>, ApiError>> {
+        return toApiResult {
+            movieService.getRecommendationsMoviesById(
+                movieId = movieId
+            )
+        }.asFlow()
+    }
+
     override suspend fun getSimilarMoviesById(
         movieId: Int
     ): Flow<Either<ContentListPageResponse<MovieApiResponse>, ApiError>> {

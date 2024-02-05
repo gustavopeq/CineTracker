@@ -27,6 +27,10 @@ interface MovieRepository {
         movieId: Int
     ): Flow<Either<VideosByIdResponse, ApiError>>
 
+    suspend fun getRecommendationsMoviesById(
+        movieId: Int
+    ): Flow<Either<ContentListPageResponse<MovieApiResponse>, ApiError>>
+
     suspend fun getSimilarMoviesById(
         movieId: Int
     ): Flow<Either<ContentListPageResponse<MovieApiResponse>, ApiError>>

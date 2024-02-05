@@ -36,6 +36,11 @@ interface MovieService {
     ): Response<VideosByIdResponse>
 
     @GET("movie/{movie_ID}/recommendations?api_key=${Constants.API_KEY}")
+    suspend fun getRecommendationsMoviesById(
+        @Path("movie_ID") movieId: Int
+    ): Response<ContentListPageResponse<MovieApiResponse>>
+
+    @GET("movie/{movie_ID}/similar?api_key=${Constants.API_KEY}")
     suspend fun getSimilarMoviesById(
         @Path("movie_ID") movieId: Int
     ): Response<ContentListPageResponse<MovieApiResponse>>

@@ -122,7 +122,43 @@ class DetailsInteractor @Inject constructor(
         return videoList
     }
 
-    suspend fun getSimilarContentById(
+    suspend fun getRecommendationsContentById(
+        contentId: Int,
+        mediaType: MediaType
+    ): List<MediaContent> {
+        val result = when (mediaType) {
+            MediaType.MOVIE -> movieRepository.getRecommendationsMoviesById(contentId)
+            MediaType.SHOW -> showRepository.getRecommendationsShowsById(contentId)
+            else -> return emptyList()
+        }
+
+        var listOfSimilar: List<MediaContent> = emptyList()
+        result.collect { response ->
+            when (response) {
+                is Right -> {
+                    Timber.e("getRecommendationsContentById failed with error: ${response.error}")
+                }
+                is Left -> {
+                    listOfSimilar = response.value.results
+                        .filter {
+                            it.poster_path?.isNotEmpty() == true && it.title.isNotEmpty()
+                        }
+                        .map {
+                            it.toMediaContent()
+                        }
+                    if (listOfSimilar.isEmpty()) {
+                        listOfSimilar = getSimilarContentById(
+                            contentId = contentId,
+                            mediaType = mediaType
+                        )
+                    }
+                }
+            }
+        }
+        return listOfSimilar
+    }
+
+    private suspend fun getSimilarContentById(
         contentId: Int,
         mediaType: MediaType
     ): List<MediaContent> {
@@ -141,7 +177,7 @@ class DetailsInteractor @Inject constructor(
                 is Left -> {
                     listOfSimilar = response.value.results
                         .filter {
-                            it.poster_path?.isNotEmpty() == true && it.title?.isNotEmpty() == true
+                            it.poster_path?.isNotEmpty() == true && it.title.isNotEmpty()
                         }
                         .map {
                             it.toMediaContent()

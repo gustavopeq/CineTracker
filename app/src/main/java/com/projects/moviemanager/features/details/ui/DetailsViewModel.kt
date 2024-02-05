@@ -134,7 +134,7 @@ class DetailsViewModel @Inject constructor(
                     contentId,
                     mediaType
                 )
-                _contentSimilar.value = detailsInteractor.getSimilarContentById(
+                _contentSimilar.value = detailsInteractor.getRecommendationsContentById(
                     contentId,
                     mediaType
                 )
