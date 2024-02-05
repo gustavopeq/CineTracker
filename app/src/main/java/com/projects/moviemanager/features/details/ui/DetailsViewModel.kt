@@ -17,6 +17,7 @@ import com.projects.moviemanager.features.details.DetailsScreen.ARG_CONTENT_ID
 import com.projects.moviemanager.features.details.DetailsScreen.ARG_MEDIA_TYPE
 import com.projects.moviemanager.features.details.domain.DetailsInteractor
 import com.projects.moviemanager.features.details.ui.events.DetailsEvents
+import com.projects.moviemanager.features.details.ui.state.DetailsSnackbarState
 import com.projects.moviemanager.features.watchlist.model.DefaultLists
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -70,6 +71,11 @@ class DetailsViewModel @Inject constructor(
 
     private val _detailsFailedLoading: MutableState<Boolean> = mutableStateOf(false)
     val detailsFailedLoading: MutableState<Boolean> get() = _detailsFailedLoading
+
+    private val _snackbarState: MutableState<DetailsSnackbarState> = mutableStateOf(
+        DetailsSnackbarState()
+    )
+    val snackbarState: MutableState<DetailsSnackbarState> get() = _snackbarState
 
     init {
         initFetchDetails()
@@ -167,6 +173,11 @@ class DetailsViewModel @Inject constructor(
                 contentId = contentId,
                 mediaType = mediaType,
                 listId = listId
+            )
+            _snackbarState.value = DetailsSnackbarState(
+                displaySnackbar = mutableStateOf(true),
+                listId = listId,
+                addedItem = !currentStatus
             )
             delay(DELAY_UPDATE_POPUP_TEXT_MS)
             updatedWatchlistStatus[listId] = !currentStatus

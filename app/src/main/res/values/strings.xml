@@ -98,5 +98,7 @@
     <!-- Common -->
     <string name="generic_error_message">Sorry, something went wrong...</string>
     <string name="try_again_button">Try Again</string>
+    <string name="snackbar_item_added_in_list">Added to %s</string>
+    <string name="snackbar_item_removed_from_list">Removed from %s</string>
 
 </resources>

@@ -18,15 +18,16 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavBackStackEntry
+import com.projects.moviemanager.R
 import com.projects.moviemanager.common.domain.models.content.DetailedMediaInfo
 import com.projects.moviemanager.common.domain.models.util.DataLoadStatus
 import com.projects.moviemanager.common.domain.models.util.MediaType
@@ -48,7 +49,7 @@ import com.projects.moviemanager.features.details.ui.components.moreoptions.More
 import com.projects.moviemanager.features.details.ui.components.moreoptions.PersonMoreOptionsTab
 import com.projects.moviemanager.features.details.ui.events.DetailsEvents
 import com.projects.moviemanager.features.details.util.mapValueToRange
-import kotlinx.coroutines.launch
+import com.projects.moviemanager.features.watchlist.model.DefaultLists
 
 @Composable
 fun Details(
@@ -78,10 +79,9 @@ private fun Details(
     val contentInListStatus by viewModel.contentInListStatus.collectAsState()
     val loadState by viewModel.loadState.collectAsState()
     val detailsFailedLoading by viewModel.detailsFailedLoading
-
-    val scope = rememberCoroutineScope()
+    val snackbarState by viewModel.snackbarState
     val snackbarHostState = remember { SnackbarHostState() }
-
+    val context = LocalContext.current
     val posterWidth = LocalConfiguration.current.screenWidthDp
     val posterHeight = posterWidth * POSTER_ASPECT_RATIO_MULTIPLY
 
@@ -92,11 +92,6 @@ private fun Details(
                     listId = listId
                 )
             )
-            scope.launch {
-                snackbarHostState.showSnackbar(
-                    "Watchlist updated"
-                )
-            }
         }
     }
 
@@ -105,6 +100,31 @@ private fun Details(
             viewModel.onEvent(
                 DetailsEvents.FetchDetails
             )
+        }
+    }
+
+    LaunchedEffect(snackbarState) {
+        if (snackbarState.displaySnackbar.value) {
+            val itemAdded = snackbarState.addedItem
+            val listName = DefaultLists.getListById(snackbarState.listId)
+            listName?.let { list ->
+                val listCapitalized = list.toString()
+                val message = if (itemAdded) {
+                    context.resources.getString(
+                        R.string.snackbar_item_added_in_list,
+                        listCapitalized
+                    )
+                } else {
+                    context.resources.getString(
+                        R.string.snackbar_item_removed_from_list,
+                        listCapitalized
+                    )
+                }
+                when (itemAdded) {
+                    true -> snackbarHostState.showSnackbar(message)
+                    false -> snackbarHostState.showSnackbar(message)
+                }
+            }
         }
     }
 
