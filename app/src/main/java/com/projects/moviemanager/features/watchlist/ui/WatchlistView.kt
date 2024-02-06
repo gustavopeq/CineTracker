@@ -127,6 +127,7 @@ private fun Watchlist(
                     listCapitalized
                 )
                 snackbarHostState.showSnackbar(message)
+                viewModel.onEvent(WatchlistEvent.OnSnackbarDismiss)
             }
         }
     }

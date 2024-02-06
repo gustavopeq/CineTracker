@@ -147,6 +147,7 @@ class WatchlistViewModel @Inject constructor(
     private fun undoItemRemoved() {
         viewModelScope.launch(Dispatchers.IO) {
             watchlistInteractor.undoItemRemoved()
+            loadWatchlistData(showLoadingState = false)
         }
     }
 

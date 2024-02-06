@@ -38,7 +38,13 @@ fun ClassicSnackbar(
                         shape = RoundedCornerShape(CARD_ROUND_CORNER.dp),
                         action = {
                             if (onActionClick != null) {
-                                UndoActionButton(onActionClick, textStyle)
+                                UndoActionButton(
+                                    onActionClick = {
+                                        onActionClick()
+                                        snackbarHostState.currentSnackbarData?.dismiss()
+                                    },
+                                    textStyle = textStyle
+                                )
                             }
                         }
                     ) {
