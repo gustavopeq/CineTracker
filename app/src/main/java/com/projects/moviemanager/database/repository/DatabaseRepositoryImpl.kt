@@ -26,12 +26,20 @@ class DatabaseRepositoryImpl(
         contentId: Int,
         mediaType: MediaType,
         listId: String
-    ) {
-        contentEntityDao.delete(
+    ): ContentEntity? {
+        val itemRemoved = contentEntityDao.getItem(
             contentId = contentId,
             mediaType = mediaType.name,
             listId = listId
         )
+        if (itemRemoved != null) {
+            contentEntityDao.delete(
+                contentId = contentId,
+                mediaType = mediaType.name,
+                listId = listId
+            )
+        }
+        return itemRemoved
     }
 
     override suspend fun getAllItemsByListId(listId: String): List<ContentEntity> {
@@ -69,5 +77,9 @@ class DatabaseRepositoryImpl(
             mediaType = mediaType,
             listId = currentListId
         )
+    }
+
+    override suspend fun reinsertItem(contentEntity: ContentEntity) {
+        contentEntityDao.insert(contentEntity)
     }
 }

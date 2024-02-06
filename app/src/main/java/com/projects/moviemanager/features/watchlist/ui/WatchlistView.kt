@@ -131,7 +131,12 @@ private fun Watchlist(
         }
     }
 
-    ClassicSnackbar(snackbarHostState = snackbarHostState) {
+    ClassicSnackbar(
+        snackbarHostState = snackbarHostState,
+        onActionClick = {
+            viewModel.onEvent(WatchlistEvent.UndoItemRemoved)
+        }
+    ) {
         Column(modifier = Modifier.fillMaxSize()) {
             GenericTabRow(selectedTabIndex.value, tabList, updateSelectedTab)
             when (loadState) {

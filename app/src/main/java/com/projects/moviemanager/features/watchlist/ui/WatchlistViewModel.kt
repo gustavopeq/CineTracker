@@ -56,6 +56,7 @@ class WatchlistViewModel @Inject constructor(
                 updateItemListId(event.contentId, event.mediaType)
             }
             is WatchlistEvent.OnSnackbarDismiss -> snackbarDismiss()
+            is WatchlistEvent.UndoItemRemoved -> undoItemRemoved()
         }
     }
 
@@ -141,6 +142,12 @@ class WatchlistViewModel @Inject constructor(
             it.id == contentId && it.mediaType == mediaType
         }
         currentList.value = updatedList
+    }
+
+    private fun undoItemRemoved() {
+        viewModelScope.launch(Dispatchers.IO) {
+            watchlistInteractor.undoItemRemoved()
+        }
     }
 
     private fun snackbarDismiss() {
