@@ -59,6 +59,7 @@
     <string name="more_options_similar">More like this</string>
     <string name="images_tab">Images</string>
     <string name="unknown">Unknown</string>
+    <string name="read_more_text">Read more</string>
 
     <!-- Watchlist screen -->
     <string name="watchlist_tab">Watchlist</string>
