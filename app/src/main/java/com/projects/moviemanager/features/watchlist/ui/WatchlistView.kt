@@ -47,6 +47,7 @@ import com.projects.moviemanager.common.util.UiConstants.SMALL_MARGIN
 import com.projects.moviemanager.common.util.UiConstants.WATCHLIST_IMAGE_WIDTH
 import com.projects.moviemanager.features.watchlist.events.WatchlistEvent
 import com.projects.moviemanager.features.watchlist.model.DefaultLists
+import com.projects.moviemanager.features.watchlist.model.WatchlistItemAction
 import com.projects.moviemanager.features.watchlist.ui.components.WatchlistCard
 import com.projects.moviemanager.features.watchlist.ui.components.WatchlistTabItem
 
@@ -122,10 +123,17 @@ private fun Watchlist(
             val listName = DefaultLists.getListById(snackbarState.listId)
             listName?.let { list ->
                 val listCapitalized = list.toString()
-                val message = context.resources.getString(
-                    R.string.snackbar_item_removed_from_list,
-                    listCapitalized
-                )
+                val message = if (snackbarState.itemAction == WatchlistItemAction.ITEM_REMOVED) {
+                    context.resources.getString(
+                        R.string.snackbar_item_removed_from_list,
+                        listCapitalized
+                    )
+                } else {
+                    context.resources.getString(
+                        R.string.snackbar_item_moved_to_list,
+                        listCapitalized
+                    )
+                }
                 snackbarHostState.showSnackbar(message)
                 viewModel.onEvent(WatchlistEvent.OnSnackbarDismiss)
             }
@@ -135,7 +143,7 @@ private fun Watchlist(
     ClassicSnackbar(
         snackbarHostState = snackbarHostState,
         onActionClick = {
-            viewModel.onEvent(WatchlistEvent.UndoItemRemoved)
+            viewModel.onEvent(WatchlistEvent.UndoItemAction)
         }
     ) {
         Column(modifier = Modifier.fillMaxSize()) {

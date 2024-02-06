@@ -5,7 +5,7 @@ import com.projects.moviemanager.common.domain.models.util.MediaType
 sealed class WatchlistEvent {
     data object LoadWatchlistData : WatchlistEvent()
     data object OnSnackbarDismiss : WatchlistEvent()
-    data object UndoItemRemoved : WatchlistEvent()
+    data object UndoItemAction : WatchlistEvent()
     data class RemoveItem(
         val contentId: Int,
         val mediaType: MediaType

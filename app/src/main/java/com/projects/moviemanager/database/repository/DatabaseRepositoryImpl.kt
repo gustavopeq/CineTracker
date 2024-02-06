@@ -61,7 +61,7 @@ class DatabaseRepositoryImpl(
         mediaType: MediaType,
         currentListId: String,
         newListId: String
-    ) {
+    ): ContentEntity? {
         deleteItem(
             contentId = contentId,
             mediaType = mediaType,
@@ -72,7 +72,7 @@ class DatabaseRepositoryImpl(
             mediaType = mediaType,
             listId = newListId
         )
-        deleteItem(
+        return deleteItem(
             contentId = contentId,
             mediaType = mediaType,
             listId = currentListId

@@ -11,6 +11,7 @@ import com.projects.moviemanager.features.watchlist.domain.WatchlistInteractor
 import com.projects.moviemanager.features.watchlist.events.WatchlistEvent
 import com.projects.moviemanager.features.watchlist.model.DefaultLists
 import com.projects.moviemanager.features.watchlist.model.DefaultLists.Companion.getOtherList
+import com.projects.moviemanager.features.watchlist.model.WatchlistItemAction
 import com.projects.moviemanager.features.watchlist.ui.state.WatchlistSnackbarState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -43,6 +44,7 @@ class WatchlistViewModel @Inject constructor(
         WatchlistSnackbarState()
     )
     val snackbarState: MutableState<WatchlistSnackbarState> get() = _snackbarState
+    private var lastItemAction: WatchlistItemAction? = null
 
     fun onEvent(
         event: WatchlistEvent
@@ -56,7 +58,7 @@ class WatchlistViewModel @Inject constructor(
                 updateItemListId(event.contentId, event.mediaType)
             }
             is WatchlistEvent.OnSnackbarDismiss -> snackbarDismiss()
-            is WatchlistEvent.UndoItemRemoved -> undoItemRemoved()
+            is WatchlistEvent.UndoItemAction -> undoItemRemoved()
         }
     }
 
@@ -104,11 +106,11 @@ class WatchlistViewModel @Inject constructor(
                 listId = selectedList.value
             )
             removeContentFromUiList(contentId, mediaType)
-            _snackbarState.value = WatchlistSnackbarState(
-                listId = selectedList.value
-            ).apply {
-                setSnackbarVisible()
-            }
+
+            triggerSnackbar(
+                listId = selectedList.value,
+                itemAction = WatchlistItemAction.ITEM_REMOVED
+            )
         }
     }
 
@@ -125,7 +127,25 @@ class WatchlistViewModel @Inject constructor(
                 newListId = otherListId
             )
             loadWatchlistData(showLoadingState = false)
+
+            triggerSnackbar(
+                listId = otherListId,
+                itemAction = WatchlistItemAction.ITEM_MOVED
+            )
         }
+    }
+
+    private fun triggerSnackbar(
+        listId: String,
+        itemAction: WatchlistItemAction
+    ) {
+        _snackbarState.value = WatchlistSnackbarState(
+            listId = listId,
+            itemAction = itemAction
+        ).apply {
+            setSnackbarVisible()
+        }
+        lastItemAction = itemAction
     }
 
     private fun removeContentFromUiList(
@@ -146,8 +166,14 @@ class WatchlistViewModel @Inject constructor(
 
     private fun undoItemRemoved() {
         viewModelScope.launch(Dispatchers.IO) {
-            watchlistInteractor.undoItemRemoved()
-            loadWatchlistData(showLoadingState = false)
+            lastItemAction?.let { action ->
+                if (action == WatchlistItemAction.ITEM_REMOVED) {
+                    watchlistInteractor.undoItemRemoved()
+                } else {
+                    watchlistInteractor.undoMovedItem()
+                }
+                loadWatchlistData(showLoadingState = false)
+            }
         }
     }
 

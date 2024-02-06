@@ -17,7 +17,7 @@ interface DatabaseRepository {
         mediaType: MediaType,
         currentListId: String,
         newListId: String
-    )
+    ): ContentEntity?
 
     suspend fun reinsertItem(contentEntity: ContentEntity)
 }
