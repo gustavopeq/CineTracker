@@ -14,14 +14,17 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -34,6 +37,7 @@ import com.projects.moviemanager.common.domain.models.util.DataLoadStatus
 import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.common.ui.MainViewModel
 import com.projects.moviemanager.common.ui.components.ComponentPlaceholder
+import com.projects.moviemanager.common.ui.components.popup.ClassicSnackbar
 import com.projects.moviemanager.common.ui.components.tab.GenericTabRow
 import com.projects.moviemanager.common.ui.components.tab.setupTabs
 import com.projects.moviemanager.common.util.UiConstants.CARD_ROUND_CORNER
@@ -42,6 +46,7 @@ import com.projects.moviemanager.common.util.UiConstants.POSTER_ASPECT_RATIO_MUL
 import com.projects.moviemanager.common.util.UiConstants.SMALL_MARGIN
 import com.projects.moviemanager.common.util.UiConstants.WATCHLIST_IMAGE_WIDTH
 import com.projects.moviemanager.features.watchlist.events.WatchlistEvent
+import com.projects.moviemanager.features.watchlist.model.DefaultLists
 import com.projects.moviemanager.features.watchlist.ui.components.WatchlistCard
 import com.projects.moviemanager.features.watchlist.ui.components.WatchlistTabItem
 
@@ -70,6 +75,8 @@ private fun Watchlist(
     val watchedList by viewModel.watchedList.collectAsState()
     val selectedList by viewModel.selectedList
     val sortType by mainViewModel.watchlistSort.collectAsState()
+    val snackbarState by viewModel.snackbarState
+    val snackbarHostState = remember { SnackbarHostState() }
 
     val availableTabs = listOf(
         WatchlistTabItem.WatchlistTab,
@@ -109,41 +116,62 @@ private fun Watchlist(
         )
     }
 
-    Column(modifier = Modifier.fillMaxSize()) {
-        GenericTabRow(selectedTabIndex.value, tabList, updateSelectedTab)
-        when (loadState) {
-            DataLoadStatus.Empty -> {
-                // Display empty screen
+    val context = LocalContext.current
+    LaunchedEffect(snackbarState) {
+        if (snackbarState.displaySnackbar.value) {
+            val listName = DefaultLists.getListById(snackbarState.listId)
+            listName?.let { list ->
+                val listCapitalized = list.toString()
+                val message = context.resources.getString(
+                    R.string.snackbar_item_removed_from_list,
+                    listCapitalized
+                )
+                snackbarHostState.showSnackbar(message)
             }
-            DataLoadStatus.Loading -> {
-                WatchlistBodyPlaceholder()
-            }
-            DataLoadStatus.Success -> {
-                when (tabList[selectedTabIndex.value].tabIndex) {
-                    WatchlistTabItem.WatchlistTab.tabIndex -> {
-                        WatchlistBody(
-                            contentList = watchlist,
-                            sortType = sortType,
-                            selectedList = selectedList,
-                            goToDetails = goToDetails,
-                            removeItem = removeItem,
-                            moveItemToList = moveItemToList
-                        )
-                    }
-                    WatchlistTabItem.WatchedTab.tabIndex -> {
-                        WatchlistBody(
-                            contentList = watchedList,
-                            sortType = sortType,
-                            selectedList = selectedList,
-                            goToDetails = goToDetails,
-                            removeItem = removeItem,
-                            moveItemToList = moveItemToList
-                        )
+        }
+    }
+
+    ClassicSnackbar(snackbarHostState = snackbarHostState) {
+        Column(modifier = Modifier.fillMaxSize()) {
+            GenericTabRow(selectedTabIndex.value, tabList, updateSelectedTab)
+            when (loadState) {
+                DataLoadStatus.Empty -> {
+                    // Display empty screen
+                }
+
+                DataLoadStatus.Loading -> {
+                    WatchlistBodyPlaceholder()
+                }
+
+                DataLoadStatus.Success -> {
+                    when (tabList[selectedTabIndex.value].tabIndex) {
+                        WatchlistTabItem.WatchlistTab.tabIndex -> {
+                            WatchlistBody(
+                                contentList = watchlist,
+                                sortType = sortType,
+                                selectedList = selectedList,
+                                goToDetails = goToDetails,
+                                removeItem = removeItem,
+                                moveItemToList = moveItemToList
+                            )
+                        }
+
+                        WatchlistTabItem.WatchedTab.tabIndex -> {
+                            WatchlistBody(
+                                contentList = watchedList,
+                                sortType = sortType,
+                                selectedList = selectedList,
+                                goToDetails = goToDetails,
+                                removeItem = removeItem,
+                                moveItemToList = moveItemToList
+                            )
+                        }
                     }
                 }
-            }
-            DataLoadStatus.Failed -> {
-                goToErrorScreen()
+
+                DataLoadStatus.Failed -> {
+                    goToErrorScreen()
+                }
             }
         }
     }

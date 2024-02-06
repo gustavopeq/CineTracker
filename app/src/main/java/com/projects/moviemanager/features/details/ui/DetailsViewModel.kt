@@ -92,6 +92,7 @@ class DetailsViewModel @Inject constructor(
                 )
             }
             is DetailsEvents.OnError -> resetDetails()
+            is DetailsEvents.OnSnackbarDismiss -> snackbarDismiss()
         }
     }
 
@@ -175,15 +176,20 @@ class DetailsViewModel @Inject constructor(
                 listId = listId
             )
             _snackbarState.value = DetailsSnackbarState(
-                displaySnackbar = mutableStateOf(true),
                 listId = listId,
                 addedItem = !currentStatus
-            )
+            ).apply {
+                setSnackbarVisible()
+            }
             delay(DELAY_UPDATE_POPUP_TEXT_MS)
             updatedWatchlistStatus[listId] = !currentStatus
 
             _contentInListStatus.value = updatedWatchlistStatus
         }
+    }
+
+    private fun snackbarDismiss() {
+        _snackbarState.value = DetailsSnackbarState()
     }
 
     private fun resetDetails() {

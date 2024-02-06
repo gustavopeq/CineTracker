@@ -11,13 +11,13 @@ import com.projects.moviemanager.features.watchlist.domain.WatchlistInteractor
 import com.projects.moviemanager.features.watchlist.events.WatchlistEvent
 import com.projects.moviemanager.features.watchlist.model.DefaultLists
 import com.projects.moviemanager.features.watchlist.model.DefaultLists.Companion.getOtherList
+import com.projects.moviemanager.features.watchlist.ui.state.WatchlistSnackbarState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import timber.log.Timber
+import javax.inject.Inject
 
 @HiltViewModel
 class WatchlistViewModel @Inject constructor(
@@ -39,6 +39,11 @@ class WatchlistViewModel @Inject constructor(
 
     private val sortType: MutableState<MediaType?> = mutableStateOf(null)
 
+    private val _snackbarState: MutableState<WatchlistSnackbarState> = mutableStateOf(
+        WatchlistSnackbarState()
+    )
+    val snackbarState: MutableState<WatchlistSnackbarState> get() = _snackbarState
+
     fun onEvent(
         event: WatchlistEvent
     ) {
@@ -50,6 +55,7 @@ class WatchlistViewModel @Inject constructor(
             is WatchlistEvent.UpdateItemListId -> {
                 updateItemListId(event.contentId, event.mediaType)
             }
+            is WatchlistEvent.OnSnackbarDismiss -> snackbarDismiss()
         }
     }
 
@@ -97,6 +103,11 @@ class WatchlistViewModel @Inject constructor(
                 listId = selectedList.value
             )
             removeContentFromUiList(contentId, mediaType)
+            _snackbarState.value = WatchlistSnackbarState(
+                listId = selectedList.value
+            ).apply {
+                setSnackbarVisible()
+            }
         }
     }
 
@@ -130,5 +141,9 @@ class WatchlistViewModel @Inject constructor(
             it.id == contentId && it.mediaType == mediaType
         }
         currentList.value = updatedList
+    }
+
+    private fun snackbarDismiss() {
+        _snackbarState.value = WatchlistSnackbarState()
     }
 }

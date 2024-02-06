@@ -120,10 +120,8 @@ private fun Details(
                         listCapitalized
                     )
                 }
-                when (itemAdded) {
-                    true -> snackbarHostState.showSnackbar(message)
-                    false -> snackbarHostState.showSnackbar(message)
-                }
+                snackbarHostState.showSnackbar(message)
+                viewModel.onEvent(DetailsEvents.OnSnackbarDismiss)
             }
         }
     }
