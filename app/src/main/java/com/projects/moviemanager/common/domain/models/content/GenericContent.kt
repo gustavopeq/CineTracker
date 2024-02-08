@@ -7,7 +7,6 @@ import com.projects.moviemanager.network.models.content.common.MovieResponse
 import com.projects.moviemanager.network.models.content.common.MultiResponse
 import com.projects.moviemanager.network.models.content.common.PersonResponse
 import com.projects.moviemanager.network.models.content.common.ShowResponse
-import com.projects.moviemanager.network.models.person.CastResponse
 
 data class GenericContent(
     val id: Int,
@@ -46,16 +45,16 @@ fun BaseContentResponse.toGenericContent(): GenericContent? {
     )
 }
 
-fun List<CastResponse>?.toGenericContentList(): List<GenericContent> {
+fun List<PersonResponse>?.toGenericContentList(): List<GenericContent> {
     return this?.map { castResponse ->
         GenericContent(
             id = castResponse.id,
-            name = castResponse.title,
+            name = castResponse.name.orEmpty(),
             posterPath = castResponse.poster_path.orEmpty(),
             backdropPath = castResponse.backdrop_path.orEmpty(),
             overview = castResponse.overview.orEmpty(),
-            mediaType = castResponse.mediaType,
-            rating = castResponse.vote_average
+            mediaType = MediaType.PERSON,
+            rating = castResponse.vote_average ?: EMPTY_RATINGS
         )
     } ?: emptyList()
 }
