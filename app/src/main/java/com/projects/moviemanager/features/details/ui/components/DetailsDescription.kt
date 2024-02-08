@@ -26,10 +26,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.projects.moviemanager.R
-import com.projects.moviemanager.common.domain.models.content.DetailedMediaInfo
-import com.projects.moviemanager.common.domain.models.content.MovieDetailsInfo
-import com.projects.moviemanager.common.domain.models.content.PersonDetailsInfo
-import com.projects.moviemanager.common.domain.models.content.ShowDetailsInfo
+import com.projects.moviemanager.common.domain.models.content.DetailedContent
+import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.common.ui.components.GradientDirections
 import com.projects.moviemanager.common.ui.components.RatingComponent
 import com.projects.moviemanager.common.ui.components.classicVerticalGradientBrush
@@ -42,7 +40,7 @@ import com.projects.moviemanager.network.models.content.common.ProductionCountry
 
 @Composable
 fun DetailsDescriptionHeader(
-    contentDetails: DetailedMediaInfo?,
+    contentDetails: DetailedContent?,
     updateHeaderPosition: (Float) -> Unit
 ) {
     Column(
@@ -65,12 +63,11 @@ fun DetailsDescriptionHeader(
                 .padding(DEFAULT_MARGIN.dp)
         ) {
             Text(
-                text = "${contentDetails?.title}",
+                text = "${contentDetails?.name}",
                 style = MaterialTheme.typography.displayMedium
             )
-            when (contentDetails) {
-                is MovieDetailsInfo -> RatingComponent(rating = contentDetails.voteAverage)
-                is ShowDetailsInfo -> RatingComponent(rating = contentDetails.voteAverage)
+            when (contentDetails?.mediaType) {
+                MediaType.MOVIE, MediaType.SHOW -> RatingComponent(rating = contentDetails.rating)
                 else -> {}
             }
         }
@@ -79,25 +76,25 @@ fun DetailsDescriptionHeader(
 
 @Composable
 fun DetailsDescriptionBody(
-    contentDetails: DetailedMediaInfo
+    contentDetails: DetailedContent
 ) {
     val context = LocalContext.current
     OverviewInfo(contentDetails)
 
     Spacer(modifier = Modifier.height(DEFAULT_MARGIN.dp))
 
-    when (contentDetails) {
-        is MovieDetailsInfo -> {
+    when (contentDetails.mediaType) {
+        MediaType.MOVIE -> {
             ProductionCountriesInfo(contentDetails.productionCountries)
             ReleaseDateInfo(contentDetails.releaseDate)
             GenresInfo(contentDetails.genres)
             RuntimeInfo(contentDetails.runtime)
         }
-        is ShowDetailsInfo -> {
+        MediaType.SHOW -> {
             ProductionCountriesInfo(contentDetails.productionCountries)
             GenresInfo(contentDetails.genres)
         }
-        is PersonDetailsInfo -> {
+        MediaType.PERSON -> {
             BornDeathInfo(
                 labelRes = R.string.person_details_born_label,
                 bodyText = contentDetails.birthday,
@@ -110,11 +107,13 @@ fun DetailsDescriptionBody(
             )
             BornInInfo(contentDetails.placeOfBirth)
         }
+
+        else -> {}
     }
 }
 
 @Composable
-private fun OverviewInfo(contentDetails: DetailedMediaInfo) {
+private fun OverviewInfo(contentDetails: DetailedContent) {
     val text = contentDetails.overview
     var isExpanded by remember { mutableStateOf(false) }
     var isOverflowing by remember { mutableStateOf(false) }

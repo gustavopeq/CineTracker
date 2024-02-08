@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.unit.Dp
 import com.projects.moviemanager.R
+import com.projects.moviemanager.common.util.UiConstants.EMPTY_RATINGS
 import com.projects.moviemanager.common.util.UiConstants.UNDEFINED_RATINGS
 import timber.log.Timber
 import java.text.DecimalFormat
@@ -48,7 +49,7 @@ fun String.formatDate(context: Context): String {
 }
 
 fun Double?.formatRating(): String {
-    if (this == null || this == 0.0) {
+    if (this == null || this == EMPTY_RATINGS) {
         return UNDEFINED_RATINGS
     }
 

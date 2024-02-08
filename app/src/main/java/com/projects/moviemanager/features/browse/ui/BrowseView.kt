@@ -33,6 +33,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.projects.moviemanager.common.domain.models.content.GenericContent
 import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.common.domain.models.util.SortTypeItem
 import com.projects.moviemanager.common.ui.MainViewModel
@@ -50,9 +51,6 @@ import com.projects.moviemanager.common.util.UiConstants.SMALL_PADDING
 import com.projects.moviemanager.common.util.calculateCardsPerRow
 import com.projects.moviemanager.common.util.dpToPx
 import com.projects.moviemanager.common.util.pxToDp
-import com.projects.moviemanager.common.domain.models.content.DetailedMediaInfo
-import com.projects.moviemanager.common.domain.models.content.MovieDetailsInfo
-import com.projects.moviemanager.common.domain.models.content.ShowDetailsInfo
 import com.projects.moviemanager.features.browse.events.BrowseEvent
 import com.projects.moviemanager.features.browse.ui.components.CollapsingTabRow
 
@@ -165,7 +163,7 @@ private fun Browse(
 private fun BrowseBody(
     viewModel: BrowseViewModel,
     mediaType: MediaType,
-    pagingData: LazyPagingItems<DetailedMediaInfo>,
+    pagingData: LazyPagingItems<GenericContent>,
     sortTypeItem: SortTypeItem,
     goToDetails: (Int, MediaType) -> Unit,
     goToErrorScreen: () -> Unit
@@ -208,11 +206,6 @@ private fun BrowseBody(
                     items(pagingData.itemCount) { index ->
                         val content = pagingData[index]
                         content?.let {
-                            val contentVoteAverage = when (content) {
-                                is MovieDetailsInfo -> content.voteAverage
-                                is ShowDetailsInfo -> content.voteAverage
-                                else -> { null }
-                            }
                             DefaultContentCard(
                                 modifier = Modifier
                                     .width(adjustedCardSize)
@@ -221,9 +214,9 @@ private fun BrowseBody(
                                         vertical = BROWSE_CARD_PADDING_VERTICAL.dp
                                     ),
                                 cardWidth = adjustedCardSize,
-                                imageUrl = content.poster_path,
-                                title = content.title,
-                                rating = contentVoteAverage,
+                                imageUrl = content.posterPath,
+                                title = content.name,
+                                rating = content.rating,
                                 goToDetails = { goToDetails(content.id, content.mediaType) }
                             )
                         }

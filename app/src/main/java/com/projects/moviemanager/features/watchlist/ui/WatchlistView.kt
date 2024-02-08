@@ -30,9 +30,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.projects.moviemanager.R
-import com.projects.moviemanager.common.domain.models.content.DetailedMediaInfo
-import com.projects.moviemanager.common.domain.models.content.MovieDetailsInfo
-import com.projects.moviemanager.common.domain.models.content.ShowDetailsInfo
+import com.projects.moviemanager.common.domain.models.content.GenericContent
 import com.projects.moviemanager.common.domain.models.util.DataLoadStatus
 import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.common.ui.MainViewModel
@@ -193,7 +191,7 @@ private fun Watchlist(
 
 @Composable
 private fun WatchlistBody(
-    contentList: List<DetailedMediaInfo>,
+    contentList: List<GenericContent>,
     sortType: MediaType?,
     selectedList: String,
     goToDetails: (Int, MediaType) -> Unit,
@@ -217,7 +215,7 @@ private fun WatchlistBody(
 @Composable
 private fun WatchlistContentLazyList(
     sortType: MediaType?,
-    contentList: List<DetailedMediaInfo>,
+    contentList: List<GenericContent>,
     selectedList: String,
     goToDetails: (Int, MediaType) -> Unit,
     removeItem: (Int, MediaType) -> Unit,
@@ -233,16 +231,10 @@ private fun WatchlistContentLazyList(
             contentPadding = PaddingValues(all = SMALL_MARGIN.dp)
         ) {
             items(sortedItems) { mediaInfo ->
-                val rating = when (mediaInfo) {
-                    is MovieDetailsInfo -> mediaInfo.voteAverage
-                    is ShowDetailsInfo -> mediaInfo.voteAverage
-                    else -> 0.0
-                }
-
                 WatchlistCard(
-                    title = mediaInfo.title,
-                    rating = rating ?: 0.0,
-                    posterUrl = mediaInfo.poster_path,
+                    title = mediaInfo.name,
+                    rating = mediaInfo.rating,
+                    posterUrl = mediaInfo.posterPath,
                     mediaType = mediaInfo.mediaType,
                     selectedList = selectedList,
                     onCardClick = {

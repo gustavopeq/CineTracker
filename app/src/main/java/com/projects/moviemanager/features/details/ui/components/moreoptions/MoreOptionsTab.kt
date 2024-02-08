@@ -2,20 +2,20 @@ package com.projects.moviemanager.features.details.ui.components.moreoptions
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
+import com.projects.moviemanager.common.domain.models.content.GenericContent
+import com.projects.moviemanager.common.domain.models.content.Videos
 import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.common.ui.components.GridContentList
 import com.projects.moviemanager.common.ui.components.tab.GenericTabRow
 import com.projects.moviemanager.common.ui.components.tab.setupTabs
 import com.projects.moviemanager.common.util.UiConstants.MAX_COUNT_DETAILS_CARDS
-import com.projects.moviemanager.common.domain.models.content.MediaContent
-import com.projects.moviemanager.common.domain.models.content.Videos
 import com.projects.moviemanager.features.details.ui.components.moreoptions.MoreOptionsTabItem.MoreLikeThisTab
 import com.projects.moviemanager.features.details.ui.components.moreoptions.MoreOptionsTabItem.VideosTab
 
 @Composable
 fun MoreOptionsTab(
     videoList: List<Videos>,
-    contentSimilarList: List<MediaContent>,
+    contentSimilarList: List<GenericContent>,
     openSimilarContent: (Int, MediaType) -> Unit
 ) {
     val availableTabs = mutableListOf<MoreOptionsTabItem>()

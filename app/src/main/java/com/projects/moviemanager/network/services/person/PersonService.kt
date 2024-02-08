@@ -5,6 +5,7 @@ import com.projects.moviemanager.network.models.person.PersonDetailsResponse
 import com.projects.moviemanager.network.models.person.PersonImagesResponse
 import com.projects.moviemanager.common.util.Constants
 import com.projects.moviemanager.common.util.Constants.ENGLISH_LANGUAGE_CODE
+import com.projects.moviemanager.network.models.content.common.PersonResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -16,7 +17,7 @@ interface PersonService {
     suspend fun getPersonDetailsById(
         @Path("person_ID") personId: Int,
         @Query("language") language: String = ENGLISH_LANGUAGE_CODE
-    ): Response<PersonDetailsResponse>
+    ): Response<PersonResponse>
 
     @GET("person/{person_ID}/combined_credits?api_key=${Constants.API_KEY}")
     suspend fun getPersonCreditsById(

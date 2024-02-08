@@ -28,6 +28,6 @@ fun PersonResponse.toPersonDetails(): PersonDetails {
         deathday = null,
         placeOfBirth = null,
         knownForDepartment = this.known_for_department,
-        knownFor = this.known_for
+        knownFor = this.known_for.orEmpty()
     )
 }

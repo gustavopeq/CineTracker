@@ -1,25 +1,25 @@
 package com.projects.moviemanager.features.home.domain
 
-import com.projects.moviemanager.common.domain.models.util.MediaType
-import com.projects.moviemanager.database.repository.DatabaseRepository
 import com.projects.moviemanager.common.domain.models.content.GenericContent
-import com.projects.moviemanager.common.domain.models.content.toGenericSearchContent
+import com.projects.moviemanager.common.domain.models.content.toGenericContent
 import com.projects.moviemanager.common.domain.models.person.PersonDetails
 import com.projects.moviemanager.common.domain.models.person.toPersonDetails
+import com.projects.moviemanager.common.domain.models.util.MediaType
+import com.projects.moviemanager.database.repository.DatabaseRepository
 import com.projects.moviemanager.features.home.ui.state.HomeState
 import com.projects.moviemanager.features.watchlist.model.DefaultLists
-import com.projects.moviemanager.network.models.content.movie.MovieApiResponse
-import com.projects.moviemanager.network.models.content.show.ShowApiResponse
+import com.projects.moviemanager.network.models.content.common.MovieResponse
+import com.projects.moviemanager.network.models.content.common.ShowResponse
 import com.projects.moviemanager.network.repository.home.HomeRepository
 import com.projects.moviemanager.network.repository.movie.MovieRepository
 import com.projects.moviemanager.network.repository.show.ShowRepository
 import com.projects.moviemanager.network.util.Left
 import com.projects.moviemanager.network.util.Right
-import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 import javax.inject.Inject
+import timber.log.Timber
 
 class HomeInteractor @Inject constructor(
     private val homeRepository: HomeRepository,
@@ -39,7 +39,7 @@ class HomeInteractor @Inject constructor(
                 }
                 is Left -> {
                     homeState.trendingList.value = response.value.results.mapNotNull {
-                        it.toGenericSearchContent()
+                        it.toGenericContent()
                     }
                 }
             }
@@ -79,10 +79,10 @@ class HomeInteractor @Inject constructor(
                 is Left -> {
                     contentDetails = when (mediaType) {
                         MediaType.MOVIE -> {
-                            (response.value as MovieApiResponse).toGenericSearchContent()
+                            (response.value as MovieResponse).toGenericContent()
                         }
                         MediaType.SHOW -> {
-                            (response.value as ShowApiResponse).toGenericSearchContent()
+                            (response.value as ShowResponse).toGenericContent()
                         }
                         else -> return@collect
                     }
@@ -127,7 +127,7 @@ class HomeInteractor @Inject constructor(
                 }
                 is Left -> {
                     listResults = response.value.results.mapNotNull {
-                        it.toGenericSearchContent()
+                        it.toGenericContent()
                     }
                 }
             }

@@ -4,7 +4,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.projects.moviemanager.common.domain.models.content.DetailedMediaInfo
+import com.projects.moviemanager.common.domain.models.content.GenericContent
 import com.projects.moviemanager.common.domain.models.util.DataLoadStatus
 import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.features.watchlist.domain.WatchlistInteractor
@@ -30,11 +30,11 @@ class WatchlistViewModel @Inject constructor(
     )
     val loadState: StateFlow<DataLoadStatus> get() = _loadState
 
-    private val _watchlist = MutableStateFlow(listOf<DetailedMediaInfo>())
-    val watchlist: StateFlow<List<DetailedMediaInfo>> get() = _watchlist
+    private val _watchlist = MutableStateFlow(listOf<GenericContent>())
+    val watchlist: StateFlow<List<GenericContent>> get() = _watchlist
 
-    private val _watchedList = MutableStateFlow(listOf<DetailedMediaInfo>())
-    val watchedList: StateFlow<List<DetailedMediaInfo>> get() = _watchedList
+    private val _watchedList = MutableStateFlow(listOf<GenericContent>())
+    val watchedList: StateFlow<List<GenericContent>> get() = _watchedList
 
     val selectedList = mutableStateOf(DefaultLists.WATCHLIST.listId)
 

@@ -21,6 +21,7 @@ object UiConstants {
     const val CLASSIC_BUTTON_BORDER_SIZE = 4
     const val ERROR_ANIMATION_SIZE = 100
     const val DELAY_UPDATE_POPUP_TEXT_MS = 100L
+    const val EMPTY_RATINGS = 0.0
 
     // Home
     const val HOME_LOGO_SIZE = 36

@@ -53,7 +53,10 @@ data class MovieResponse(
     val original_language: String?,
     val release_date: String?,
     val video: Boolean?,
-    val vote_count: Int?
+    val vote_count: Int?,
+    val production_countries: List<ProductionCountry?>?,
+    val genres: List<ContentGenre?>?,
+    val runtime: Int?
 ) : BaseContentResponse
 
 data class ShowResponse(
@@ -73,7 +76,9 @@ data class ShowResponse(
     val original_language: String?,
     val vote_count: Int?,
     val first_air_date: String?,
-    val origin_country: List<String>?
+    val origin_country: List<String>?,
+    val production_countries: List<ProductionCountry?>?,
+    val genres: List<ContentGenre?>?
 ) : BaseContentResponse
 
 data class PersonResponse(
@@ -93,5 +98,9 @@ data class PersonResponse(
     val original_language: String?,
     val gender: Int?,
     val known_for_department: String?,
-    val known_for: List<MultiResponse>
+    val known_for: List<MultiResponse>?,
+    val biography: String?,
+    val birthday: String?,
+    val deathday: String?,
+    val place_of_birth: String?
 ) : BaseContentResponse

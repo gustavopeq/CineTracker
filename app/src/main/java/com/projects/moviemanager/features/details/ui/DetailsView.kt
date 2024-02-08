@@ -28,7 +28,7 @@ import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavBackStackEntry
 import com.projects.moviemanager.R
-import com.projects.moviemanager.common.domain.models.content.DetailedMediaInfo
+import com.projects.moviemanager.common.domain.models.content.DetailedContent
 import com.projects.moviemanager.common.domain.models.util.DataLoadStatus
 import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.common.ui.components.NetworkImage
@@ -162,12 +162,12 @@ private fun Details(
 private fun DetailsBody(
     posterHeight: Float,
     viewModel: DetailsViewModel,
-    contentDetails: DetailedMediaInfo?,
+    contentDetails: DetailedContent?,
     openSimilarContent: (Int, MediaType) -> Unit
 ) {
     var currentHeaderPosY by rememberSaveable { mutableFloatStateOf(0f) }
     var initialHeaderPosY by rememberSaveable { mutableFloatStateOf(0f) }
-    val contentPosterUrl = BASE_ORIGINAL_IMAGE_URL + contentDetails?.poster_path
+    val contentPosterUrl = BASE_ORIGINAL_IMAGE_URL + contentDetails?.posterPath
 
     val updateHeaderPosition: (Float) -> Unit = {
         if (it > initialHeaderPosY) {
@@ -196,7 +196,7 @@ private fun DetailsBody(
 @Composable
 private fun DetailsComponent(
     posterHeight: Float,
-    mediaInfo: DetailedMediaInfo,
+    mediaInfo: DetailedContent,
     viewModel: DetailsViewModel,
     updateHeaderPosition: (Float) -> Unit,
     openDetails: (Int, MediaType) -> Unit

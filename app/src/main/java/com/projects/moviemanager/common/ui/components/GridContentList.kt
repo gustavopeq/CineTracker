@@ -12,6 +12,8 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.projects.moviemanager.common.domain.models.content.GenericContent
+import com.projects.moviemanager.common.domain.models.person.PersonImage
 import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.common.ui.components.card.DefaultContentCard
 import com.projects.moviemanager.common.ui.components.card.PersonImages
@@ -22,8 +24,6 @@ import com.projects.moviemanager.common.util.UiConstants.DEFAULT_MARGIN
 import com.projects.moviemanager.common.util.calculateCardsPerRow
 import com.projects.moviemanager.common.util.dpToPx
 import com.projects.moviemanager.common.util.pxToDp
-import com.projects.moviemanager.common.domain.models.content.MediaContent
-import com.projects.moviemanager.common.domain.models.person.PersonImage
 import com.projects.moviemanager.common.util.removeParentPadding
 
 @Composable
@@ -63,7 +63,7 @@ fun <T> GenericGrid(
 
 @Composable
 fun GridContentList(
-    mediaContentList: List<MediaContent>,
+    mediaContentList: List<GenericContent>,
     maxCardsNumber: Int? = null,
     openContentDetails: (Int, MediaType) -> Unit
 ) {
@@ -79,9 +79,9 @@ fun GridContentList(
                     vertical = BROWSE_CARD_PADDING_VERTICAL.dp
                 ),
             cardWidth = size,
-            imageUrl = content.poster_path,
-            title = content.title,
-            rating = content.vote_average,
+            imageUrl = content.posterPath,
+            title = content.name,
+            rating = content.rating,
             goToDetails = {
                 openContentDetails(content.id, content.mediaType)
             }

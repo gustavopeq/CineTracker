@@ -1,14 +1,13 @@
 package com.projects.moviemanager.features.watchlist.domain
 
-import com.projects.moviemanager.common.domain.models.content.DetailedMediaInfo
-import com.projects.moviemanager.common.domain.models.content.toMovieDetailsInfo
-import com.projects.moviemanager.common.domain.models.content.toShowDetailsInfo
+import com.projects.moviemanager.common.domain.models.content.GenericContent
+import com.projects.moviemanager.common.domain.models.content.toGenericContent
 import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.database.model.ContentEntity
 import com.projects.moviemanager.database.repository.DatabaseRepository
 import com.projects.moviemanager.features.watchlist.ui.state.WatchlistState
-import com.projects.moviemanager.network.models.content.movie.MovieApiResponse
-import com.projects.moviemanager.network.models.content.show.ShowApiResponse
+import com.projects.moviemanager.network.models.content.common.MovieResponse
+import com.projects.moviemanager.network.models.content.common.ShowResponse
 import com.projects.moviemanager.network.repository.movie.MovieRepository
 import com.projects.moviemanager.network.repository.show.ShowRepository
 import com.projects.moviemanager.network.util.Left
@@ -51,14 +50,14 @@ class WatchlistInteractor @Inject constructor(
     private suspend fun getContentDetailsById(
         contentId: Int,
         mediaType: MediaType
-    ): DetailedMediaInfo? {
+    ): GenericContent? {
         val result = when (mediaType) {
             MediaType.MOVIE -> movieRepository.getMovieDetailsById(contentId)
             MediaType.SHOW -> showRepository.getShowDetailsById(contentId)
             else -> return null
         }
 
-        var contentDetails: DetailedMediaInfo? = null
+        var contentDetails: GenericContent? = null
         result.collect { response ->
             when (response) {
                 is Right -> {
@@ -70,8 +69,8 @@ class WatchlistInteractor @Inject constructor(
                 }
                 is Left -> {
                     contentDetails = when (mediaType) {
-                        MediaType.MOVIE -> (response.value as MovieApiResponse).toMovieDetailsInfo()
-                        MediaType.SHOW -> (response.value as ShowApiResponse).toShowDetailsInfo()
+                        MediaType.MOVIE -> (response.value as MovieResponse).toGenericContent()
+                        MediaType.SHOW -> (response.value as ShowResponse).toGenericContent()
                         else -> return@collect
                     }
                 }

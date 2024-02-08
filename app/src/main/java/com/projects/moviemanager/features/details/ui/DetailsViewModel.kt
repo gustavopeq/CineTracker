@@ -6,8 +6,8 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.projects.moviemanager.common.domain.models.content.ContentCast
-import com.projects.moviemanager.common.domain.models.content.DetailedMediaInfo
-import com.projects.moviemanager.common.domain.models.content.MediaContent
+import com.projects.moviemanager.common.domain.models.content.DetailedContent
+import com.projects.moviemanager.common.domain.models.content.GenericContent
 import com.projects.moviemanager.common.domain.models.content.Videos
 import com.projects.moviemanager.common.domain.models.person.PersonImage
 import com.projects.moviemanager.common.domain.models.util.DataLoadStatus
@@ -40,9 +40,9 @@ class DetailsViewModel @Inject constructor(
     )
     val loadState: StateFlow<DataLoadStatus> get() = _loadState
 
-    private val _contentDetails: MutableStateFlow<DetailedMediaInfo?> =
+    private val _contentDetails: MutableStateFlow<DetailedContent?> =
         MutableStateFlow(null)
-    val contentDetails: StateFlow<DetailedMediaInfo?> get() = _contentDetails
+    val contentDetails: StateFlow<DetailedContent?> get() = _contentDetails
 
     private val _contentCredits: MutableStateFlow<List<ContentCast>> = MutableStateFlow(emptyList())
     val contentCredits: StateFlow<List<ContentCast>> get() = _contentCredits
@@ -50,13 +50,13 @@ class DetailsViewModel @Inject constructor(
     private val _contentVideos: MutableStateFlow<List<Videos>> = MutableStateFlow(emptyList())
     val contentVideos: StateFlow<List<Videos>> get() = _contentVideos
 
-    private val _contentSimilar: MutableStateFlow<List<MediaContent>> = MutableStateFlow(
+    private val _contentSimilar: MutableStateFlow<List<GenericContent>> = MutableStateFlow(
         emptyList()
     )
-    val contentSimilar: StateFlow<List<MediaContent>> get() = _contentSimilar
+    val contentSimilar: StateFlow<List<GenericContent>> get() = _contentSimilar
 
-    private val _personCredits: MutableStateFlow<List<MediaContent>> = MutableStateFlow(emptyList())
-    val personCredits: StateFlow<List<MediaContent>> get() = _personCredits
+    private val _personCredits: MutableStateFlow<List<GenericContent>> = MutableStateFlow(emptyList())
+    val personCredits: StateFlow<List<GenericContent>> get() = _personCredits
 
     private val _personImages: MutableStateFlow<List<PersonImage>> = MutableStateFlow(emptyList())
     val personImages: StateFlow<List<PersonImage>> get() = _personImages

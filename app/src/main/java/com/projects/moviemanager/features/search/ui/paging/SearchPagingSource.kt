@@ -4,7 +4,7 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.common.domain.models.content.GenericContent
-import com.projects.moviemanager.common.domain.models.content.toGenericSearchContent
+import com.projects.moviemanager.common.domain.models.content.toGenericContent
 import com.projects.moviemanager.network.repository.search.SearchRepository
 import com.projects.moviemanager.network.util.Left
 import com.projects.moviemanager.network.util.Right
@@ -62,7 +62,7 @@ class SearchPagingSource(
 
                 is Left -> {
                     val data = apiResponse.value.results.mapNotNull {
-                        it.toGenericSearchContent()
+                        it.toGenericContent()
                     }
                     LoadResult.Page(
                         data = data,
