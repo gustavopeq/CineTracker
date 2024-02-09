@@ -5,7 +5,7 @@ import com.projects.moviemanager.network.models.content.common.MovieResponse
 import com.projects.moviemanager.network.models.content.common.MultiResponse
 import com.projects.moviemanager.network.models.content.common.PersonResponse
 import com.projects.moviemanager.network.models.content.common.ShowResponse
-import com.projects.moviemanager.network.models.search.SearchPageResponse
+import com.projects.moviemanager.network.models.search.ContentPagingResponse
 import com.projects.moviemanager.network.services.search.SearchService
 import com.projects.moviemanager.network.util.Either
 import com.projects.moviemanager.network.util.asFlow
@@ -19,7 +19,7 @@ class SearchRepositoryImpl @Inject constructor(
     override suspend fun onSearchMultiByQuery(
         query: String,
         page: Int
-    ): Flow<Either<SearchPageResponse<MultiResponse>, ApiError>> {
+    ): Flow<Either<ContentPagingResponse<MultiResponse>, ApiError>> {
         return toApiResult {
             searchService.searchMultiByQuery(
                 query = query,
@@ -31,7 +31,7 @@ class SearchRepositoryImpl @Inject constructor(
     override suspend fun onSearchMovieByQuery(
         query: String,
         page: Int
-    ): Flow<Either<SearchPageResponse<MovieResponse>, ApiError>> {
+    ): Flow<Either<ContentPagingResponse<MovieResponse>, ApiError>> {
         return toApiResult {
             searchService.searchMovieByQuery(
                 query = query,
@@ -43,7 +43,7 @@ class SearchRepositoryImpl @Inject constructor(
     override suspend fun onSearchShowByQuery(
         query: String,
         page: Int
-    ): Flow<Either<SearchPageResponse<ShowResponse>, ApiError>> {
+    ): Flow<Either<ContentPagingResponse<ShowResponse>, ApiError>> {
         return toApiResult {
             searchService.searchShowByQuery(
                 query = query,
@@ -55,7 +55,7 @@ class SearchRepositoryImpl @Inject constructor(
     override suspend fun onSearchPersonByQuery(
         query: String,
         page: Int
-    ): Flow<Either<SearchPageResponse<PersonResponse>, ApiError>> {
+    ): Flow<Either<ContentPagingResponse<PersonResponse>, ApiError>> {
         return toApiResult {
             searchService.searchPersonByQuery(
                 query = query,

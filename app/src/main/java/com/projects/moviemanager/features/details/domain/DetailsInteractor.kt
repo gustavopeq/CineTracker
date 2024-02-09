@@ -1,31 +1,28 @@
 package com.projects.moviemanager.features.details.domain
 
-import com.projects.moviemanager.common.domain.MediaType
+import com.projects.moviemanager.common.domain.models.content.GenericContent
+import com.projects.moviemanager.common.domain.models.content.Videos
+import com.projects.moviemanager.common.domain.models.content.toContentCast
+import com.projects.moviemanager.common.domain.models.content.toDetailedContent
+import com.projects.moviemanager.common.domain.models.content.toGenericContent
+import com.projects.moviemanager.common.domain.models.content.toGenericContentList
+import com.projects.moviemanager.common.domain.models.content.toVideos
+import com.projects.moviemanager.common.domain.models.person.PersonImage
+import com.projects.moviemanager.common.domain.models.person.toPersonImage
+import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.database.repository.DatabaseRepository
-import com.projects.moviemanager.domain.models.content.ContentCast
-import com.projects.moviemanager.domain.models.content.DetailedMediaInfo
-import com.projects.moviemanager.domain.models.content.MediaContent
-import com.projects.moviemanager.domain.models.content.Videos
-import com.projects.moviemanager.domain.models.content.toContentCast
-import com.projects.moviemanager.domain.models.content.toMediaContent
-import com.projects.moviemanager.domain.models.content.toMediaContentList
-import com.projects.moviemanager.domain.models.content.toMovieDetailsInfo
-import com.projects.moviemanager.domain.models.content.toPersonDetailsInfo
-import com.projects.moviemanager.domain.models.content.toShowDetailsInfo
-import com.projects.moviemanager.domain.models.content.toVideos
-import com.projects.moviemanager.domain.models.person.PersonImage
-import com.projects.moviemanager.domain.models.person.toPersonImage
+import com.projects.moviemanager.features.details.ui.state.DetailsState
 import com.projects.moviemanager.features.watchlist.model.DefaultLists
+import com.projects.moviemanager.network.models.content.common.MovieResponse
+import com.projects.moviemanager.network.models.content.common.PersonResponse
+import com.projects.moviemanager.network.models.content.common.ShowResponse
 import com.projects.moviemanager.network.repository.movie.MovieRepository
 import com.projects.moviemanager.network.repository.person.PersonRepository
 import com.projects.moviemanager.network.repository.show.ShowRepository
-import com.projects.moviemanager.network.models.content.movie.MovieApiResponse
-import com.projects.moviemanager.network.models.content.show.ShowApiResponse
-import com.projects.moviemanager.network.models.person.PersonDetailsResponse
 import com.projects.moviemanager.network.util.Left
 import com.projects.moviemanager.network.util.Right
-import javax.inject.Inject
 import timber.log.Timber
+import javax.inject.Inject
 
 class DetailsInteractor @Inject constructor(
     private val movieRepository: MovieRepository,
@@ -36,26 +33,27 @@ class DetailsInteractor @Inject constructor(
     suspend fun getContentDetailsById(
         contentId: Int,
         mediaType: MediaType
-    ): DetailedMediaInfo? {
+    ): DetailsState {
+        val detailsState = DetailsState()
         val result = when (mediaType) {
             MediaType.MOVIE -> movieRepository.getMovieDetailsById(contentId)
             MediaType.SHOW -> showRepository.getShowDetailsById(contentId)
             MediaType.PERSON -> personRepository.getPersonDetailsById(contentId)
-            else -> return null
+            else -> return detailsState
         }
 
-        var contentDetails: DetailedMediaInfo? = null
         result.collect { response ->
             when (response) {
                 is Right -> {
                     Timber.e("getContentDetailsById failed with error: ${response.error}")
+                    detailsState.setError(errorCode = response.error.code)
                 }
                 is Left -> {
-                    contentDetails = when (mediaType) {
-                        MediaType.MOVIE -> (response.value as MovieApiResponse).toMovieDetailsInfo()
-                        MediaType.SHOW -> (response.value as ShowApiResponse).toShowDetailsInfo()
+                    detailsState.detailsInfo.value = when (mediaType) {
+                        MediaType.MOVIE -> (response.value as MovieResponse).toDetailedContent()
+                        MediaType.SHOW -> (response.value as ShowResponse).toDetailedContent()
                         MediaType.PERSON -> {
-                            (response.value as PersonDetailsResponse).toPersonDetailsInfo()
+                            (response.value as PersonResponse).toDetailedContent()
                         }
                         else -> {
                             null
@@ -64,33 +62,35 @@ class DetailsInteractor @Inject constructor(
                 }
             }
         }
-        return contentDetails
+        return detailsState
     }
 
     suspend fun getContentCreditsById(
         contentId: Int,
         mediaType: MediaType
-    ): List<ContentCast> {
+    ): DetailsState {
+        val detailsState = DetailsState()
+
         val result = when (mediaType) {
             MediaType.MOVIE -> movieRepository.getMovieCreditsById(contentId)
             MediaType.SHOW -> showRepository.getShowCreditsById(contentId)
-            else -> return emptyList()
+            else -> return detailsState
         }
 
-        var contentCastList: List<ContentCast> = emptyList()
         result.collect { response ->
             when (response) {
                 is Right -> {
                     Timber.e("getContentCreditsById failed with error: ${response.error}")
+                    detailsState.setError(errorCode = response.error.code)
                 }
                 is Left -> {
-                    contentCastList = response.value.cast.map {
+                    detailsState.detailsCast.value = response.value.cast.map {
                         it.toContentCast()
                     }
                 }
             }
         }
-        return contentCastList
+        return detailsState
     }
 
     suspend fun getContentVideosById(
@@ -120,17 +120,53 @@ class DetailsInteractor @Inject constructor(
         return videoList
     }
 
-    suspend fun getSimilarContentById(
+    suspend fun getRecommendationsContentById(
         contentId: Int,
         mediaType: MediaType
-    ): List<MediaContent> {
+    ): List<GenericContent> {
+        val result = when (mediaType) {
+            MediaType.MOVIE -> movieRepository.getRecommendationsMoviesById(contentId)
+            MediaType.SHOW -> showRepository.getRecommendationsShowsById(contentId)
+            else -> return emptyList()
+        }
+
+        var listOfSimilar: List<GenericContent> = emptyList()
+        result.collect { response ->
+            when (response) {
+                is Right -> {
+                    Timber.e("getRecommendationsContentById failed with error: ${response.error}")
+                }
+                is Left -> {
+                    listOfSimilar = response.value.results
+                        .filter {
+                            it.poster_path?.isNotEmpty() == true && it.title?.isNotEmpty() == true
+                        }
+                        .mapNotNull {
+                            it.toGenericContent()
+                        }
+                    if (listOfSimilar.isEmpty()) {
+                        listOfSimilar = getSimilarContentById(
+                            contentId = contentId,
+                            mediaType = mediaType
+                        )
+                    }
+                }
+            }
+        }
+        return listOfSimilar
+    }
+
+    private suspend fun getSimilarContentById(
+        contentId: Int,
+        mediaType: MediaType
+    ): List<GenericContent> {
         val result = when (mediaType) {
             MediaType.MOVIE -> movieRepository.getSimilarMoviesById(contentId)
             MediaType.SHOW -> showRepository.getSimilarShowsById(contentId)
             else -> return emptyList()
         }
 
-        var listOfSimilar: List<MediaContent> = emptyList()
+        var listOfSimilar: List<GenericContent> = emptyList()
         result.collect { response ->
             when (response) {
                 is Right -> {
@@ -141,8 +177,8 @@ class DetailsInteractor @Inject constructor(
                         .filter {
                             it.poster_path?.isNotEmpty() == true && it.title?.isNotEmpty() == true
                         }
-                        .map {
-                            it.toMediaContent()
+                        .mapNotNull {
+                            it.toGenericContent()
                         }
                 }
             }
@@ -152,17 +188,17 @@ class DetailsInteractor @Inject constructor(
 
     suspend fun getPersonCreditsById(
         personId: Int
-    ): List<MediaContent> {
+    ): List<GenericContent> {
         val result = personRepository.getPersonCreditsById(personId)
 
-        var mediaContentList: List<MediaContent> = emptyList()
+        var mediaContentList: List<GenericContent> = emptyList()
         result.collect { response ->
             when (response) {
                 is Right -> {
                     Timber.e("getPersonCreditsById failed with error: ${response.error}")
                 }
                 is Left -> {
-                    mediaContentList = response.value.cast.toMediaContentList()
+                    mediaContentList = response.value.cast.toGenericContentList()
                 }
             }
         }
@@ -212,7 +248,23 @@ class DetailsInteractor @Inject constructor(
         return contentInListMap
     }
 
-    suspend fun addToWatchlist(
+    suspend fun toggleWatchlist(
+        currentStatus: Boolean,
+        contentId: Int,
+        mediaType: MediaType,
+        listId: String
+    ) {
+        when (currentStatus) {
+            true -> {
+                removeFromWatchlist(contentId, mediaType, listId)
+            }
+            false -> {
+                addToWatchlist(contentId, mediaType, listId)
+            }
+        }
+    }
+
+    private suspend fun addToWatchlist(
         contentId: Int,
         mediaType: MediaType,
         listId: String

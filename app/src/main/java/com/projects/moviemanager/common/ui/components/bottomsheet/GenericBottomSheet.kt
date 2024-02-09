@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import com.projects.moviemanager.R
 import com.projects.moviemanager.common.ui.theme.MainBarGreyColor
 import com.projects.moviemanager.common.ui.components.SystemNavBarSpacer
-import com.projects.moviemanager.common.ui.util.UiConstants
+import com.projects.moviemanager.common.util.UiConstants
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)

@@ -2,41 +2,45 @@ package com.projects.moviemanager.features.details.ui.components
 
 import android.content.Context
 import androidx.annotation.StringRes
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.projects.moviemanager.R
+import com.projects.moviemanager.common.domain.models.content.DetailedContent
+import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.common.ui.components.GradientDirections
 import com.projects.moviemanager.common.ui.components.RatingComponent
 import com.projects.moviemanager.common.ui.components.classicVerticalGradientBrush
-import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_MARGIN
-import com.projects.moviemanager.domain.models.content.DetailedMediaInfo
-import com.projects.moviemanager.domain.models.content.MovieDetailsInfo
-import com.projects.moviemanager.domain.models.content.PersonDetailsInfo
-import com.projects.moviemanager.domain.models.content.ShowDetailsInfo
+import com.projects.moviemanager.common.util.UiConstants.DEFAULT_MARGIN
+import com.projects.moviemanager.common.util.UiConstants.DETAILS_OVERVIEW_MAX_LINES
+import com.projects.moviemanager.common.util.formatDate
 import com.projects.moviemanager.features.details.util.stringFormat
 import com.projects.moviemanager.network.models.content.common.ContentGenre
 import com.projects.moviemanager.network.models.content.common.ProductionCountry
-import com.projects.moviemanager.util.formatDate
 
 @Composable
 fun DetailsDescriptionHeader(
-    contentDetails: DetailedMediaInfo?,
+    contentDetails: DetailedContent?,
     updateHeaderPosition: (Float) -> Unit
 ) {
     Column(
@@ -59,12 +63,11 @@ fun DetailsDescriptionHeader(
                 .padding(DEFAULT_MARGIN.dp)
         ) {
             Text(
-                text = "${contentDetails?.title}",
+                text = "${contentDetails?.name}",
                 style = MaterialTheme.typography.displayMedium
             )
-            when (contentDetails) {
-                is MovieDetailsInfo -> RatingComponent(rating = contentDetails.voteAverage)
-                is ShowDetailsInfo -> RatingComponent(rating = contentDetails.voteAverage)
+            when (contentDetails?.mediaType) {
+                MediaType.MOVIE, MediaType.SHOW -> RatingComponent(rating = contentDetails.rating)
                 else -> {}
             }
         }
@@ -73,29 +76,25 @@ fun DetailsDescriptionHeader(
 
 @Composable
 fun DetailsDescriptionBody(
-    contentDetails: DetailedMediaInfo
+    contentDetails: DetailedContent
 ) {
     val context = LocalContext.current
-    Text(
-        text = contentDetails.overview,
-        style = MaterialTheme.typography.bodyMedium,
-        color = MaterialTheme.colorScheme.onPrimary
-    )
+    OverviewInfo(contentDetails)
 
     Spacer(modifier = Modifier.height(DEFAULT_MARGIN.dp))
 
-    when (contentDetails) {
-        is MovieDetailsInfo -> {
+    when (contentDetails.mediaType) {
+        MediaType.MOVIE -> {
             ProductionCountriesInfo(contentDetails.productionCountries)
             ReleaseDateInfo(contentDetails.releaseDate)
             GenresInfo(contentDetails.genres)
             RuntimeInfo(contentDetails.runtime)
         }
-        is ShowDetailsInfo -> {
+        MediaType.SHOW -> {
             ProductionCountriesInfo(contentDetails.productionCountries)
             GenresInfo(contentDetails.genres)
         }
-        is PersonDetailsInfo -> {
+        MediaType.PERSON -> {
             BornDeathInfo(
                 labelRes = R.string.person_details_born_label,
                 bodyText = contentDetails.birthday,
@@ -107,6 +106,47 @@ fun DetailsDescriptionBody(
                 context = context
             )
             BornInInfo(contentDetails.placeOfBirth)
+        }
+
+        else -> {}
+    }
+}
+
+@Composable
+private fun OverviewInfo(contentDetails: DetailedContent) {
+    val text = contentDetails.overview
+    var isExpanded by remember { mutableStateOf(false) }
+    var isOverflowing by remember { mutableStateOf(false) }
+    val textStyle = MaterialTheme.typography.bodyMedium
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(
+                enabled = isOverflowing || isExpanded,
+                onClick = {
+                    isExpanded = !isExpanded
+                }
+            )
+    ) {
+        Text(
+            text = text,
+            style = textStyle,
+            color = MaterialTheme.colorScheme.onPrimary,
+            maxLines = if (isExpanded) Int.MAX_VALUE else DETAILS_OVERVIEW_MAX_LINES,
+            overflow = TextOverflow.Ellipsis,
+            onTextLayout = { textLayoutResult ->
+                isOverflowing = textLayoutResult.hasVisualOverflow
+            }
+        )
+        if (isOverflowing && !isExpanded) {
+            Text(
+                modifier = Modifier.align(Alignment.End),
+                text = stringResource(id = R.string.read_more_text),
+                style = textStyle,
+                color = MaterialTheme.colorScheme.secondary,
+                textAlign = TextAlign.Center
+            )
         }
     }
 }

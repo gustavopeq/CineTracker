@@ -6,9 +6,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.projects.moviemanager.common.domain.MediaType
-import com.projects.moviemanager.common.ui.util.UiConstants.SEARCH_DEBOUNCE_TIME_MS
-import com.projects.moviemanager.domain.models.content.GenericContent
+import com.projects.moviemanager.common.domain.models.content.GenericContent
+import com.projects.moviemanager.common.domain.models.util.MediaType
+import com.projects.moviemanager.common.util.UiConstants.SEARCH_DEBOUNCE_TIME_MS
 import com.projects.moviemanager.features.search.domain.SearchInteractor
 import com.projects.moviemanager.features.search.events.SearchEvent
 import com.projects.moviemanager.features.search.ui.components.SearchTypeFilterItem
@@ -31,7 +31,7 @@ class SearchViewModel @Inject constructor(
 
     private val _searchResults: MutableStateFlow<PagingData<GenericContent>> =
         MutableStateFlow(PagingData.empty())
-    val searchResult: StateFlow<PagingData<GenericContent>> get() = _searchResults
+    val searchResults: StateFlow<PagingData<GenericContent>> get() = _searchResults
 
     private val _searchFilterSelected: MutableState<SearchTypeFilterItem> = mutableStateOf(
         SearchTypeFilterItem.TopResults
@@ -45,6 +45,7 @@ class SearchViewModel @Inject constructor(
             is SearchEvent.ClearSearchBar -> onClearSearchBar()
             is SearchEvent.SearchQuery -> onStartDebounceSearch(event.query)
             is SearchEvent.FilterTypeSelected -> onFilterTypeSelected(event.searchFilter)
+            else -> resetSearch()
         }
     }
 
@@ -108,6 +109,10 @@ class SearchViewModel @Inject constructor(
             query = _searchQuery.value,
             mediaType = searchFilter.mediaType
         )
+    }
+
+    private fun resetSearch() {
+        _searchResults.value = PagingData.empty()
     }
 
     override fun onCleared() {

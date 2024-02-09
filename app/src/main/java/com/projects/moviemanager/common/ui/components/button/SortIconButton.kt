@@ -12,7 +12,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.projects.moviemanager.R
 import com.projects.moviemanager.common.ui.MainViewModel
-import com.projects.moviemanager.common.ui.util.UiConstants.BROWSE_SORT_ICON_SIZE
+import com.projects.moviemanager.common.util.UiConstants.BROWSE_SORT_ICON_SIZE
 import com.projects.moviemanager.features.watchlist.WatchlistScreen
 
 @Composable

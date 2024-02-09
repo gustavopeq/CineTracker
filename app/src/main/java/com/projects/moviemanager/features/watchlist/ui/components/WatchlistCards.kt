@@ -28,21 +28,21 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.projects.moviemanager.R
-import com.projects.moviemanager.common.domain.MediaType
+import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.common.ui.components.NetworkImage
 import com.projects.moviemanager.common.ui.components.RatingComponent
 import com.projects.moviemanager.common.ui.components.popup.GenericPopupMenu
 import com.projects.moviemanager.common.ui.components.popup.PopupMenuItem
 import com.projects.moviemanager.common.ui.theme.MainBarGreyColor
 import com.projects.moviemanager.common.ui.theme.PrimaryYellowColor_90
-import com.projects.moviemanager.common.ui.util.UiConstants.BROWSE_CARD_DEFAULT_ELEVATION
-import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_PADDING
-import com.projects.moviemanager.common.ui.util.UiConstants.POSTER_ASPECT_RATIO_MULTIPLY
-import com.projects.moviemanager.common.ui.util.UiConstants.SMALL_PADDING
-import com.projects.moviemanager.common.ui.util.UiConstants.WATCHLIST_IMAGE_WIDTH
+import com.projects.moviemanager.common.util.UiConstants.BROWSE_CARD_DEFAULT_ELEVATION
+import com.projects.moviemanager.common.util.UiConstants.DEFAULT_PADDING
+import com.projects.moviemanager.common.util.UiConstants.POSTER_ASPECT_RATIO_MULTIPLY
+import com.projects.moviemanager.common.util.UiConstants.SMALL_PADDING
+import com.projects.moviemanager.common.util.UiConstants.WATCHLIST_IMAGE_WIDTH
 import com.projects.moviemanager.features.watchlist.model.DefaultLists.Companion.getOtherList
-import com.projects.moviemanager.util.Constants.BASE_300_IMAGE_URL
-import com.projects.moviemanager.util.capitalized
+import com.projects.moviemanager.common.util.Constants.BASE_300_IMAGE_URL
+import com.projects.moviemanager.common.util.capitalized
 
 @Composable
 fun WatchlistCard(

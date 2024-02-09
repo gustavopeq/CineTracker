@@ -1,6 +1,6 @@
 package com.projects.moviemanager.database.repository
 
-import com.projects.moviemanager.common.domain.MediaType
+import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.database.dao.ContentEntityDao
 import com.projects.moviemanager.database.model.ContentEntity
 
@@ -26,12 +26,20 @@ class DatabaseRepositoryImpl(
         contentId: Int,
         mediaType: MediaType,
         listId: String
-    ) {
-        contentEntityDao.delete(
+    ): ContentEntity? {
+        val itemRemoved = contentEntityDao.getItem(
             contentId = contentId,
             mediaType = mediaType.name,
             listId = listId
         )
+        if (itemRemoved != null) {
+            contentEntityDao.delete(
+                contentId = contentId,
+                mediaType = mediaType.name,
+                listId = listId
+            )
+        }
+        return itemRemoved
     }
 
     override suspend fun getAllItemsByListId(listId: String): List<ContentEntity> {
@@ -53,7 +61,7 @@ class DatabaseRepositoryImpl(
         mediaType: MediaType,
         currentListId: String,
         newListId: String
-    ) {
+    ): ContentEntity? {
         deleteItem(
             contentId = contentId,
             mediaType = mediaType,
@@ -64,10 +72,14 @@ class DatabaseRepositoryImpl(
             mediaType = mediaType,
             listId = newListId
         )
-        deleteItem(
+        return deleteItem(
             contentId = contentId,
             mediaType = mediaType,
             listId = currentListId
         )
+    }
+
+    override suspend fun reinsertItem(contentEntity: ContentEntity) {
+        contentEntityDao.insert(contentEntity)
     }
 }

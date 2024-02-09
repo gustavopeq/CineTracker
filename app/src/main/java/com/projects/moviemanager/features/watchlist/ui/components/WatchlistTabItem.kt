@@ -4,7 +4,7 @@ import androidx.annotation.StringRes
 import com.projects.moviemanager.R
 import com.projects.moviemanager.common.ui.components.tab.TabItem
 import com.projects.moviemanager.features.watchlist.model.DefaultLists
-import com.projects.moviemanager.util.Constants.UNSELECTED_OPTION_INDEX
+import com.projects.moviemanager.common.util.Constants.UNSELECTED_OPTION_INDEX
 
 sealed class WatchlistTabItem(
     @StringRes override val tabResId: Int,

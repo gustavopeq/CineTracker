@@ -19,15 +19,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.projects.moviemanager.R
-import com.projects.moviemanager.common.domain.MediaType
+import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.common.ui.components.card.DefaultContentCard
-import com.projects.moviemanager.common.ui.util.UiConstants.CAROUSEL_CARDS_WIDTH
-import com.projects.moviemanager.common.ui.util.UiConstants.CAROUSEL_RATING_STAR_SIZE
-import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_MARGIN
-import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_PADDING
-import com.projects.moviemanager.common.ui.util.UiConstants.SMALL_MARGIN
-import com.projects.moviemanager.domain.models.content.GenericContent
-import com.projects.moviemanager.util.removeParentPadding
+import com.projects.moviemanager.common.util.UiConstants.CAROUSEL_CARDS_WIDTH
+import com.projects.moviemanager.common.util.UiConstants.CAROUSEL_RATING_STAR_SIZE
+import com.projects.moviemanager.common.util.UiConstants.DEFAULT_MARGIN
+import com.projects.moviemanager.common.util.UiConstants.DEFAULT_PADDING
+import com.projects.moviemanager.common.util.UiConstants.SMALL_MARGIN
+import com.projects.moviemanager.common.domain.models.content.GenericContent
+import com.projects.moviemanager.common.util.removeParentPadding
 
 @Composable
 fun TrendingCarousel(

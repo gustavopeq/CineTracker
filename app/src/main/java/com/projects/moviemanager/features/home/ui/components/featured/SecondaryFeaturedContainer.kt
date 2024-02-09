@@ -17,18 +17,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.projects.moviemanager.common.domain.MediaType
+import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.common.ui.components.NetworkImage
 import com.projects.moviemanager.common.ui.components.RatingComponent
 import com.projects.moviemanager.common.ui.theme.MainBarGreyColor
-import com.projects.moviemanager.common.ui.util.UiConstants
-import com.projects.moviemanager.common.ui.util.UiConstants.BACKDROP_ASPECT_RATIO
-import com.projects.moviemanager.common.ui.util.UiConstants.BROWSE_CARD_DEFAULT_ELEVATION
-import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_MARGIN
-import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_PADDING
-import com.projects.moviemanager.domain.models.content.GenericContent
+import com.projects.moviemanager.common.util.UiConstants
+import com.projects.moviemanager.common.util.UiConstants.BACKDROP_ASPECT_RATIO
+import com.projects.moviemanager.common.util.UiConstants.BROWSE_CARD_DEFAULT_ELEVATION
+import com.projects.moviemanager.common.util.UiConstants.DEFAULT_MARGIN
+import com.projects.moviemanager.common.util.UiConstants.DEFAULT_PADDING
+import com.projects.moviemanager.common.domain.models.content.GenericContent
 import com.projects.moviemanager.features.watchlist.ui.components.MediaTypeTag
-import com.projects.moviemanager.util.Constants.BASE_ORIGINAL_IMAGE_URL
+import com.projects.moviemanager.common.util.Constants.BASE_ORIGINAL_IMAGE_URL
 
 @Composable
 fun SecondaryFeaturedInfo(

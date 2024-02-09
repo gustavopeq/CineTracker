@@ -7,15 +7,15 @@ import com.projects.moviemanager.navigation.Screen
 
 object DetailsScreen : Screen {
     private const val DETAILS_ROUTE = "details"
-    const val ARG_ID = "contentId"
+    const val ARG_CONTENT_ID = "contentId"
     const val ARG_MEDIA_TYPE = "mediaType"
     private const val FULL_DETAILS_ROUTE =
-        "$DETAILS_ROUTE/{$ARG_ID}?$ARG_MEDIA_TYPE={$ARG_MEDIA_TYPE}"
+        "$DETAILS_ROUTE/{$ARG_CONTENT_ID}?$ARG_MEDIA_TYPE={$ARG_MEDIA_TYPE}"
     override fun route(): String = FULL_DETAILS_ROUTE
 
     override val arguments: List<NamedNavArgument>
         get() = listOf(
-            navArgument(ARG_ID) {
+            navArgument(ARG_CONTENT_ID) {
                 type = NavType.IntType
             }
         )

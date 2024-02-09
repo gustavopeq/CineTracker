@@ -2,7 +2,7 @@ package com.projects.moviemanager.database.migration
 
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.projects.moviemanager.common.domain.MediaType
+import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.features.watchlist.model.DefaultLists
 
 val MIGRATION_1_2: Migration = object : Migration(1, 2) {
@@ -35,5 +35,11 @@ val MIGRATION_2_3: Migration = object : Migration(2, 3) {
             ADD COLUMN listId TEXT NOT NULL DEFAULT '$defaultListId'
         """
         )
+    }
+}
+
+val MIGRATION_3_4: Migration = object : Migration(3, 4) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        db.execSQL("ALTER TABLE content_entity ADD COLUMN createdAt INTEGER DEFAULT 0 NOT NULL")
     }
 }

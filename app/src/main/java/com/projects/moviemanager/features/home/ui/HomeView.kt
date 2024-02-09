@@ -12,27 +12,27 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.projects.moviemanager.R
-import com.projects.moviemanager.common.domain.MediaType
+import com.projects.moviemanager.common.domain.models.content.GenericContent
+import com.projects.moviemanager.common.domain.models.person.PersonDetails
+import com.projects.moviemanager.common.domain.models.util.DataLoadStatus
+import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.common.ui.components.ClassicLoadingIndicator
-import com.projects.moviemanager.common.ui.components.DimensionSubcomposeLayout
 import com.projects.moviemanager.common.ui.components.button.ClassicButton
-import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_MARGIN
-import com.projects.moviemanager.common.ui.util.UiConstants.HOME_BACKGROUND_OFFSET_PERCENT
-import com.projects.moviemanager.domain.models.content.GenericContent
-import com.projects.moviemanager.domain.models.person.PersonDetails
-import com.projects.moviemanager.domain.models.util.DataLoadState
+import com.projects.moviemanager.common.util.UiConstants.DEFAULT_MARGIN
+import com.projects.moviemanager.common.util.UiConstants.HOME_BACKGROUND_OFFSET_PERCENT
+import com.projects.moviemanager.common.util.UiConstants.POSTER_ASPECT_RATIO_MULTIPLY
+import com.projects.moviemanager.features.home.events.HomeEvent
 import com.projects.moviemanager.features.home.ui.components.carousel.ComingSoonCarousel
 import com.projects.moviemanager.features.home.ui.components.carousel.TrendingCarousel
 import com.projects.moviemanager.features.home.ui.components.carousel.WatchlistCarousel
@@ -40,19 +40,21 @@ import com.projects.moviemanager.features.home.ui.components.featured.FeaturedBa
 import com.projects.moviemanager.features.home.ui.components.featured.FeaturedInfo
 import com.projects.moviemanager.features.home.ui.components.featured.PersonFeaturedInfo
 import com.projects.moviemanager.features.home.ui.components.featured.SecondaryFeaturedInfo
-import com.projects.moviemanager.util.Constants.BASE_ORIGINAL_IMAGE_URL
+import com.projects.moviemanager.common.util.Constants.BASE_ORIGINAL_IMAGE_URL
 
 @Composable
 fun Home(
     goToDetails: (Int, MediaType) -> Unit,
     goToWatchlist: () -> Unit,
-    goToBrowse: () -> Unit
+    goToBrowse: () -> Unit,
+    goToErrorScreen: () -> Unit
 ) {
     Home(
         viewModel = hiltViewModel(),
         goToDetails = goToDetails,
         goToWatchlist = goToWatchlist,
-        goToBrowse = goToBrowse
+        goToBrowse = goToBrowse,
+        goToErrorScreen = goToErrorScreen
     )
 }
 
@@ -61,18 +63,27 @@ private fun Home(
     viewModel: HomeViewModel,
     goToDetails: (Int, MediaType) -> Unit,
     goToWatchlist: () -> Unit,
-    goToBrowse: () -> Unit
+    goToBrowse: () -> Unit,
+    goToErrorScreen: () -> Unit
 ) {
     val loadState by viewModel.loadState.collectAsState()
     val trendingMultiList by viewModel.trendingMulti.collectAsState()
     val myWatchlist by viewModel.myWatchlist.collectAsState()
     val trendingPersonList by viewModel.trendingPerson.collectAsState()
     val moviesComingSoonList by viewModel.moviesComingSoon.collectAsState()
-    val localDensity = LocalDensity.current
+    val posterWidth = LocalConfiguration.current.screenWidthDp
+    val posterHeight = posterWidth * POSTER_ASPECT_RATIO_MULTIPLY
+
+    LaunchedEffect(Unit) {
+        when (loadState) {
+            is DataLoadStatus.Success -> viewModel.onEvent(HomeEvent.ReloadWatchlist)
+            else -> viewModel.onEvent(HomeEvent.LoadHome)
+        }
+    }
 
     Box(modifier = Modifier.fillMaxSize()) {
         when (loadState) {
-            is DataLoadState.Loading -> {
+            is DataLoadStatus.Loading -> {
                 Box(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
@@ -80,26 +91,26 @@ private fun Home(
                     ClassicLoadingIndicator()
                 }
             }
+            is DataLoadStatus.Failed -> {
+                viewModel.onEvent(HomeEvent.OnError)
+                goToErrorScreen()
+            }
             else -> {
                 if (trendingMultiList.isNotEmpty()) {
                     val homePosterUrl = BASE_ORIGINAL_IMAGE_URL + trendingMultiList[0].posterPath
-
-                    DimensionSubcomposeLayout(
-                        mainContent = { FeaturedBackgroundImage(imageUrl = homePosterUrl) },
-                        dependentContent = { size ->
-                            val mainBgOffset = localDensity.run { size.height.toDp() }
-
-                            HomeBody(
-                                mainBgOffset,
-                                trendingMultiList,
-                                myWatchlist,
-                                trendingPersonList,
-                                moviesComingSoonList,
-                                goToDetails,
-                                goToWatchlist,
-                                goToBrowse
-                            )
-                        }
+                    FeaturedBackgroundImage(
+                        imageUrl = homePosterUrl,
+                        posterHeight = posterHeight
+                    )
+                    HomeBody(
+                        posterHeight,
+                        trendingMultiList,
+                        myWatchlist,
+                        trendingPersonList,
+                        moviesComingSoonList,
+                        goToDetails,
+                        goToWatchlist,
+                        goToBrowse
                     )
                 }
             }
@@ -109,7 +120,7 @@ private fun Home(
 
 @Composable
 private fun HomeBody(
-    mainBgOffset: Dp,
+    posterHeight: Float,
     trendingMultiList: List<GenericContent>,
     myWatchlist: List<GenericContent>,
     trendingPersonList: List<PersonDetails>,
@@ -131,13 +142,14 @@ private fun HomeBody(
     val trendingPerson = trendingPersonList.firstOrNull {
         it.knownForDepartment?.isNotEmpty() == true && it.knownFor.size >= 3
     }
+    val bgOffset = posterHeight * HOME_BACKGROUND_OFFSET_PERCENT
 
     LazyColumn {
         item {
             Spacer(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(mainBgOffset * HOME_BACKGROUND_OFFSET_PERCENT)
+                    .height(bgOffset.dp)
             )
         }
         item {

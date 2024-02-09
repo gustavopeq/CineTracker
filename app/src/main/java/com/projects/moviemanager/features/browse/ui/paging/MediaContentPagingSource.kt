@@ -2,11 +2,12 @@ package com.projects.moviemanager.features.browse.ui.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.projects.moviemanager.common.domain.MediaType
-import com.projects.moviemanager.domain.models.content.DetailedMediaInfo
-import com.projects.moviemanager.domain.models.content.toMovieDetailsInfo
-import com.projects.moviemanager.domain.models.content.toShowDetailsInfo
-import com.projects.moviemanager.domain.models.util.ContentListType
+import com.projects.moviemanager.common.domain.models.content.GenericContent
+import com.projects.moviemanager.common.domain.models.content.toGenericContent
+import com.projects.moviemanager.common.domain.models.util.ContentListType
+import com.projects.moviemanager.common.domain.models.util.MediaType
+import com.projects.moviemanager.network.models.content.common.MovieResponse
+import com.projects.moviemanager.network.models.content.common.ShowResponse
 import com.projects.moviemanager.network.repository.movie.MovieRepository
 import com.projects.moviemanager.network.repository.show.ShowRepository
 import com.projects.moviemanager.network.util.Left
@@ -19,8 +20,8 @@ class MediaContentPagingSource(
     private val showRepository: ShowRepository,
     private val contentListType: ContentListType,
     private val mediaType: MediaType
-) : PagingSource<Int, DetailedMediaInfo>() {
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, DetailedMediaInfo> {
+) : PagingSource<Int, GenericContent>() {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, GenericContent> {
         return try {
             val pageNumber = params.key ?: 1
             val previousKey = if (pageNumber == 1) {
@@ -48,10 +49,10 @@ class MediaContentPagingSource(
                 }
 
                 is Left -> {
-                    val data = apiResponse.value.results.map {
-                        when (it.mediaType) {
-                            MediaType.MOVIE -> it.toMovieDetailsInfo()
-                            MediaType.SHOW -> it.toShowDetailsInfo()
+                    val data = apiResponse.value.results.mapNotNull {
+                        when (it) {
+                            is MovieResponse -> it.toGenericContent()
+                            is ShowResponse -> it.toGenericContent()
                             else -> {
                                 throw IllegalStateException(
                                     "Invalid media type for paging source: $mediaType"
@@ -71,6 +72,6 @@ class MediaContentPagingSource(
         }
     }
 
-    override fun getRefreshKey(state: PagingState<Int, DetailedMediaInfo>): Int =
+    override fun getRefreshKey(state: PagingState<Int, GenericContent>): Int =
         ((state.anchorPosition ?: 0) - state.config.initialLoadSize / 2).coerceAtLeast(0)
 }

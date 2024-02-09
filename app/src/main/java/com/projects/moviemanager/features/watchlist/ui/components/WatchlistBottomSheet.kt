@@ -9,11 +9,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.stringResource
 import com.projects.moviemanager.R
-import com.projects.moviemanager.common.domain.MediaType
+import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.common.ui.MainViewModel
 import com.projects.moviemanager.common.ui.components.bottomsheet.GenericBottomSheet
 import com.projects.moviemanager.common.ui.components.bottomsheet.SortButton
-import com.projects.moviemanager.util.Constants.UNSELECTED_OPTION_INDEX
+import com.projects.moviemanager.common.util.Constants.UNSELECTED_OPTION_INDEX
 
 @Composable
 fun WatchlistSortBottomSheet(

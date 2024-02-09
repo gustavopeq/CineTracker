@@ -1,11 +1,11 @@
 package com.projects.moviemanager.network.repository.movie
 
-import com.projects.moviemanager.domain.models.util.ContentListType
+import com.projects.moviemanager.common.domain.models.util.ContentListType
 import com.projects.moviemanager.network.models.ApiError
 import com.projects.moviemanager.network.models.content.common.ContentCreditsResponse
-import com.projects.moviemanager.network.models.content.common.ContentListPageResponse
-import com.projects.moviemanager.network.models.content.movie.MovieApiResponse
+import com.projects.moviemanager.network.models.content.common.MovieResponse
 import com.projects.moviemanager.network.models.content.common.VideosByIdResponse
+import com.projects.moviemanager.network.models.search.ContentPagingResponse
 import com.projects.moviemanager.network.services.movie.MovieService
 import com.projects.moviemanager.network.util.Either
 import com.projects.moviemanager.network.util.asFlow
@@ -19,7 +19,7 @@ class MovieRepositoryImpl @Inject constructor(
     override suspend fun getMovieList(
         contentListType: ContentListType,
         pageIndex: Int
-    ): Flow<Either<ContentListPageResponse<MovieApiResponse>, ApiError>> {
+    ): Flow<Either<ContentPagingResponse<MovieResponse>, ApiError>> {
         return toApiResult {
             movieService.getMovieList(
                 movieListType = contentListType.type,
@@ -31,7 +31,7 @@ class MovieRepositoryImpl @Inject constructor(
 
     override suspend fun getMovieDetailsById(
         movieId: Int
-    ): Flow<Either<MovieApiResponse, ApiError>> {
+    ): Flow<Either<MovieResponse, ApiError>> {
         return toApiResult {
             movieService.getMovieDetailsById(
                 movieId = movieId
@@ -59,9 +59,19 @@ class MovieRepositoryImpl @Inject constructor(
         }.asFlow()
     }
 
+    override suspend fun getRecommendationsMoviesById(
+        movieId: Int
+    ): Flow<Either<ContentPagingResponse<MovieResponse>, ApiError>> {
+        return toApiResult {
+            movieService.getRecommendationsMoviesById(
+                movieId = movieId
+            )
+        }.asFlow()
+    }
+
     override suspend fun getSimilarMoviesById(
         movieId: Int
-    ): Flow<Either<ContentListPageResponse<MovieApiResponse>, ApiError>> {
+    ): Flow<Either<ContentPagingResponse<MovieResponse>, ApiError>> {
         return toApiResult {
             movieService.getSimilarMoviesById(
                 movieId = movieId

@@ -3,7 +3,7 @@ package com.projects.moviemanager.common.ui.theme
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Shapes
 import androidx.compose.ui.unit.dp
-import com.projects.moviemanager.common.ui.util.UiConstants.CARD_ROUND_CORNER
+import com.projects.moviemanager.common.util.UiConstants.CARD_ROUND_CORNER
 
 val RoundCornerShapes = Shapes(
     // Extra small = round on bottom

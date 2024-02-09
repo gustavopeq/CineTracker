@@ -17,17 +17,17 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.projects.moviemanager.R
-import com.projects.moviemanager.common.domain.MediaType
+import com.projects.moviemanager.common.domain.models.content.GenericContent
+import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.common.ui.components.GradientDirections
 import com.projects.moviemanager.common.ui.components.NetworkImage
 import com.projects.moviemanager.common.ui.components.button.ClassicButton
 import com.projects.moviemanager.common.ui.components.classicVerticalGradientBrush
-import com.projects.moviemanager.common.ui.util.UiConstants.BACKGROUND_INDEX
-import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_MARGIN
-import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_PADDING
-import com.projects.moviemanager.common.ui.util.UiConstants.HOME_BACKGROUND_ALPHA
-import com.projects.moviemanager.common.ui.util.UiConstants.POSTER_ASPECT_RATIO
-import com.projects.moviemanager.domain.models.content.GenericContent
+import com.projects.moviemanager.common.util.UiConstants.BACKGROUND_INDEX
+import com.projects.moviemanager.common.util.UiConstants.DEFAULT_MARGIN
+import com.projects.moviemanager.common.util.UiConstants.DEFAULT_PADDING
+import com.projects.moviemanager.common.util.UiConstants.HOME_BACKGROUND_ALPHA
+import com.projects.moviemanager.common.util.UiConstants.POSTER_ASPECT_RATIO
 
 @Composable
 fun FeaturedInfo(
@@ -71,13 +71,15 @@ fun FeaturedInfo(
 
 @Composable
 fun FeaturedBackgroundImage(
-    imageUrl: String
+    imageUrl: String,
+    posterHeight: Float
 ) {
     Box {
         NetworkImage(
             imageUrl = imageUrl,
             modifier = Modifier
                 .fillMaxWidth()
+                .height(posterHeight.dp)
                 .zIndex(BACKGROUND_INDEX)
                 .aspectRatio(POSTER_ASPECT_RATIO)
         )

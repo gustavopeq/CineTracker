@@ -2,7 +2,7 @@ package com.projects.moviemanager.features.watchlist.ui.components
 
 import androidx.annotation.StringRes
 import com.projects.moviemanager.R
-import com.projects.moviemanager.common.domain.MediaType
+import com.projects.moviemanager.common.domain.models.util.MediaType
 
 sealed class WatchlistSortTypeItem(
     @StringRes val titleRes: Int,

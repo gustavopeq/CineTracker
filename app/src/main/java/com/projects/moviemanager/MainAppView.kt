@@ -21,6 +21,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.projects.moviemanager.common.ui.MainViewModel
 import com.projects.moviemanager.common.ui.components.bottomsheet.ModalComponents
+import com.projects.moviemanager.common.ui.screen.ErrorScreen
 import com.projects.moviemanager.features.details.DetailsScreen
 import com.projects.moviemanager.navigation.MainNavGraph
 import com.projects.moviemanager.navigation.components.MainNavBar
@@ -101,5 +102,6 @@ val mainNavBarItems = listOf<MainNavBarItem>(
 )
 
 val standaloneScreens = listOf(
-    DetailsScreen.route()
+    DetailsScreen.route(),
+    ErrorScreen.route()
 )

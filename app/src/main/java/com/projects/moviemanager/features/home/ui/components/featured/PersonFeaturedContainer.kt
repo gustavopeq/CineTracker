@@ -21,19 +21,19 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.projects.moviemanager.R
-import com.projects.moviemanager.common.domain.MediaType
+import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.common.ui.components.NetworkImage
 import com.projects.moviemanager.common.ui.theme.MainBarGreyColor
-import com.projects.moviemanager.common.ui.util.UiConstants.BROWSE_CARD_DEFAULT_ELEVATION
-import com.projects.moviemanager.common.ui.util.UiConstants.CARD_ROUND_CORNER
-import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_MARGIN
-import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_PADDING
-import com.projects.moviemanager.common.ui.util.UiConstants.PERSON_FEATURED_IMAGE_WIDTH
-import com.projects.moviemanager.common.ui.util.UiConstants.PERSON_FEATURED_TITLE_MAX_LINES
-import com.projects.moviemanager.common.ui.util.UiConstants.POSTER_ASPECT_RATIO_MULTIPLY
-import com.projects.moviemanager.common.ui.util.UiConstants.SMALL_PADDING
-import com.projects.moviemanager.domain.models.person.PersonDetails
-import com.projects.moviemanager.util.Constants.BASE_ORIGINAL_IMAGE_URL
+import com.projects.moviemanager.common.util.UiConstants.BROWSE_CARD_DEFAULT_ELEVATION
+import com.projects.moviemanager.common.util.UiConstants.CARD_ROUND_CORNER
+import com.projects.moviemanager.common.util.UiConstants.DEFAULT_MARGIN
+import com.projects.moviemanager.common.util.UiConstants.DEFAULT_PADDING
+import com.projects.moviemanager.common.util.UiConstants.PERSON_FEATURED_IMAGE_WIDTH
+import com.projects.moviemanager.common.util.UiConstants.PERSON_FEATURED_TITLE_MAX_LINES
+import com.projects.moviemanager.common.util.UiConstants.POSTER_ASPECT_RATIO_MULTIPLY
+import com.projects.moviemanager.common.util.UiConstants.SMALL_PADDING
+import com.projects.moviemanager.common.domain.models.person.PersonDetails
+import com.projects.moviemanager.common.util.Constants.BASE_ORIGINAL_IMAGE_URL
 
 @Composable
 fun PersonFeaturedInfo(

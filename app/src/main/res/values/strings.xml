@@ -40,8 +40,6 @@
     <string name="main_nav_watchlist">My Lists</string>
     <string name="main_nav_search">Search</string>
 
-    <string name="common_error">Sorry, something went wrong! Try again...</string>
-
     <!-- Browse screen -->
     <string name="movies_tab">Movies</string>
     <string name="shows_tab">Shows</string>
@@ -61,6 +59,7 @@
     <string name="more_options_similar">More like this</string>
     <string name="images_tab">Images</string>
     <string name="unknown">Unknown</string>
+    <string name="read_more_text">Read more</string>
 
     <!-- Watchlist screen -->
     <string name="watchlist_tab">Watchlist</string>
@@ -96,5 +95,13 @@
     <string name="coming_soon_header">Coming Soon</string>
     <string name="home_bottom_screen_message">Looks like you\'ve caught up with everything here!</string>
     <string name="home_discover_more_button">Discover More</string>
+
+    <!-- Common -->
+    <string name="generic_error_message">Sorry, something went wrong...</string>
+    <string name="try_again_button">Try Again</string>
+    <string name="snackbar_item_added_in_list">Added to %s</string>
+    <string name="snackbar_item_removed_from_list">Removed from %s</string>
+    <string name="snackbar_item_moved_to_list">Moved to %s</string>
+    <string name="snackbar_undo_text">Undo</string>
 
 </resources>

@@ -22,7 +22,7 @@ import com.projects.moviemanager.R
 import com.projects.moviemanager.common.ui.components.classicVerticalGradientBrush
 import com.projects.moviemanager.common.ui.components.popup.GenericPopupMenu
 import com.projects.moviemanager.common.ui.components.popup.PopupMenuItem
-import com.projects.moviemanager.common.ui.util.UiConstants
+import com.projects.moviemanager.common.util.UiConstants
 import com.projects.moviemanager.features.watchlist.model.DefaultLists
 
 @Composable

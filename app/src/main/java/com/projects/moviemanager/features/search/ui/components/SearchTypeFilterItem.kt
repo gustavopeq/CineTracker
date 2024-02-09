@@ -2,7 +2,7 @@ package com.projects.moviemanager.features.search.ui.components
 
 import androidx.annotation.StringRes
 import com.projects.moviemanager.R
-import com.projects.moviemanager.common.domain.MediaType
+import com.projects.moviemanager.common.domain.models.util.MediaType
 
 sealed class SearchTypeFilterItem(
     @StringRes val tabResId: Int,

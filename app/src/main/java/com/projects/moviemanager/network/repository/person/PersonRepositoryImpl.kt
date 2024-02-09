@@ -1,8 +1,8 @@
 package com.projects.moviemanager.network.repository.person
 
 import com.projects.moviemanager.network.models.ApiError
+import com.projects.moviemanager.network.models.content.common.PersonResponse
 import com.projects.moviemanager.network.models.person.PersonCreditsResponse
-import com.projects.moviemanager.network.models.person.PersonDetailsResponse
 import com.projects.moviemanager.network.models.person.PersonImagesResponse
 import com.projects.moviemanager.network.services.person.PersonService
 import com.projects.moviemanager.network.util.Either
@@ -16,7 +16,7 @@ class PersonRepositoryImpl @Inject constructor(
 ) : PersonRepository {
     override suspend fun getPersonDetailsById(
         personId: Int
-    ): Flow<Either<PersonDetailsResponse, ApiError>> {
+    ): Flow<Either<PersonResponse, ApiError>> {
         return toApiResult {
             personService.getPersonDetailsById(personId)
         }.asFlow()

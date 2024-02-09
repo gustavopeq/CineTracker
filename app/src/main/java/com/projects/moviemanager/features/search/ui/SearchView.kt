@@ -3,9 +3,8 @@ package com.projects.moviemanager.features.search.ui
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -16,15 +15,15 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.projects.moviemanager.common.domain.MediaType
+import com.projects.moviemanager.common.domain.models.content.GenericContent
+import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.common.ui.components.ClassicLoadingIndicator
 import com.projects.moviemanager.common.ui.components.SetStatusBarColor
-import com.projects.moviemanager.common.ui.util.UiConstants.DEFAULT_PADDING
-import com.projects.moviemanager.common.ui.util.UiConstants.SEARCH_CARDS_WIDTH
-import com.projects.moviemanager.common.ui.util.calculateCardsPerRow
-import com.projects.moviemanager.common.ui.util.dpToPx
-import com.projects.moviemanager.common.ui.util.pxToDp
-import com.projects.moviemanager.domain.models.content.GenericContent
+import com.projects.moviemanager.common.util.UiConstants.DEFAULT_PADDING
+import com.projects.moviemanager.common.util.UiConstants.SEARCH_CARDS_WIDTH
+import com.projects.moviemanager.common.util.calculateCardsPerRow
+import com.projects.moviemanager.common.util.dpToPx
+import com.projects.moviemanager.common.util.pxToDp
 import com.projects.moviemanager.features.search.events.SearchEvent
 import com.projects.moviemanager.features.search.ui.components.NoResultsFound
 import com.projects.moviemanager.features.search.ui.components.SearchBar
@@ -34,22 +33,25 @@ import com.projects.moviemanager.features.search.ui.components.SearchTypeFilterI
 
 @Composable
 fun Search(
-    goToDetails: (Int, MediaType) -> Unit
+    goToDetails: (Int, MediaType) -> Unit,
+    goToErrorScreen: () -> Unit
 ) {
     Search(
         viewModel = hiltViewModel(),
-        goToDetails = goToDetails
+        goToDetails = goToDetails,
+        goToErrorScreen = goToErrorScreen
     )
 }
 
 @Composable
 private fun Search(
     viewModel: SearchViewModel,
-    goToDetails: (Int, MediaType) -> Unit
+    goToDetails: (Int, MediaType) -> Unit,
+    goToErrorScreen: () -> Unit
 ) {
     val searchQuery by viewModel.searchQuery
     val searchTypeSelected by viewModel.searchFilterSelected
-    val searchResults = viewModel.searchResult.collectAsLazyPagingItems()
+    val searchResults = viewModel.searchResults.collectAsLazyPagingItems()
     val isDebounceActive = viewModel.searchDebounceJob?.isActive ?: false
 
     val onFilterTypeSelected: (SearchTypeFilterItem) -> Unit = {
@@ -59,6 +61,12 @@ private fun Search(
     }
 
     SetStatusBarColor()
+
+    LaunchedEffect(Unit) {
+        if (searchQuery.isNotEmpty() && searchResults.itemCount == 0) {
+            viewModel.onEvent(SearchEvent.SearchQuery(searchQuery))
+        }
+    }
 
     Column(modifier = Modifier.fillMaxSize()) {
         SearchBar(
@@ -76,7 +84,8 @@ private fun Search(
                 SearchLoadingIndicator()
             }
             searchResults.loadState.refresh is LoadState.Error -> {
-                // Handle search error
+                viewModel.onEvent(SearchEvent.OnError)
+                goToErrorScreen()
             }
             else -> {
                 SearchBody(

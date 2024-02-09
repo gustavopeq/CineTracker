@@ -8,7 +8,7 @@ import com.projects.moviemanager.database.model.ContentEntity
 
 @Dao
 interface ContentEntityDao {
-    @Query("SELECT * FROM content_entity WHERE listId = :listId")
+    @Query("SELECT * FROM content_entity WHERE listId = :listId ORDER BY createdAt DESC")
     fun getAllItems(listId: String): List<ContentEntity>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
@@ -24,4 +24,10 @@ interface ContentEntityDao {
         "SELECT * FROM content_entity WHERE contentId = :contentId AND mediaType = :mediaType"
     )
     fun searchItems(contentId: Int, mediaType: String): List<ContentEntity>
+
+    @Query(
+        "SELECT * FROM content_entity WHERE " +
+            "contentId = :contentId AND mediaType = :mediaType AND listId = :listId"
+    )
+    fun getItem(contentId: Int, mediaType: String, listId: String): ContentEntity?
 }

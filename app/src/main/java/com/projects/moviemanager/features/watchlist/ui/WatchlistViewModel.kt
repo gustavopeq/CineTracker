@@ -4,37 +4,47 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.projects.moviemanager.common.domain.MediaType
-import com.projects.moviemanager.domain.models.content.DetailedMediaInfo
+import com.projects.moviemanager.common.domain.models.content.GenericContent
+import com.projects.moviemanager.common.domain.models.util.DataLoadStatus
+import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.features.watchlist.domain.WatchlistInteractor
 import com.projects.moviemanager.features.watchlist.events.WatchlistEvent
-import com.projects.moviemanager.domain.models.util.DataLoadState
 import com.projects.moviemanager.features.watchlist.model.DefaultLists
 import com.projects.moviemanager.features.watchlist.model.DefaultLists.Companion.getOtherList
+import com.projects.moviemanager.features.watchlist.model.WatchlistItemAction
+import com.projects.moviemanager.features.watchlist.ui.state.WatchlistSnackbarState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class WatchlistViewModel @Inject constructor(
     private val watchlistInteractor: WatchlistInteractor
 ) : ViewModel() {
 
-    private val _loadState: MutableStateFlow<DataLoadState> = MutableStateFlow(DataLoadState.Empty)
-    val loadState: StateFlow<DataLoadState> get() = _loadState
+    private val _loadState: MutableStateFlow<DataLoadStatus> = MutableStateFlow(
+        DataLoadStatus.Empty
+    )
+    val loadState: StateFlow<DataLoadStatus> get() = _loadState
 
-    private val _watchlist = MutableStateFlow(listOf<DetailedMediaInfo>())
-    val watchlist: StateFlow<List<DetailedMediaInfo>> get() = _watchlist
+    private val _watchlist = MutableStateFlow(listOf<GenericContent>())
+    val watchlist: StateFlow<List<GenericContent>> get() = _watchlist
 
-    private val _watchedList = MutableStateFlow(listOf<DetailedMediaInfo>())
-    val watchedList: StateFlow<List<DetailedMediaInfo>> get() = _watchedList
+    private val _watchedList = MutableStateFlow(listOf<GenericContent>())
+    val watchedList: StateFlow<List<GenericContent>> get() = _watchedList
 
     val selectedList = mutableStateOf(DefaultLists.WATCHLIST.listId)
 
     private val sortType: MutableState<MediaType?> = mutableStateOf(null)
+
+    private val _snackbarState: MutableState<WatchlistSnackbarState> = mutableStateOf(
+        WatchlistSnackbarState()
+    )
+    val snackbarState: MutableState<WatchlistSnackbarState> get() = _snackbarState
+    private var lastItemAction: WatchlistItemAction? = null
 
     fun onEvent(
         event: WatchlistEvent
@@ -47,6 +57,8 @@ class WatchlistViewModel @Inject constructor(
             is WatchlistEvent.UpdateItemListId -> {
                 updateItemListId(event.contentId, event.mediaType)
             }
+            is WatchlistEvent.OnSnackbarDismiss -> snackbarDismiss()
+            is WatchlistEvent.UndoItemAction -> undoItemRemoved()
         }
     }
 
@@ -58,30 +70,28 @@ class WatchlistViewModel @Inject constructor(
                 listId = DefaultLists.WATCHLIST.listId
             )
             if (showLoadingState && watchlistDatabaseItems.isNotEmpty()) {
-                _loadState.value = DataLoadState.Loading
+                _loadState.value = DataLoadStatus.Loading
             }
 
-            val watchlistDetails = watchlistDatabaseItems.mapNotNull {
-                watchlistInteractor.getContentDetailsById(
-                    contentId = it.contentId,
-                    mediaType = MediaType.getType(it.mediaType)
-                )
+            val watchlistState = watchlistInteractor.fetchListDetails(watchlistDatabaseItems)
+            if (watchlistState.isFailed()) {
+                _loadState.value = DataLoadStatus.Failed
+                return@launch
             }
-            _watchlist.value = watchlistDetails
+            _watchlist.value = watchlistState.listItems.value
 
             val watchedDatabaseItems = watchlistInteractor.getAllItems(
                 listId = DefaultLists.WATCHED.listId
             )
 
-            val watchedDetails = watchedDatabaseItems.mapNotNull {
-                watchlistInteractor.getContentDetailsById(
-                    contentId = it.contentId,
-                    mediaType = MediaType.getType(it.mediaType)
-                )
+            val watchedState = watchlistInteractor.fetchListDetails(watchedDatabaseItems)
+            if (watchedState.isFailed()) {
+                _loadState.value = DataLoadStatus.Failed
+                return@launch
             }
-            _watchedList.value = watchedDetails
+            _watchedList.value = watchedState.listItems.value
 
-            _loadState.value = DataLoadState.Success
+            _loadState.value = DataLoadStatus.Success
         }
     }
 
@@ -96,6 +106,11 @@ class WatchlistViewModel @Inject constructor(
                 listId = selectedList.value
             )
             removeContentFromUiList(contentId, mediaType)
+
+            triggerSnackbar(
+                listId = selectedList.value,
+                itemAction = WatchlistItemAction.ITEM_REMOVED
+            )
         }
     }
 
@@ -112,7 +127,25 @@ class WatchlistViewModel @Inject constructor(
                 newListId = otherListId
             )
             loadWatchlistData(showLoadingState = false)
+
+            triggerSnackbar(
+                listId = otherListId,
+                itemAction = WatchlistItemAction.ITEM_MOVED
+            )
         }
+    }
+
+    private fun triggerSnackbar(
+        listId: String,
+        itemAction: WatchlistItemAction
+    ) {
+        _snackbarState.value = WatchlistSnackbarState(
+            listId = listId,
+            itemAction = itemAction
+        ).apply {
+            setSnackbarVisible()
+        }
+        lastItemAction = itemAction
     }
 
     private fun removeContentFromUiList(
@@ -129,5 +162,22 @@ class WatchlistViewModel @Inject constructor(
             it.id == contentId && it.mediaType == mediaType
         }
         currentList.value = updatedList
+    }
+
+    private fun undoItemRemoved() {
+        viewModelScope.launch(Dispatchers.IO) {
+            lastItemAction?.let { action ->
+                if (action == WatchlistItemAction.ITEM_REMOVED) {
+                    watchlistInteractor.undoItemRemoved()
+                } else {
+                    watchlistInteractor.undoMovedItem()
+                }
+                loadWatchlistData(showLoadingState = false)
+            }
+        }
+    }
+
+    private fun snackbarDismiss() {
+        _snackbarState.value = WatchlistSnackbarState()
     }
 }

@@ -4,6 +4,7 @@ import com.projects.moviemanager.features.search.ui.components.SearchTypeFilterI
 
 sealed class SearchEvent {
     data object ClearSearchBar : SearchEvent()
+    data object OnError : SearchEvent()
     data class SearchQuery(
         val query: String
     ) : SearchEvent()

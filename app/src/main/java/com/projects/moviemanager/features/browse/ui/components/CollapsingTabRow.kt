@@ -30,7 +30,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import com.projects.moviemanager.common.ui.util.UiConstants.BROWSE_TAB_ROW_OFFSET_HEIGHT
+import com.projects.moviemanager.common.util.UiConstants.BROWSE_TAB_ROW_OFFSET_HEIGHT
 import com.projects.moviemanager.features.browse.events.BrowseEvent
 import com.projects.moviemanager.features.browse.ui.BrowseViewModel
 import kotlinx.coroutines.launch
