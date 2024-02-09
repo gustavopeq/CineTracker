@@ -28,7 +28,7 @@ import com.projects.moviemanager.common.domain.models.person.PersonDetails
 import com.projects.moviemanager.common.domain.models.util.DataLoadStatus
 import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.common.ui.components.ClassicLoadingIndicator
-import com.projects.moviemanager.common.ui.components.button.ClassicButton
+import com.projects.moviemanager.common.ui.components.button.GenericButton
 import com.projects.moviemanager.common.util.UiConstants.DEFAULT_MARGIN
 import com.projects.moviemanager.common.util.UiConstants.HOME_BACKGROUND_OFFSET_PERCENT
 import com.projects.moviemanager.common.util.UiConstants.POSTER_ASPECT_RATIO_MULTIPLY
@@ -214,7 +214,7 @@ fun HomeBrowseButton(
             textAlign = TextAlign.Center
         )
         Spacer(modifier = Modifier.height(DEFAULT_MARGIN.dp))
-        ClassicButton(
+        GenericButton(
             buttonText = stringResource(id = R.string.home_discover_more_button),
             onClick = goToBrowse
         )
