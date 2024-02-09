@@ -4,15 +4,15 @@ import com.projects.moviemanager.network.models.ApiError
 import com.projects.moviemanager.network.models.content.common.MovieResponse
 import com.projects.moviemanager.network.models.content.common.MultiResponse
 import com.projects.moviemanager.network.models.content.common.PersonResponse
-import com.projects.moviemanager.network.models.search.SearchPageResponse
+import com.projects.moviemanager.network.models.search.ContentPagingResponse
 import com.projects.moviemanager.network.util.Either
 import kotlinx.coroutines.flow.Flow
 
 interface HomeRepository {
-    suspend fun getTrendingMulti(): Flow<Either<SearchPageResponse<MultiResponse>, ApiError>>
-    suspend fun getTrendingPerson(): Flow<Either<SearchPageResponse<PersonResponse>, ApiError>>
+    suspend fun getTrendingMulti(): Flow<Either<ContentPagingResponse<MultiResponse>, ApiError>>
+    suspend fun getTrendingPerson(): Flow<Either<ContentPagingResponse<PersonResponse>, ApiError>>
     suspend fun getMoviesComingSoon(
         releaseDateGte: String,
         releaseDateLte: String
-    ): Flow<Either<SearchPageResponse<MovieResponse>, ApiError>>
+    ): Flow<Either<ContentPagingResponse<MovieResponse>, ApiError>>
 }

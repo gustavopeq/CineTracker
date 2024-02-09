@@ -3,9 +3,9 @@ package com.projects.moviemanager.network.repository.movie
 import com.projects.moviemanager.common.domain.models.util.ContentListType
 import com.projects.moviemanager.network.models.ApiError
 import com.projects.moviemanager.network.models.content.common.ContentCreditsResponse
-import com.projects.moviemanager.network.models.content.common.ContentListPageResponse
 import com.projects.moviemanager.network.models.content.common.MovieResponse
 import com.projects.moviemanager.network.models.content.common.VideosByIdResponse
+import com.projects.moviemanager.network.models.search.ContentPagingResponse
 import com.projects.moviemanager.network.util.Either
 import kotlinx.coroutines.flow.Flow
 
@@ -13,7 +13,7 @@ interface MovieRepository {
     suspend fun getMovieList(
         contentListType: ContentListType,
         pageIndex: Int
-    ): Flow<Either<ContentListPageResponse<MovieResponse>, ApiError>>
+    ): Flow<Either<ContentPagingResponse<MovieResponse>, ApiError>>
 
     suspend fun getMovieDetailsById(
         movieId: Int
@@ -29,9 +29,9 @@ interface MovieRepository {
 
     suspend fun getRecommendationsMoviesById(
         movieId: Int
-    ): Flow<Either<ContentListPageResponse<MovieResponse>, ApiError>>
+    ): Flow<Either<ContentPagingResponse<MovieResponse>, ApiError>>
 
     suspend fun getSimilarMoviesById(
         movieId: Int
-    ): Flow<Either<ContentListPageResponse<MovieResponse>, ApiError>>
+    ): Flow<Either<ContentPagingResponse<MovieResponse>, ApiError>>
 }

@@ -54,7 +54,7 @@ fun MovieResponse.toDetailedContent(): DetailedContent {
 fun ShowResponse.toDetailedContent(): DetailedContent {
     return DetailedContent(
         id = this.id,
-        name = this.title.orEmpty(),
+        name = this.name.orEmpty(),
         overview = this.overview.orEmpty(),
         posterPath = this.poster_path.orEmpty(),
         backdropPath = this.backdrop_path.orEmpty(),

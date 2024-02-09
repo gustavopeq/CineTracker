@@ -69,7 +69,6 @@ data class ShowResponse(
     override val poster_path: String?,
     override val profile_path: String?,
     override val backdrop_path: String?,
-    override val title: String?,
     override val original_title: String?,
     override val name: String?,
     override val original_name: String?,
@@ -82,7 +81,10 @@ data class ShowResponse(
     val origin_country: List<String>?,
     val production_countries: List<ProductionCountry?>?,
     val genres: List<ContentGenre?>?
-) : BaseContentResponse
+) : BaseContentResponse {
+    override val title: String
+        get() = name.orEmpty()
+}
 
 data class PersonResponse(
     override val id: Int,

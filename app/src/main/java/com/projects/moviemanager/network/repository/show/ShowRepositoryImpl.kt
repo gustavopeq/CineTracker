@@ -2,9 +2,9 @@ package com.projects.moviemanager.network.repository.show
 
 import com.projects.moviemanager.network.models.ApiError
 import com.projects.moviemanager.network.models.content.common.ContentCreditsResponse
-import com.projects.moviemanager.network.models.content.common.ContentListPageResponse
 import com.projects.moviemanager.network.models.content.common.ShowResponse
 import com.projects.moviemanager.network.models.content.common.VideosByIdResponse
+import com.projects.moviemanager.network.models.search.ContentPagingResponse
 import com.projects.moviemanager.network.services.show.ShowService
 import com.projects.moviemanager.network.util.Either
 import com.projects.moviemanager.network.util.asFlow
@@ -18,7 +18,7 @@ class ShowRepositoryImpl @Inject constructor(
     override suspend fun getShowList(
         contentListType: String,
         pageIndex: Int
-    ): Flow<Either<ContentListPageResponse<ShowResponse>, ApiError>> {
+    ): Flow<Either<ContentPagingResponse<ShowResponse>, ApiError>> {
         return toApiResult {
             showService.getShowList(
                 contentListType = contentListType,
@@ -58,7 +58,7 @@ class ShowRepositoryImpl @Inject constructor(
 
     override suspend fun getRecommendationsShowsById(
         showId: Int
-    ): Flow<Either<ContentListPageResponse<ShowResponse>, ApiError>> {
+    ): Flow<Either<ContentPagingResponse<ShowResponse>, ApiError>> {
         return toApiResult {
             showService.getRecommendationsShowsById(
                 showId = showId
@@ -68,7 +68,7 @@ class ShowRepositoryImpl @Inject constructor(
 
     override suspend fun getSimilarShowsById(
         showId: Int
-    ): Flow<Either<ContentListPageResponse<ShowResponse>, ApiError>> {
+    ): Flow<Either<ContentPagingResponse<ShowResponse>, ApiError>> {
         return toApiResult {
             showService.getSimilarShowsById(
                 showId = showId
