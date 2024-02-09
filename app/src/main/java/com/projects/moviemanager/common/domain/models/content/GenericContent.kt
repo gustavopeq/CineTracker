@@ -3,6 +3,7 @@ package com.projects.moviemanager.common.domain.models.content
 import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.common.util.UiConstants.EMPTY_RATINGS
 import com.projects.moviemanager.network.models.content.common.BaseContentResponse
+import com.projects.moviemanager.network.models.content.common.CastResponse
 import com.projects.moviemanager.network.models.content.common.MovieResponse
 import com.projects.moviemanager.network.models.content.common.MultiResponse
 import com.projects.moviemanager.network.models.content.common.PersonResponse
@@ -45,15 +46,15 @@ fun BaseContentResponse.toGenericContent(): GenericContent? {
     )
 }
 
-fun List<PersonResponse>?.toGenericContentList(): List<GenericContent> {
+fun List<CastResponse>?.toGenericContentList(): List<GenericContent> {
     return this?.map { castResponse ->
         GenericContent(
             id = castResponse.id,
-            name = castResponse.name.orEmpty(),
+            name = castResponse.title,
             posterPath = castResponse.poster_path.orEmpty(),
             backdropPath = castResponse.backdrop_path.orEmpty(),
             overview = castResponse.overview.orEmpty(),
-            mediaType = MediaType.PERSON,
+            mediaType = castResponse.mediaType,
             rating = castResponse.vote_average ?: EMPTY_RATINGS
         )
     } ?: emptyList()

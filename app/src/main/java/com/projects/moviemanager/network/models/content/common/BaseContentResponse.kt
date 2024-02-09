@@ -1,5 +1,8 @@
 package com.projects.moviemanager.network.models.content.common
 
+import com.projects.moviemanager.common.domain.models.util.MediaType
+import com.squareup.moshi.Json
+
 interface BaseContentResponse {
     val id: Int
     val adult: Boolean?
@@ -104,3 +107,28 @@ data class PersonResponse(
     val deathday: String?,
     val place_of_birth: String?
 ) : BaseContentResponse
+
+data class CastResponse(
+    override val id: Int,
+    override val adult: Boolean?,
+    override val popularity: Double?,
+    override val poster_path: String?,
+    override val profile_path: String?,
+    override val backdrop_path: String?,
+    override val name: String?,
+    override val original_title: String?,
+    override val original_name: String?,
+    override val vote_average: Double?,
+    override val overview: String?,
+    @Json(name = "title")
+    val _title: String?,
+    val media_type: String?
+) : BaseContentResponse {
+    val mediaType: MediaType
+        get() = when (media_type) {
+            "tv" -> MediaType.SHOW
+            else -> MediaType.MOVIE
+        }
+    override val title: String
+        get() = _title ?: name.orEmpty()
+}
