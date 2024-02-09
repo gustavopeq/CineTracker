@@ -19,11 +19,11 @@ fun MoreOptionsTab(
     goToDetails: (Int, MediaType) -> Unit
 ) {
     val availableTabs = mutableListOf<MoreOptionsTabItem>()
-    if (videoList.isNotEmpty()) {
-        availableTabs.add(VideosTab)
-    }
     if (contentSimilarList.isNotEmpty()) {
         availableTabs.add(MoreLikeThisTab)
+    }
+    if (videoList.isNotEmpty()) {
+        availableTabs.add(VideosTab)
     }
 
     val (tabList, selectedTabIndex, updateSelectedTab) = setupTabs(availableTabs)
