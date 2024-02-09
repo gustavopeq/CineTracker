@@ -91,6 +91,16 @@ private fun Details(
     var showAllScreen by remember { mutableStateOf(false) }
     var showAllMediaType by remember { mutableStateOf(MediaType.MOVIE) }
 
+    var currentHeaderPosY by rememberSaveable { mutableFloatStateOf(0f) }
+    var initialHeaderPosY by rememberSaveable { mutableFloatStateOf(0f) }
+
+    val updateHeaderPosition: (Float) -> Unit = {
+        if (it > initialHeaderPosY) {
+            initialHeaderPosY = it
+        }
+        currentHeaderPosY = it
+    }
+
     val onToggleWatchlist: (String) -> Unit = { listId ->
         contentDetails?.let {
             viewModel.onEvent(
@@ -146,9 +156,12 @@ private fun Details(
         )
     } else {
         DetailsTopBar(
-            onBackBtnPress = onBackPress,
+            contentTitle = contentDetails?.name.orEmpty(),
+            currentHeaderPosY = currentHeaderPosY,
+            initialHeaderPosY = initialHeaderPosY,
             showWatchlistButton = contentDetails?.mediaType != MediaType.PERSON,
             contentInWatchlistStatus = contentInListStatus,
+            onBackBtnPress = onBackPress,
             toggleWatchlist = onToggleWatchlist
         )
 
@@ -166,6 +179,9 @@ private fun Details(
                         viewModel = viewModel,
                         contentDetails = contentDetails,
                         personContentList = personContentList,
+                        initialHeaderPosY = initialHeaderPosY,
+                        currentHeaderPosY = currentHeaderPosY,
+                        updateHeaderPosition = updateHeaderPosition,
                         goToDetails = goToDetails,
                         updateShowAllFlag = updateShowAllFlag
                     )
@@ -186,19 +202,13 @@ private fun DetailsBody(
     viewModel: DetailsViewModel,
     contentDetails: DetailedContent?,
     personContentList: List<GenericContent>,
+    currentHeaderPosY: Float,
+    initialHeaderPosY: Float,
+    updateHeaderPosition: (Float) -> Unit,
     goToDetails: (Int, MediaType) -> Unit,
     updateShowAllFlag: (Boolean, MediaType) -> Unit
 ) {
-    var currentHeaderPosY by rememberSaveable { mutableFloatStateOf(0f) }
-    var initialHeaderPosY by rememberSaveable { mutableFloatStateOf(0f) }
     val contentPosterUrl = BASE_ORIGINAL_IMAGE_URL + contentDetails?.posterPath
-
-    val updateHeaderPosition: (Float) -> Unit = {
-        if (it > initialHeaderPosY) {
-            initialHeaderPosY = it
-        }
-        currentHeaderPosY = it
-    }
 
     BackgroundPoster(
         posterHeight,
