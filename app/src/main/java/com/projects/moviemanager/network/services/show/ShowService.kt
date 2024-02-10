@@ -25,7 +25,7 @@ interface ShowService {
         @Query("language") language: String = ENGLISH_LANGUAGE_CODE
     ): Response<ShowResponse>
 
-    @GET("tv/{show_ID}/credits?api_key=${Constants.API_KEY}")
+    @GET("tv/{show_ID}/aggregate_credits?api_key=${Constants.API_KEY}")
     suspend fun getShowCreditsById(
         @Path("show_ID") showId: Int
     ): Response<ContentCreditsResponse>

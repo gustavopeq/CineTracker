@@ -38,6 +38,7 @@ object UiConstants {
     // Details
     const val DETAILS_TITLE_IMAGE_OFFSET_PERCENT = 0.7f
     const val DETAILS_CAST_PICTURE_SIZE = 100
+    const val DETAILS_CAST_CARD_HEIGHT = 185
     const val VIDEOS_BORDER_SIZE = 4
     const val MAX_COUNT_MORE_LIKE_THIS_CARDS = 10
     const val RETURN_TOP_BAR_HEIGHT = 64

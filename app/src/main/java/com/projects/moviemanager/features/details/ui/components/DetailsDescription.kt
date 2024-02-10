@@ -80,9 +80,10 @@ fun DetailsDescriptionBody(
     contentDetails: DetailedContent
 ) {
     val context = LocalContext.current
-    OverviewInfo(contentDetails)
-
-    Spacer(modifier = Modifier.height(DEFAULT_MARGIN.dp))
+    if (contentDetails.overview.isNotEmpty()) {
+        OverviewInfo(contentDetails)
+        Spacer(modifier = Modifier.height(DEFAULT_MARGIN.dp))
+    }
 
     when (contentDetails.mediaType) {
         MediaType.MOVIE -> {
@@ -108,7 +109,6 @@ fun DetailsDescriptionBody(
             )
             BornInInfo(contentDetails.placeOfBirth)
         }
-
         else -> {}
     }
 }

@@ -13,16 +13,18 @@ import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.database.repository.DatabaseRepository
 import com.projects.moviemanager.features.details.ui.state.DetailsState
 import com.projects.moviemanager.features.watchlist.model.DefaultLists
+import com.projects.moviemanager.network.models.content.common.BaseContentResponse
 import com.projects.moviemanager.network.models.content.common.MovieResponse
 import com.projects.moviemanager.network.models.content.common.PersonResponse
 import com.projects.moviemanager.network.models.content.common.ShowResponse
+import com.projects.moviemanager.network.models.search.ContentPagingResponse
 import com.projects.moviemanager.network.repository.movie.MovieRepository
 import com.projects.moviemanager.network.repository.person.PersonRepository
 import com.projects.moviemanager.network.repository.show.ShowRepository
 import com.projects.moviemanager.network.util.Left
 import com.projects.moviemanager.network.util.Right
-import timber.log.Timber
 import javax.inject.Inject
+import timber.log.Timber
 
 class DetailsInteractor @Inject constructor(
     private val movieRepository: MovieRepository,
@@ -65,7 +67,7 @@ class DetailsInteractor @Inject constructor(
         return detailsState
     }
 
-    suspend fun getContentCreditsById(
+    suspend fun getContentCastById(
         contentId: Int,
         mediaType: MediaType
     ): DetailsState {
@@ -86,7 +88,9 @@ class DetailsInteractor @Inject constructor(
                 is Left -> {
                     detailsState.detailsCast.value = response.value.cast.map {
                         it.toContentCast()
-                    }
+                    }.filterNot {
+                        it.profilePoster.isEmpty()
+                    }.sortedBy { it.order ?: Int.MAX_VALUE }
                 }
             }
         }
@@ -134,16 +138,12 @@ class DetailsInteractor @Inject constructor(
         result.collect { response ->
             when (response) {
                 is Right -> {
-                    Timber.e("getRecommendationsContentById failed with error: ${response.error}")
+                    Timber.e(
+                        "getRecommendationsContentById failed with error: ${response.error}"
+                    )
                 }
                 is Left -> {
-                    listOfSimilar = response.value.results
-                        .filter {
-                            it.poster_path?.isNotEmpty() == true && it.title?.isNotEmpty() == true
-                        }
-                        .mapNotNull {
-                            it.toGenericContent()
-                        }
+                    listOfSimilar = mapResponseToGenericContent(response)
                     if (listOfSimilar.isEmpty()) {
                         listOfSimilar = getSimilarContentById(
                             contentId = contentId,
@@ -173,17 +173,23 @@ class DetailsInteractor @Inject constructor(
                     Timber.e("getSimilarContentById failed with error: ${response.error}")
                 }
                 is Left -> {
-                    listOfSimilar = response.value.results
-                        .filter {
-                            it.poster_path?.isNotEmpty() == true && it.title?.isNotEmpty() == true
-                        }
-                        .mapNotNull {
-                            it.toGenericContent()
-                        }
+                    listOfSimilar = mapResponseToGenericContent(response)
                 }
             }
         }
         return listOfSimilar
+    }
+
+    private fun mapResponseToGenericContent(
+        response: Left<ContentPagingResponse<out BaseContentResponse>>
+    ): List<GenericContent> {
+        return response.value.results
+            .filter {
+                it.poster_path?.isNotEmpty() == true && it.title?.isNotEmpty() == true
+            }
+            .mapNotNull {
+                it.toGenericContent()
+            }
     }
 
     suspend fun getPersonCreditsById(
@@ -198,7 +204,9 @@ class DetailsInteractor @Inject constructor(
                     Timber.e("getPersonCreditsById failed with error: ${response.error}")
                 }
                 is Left -> {
-                    mediaContentList = response.value.cast.toGenericContentList()
+                    mediaContentList = response.value.cast.toGenericContentList().filterNot {
+                        it.name.isEmpty() || it.posterPath.isEmpty()
+                    }
                 }
             }
         }

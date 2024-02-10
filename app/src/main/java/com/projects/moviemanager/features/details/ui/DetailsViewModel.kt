@@ -121,7 +121,7 @@ class DetailsViewModel @Inject constructor(
     }
 
     private suspend fun fetchCastDetails() {
-        val castDetailsState = detailsInteractor.getContentCreditsById(contentId, mediaType)
+        val castDetailsState = detailsInteractor.getContentCastById(contentId, mediaType)
         if (castDetailsState.isFailed()) {
             _loadState.value = DataLoadStatus.Failed
         } else {
