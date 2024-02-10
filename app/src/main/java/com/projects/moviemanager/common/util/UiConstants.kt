@@ -39,9 +39,10 @@ object UiConstants {
     const val DETAILS_TITLE_IMAGE_OFFSET_PERCENT = 0.7f
     const val DETAILS_CAST_PICTURE_SIZE = 100
     const val VIDEOS_BORDER_SIZE = 4
-    const val MAX_COUNT_DETAILS_CARDS = 10
+    const val MAX_COUNT_MORE_LIKE_THIS_CARDS = 10
     const val RETURN_TOP_BAR_HEIGHT = 64
     const val DETAILS_OVERVIEW_MAX_LINES = 6
+    const val MAX_COUNT_PERSON_ADDITIONAL_CONTENT = 20
 
     // Watchlist
     const val WATCHLIST_IMAGE_WIDTH = 100

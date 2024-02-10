@@ -60,6 +60,9 @@
     <string name="images_tab">Images</string>
     <string name="unknown">Unknown</string>
     <string name="read_more_text">Read more</string>
+    <string name="see_all_button_label">See All</string>
+    <string name="see_all_movies_label">All Movies</string>
+    <string name="see_all_shows_label">All Shows</string>
 
     <!-- Watchlist screen -->
     <string name="watchlist_tab">Watchlist</string>

@@ -9,12 +9,14 @@ import com.projects.moviemanager.common.ui.components.GridContentList
 import com.projects.moviemanager.common.ui.components.GridImageList
 import com.projects.moviemanager.common.ui.components.tab.GenericTabRow
 import com.projects.moviemanager.common.ui.components.tab.setupTabs
+import com.projects.moviemanager.common.util.UiConstants.MAX_COUNT_PERSON_ADDITIONAL_CONTENT
 
 @Composable
 fun PersonMoreOptionsTab(
     contentList: List<GenericContent>,
     personImageList: List<PersonImage>,
-    openContentDetails: (Int, MediaType) -> Unit
+    goToDetails: (Int, MediaType) -> Unit,
+    updateShowAllFlag: (Boolean, MediaType) -> Unit
 ) {
     val moviesList = contentList.filter { it.mediaType == MediaType.MOVIE }
     val showList = contentList.filter { it.mediaType == MediaType.SHOW }
@@ -40,14 +42,24 @@ fun PersonMoreOptionsTab(
                 MoreOptionsTabItem.MoviesTab.tabIndex -> {
                     GridContentList(
                         mediaContentList = moviesList,
-                        openContentDetails = openContentDetails
+                        maxCardsNumber = MAX_COUNT_PERSON_ADDITIONAL_CONTENT,
+                        showSeeAllButton = true,
+                        openContentDetails = goToDetails,
+                        onSeeAll = {
+                            updateShowAllFlag(true, MediaType.MOVIE)
+                        }
                     )
                 }
 
                 MoreOptionsTabItem.ShowsTab.tabIndex -> {
                     GridContentList(
                         mediaContentList = showList,
-                        openContentDetails = openContentDetails
+                        maxCardsNumber = MAX_COUNT_PERSON_ADDITIONAL_CONTENT,
+                        showSeeAllButton = true,
+                        openContentDetails = goToDetails,
+                        onSeeAll = {
+                            updateShowAllFlag(true, MediaType.SHOW)
+                        }
                     )
                 }
 

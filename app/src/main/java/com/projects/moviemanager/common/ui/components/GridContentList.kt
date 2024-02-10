@@ -10,11 +10,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.projects.moviemanager.R
 import com.projects.moviemanager.common.domain.models.content.GenericContent
 import com.projects.moviemanager.common.domain.models.person.PersonImage
 import com.projects.moviemanager.common.domain.models.util.MediaType
+import com.projects.moviemanager.common.ui.components.button.GenericButton
 import com.projects.moviemanager.common.ui.components.card.DefaultContentCard
 import com.projects.moviemanager.common.ui.components.card.PersonImages
 import com.projects.moviemanager.common.util.UiConstants.BROWSE_CARD_PADDING_HORIZONTAL
@@ -65,27 +68,40 @@ fun <T> GenericGrid(
 fun GridContentList(
     mediaContentList: List<GenericContent>,
     maxCardsNumber: Int? = null,
-    openContentDetails: (Int, MediaType) -> Unit
+    showSeeAllButton: Boolean = false,
+    openContentDetails: (Int, MediaType) -> Unit,
+    onSeeAll: () -> Unit = {}
 ) {
-    GenericGrid(
-        itemList = mediaContentList,
-        maxCardsNumber = maxCardsNumber ?: mediaContentList.size
-    ) { content, size ->
-        DefaultContentCard(
-            modifier = Modifier
-                .width(size)
-                .padding(
-                    horizontal = BROWSE_CARD_PADDING_HORIZONTAL.dp,
-                    vertical = BROWSE_CARD_PADDING_VERTICAL.dp
-                ),
-            cardWidth = size,
-            imageUrl = content.posterPath,
-            title = content.name,
-            rating = content.rating,
-            goToDetails = {
-                openContentDetails(content.id, content.mediaType)
-            }
-        )
+    Column {
+        GenericGrid(
+            itemList = mediaContentList,
+            maxCardsNumber = maxCardsNumber ?: mediaContentList.size
+        ) { content, size ->
+            DefaultContentCard(
+                modifier = Modifier
+                    .width(size)
+                    .padding(
+                        horizontal = BROWSE_CARD_PADDING_HORIZONTAL.dp,
+                        vertical = BROWSE_CARD_PADDING_VERTICAL.dp
+                    ),
+                cardWidth = size,
+                imageUrl = content.posterPath,
+                title = content.name,
+                rating = content.rating,
+                goToDetails = {
+                    openContentDetails(content.id, content.mediaType)
+                }
+            )
+        }
+        if (showSeeAllButton && maxCardsNumber != null && mediaContentList.size > maxCardsNumber) {
+            GenericButton(
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(vertical = DEFAULT_MARGIN.dp),
+                buttonText = stringResource(id = R.string.see_all_button_label),
+                onClick = onSeeAll
+            )
+        }
     }
 }
 

@@ -21,7 +21,7 @@ import com.projects.moviemanager.common.domain.models.content.GenericContent
 import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.common.ui.components.GradientDirections
 import com.projects.moviemanager.common.ui.components.NetworkImage
-import com.projects.moviemanager.common.ui.components.button.ClassicButton
+import com.projects.moviemanager.common.ui.components.button.GenericButton
 import com.projects.moviemanager.common.ui.components.classicVerticalGradientBrush
 import com.projects.moviemanager.common.util.UiConstants.BACKGROUND_INDEX
 import com.projects.moviemanager.common.util.UiConstants.DEFAULT_MARGIN
@@ -57,7 +57,7 @@ fun FeaturedInfo(
                     overflow = TextOverflow.Ellipsis
                 )
                 Spacer(modifier = Modifier.height(DEFAULT_PADDING.dp))
-                ClassicButton(
+                GenericButton(
                     buttonText = stringResource(id = R.string.see_details_button_text),
                     onClick = {
                         goToDetails(featuredContent.id, featuredContent.mediaType)

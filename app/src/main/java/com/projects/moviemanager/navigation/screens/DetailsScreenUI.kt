@@ -26,7 +26,7 @@ class DetailsScreenUI : ScreenUI {
             onBackPress = {
                 navController.popBackStack()
             },
-            openSimilarContent = { id, type ->
+            goToDetails = { id, type ->
                 navController.navigate(
                     DetailsScreen.routeWithArguments(id, type.name)
                 )

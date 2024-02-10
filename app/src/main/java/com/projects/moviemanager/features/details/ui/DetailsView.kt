@@ -17,6 +17,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -29,6 +30,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavBackStackEntry
 import com.projects.moviemanager.R
 import com.projects.moviemanager.common.domain.models.content.DetailedContent
+import com.projects.moviemanager.common.domain.models.content.GenericContent
 import com.projects.moviemanager.common.domain.models.util.DataLoadStatus
 import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.common.ui.components.NetworkImage
@@ -47,6 +49,7 @@ import com.projects.moviemanager.features.details.ui.components.DetailsDescripti
 import com.projects.moviemanager.features.details.ui.components.DetailsTopBar
 import com.projects.moviemanager.features.details.ui.components.moreoptions.MoreOptionsTab
 import com.projects.moviemanager.features.details.ui.components.moreoptions.PersonMoreOptionsTab
+import com.projects.moviemanager.features.details.ui.components.showall.ShowAllView
 import com.projects.moviemanager.features.details.ui.events.DetailsEvents
 import com.projects.moviemanager.features.details.util.mapValueToRange
 import com.projects.moviemanager.features.watchlist.model.DefaultLists
@@ -55,14 +58,14 @@ import com.projects.moviemanager.features.watchlist.model.DefaultLists
 fun Details(
     navBackStackEntry: NavBackStackEntry,
     onBackPress: () -> Unit,
-    openSimilarContent: (Int, MediaType) -> Unit,
+    goToDetails: (Int, MediaType) -> Unit,
     goToErrorScreen: () -> Unit
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         Details(
             viewModel = hiltViewModel(navBackStackEntry),
             onBackPress = onBackPress,
-            openSimilarContent = openSimilarContent,
+            goToDetails = goToDetails,
             goToErrorScreen = goToErrorScreen
         )
     }
@@ -72,7 +75,7 @@ fun Details(
 private fun Details(
     viewModel: DetailsViewModel,
     onBackPress: () -> Unit,
-    openSimilarContent: (Int, MediaType) -> Unit,
+    goToDetails: (Int, MediaType) -> Unit,
     goToErrorScreen: () -> Unit
 ) {
     val contentDetails by viewModel.contentDetails.collectAsState()
@@ -84,6 +87,21 @@ private fun Details(
     val context = LocalContext.current
     val posterWidth = LocalConfiguration.current.screenWidthDp
     val posterHeight = posterWidth * POSTER_ASPECT_RATIO_MULTIPLY
+    val personContentList by viewModel.personCredits.collectAsState()
+    var showAllScreen by remember { mutableStateOf(false) }
+    var showAllMediaType by remember { mutableStateOf(MediaType.MOVIE) }
+
+    var currentTitlePosY by rememberSaveable { mutableFloatStateOf(0f) }
+    var initialTitlePosY by rememberSaveable { mutableStateOf<Float?>(null) }
+
+    val updateTitlePosition: (Float) -> Unit = { newPosition ->
+        if (initialTitlePosY == null) {
+            initialTitlePosY = newPosition
+            currentTitlePosY = newPosition
+        } else {
+            currentTitlePosY = newPosition
+        }
+    }
 
     val onToggleWatchlist: (String) -> Unit = { listId ->
         contentDetails?.let {
@@ -93,6 +111,11 @@ private fun Details(
                 )
             )
         }
+    }
+
+    val updateShowAllFlag: (Boolean, MediaType) -> Unit = { flag, mediaType ->
+        showAllMediaType = mediaType
+        showAllScreen = flag
     }
 
     LaunchedEffect(Unit) {
@@ -126,33 +149,50 @@ private fun Details(
         }
     }
 
-    DetailsTopBar(
-        onBackBtnPress = onBackPress,
-        showWatchlistButton = contentDetails?.mediaType != MediaType.PERSON,
-        contentInWatchlistStatus = contentInListStatus,
-        toggleWatchlist = onToggleWatchlist
-    )
+    if (loadState is DataLoadStatus.Success && showAllScreen) {
+        ShowAllView(
+            showAllMediaType = showAllMediaType,
+            contentList = personContentList,
+            goToDetails = goToDetails,
+            onBackBtnPress = { updateShowAllFlag(false, MediaType.UNKNOWN) }
+        )
+    } else {
+        DetailsTopBar(
+            contentTitle = contentDetails?.name.orEmpty(),
+            currentHeaderPosY = currentTitlePosY,
+            initialHeaderPosY = initialTitlePosY,
+            showWatchlistButton = contentDetails?.mediaType != MediaType.PERSON,
+            contentInWatchlistStatus = contentInListStatus,
+            onBackBtnPress = onBackPress,
+            toggleWatchlist = onToggleWatchlist
+        )
 
-    ClassicSnackbar(
-        snackbarHostState = snackbarHostState
-    ) {
-        when (loadState) {
-            is DataLoadStatus.Loading -> {
-                DetailBodyPlaceholder(posterHeight)
-            }
+        ClassicSnackbar(
+            snackbarHostState = snackbarHostState
+        ) {
+            when (loadState) {
+                is DataLoadStatus.Loading -> {
+                    DetailBodyPlaceholder(posterHeight)
+                }
 
-            is DataLoadStatus.Success -> {
-                DetailsBody(
-                    posterHeight = posterHeight,
-                    viewModel = viewModel,
-                    contentDetails = contentDetails,
-                    openSimilarContent = openSimilarContent
-                )
-            }
+                is DataLoadStatus.Success -> {
+                    DetailsBody(
+                        posterHeight = posterHeight,
+                        viewModel = viewModel,
+                        contentDetails = contentDetails,
+                        personContentList = personContentList,
+                        initialTitlePosY = initialTitlePosY,
+                        currentTitlePosY = currentTitlePosY,
+                        updateTitlePosition = updateTitlePosition,
+                        goToDetails = goToDetails,
+                        updateShowAllFlag = updateShowAllFlag
+                    )
+                }
 
-            else -> {
-                viewModel.onEvent(DetailsEvents.OnError)
-                goToErrorScreen()
+                else -> {
+                    viewModel.onEvent(DetailsEvents.OnError)
+                    goToErrorScreen()
+                }
             }
         }
     }
@@ -163,32 +203,30 @@ private fun DetailsBody(
     posterHeight: Float,
     viewModel: DetailsViewModel,
     contentDetails: DetailedContent?,
-    openSimilarContent: (Int, MediaType) -> Unit
+    personContentList: List<GenericContent>,
+    currentTitlePosY: Float,
+    initialTitlePosY: Float?,
+    updateTitlePosition: (Float) -> Unit,
+    goToDetails: (Int, MediaType) -> Unit,
+    updateShowAllFlag: (Boolean, MediaType) -> Unit
 ) {
-    var currentHeaderPosY by rememberSaveable { mutableFloatStateOf(0f) }
-    var initialHeaderPosY by rememberSaveable { mutableFloatStateOf(0f) }
     val contentPosterUrl = BASE_ORIGINAL_IMAGE_URL + contentDetails?.posterPath
 
-    val updateHeaderPosition: (Float) -> Unit = {
-        if (it > initialHeaderPosY) {
-            initialHeaderPosY = it
-        }
-        currentHeaderPosY = it
-    }
-
     BackgroundPoster(
-        posterHeight,
-        contentPosterUrl,
-        currentHeaderPosY,
-        initialHeaderPosY
+        posterHeight = posterHeight,
+        contentPosterUrl = contentPosterUrl,
+        titlePositionY = currentTitlePosY,
+        initialTitlePosY = initialTitlePosY
     )
     contentDetails?.let { details ->
         DetailsComponent(
             posterHeight = posterHeight,
             mediaInfo = details,
             viewModel = viewModel,
-            updateHeaderPosition = updateHeaderPosition,
-            openDetails = openSimilarContent
+            personContentList = personContentList,
+            updateTitlePosition = updateTitlePosition,
+            goToDetails = goToDetails,
+            updateShowAllFlag = updateShowAllFlag
         )
     }
 }
@@ -198,13 +236,14 @@ private fun DetailsComponent(
     posterHeight: Float,
     mediaInfo: DetailedContent,
     viewModel: DetailsViewModel,
-    updateHeaderPosition: (Float) -> Unit,
-    openDetails: (Int, MediaType) -> Unit
+    personContentList: List<GenericContent>,
+    updateTitlePosition: (Float) -> Unit,
+    goToDetails: (Int, MediaType) -> Unit,
+    updateShowAllFlag: (Boolean, MediaType) -> Unit
 ) {
     val contentCredits by viewModel.contentCredits.collectAsState()
     val videoList by viewModel.contentVideos.collectAsState()
     val contentSimilarList by viewModel.contentSimilar.collectAsState()
-    val personContentList by viewModel.personCredits.collectAsState()
     val personImageList by viewModel.personImages.collectAsState()
 
     val titleScreenHeight = posterHeight * DETAILS_TITLE_IMAGE_OFFSET_PERCENT
@@ -220,7 +259,7 @@ private fun DetailsComponent(
             )
         }
         item {
-            DetailsDescriptionHeader(mediaInfo, updateHeaderPosition)
+            DetailsDescriptionHeader(mediaInfo, updateTitlePosition)
         }
         item {
             Column(
@@ -240,7 +279,7 @@ private fun DetailsComponent(
                     if (contentCredits.isNotEmpty()) {
                         CastCarousel(
                             contentCredits = contentCredits,
-                            openDetails = openDetails
+                            goToDetails = goToDetails
                         )
                         Spacer(modifier = Modifier.height(SECTION_PADDING.dp))
                     }
@@ -250,14 +289,15 @@ private fun DetailsComponent(
                             MoreOptionsTab(
                                 videoList = videoList,
                                 contentSimilarList = contentSimilarList,
-                                openSimilarContent = openDetails
+                                goToDetails = goToDetails
                             )
                         }
                         MediaType.PERSON -> {
                             PersonMoreOptionsTab(
                                 contentList = personContentList,
                                 personImageList = personImageList,
-                                openContentDetails = openDetails
+                                goToDetails = goToDetails,
+                                updateShowAllFlag = updateShowAllFlag
                             )
                         }
                         else -> {}
@@ -272,10 +312,14 @@ private fun DetailsComponent(
 private fun BackgroundPoster(
     posterHeight: Float,
     contentPosterUrl: String,
-    headerPositionY: Float,
-    initialHeaderPosY: Float
+    titlePositionY: Float,
+    initialTitlePosY: Float?
 ) {
-    val alpha = headerPositionY.mapValueToRange(initialHeaderPosY)
+    val alpha = if (initialTitlePosY != null) {
+        titlePositionY.mapValueToRange(initialTitlePosY)
+    } else {
+        1f
+    }
 
     NetworkImage(
         imageUrl = contentPosterUrl,

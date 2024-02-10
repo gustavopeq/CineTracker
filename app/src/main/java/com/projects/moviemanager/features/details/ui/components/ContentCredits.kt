@@ -33,7 +33,7 @@ import com.projects.moviemanager.common.util.removeParentPadding
 @Composable
 fun CastCarousel(
     contentCredits: List<ContentCast>,
-    openDetails: (Int, MediaType) -> Unit
+    goToDetails: (Int, MediaType) -> Unit
 ) {
     DetailDescriptionLabel(
         labelText = stringResource(id = R.string.movie_details_cast_label),
@@ -56,7 +56,7 @@ fun CastCarousel(
                     .width(DETAILS_CAST_PICTURE_SIZE.dp + DEFAULT_PADDING.dp)
                     .padding(horizontal = DEFAULT_PADDING.dp)
                     .clickable {
-                        openDetails(cast.id, MediaType.PERSON)
+                        goToDetails(cast.id, MediaType.PERSON)
                     },
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
