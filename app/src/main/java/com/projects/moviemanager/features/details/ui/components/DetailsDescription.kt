@@ -41,7 +41,7 @@ import com.projects.moviemanager.network.models.content.common.ProductionCountry
 @Composable
 fun DetailsDescriptionHeader(
     contentDetails: DetailedContent?,
-    updateHeaderPosition: (Float) -> Unit
+    updateTitlePosition: (Float) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -54,7 +54,8 @@ fun DetailsDescriptionHeader(
             modifier = Modifier
                 .height(12.dp)
                 .onGloballyPositioned {
-                    updateHeaderPosition(it.positionInWindow().y)
+                    val titlePosition = it.positionInWindow().y
+                    updateTitlePosition(titlePosition)
                 }
         )
         Column(

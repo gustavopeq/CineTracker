@@ -38,21 +38,26 @@ import com.projects.moviemanager.features.watchlist.model.DefaultLists
 fun DetailsTopBar(
     contentTitle: String,
     currentHeaderPosY: Float,
-    initialHeaderPosY: Float,
+    initialHeaderPosY: Float? = null,
     showWatchlistButton: Boolean,
     contentInWatchlistStatus: Map<String, Boolean>,
     onBackBtnPress: () -> Unit,
     toggleWatchlist: (String) -> Unit
 ) {
     val barHeightFloat = dpToPx(RETURN_TOP_BAR_HEIGHT.dp, density = LocalDensity.current)
-    val alpha = currentHeaderPosY.mapValueToRange(
-        initialHeaderPosY - barHeightFloat * 2
-    )
+
+    val alphaLevel = if (initialHeaderPosY != null) {
+        currentHeaderPosY.mapValueToRange(
+            initialHeaderPosY - barHeightFloat * 2
+        )
+    } else {
+        1f
+    }
 
     val gradientColor = listOf(
         MaterialTheme.colorScheme.primary,
         MaterialTheme.colorScheme.primary.copy(
-            alpha = (1f - (alpha * 2)).coerceIn(minimumValue = 0f, maximumValue = 1f)
+            alpha = (1f - (alphaLevel * 2)).coerceIn(minimumValue = 0f, maximumValue = 1f)
         )
     )
 

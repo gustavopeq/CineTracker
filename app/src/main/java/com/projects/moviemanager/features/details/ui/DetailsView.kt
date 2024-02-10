@@ -91,14 +91,16 @@ private fun Details(
     var showAllScreen by remember { mutableStateOf(false) }
     var showAllMediaType by remember { mutableStateOf(MediaType.MOVIE) }
 
-    var currentHeaderPosY by rememberSaveable { mutableFloatStateOf(0f) }
-    var initialHeaderPosY by rememberSaveable { mutableFloatStateOf(0f) }
+    var currentTitlePosY by rememberSaveable { mutableFloatStateOf(0f) }
+    var initialTitlePosY by rememberSaveable { mutableStateOf<Float?>(null) }
 
-    val updateHeaderPosition: (Float) -> Unit = {
-        if (it > initialHeaderPosY) {
-            initialHeaderPosY = it
+    val updateTitlePosition: (Float) -> Unit = { newPosition ->
+        if (initialTitlePosY == null) {
+            initialTitlePosY = newPosition
+            currentTitlePosY = newPosition
+        } else {
+            currentTitlePosY = newPosition
         }
-        currentHeaderPosY = it
     }
 
     val onToggleWatchlist: (String) -> Unit = { listId ->
@@ -157,8 +159,8 @@ private fun Details(
     } else {
         DetailsTopBar(
             contentTitle = contentDetails?.name.orEmpty(),
-            currentHeaderPosY = currentHeaderPosY,
-            initialHeaderPosY = initialHeaderPosY,
+            currentHeaderPosY = currentTitlePosY,
+            initialHeaderPosY = initialTitlePosY,
             showWatchlistButton = contentDetails?.mediaType != MediaType.PERSON,
             contentInWatchlistStatus = contentInListStatus,
             onBackBtnPress = onBackPress,
@@ -179,9 +181,9 @@ private fun Details(
                         viewModel = viewModel,
                         contentDetails = contentDetails,
                         personContentList = personContentList,
-                        initialHeaderPosY = initialHeaderPosY,
-                        currentHeaderPosY = currentHeaderPosY,
-                        updateHeaderPosition = updateHeaderPosition,
+                        initialTitlePosY = initialTitlePosY,
+                        currentTitlePosY = currentTitlePosY,
+                        updateTitlePosition = updateTitlePosition,
                         goToDetails = goToDetails,
                         updateShowAllFlag = updateShowAllFlag
                     )
@@ -202,19 +204,19 @@ private fun DetailsBody(
     viewModel: DetailsViewModel,
     contentDetails: DetailedContent?,
     personContentList: List<GenericContent>,
-    currentHeaderPosY: Float,
-    initialHeaderPosY: Float,
-    updateHeaderPosition: (Float) -> Unit,
+    currentTitlePosY: Float,
+    initialTitlePosY: Float?,
+    updateTitlePosition: (Float) -> Unit,
     goToDetails: (Int, MediaType) -> Unit,
     updateShowAllFlag: (Boolean, MediaType) -> Unit
 ) {
     val contentPosterUrl = BASE_ORIGINAL_IMAGE_URL + contentDetails?.posterPath
 
     BackgroundPoster(
-        posterHeight,
-        contentPosterUrl,
-        currentHeaderPosY,
-        initialHeaderPosY
+        posterHeight = posterHeight,
+        contentPosterUrl = contentPosterUrl,
+        titlePositionY = currentTitlePosY,
+        initialTitlePosY = initialTitlePosY
     )
     contentDetails?.let { details ->
         DetailsComponent(
@@ -222,7 +224,7 @@ private fun DetailsBody(
             mediaInfo = details,
             viewModel = viewModel,
             personContentList = personContentList,
-            updateHeaderPosition = updateHeaderPosition,
+            updateTitlePosition = updateTitlePosition,
             goToDetails = goToDetails,
             updateShowAllFlag = updateShowAllFlag
         )
@@ -235,7 +237,7 @@ private fun DetailsComponent(
     mediaInfo: DetailedContent,
     viewModel: DetailsViewModel,
     personContentList: List<GenericContent>,
-    updateHeaderPosition: (Float) -> Unit,
+    updateTitlePosition: (Float) -> Unit,
     goToDetails: (Int, MediaType) -> Unit,
     updateShowAllFlag: (Boolean, MediaType) -> Unit
 ) {
@@ -257,7 +259,7 @@ private fun DetailsComponent(
             )
         }
         item {
-            DetailsDescriptionHeader(mediaInfo, updateHeaderPosition)
+            DetailsDescriptionHeader(mediaInfo, updateTitlePosition)
         }
         item {
             Column(
@@ -310,10 +312,14 @@ private fun DetailsComponent(
 private fun BackgroundPoster(
     posterHeight: Float,
     contentPosterUrl: String,
-    headerPositionY: Float,
-    initialHeaderPosY: Float
+    titlePositionY: Float,
+    initialTitlePosY: Float?
 ) {
-    val alpha = headerPositionY.mapValueToRange(initialHeaderPosY)
+    val alpha = if (initialTitlePosY != null) {
+        titlePositionY.mapValueToRange(initialTitlePosY)
+    } else {
+        1f
+    }
 
     NetworkImage(
         imageUrl = contentPosterUrl,
