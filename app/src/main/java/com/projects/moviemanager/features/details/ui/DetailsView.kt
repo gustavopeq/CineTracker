@@ -275,7 +275,6 @@ private fun DetailsComponent(
                     DetailsDescriptionBody(
                         contentDetails = mediaInfo
                     )
-                    Spacer(modifier = Modifier.height(SECTION_PADDING.dp))
                     if (contentCredits.isNotEmpty()) {
                         CastCarousel(
                             contentCredits = contentCredits,

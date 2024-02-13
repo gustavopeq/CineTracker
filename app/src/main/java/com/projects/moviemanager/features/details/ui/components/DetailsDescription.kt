@@ -1,7 +1,5 @@
 package com.projects.moviemanager.features.details.ui.components
 
-import android.content.Context
-import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -81,41 +79,64 @@ fun DetailsDescriptionHeader(
 fun DetailsDescriptionBody(
     contentDetails: DetailedContent
 ) {
-    val context = LocalContext.current
     if (contentDetails.overview.isNotEmpty()) {
         OverviewInfo(contentDetails)
     }
 
     when (contentDetails.mediaType) {
         MediaType.MOVIE -> {
-            ReleaseDateInfo(contentDetails.releaseDate)
+            DateInfo(
+                header = stringResource(id = R.string.movie_details_release_date_label),
+                date = contentDetails.releaseDate
+            )
+
             GenresInfo(contentDetails.genres)
+
             RuntimeInfo(contentDetails.runtime)
+
             ProductionCountriesInfo(contentDetails.productionCountries)
+
             FinanceInfo(
                 header = stringResource(id = R.string.movie_details_budget_label),
                 value = contentDetails.budget
             )
+
             FinanceInfo(
                 header = stringResource(id = R.string.movie_details_revenue_label),
                 value = contentDetails.revenue
             )
         }
         MediaType.SHOW -> {
-            ProductionCountriesInfo(contentDetails.productionCountries)
+            DateInfo(
+                header = stringResource(id = R.string.show_details_first_air_date_label),
+                date = contentDetails.firstAirDate
+            )
+
+            DateInfo(
+                header = stringResource(id = R.string.show_details_last_air_date_label),
+                date = contentDetails.lastAirDate
+            )
+
             GenresInfo(contentDetails.genres)
+
+            ShowDurationInfo(
+                seasonNumber = contentDetails.numberOfSeasons,
+                episodeNumber = contentDetails.numberOfEpisodes
+            )
+
+            ProductionCountriesInfo(contentDetails.productionCountries)
         }
         MediaType.PERSON -> {
-            BornDeathInfo(
-                labelRes = R.string.person_details_born_label,
-                bodyText = contentDetails.birthday,
-                context = context
+            DateInfo(
+                header = stringResource(id = R.string.person_details_born_label),
+                date = contentDetails.birthday
             )
-            BornDeathInfo(
-                labelRes = R.string.person_details_death_label,
-                bodyText = contentDetails.deathday,
-                context = context
+
+            DateInfo(
+                header = stringResource(id = R.string.person_details_death_label),
+                date = contentDetails.deathday
             )
+
             BornInInfo(contentDetails.placeOfBirth)
         }
         else -> {}
@@ -187,18 +208,6 @@ private fun GenresInfo(genres: List<ContentGenre?>?) {
 }
 
 @Composable
-private fun ReleaseDateInfo(releaseDate: String?) {
-    if (releaseDate?.isNotEmpty() == true) {
-        DetailDescriptionLabel(
-            stringResource(id = R.string.movie_details_release_date_label)
-        )
-        val formattedDate = releaseDate.formatDate(LocalContext.current)
-        DetailDescriptionBody(formattedDate)
-        Spacer(modifier = Modifier.height(DEFAULT_MARGIN.dp))
-    }
-}
-
-@Composable
 private fun ProductionCountriesInfo(productionCountry: List<ProductionCountry?>?) {
     if (productionCountry?.isNotEmpty() == true) {
         DetailDescriptionLabel(
@@ -226,18 +235,41 @@ private fun FinanceInfo(
     }
 }
 
+@Composable
+private fun DateInfo(
+    header: String,
+    date: String?
+) {
+    if (date?.isNotEmpty() == true) {
+        DetailDescriptionLabel(header)
+        val formattedDate = date.formatDate(LocalContext.current)
+        DetailDescriptionBody(formattedDate)
+        Spacer(modifier = Modifier.height(DEFAULT_MARGIN.dp))
+    }
+}
 
 @Composable
-private fun BornDeathInfo(
-    @StringRes labelRes: Int,
-    bodyText: String?,
-    context: Context
+private fun ShowDurationInfo(
+    seasonNumber: Int,
+    episodeNumber: Int
 ) {
-    if (bodyText?.isNotEmpty() == true) {
+    if (seasonNumber > 0 && episodeNumber > 0) {
         DetailDescriptionLabel(
-            stringResource(id = labelRes)
+            stringResource(id = R.string.show_details_duration_label)
         )
-        DetailDescriptionBody(bodyText.formatDate(context))
+        val resources = LocalContext.current.resources
+        val seasonString = resources.getQuantityString(
+            R.plurals.seasons,
+            seasonNumber,
+            seasonNumber
+        )
+        val episodeString = resources.getQuantityString(
+            R.plurals.episodes,
+            episodeNumber,
+            episodeNumber
+        )
+
+        DetailDescriptionBody(bodyText = "$seasonString, $episodeString")
         Spacer(modifier = Modifier.height(DEFAULT_MARGIN.dp))
     }
 }

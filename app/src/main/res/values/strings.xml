@@ -46,7 +46,7 @@
     <!-- Details screen -->
     <string name="back_arrow_description">Back arrow</string>
     <string name="more_options_videos">Videos</string>
-    <string name="more_options_similar">More like this</string>
+    <string name="more_options_similar">Recommendations</string>
     <string name="images_tab">Images</string>
     <string name="unknown">Unknown</string>
     <string name="read_more_text">Read more</string>
@@ -55,6 +55,17 @@
     <string name="see_all_shows_label">All Shows</string>
     <string name="movie_details_production_country_title">Production Country</string>
     <string name="movie_details_release_date_label">Release Date</string>
+    <string name="show_details_duration_label">Duration</string>
+    <plurals name="seasons">
+        <item quantity="one">%d Season</item>
+        <item quantity="other">%d Seasons</item>
+    </plurals>
+    <plurals name="episodes">
+        <item quantity="one">%d Episode</item>
+        <item quantity="other">%d Episodes</item>
+    </plurals>
+    <string name="show_details_first_air_date_label">First Air Date</string>
+    <string name="show_details_last_air_date_label">Last Air Date</string>
     <string name="movie_details_genres_label">Genres</string>
     <string name="movie_details_runtime_label">Runtime</string>
     <string name="movie_details_budget_label">Budget</string>

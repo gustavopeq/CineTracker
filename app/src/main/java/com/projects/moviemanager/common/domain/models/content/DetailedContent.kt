@@ -32,9 +32,13 @@ data class DetailedContent(
     val releaseDate: String? = "",
     val budget: Long? = 0,
     val revenue: Long? = 0,
+    val firstAirDate: String? = "",
+    val lastAirDate: String? = "",
     val birthday: String? = "",
     val deathday: String? = "",
-    val placeOfBirth: String? = ""
+    val placeOfBirth: String? = "",
+    val numberOfSeasons: Int = 0,
+    val numberOfEpisodes: Int = 0
 ) : GenericContentInterface
 
 fun MovieResponse.toDetailedContent(): DetailedContent {
@@ -65,7 +69,11 @@ fun ShowResponse.toDetailedContent(): DetailedContent {
         mediaType = MediaType.SHOW,
         rating = this.vote_average ?: EMPTY_RATINGS,
         productionCountries = this.production_countries,
-        genres = this.genres
+        genres = this.genres,
+        firstAirDate = this.first_air_date,
+        lastAirDate = this.last_air_date,
+        numberOfSeasons = this.number_of_seasons ?: 0,
+        numberOfEpisodes = this.number_of_episodes ?: 0
     )
 }
 
