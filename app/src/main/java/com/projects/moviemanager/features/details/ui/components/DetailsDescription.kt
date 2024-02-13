@@ -185,8 +185,8 @@ private fun OverviewInfo(contentDetails: DetailedContent) {
 }
 
 @Composable
-private fun RuntimeInfo(runtime: Int?) {
-    if (runtime != null && runtime != 0) {
+private fun RuntimeInfo(runtime: Int) {
+    if (runtime > 0) {
         DetailDescriptionLabel(
             stringResource(id = R.string.movie_details_runtime_label)
         )
@@ -196,8 +196,8 @@ private fun RuntimeInfo(runtime: Int?) {
 }
 
 @Composable
-private fun GenresInfo(genres: List<ContentGenre?>?) {
-    if (genres?.isNotEmpty() == true) {
+private fun GenresInfo(genres: List<ContentGenre?>) {
+    if (genres.isNotEmpty()) {
         DetailDescriptionLabel(
             stringResource(id = R.string.movie_details_genres_label)
         )
@@ -208,8 +208,8 @@ private fun GenresInfo(genres: List<ContentGenre?>?) {
 }
 
 @Composable
-private fun ProductionCountriesInfo(productionCountry: List<ProductionCountry?>?) {
-    if (productionCountry?.isNotEmpty() == true) {
+private fun ProductionCountriesInfo(productionCountry: List<ProductionCountry?>) {
+    if (productionCountry.isNotEmpty()) {
         DetailDescriptionLabel(
             stringResource(id = R.string.movie_details_production_country_title)
         )
@@ -224,12 +224,12 @@ private fun ProductionCountriesInfo(productionCountry: List<ProductionCountry?>?
 @Composable
 private fun FinanceInfo(
     header: String,
-    value: Long?
+    value: Long
 ) {
     if (value.isValidValue()) {
         DetailDescriptionLabel(header)
         DetailDescriptionBody(
-            bodyText = value?.toFormattedCurrency().orEmpty()
+            bodyText = value.toFormattedCurrency()
         )
         Spacer(modifier = Modifier.height(DEFAULT_MARGIN.dp))
     }
@@ -238,9 +238,9 @@ private fun FinanceInfo(
 @Composable
 private fun DateInfo(
     header: String,
-    date: String?
+    date: String
 ) {
-    if (date?.isNotEmpty() == true) {
+    if (date.isNotEmpty()) {
         DetailDescriptionLabel(header)
         val formattedDate = date.formatDate(LocalContext.current)
         DetailDescriptionBody(formattedDate)
@@ -276,9 +276,9 @@ private fun ShowDurationInfo(
 
 @Composable
 private fun BornInInfo(
-    bornIn: String?
+    bornIn: String
 ) {
-    if (bornIn?.isNotEmpty() == true) {
+    if (bornIn.isNotEmpty()) {
         DetailDescriptionLabel(
             stringResource(id = R.string.person_details_born_in_label)
         )
