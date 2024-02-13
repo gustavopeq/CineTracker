@@ -34,7 +34,9 @@ import com.projects.moviemanager.common.ui.components.classicVerticalGradientBru
 import com.projects.moviemanager.common.util.UiConstants.DEFAULT_MARGIN
 import com.projects.moviemanager.common.util.UiConstants.DETAILS_OVERVIEW_MAX_LINES
 import com.projects.moviemanager.common.util.formatDate
-import com.projects.moviemanager.features.details.util.stringFormat
+import com.projects.moviemanager.features.details.util.formatRuntime
+import com.projects.moviemanager.features.details.util.isValidValue
+import com.projects.moviemanager.features.details.util.toFormattedCurrency
 import com.projects.moviemanager.network.models.content.common.ContentGenre
 import com.projects.moviemanager.network.models.content.common.ProductionCountry
 
@@ -82,15 +84,22 @@ fun DetailsDescriptionBody(
     val context = LocalContext.current
     if (contentDetails.overview.isNotEmpty()) {
         OverviewInfo(contentDetails)
-        Spacer(modifier = Modifier.height(DEFAULT_MARGIN.dp))
     }
 
     when (contentDetails.mediaType) {
         MediaType.MOVIE -> {
-            ProductionCountriesInfo(contentDetails.productionCountries)
             ReleaseDateInfo(contentDetails.releaseDate)
             GenresInfo(contentDetails.genres)
             RuntimeInfo(contentDetails.runtime)
+            ProductionCountriesInfo(contentDetails.productionCountries)
+            FinanceInfo(
+                header = stringResource(id = R.string.movie_details_budget_label),
+                value = contentDetails.budget
+            )
+            FinanceInfo(
+                header = stringResource(id = R.string.movie_details_revenue_label),
+                value = contentDetails.revenue
+            )
         }
         MediaType.SHOW -> {
             ProductionCountriesInfo(contentDetails.productionCountries)
@@ -148,6 +157,8 @@ private fun OverviewInfo(contentDetails: DetailedContent) {
                 color = MaterialTheme.colorScheme.secondary,
                 textAlign = TextAlign.Center
             )
+        } else {
+            Spacer(modifier = Modifier.height(DEFAULT_MARGIN.dp))
         }
     }
 }
@@ -158,7 +169,7 @@ private fun RuntimeInfo(runtime: Int?) {
         DetailDescriptionLabel(
             stringResource(id = R.string.movie_details_runtime_label)
         )
-        DetailDescriptionBody(runtime.stringFormat())
+        DetailDescriptionBody(runtime.formatRuntime())
         Spacer(modifier = Modifier.height(DEFAULT_MARGIN.dp))
     }
 }
@@ -200,6 +211,21 @@ private fun ProductionCountriesInfo(productionCountry: List<ProductionCountry?>?
         Spacer(modifier = Modifier.height(DEFAULT_MARGIN.dp))
     }
 }
+
+@Composable
+private fun FinanceInfo(
+    header: String,
+    value: Long?
+) {
+    if (value.isValidValue()) {
+        DetailDescriptionLabel(header)
+        DetailDescriptionBody(
+            bodyText = value?.toFormattedCurrency().orEmpty()
+        )
+        Spacer(modifier = Modifier.height(DEFAULT_MARGIN.dp))
+    }
+}
+
 
 @Composable
 private fun BornDeathInfo(

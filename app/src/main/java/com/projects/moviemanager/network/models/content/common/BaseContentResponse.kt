@@ -59,7 +59,9 @@ data class MovieResponse(
     val vote_count: Int?,
     val production_countries: List<ProductionCountry?>?,
     val genres: List<ContentGenre?>?,
-    val runtime: Int?
+    val runtime: Int?,
+    val budget: Long?,
+    val revenue: Long?
 ) : BaseContentResponse
 
 data class ShowResponse(

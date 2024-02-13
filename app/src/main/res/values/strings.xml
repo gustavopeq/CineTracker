@@ -5,16 +5,6 @@
     <string name="to_watchlist">To Watch List</string>
     <string name="details">Details</string>
     <string name="unavailable_details_message">Sorry, the details are not available at the moment</string>
-    <string name="movie_details_production_country_title">Production Country</string>
-    <string name="movie_details_release_date_label">Release Date</string>
-    <string name="movie_details_genres_label">Genres</string>
-    <string name="movie_details_runtime_label">Runtime</string>
-    <string name="movie_details_cast_label">Cast</string>
-    <string name="movie_details_video_label">Video</string>
-    <string name="movie_details_videos_label">Videos</string>
-    <string name="person_details_born_label">Born</string>
-    <string name="person_details_born_in_label">Born in</string>
-    <string name="person_details_death_label">Death</string>
     <string name="person_details_movies_label">Movies</string>
     <string name="person_details_images_label">Images</string>
     <string name="empty_search_title_message">Type to search!</string>
@@ -63,6 +53,18 @@
     <string name="see_all_button_label">See All</string>
     <string name="see_all_movies_label">All Movies</string>
     <string name="see_all_shows_label">All Shows</string>
+    <string name="movie_details_production_country_title">Production Country</string>
+    <string name="movie_details_release_date_label">Release Date</string>
+    <string name="movie_details_genres_label">Genres</string>
+    <string name="movie_details_runtime_label">Runtime</string>
+    <string name="movie_details_budget_label">Budget</string>
+    <string name="movie_details_revenue_label">Revenue</string>
+    <string name="movie_details_cast_label">Cast</string>
+    <string name="movie_details_video_label">Video</string>
+    <string name="movie_details_videos_label">Videos</string>
+    <string name="person_details_born_label">Born</string>
+    <string name="person_details_born_in_label">Born in</string>
+    <string name="person_details_death_label">Death</string>
 
     <!-- Watchlist screen -->
     <string name="watchlist_tab">Watchlist</string>

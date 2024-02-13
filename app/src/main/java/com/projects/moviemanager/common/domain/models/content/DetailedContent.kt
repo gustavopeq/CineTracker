@@ -30,6 +30,8 @@ data class DetailedContent(
     val genres: List<ContentGenre?>? = emptyList(),
     val runtime: Int? = 0,
     val releaseDate: String? = "",
+    val budget: Long? = 0,
+    val revenue: Long? = 0,
     val birthday: String? = "",
     val deathday: String? = "",
     val placeOfBirth: String? = ""
@@ -47,7 +49,9 @@ fun MovieResponse.toDetailedContent(): DetailedContent {
         productionCountries = this.production_countries,
         genres = this.genres,
         runtime = this.runtime,
-        releaseDate = this.release_date.orEmpty()
+        releaseDate = this.release_date.orEmpty(),
+        budget = this.budget,
+        revenue = this.revenue
     )
 }
 
