@@ -2,6 +2,7 @@ package com.projects.moviemanager.features.details.ui.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -46,6 +48,7 @@ import com.projects.moviemanager.common.util.formatDate
 import com.projects.moviemanager.features.details.util.formatRuntime
 import com.projects.moviemanager.features.details.util.isValidValue
 import com.projects.moviemanager.features.details.util.toFormattedCurrency
+import com.projects.moviemanager.features.watchlist.ui.components.MediaTypeTag
 import com.projects.moviemanager.network.models.content.common.ContentGenre
 import com.projects.moviemanager.network.models.content.common.ProductionCountry
 
@@ -79,7 +82,18 @@ fun DetailsDescriptionHeader(
                 style = MaterialTheme.typography.displayMedium
             )
             when (contentDetails?.mediaType) {
-                MediaType.MOVIE, MediaType.SHOW -> RatingComponent(rating = contentDetails.rating)
+                MediaType.MOVIE, MediaType.SHOW -> {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        RatingComponent(rating = contentDetails.rating)
+                        Spacer(modifier = Modifier.width(DEFAULT_PADDING.dp))
+                        MediaTypeTag(
+                            modifier = Modifier.clip(RoundedCornerShape(2.dp)),
+                            mediaType = contentDetails.mediaType
+                        )
+                    }
+                }
                 else -> {}
             }
         }
