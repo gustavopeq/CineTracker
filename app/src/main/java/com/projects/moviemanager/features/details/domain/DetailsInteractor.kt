@@ -197,7 +197,7 @@ class DetailsInteractor @Inject constructor(
     ): List<StreamProvider> {
         val result = when (mediaType) {
             MediaType.MOVIE -> movieRepository.getStreamingProviders(contentId)
-            //MediaType.SHOW -> showRepository.getSimilarShowsById(contentId)
+            MediaType.SHOW -> showRepository.getStreamingProviders(contentId)
             else -> return emptyList()
         }
 

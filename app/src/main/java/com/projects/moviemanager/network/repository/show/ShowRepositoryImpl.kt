@@ -4,13 +4,14 @@ import com.projects.moviemanager.network.models.ApiError
 import com.projects.moviemanager.network.models.content.common.ContentCreditsResponse
 import com.projects.moviemanager.network.models.content.common.ShowResponse
 import com.projects.moviemanager.network.models.content.common.VideosByIdResponse
+import com.projects.moviemanager.network.models.content.common.WatchProvidersResponse
 import com.projects.moviemanager.network.models.search.ContentPagingResponse
 import com.projects.moviemanager.network.services.show.ShowService
 import com.projects.moviemanager.network.util.Either
 import com.projects.moviemanager.network.util.asFlow
 import com.projects.moviemanager.network.util.toApiResult
-import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
 class ShowRepositoryImpl @Inject constructor(
     private val showService: ShowService
@@ -71,6 +72,16 @@ class ShowRepositoryImpl @Inject constructor(
     ): Flow<Either<ContentPagingResponse<ShowResponse>, ApiError>> {
         return toApiResult {
             showService.getSimilarShowsById(
+                showId = showId
+            )
+        }.asFlow()
+    }
+
+    override suspend fun getStreamingProviders(
+        showId: Int
+    ): Flow<Either<WatchProvidersResponse, ApiError>> {
+        return toApiResult {
+            showService.getStreamingProviders(
                 showId = showId
             )
         }.asFlow()

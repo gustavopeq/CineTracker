@@ -5,6 +5,7 @@ import com.projects.moviemanager.network.models.content.common.VideosByIdRespons
 import com.projects.moviemanager.common.util.Constants
 import com.projects.moviemanager.common.util.Constants.ENGLISH_LANGUAGE_CODE
 import com.projects.moviemanager.network.models.content.common.ShowResponse
+import com.projects.moviemanager.network.models.content.common.WatchProvidersResponse
 import com.projects.moviemanager.network.models.search.ContentPagingResponse
 import retrofit2.Response
 import retrofit2.http.GET
@@ -44,4 +45,9 @@ interface ShowService {
     suspend fun getSimilarShowsById(
         @Path("show_ID") showId: Int
     ): Response<ContentPagingResponse<ShowResponse>>
+
+    @GET("tv/{show_ID}/watch/providers?api_key=${Constants.API_KEY}")
+    suspend fun getStreamingProviders(
+        @Path("show_ID") showId: Int
+    ): Response<WatchProvidersResponse>
 }

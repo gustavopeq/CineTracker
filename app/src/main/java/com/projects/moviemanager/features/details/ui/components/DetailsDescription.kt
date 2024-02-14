@@ -140,6 +140,10 @@ fun DetailsDescriptionBody(
             )
 
             ProductionCountriesInfo(contentDetails.productionCountries)
+
+            StreamProviderInfo(
+                streamProviders = contentDetails.streamProviders
+            )
         }
         MediaType.PERSON -> {
             DateInfo(
@@ -323,6 +327,7 @@ private fun StreamProviderInfo(
                 Spacer(modifier = Modifier.width(DEFAULT_PADDING.dp))
             }
         }
+        Spacer(modifier = Modifier.height(DEFAULT_MARGIN.dp))
     }
 }
 
