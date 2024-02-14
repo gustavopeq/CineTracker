@@ -44,6 +44,7 @@ import com.projects.moviemanager.common.util.UiConstants.SMALL_PADDING
 import com.projects.moviemanager.common.util.UiConstants.WATCHLIST_IMAGE_WIDTH
 import com.projects.moviemanager.features.watchlist.model.DefaultLists.Companion.getOtherList
 import com.projects.moviemanager.common.util.Constants.BASE_300_IMAGE_URL
+import com.projects.moviemanager.common.util.UiConstants.MEDIA_TYPE_TAG_CORNER_SIZE
 import com.projects.moviemanager.common.util.capitalized
 
 @Composable
@@ -99,7 +100,7 @@ fun WatchlistCard(
                 RatingComponent(rating = rating)
                 Spacer(modifier = Modifier.weight(1f))
                 MediaTypeTag(
-                    modifier = Modifier.clip(RoundedCornerShape(2.dp)),
+                    modifier = Modifier.clip(RoundedCornerShape(MEDIA_TYPE_TAG_CORNER_SIZE.dp)),
                     mediaType = mediaType
                 )
             }

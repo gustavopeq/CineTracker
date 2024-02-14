@@ -42,6 +42,7 @@ import com.projects.moviemanager.common.util.Constants.BASE_ORIGINAL_IMAGE_URL
 import com.projects.moviemanager.common.util.UiConstants.DEFAULT_MARGIN
 import com.projects.moviemanager.common.util.UiConstants.DEFAULT_PADDING
 import com.projects.moviemanager.common.util.UiConstants.DETAILS_OVERVIEW_MAX_LINES
+import com.projects.moviemanager.common.util.UiConstants.MEDIA_TYPE_TAG_CORNER_SIZE
 import com.projects.moviemanager.common.util.UiConstants.SMALL_PADDING
 import com.projects.moviemanager.common.util.UiConstants.STREAM_PROVIDER_ICON_SIZE
 import com.projects.moviemanager.common.util.formatDate
@@ -89,7 +90,9 @@ fun DetailsDescriptionHeader(
                         RatingComponent(rating = contentDetails.rating)
                         Spacer(modifier = Modifier.width(DEFAULT_PADDING.dp))
                         MediaTypeTag(
-                            modifier = Modifier.clip(RoundedCornerShape(2.dp)),
+                            modifier = Modifier.clip(
+                                RoundedCornerShape(MEDIA_TYPE_TAG_CORNER_SIZE.dp)
+                            ),
                             mediaType = contentDetails.mediaType
                         )
                     }
