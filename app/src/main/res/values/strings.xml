@@ -70,6 +70,7 @@
     <string name="movie_details_runtime_label">Runtime</string>
     <string name="movie_details_budget_label">Budget</string>
     <string name="movie_details_revenue_label">Revenue</string>
+    <string name="content_details_stream_label">Stream</string>
     <string name="movie_details_cast_label">Cast</string>
     <string name="movie_details_video_label">Video</string>
     <string name="movie_details_videos_label">Videos</string>

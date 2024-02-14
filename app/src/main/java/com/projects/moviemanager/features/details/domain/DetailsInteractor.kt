@@ -1,15 +1,18 @@
 package com.projects.moviemanager.features.details.domain
 
 import com.projects.moviemanager.common.domain.models.content.GenericContent
+import com.projects.moviemanager.common.domain.models.content.StreamProvider
 import com.projects.moviemanager.common.domain.models.content.Videos
 import com.projects.moviemanager.common.domain.models.content.toContentCast
 import com.projects.moviemanager.common.domain.models.content.toDetailedContent
 import com.projects.moviemanager.common.domain.models.content.toGenericContent
 import com.projects.moviemanager.common.domain.models.content.toGenericContentList
+import com.projects.moviemanager.common.domain.models.content.toStreamProvider
 import com.projects.moviemanager.common.domain.models.content.toVideos
 import com.projects.moviemanager.common.domain.models.person.PersonImage
 import com.projects.moviemanager.common.domain.models.person.toPersonImage
 import com.projects.moviemanager.common.domain.models.util.MediaType
+import com.projects.moviemanager.core.LanguageSupport.getUserCountryCode
 import com.projects.moviemanager.database.repository.DatabaseRepository
 import com.projects.moviemanager.features.details.ui.state.DetailsState
 import com.projects.moviemanager.features.watchlist.model.DefaultLists
@@ -23,8 +26,8 @@ import com.projects.moviemanager.network.repository.person.PersonRepository
 import com.projects.moviemanager.network.repository.show.ShowRepository
 import com.projects.moviemanager.network.util.Left
 import com.projects.moviemanager.network.util.Right
-import javax.inject.Inject
 import timber.log.Timber
+import javax.inject.Inject
 
 class DetailsInteractor @Inject constructor(
     private val movieRepository: MovieRepository,
@@ -61,9 +64,17 @@ class DetailsInteractor @Inject constructor(
                             null
                         }
                     }
+
+                    val streamProviders = getStreamingProviders(contentId, mediaType)
+                    if (streamProviders.isNotEmpty()) {
+                        detailsState.detailsInfo.value = detailsState.detailsInfo.value?.copy(
+                            streamProviders = streamProviders
+                        )
+                    }
                 }
             }
         }
+
         return detailsState
     }
 
@@ -178,6 +189,35 @@ class DetailsInteractor @Inject constructor(
             }
         }
         return listOfSimilar
+    }
+
+    suspend fun getStreamingProviders(
+        contentId: Int,
+        mediaType: MediaType
+    ): List<StreamProvider> {
+        val result = when (mediaType) {
+            MediaType.MOVIE -> movieRepository.getStreamingProviders(contentId)
+            //MediaType.SHOW -> showRepository.getSimilarShowsById(contentId)
+            else -> return emptyList()
+        }
+
+        var streamProviderList: List<StreamProvider> = emptyList()
+        result.collect { response ->
+            when (response) {
+                is Right -> {
+                    Timber.e("getStreamingProviders failed with error: ${response.error}")
+                }
+                is Left -> {
+                    val userCountryCode = getUserCountryCode()
+                    streamProviderList = response.value.results?.get(
+                        userCountryCode
+                    )?.flatrate?.map {
+                        it.toStreamProvider()
+                    }.orEmpty()
+                }
+            }
+        }
+        return streamProviderList
     }
 
     private fun mapResponseToGenericContent(

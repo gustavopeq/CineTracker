@@ -6,6 +6,10 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -15,6 +19,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.platform.LocalContext
@@ -25,12 +30,18 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.projects.moviemanager.R
 import com.projects.moviemanager.common.domain.models.content.DetailedContent
+import com.projects.moviemanager.common.domain.models.content.StreamProvider
 import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.common.ui.components.GradientDirections
+import com.projects.moviemanager.common.ui.components.NetworkImage
 import com.projects.moviemanager.common.ui.components.RatingComponent
 import com.projects.moviemanager.common.ui.components.classicVerticalGradientBrush
+import com.projects.moviemanager.common.util.Constants.BASE_ORIGINAL_IMAGE_URL
 import com.projects.moviemanager.common.util.UiConstants.DEFAULT_MARGIN
+import com.projects.moviemanager.common.util.UiConstants.DEFAULT_PADDING
 import com.projects.moviemanager.common.util.UiConstants.DETAILS_OVERVIEW_MAX_LINES
+import com.projects.moviemanager.common.util.UiConstants.SMALL_PADDING
+import com.projects.moviemanager.common.util.UiConstants.STREAM_PROVIDER_ICON_SIZE
 import com.projects.moviemanager.common.util.formatDate
 import com.projects.moviemanager.features.details.util.formatRuntime
 import com.projects.moviemanager.features.details.util.isValidValue
@@ -104,6 +115,10 @@ fun DetailsDescriptionBody(
             FinanceInfo(
                 header = stringResource(id = R.string.movie_details_revenue_label),
                 value = contentDetails.revenue
+            )
+
+            StreamProviderInfo(
+                streamProviders = contentDetails.streamProviders
             )
         }
         MediaType.SHOW -> {
@@ -284,6 +299,30 @@ private fun BornInInfo(
         )
         DetailDescriptionBody(bornIn)
         Spacer(modifier = Modifier.height(DEFAULT_MARGIN.dp))
+    }
+}
+
+@Composable
+private fun StreamProviderInfo(
+    streamProviders: List<StreamProvider>
+) {
+    if (streamProviders.isNotEmpty()) {
+        DetailDescriptionLabel(
+            stringResource(id = R.string.content_details_stream_label)
+        )
+        Spacer(modifier = Modifier.height(SMALL_PADDING.dp))
+        LazyRow {
+            items(streamProviders) { stream ->
+                val fullImagePath = BASE_ORIGINAL_IMAGE_URL + stream.logoPath
+                NetworkImage(
+                    modifier = Modifier
+                        .size(STREAM_PROVIDER_ICON_SIZE.dp)
+                        .clip(MaterialTheme.shapes.medium),
+                    imageUrl = fullImagePath
+                )
+                Spacer(modifier = Modifier.width(DEFAULT_PADDING.dp))
+            }
+        }
     }
 }
 

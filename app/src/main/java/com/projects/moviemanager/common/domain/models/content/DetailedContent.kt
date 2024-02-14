@@ -38,7 +38,8 @@ data class DetailedContent(
     val deathday: String = "",
     val placeOfBirth: String = "",
     val numberOfSeasons: Int = 0,
-    val numberOfEpisodes: Int = 0
+    val numberOfEpisodes: Int = 0,
+    val streamProviders: List<StreamProvider> = emptyList()
 ) : GenericContentInterface
 
 fun MovieResponse.toDetailedContent(): DetailedContent {

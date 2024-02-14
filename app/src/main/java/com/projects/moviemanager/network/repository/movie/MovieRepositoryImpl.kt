@@ -5,6 +5,7 @@ import com.projects.moviemanager.network.models.ApiError
 import com.projects.moviemanager.network.models.content.common.ContentCreditsResponse
 import com.projects.moviemanager.network.models.content.common.MovieResponse
 import com.projects.moviemanager.network.models.content.common.VideosByIdResponse
+import com.projects.moviemanager.network.models.content.common.WatchProvidersResponse
 import com.projects.moviemanager.network.models.search.ContentPagingResponse
 import com.projects.moviemanager.network.services.movie.MovieService
 import com.projects.moviemanager.network.util.Either
@@ -78,4 +79,15 @@ class MovieRepositoryImpl @Inject constructor(
             )
         }.asFlow()
     }
+
+    override suspend fun getStreamingProviders(
+        movieId: Int
+    ): Flow<Either<WatchProvidersResponse, ApiError>> {
+        return toApiResult {
+            movieService.getStreamingProviders(
+                movieId = movieId
+            )
+        }.asFlow()
+    }
+
 }

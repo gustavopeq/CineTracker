@@ -102,6 +102,7 @@ class DetailsViewModel @Inject constructor(
         _detailsFailedLoading.value = false
         viewModelScope.launch {
             fetchDetails()
+            detailsInteractor.getStreamingProviders(contentId, mediaType)
             if (_loadState.value == DataLoadStatus.Success) {
                 fetchAdditionalInfo()
             }

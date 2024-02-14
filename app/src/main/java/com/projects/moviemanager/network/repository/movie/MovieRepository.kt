@@ -5,8 +5,11 @@ import com.projects.moviemanager.network.models.ApiError
 import com.projects.moviemanager.network.models.content.common.ContentCreditsResponse
 import com.projects.moviemanager.network.models.content.common.MovieResponse
 import com.projects.moviemanager.network.models.content.common.VideosByIdResponse
+import com.projects.moviemanager.network.models.content.common.WatchProvidersResponse
 import com.projects.moviemanager.network.models.search.ContentPagingResponse
 import com.projects.moviemanager.network.util.Either
+import com.projects.moviemanager.network.util.asFlow
+import com.projects.moviemanager.network.util.toApiResult
 import kotlinx.coroutines.flow.Flow
 
 interface MovieRepository {
@@ -34,4 +37,8 @@ interface MovieRepository {
     suspend fun getSimilarMoviesById(
         movieId: Int
     ): Flow<Either<ContentPagingResponse<MovieResponse>, ApiError>>
+
+    suspend fun getStreamingProviders(
+        movieId: Int
+    ): Flow<Either<WatchProvidersResponse, ApiError>>
 }
