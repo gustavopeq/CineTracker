@@ -24,8 +24,7 @@ class MovieRepositoryImpl @Inject constructor(
         return toApiResult {
             movieService.getMovieList(
                 movieListType = contentListType.type,
-                pageIndex = pageIndex,
-                language = "en-US"
+                pageIndex = pageIndex
             )
         }.asFlow()
     }

@@ -4,7 +4,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import java.util.Locale
 
-object LanguageSupport {
+object LanguageManager {
     private var _userLocale = mutableStateOf(Locale.getDefault())
     val userLocale: MutableState<Locale> get() = _userLocale
 
@@ -27,9 +27,9 @@ object LanguageSupport {
     )
     private const val DEFAULT_LANGUAGE = "en-US"
 
-    fun getLanguage(locale: Locale): String {
-        val languageTag = locale.toLanguageTag()
-        val language = locale.language
+    fun getUserLanguage(): String {
+        val languageTag = userLocale.value.toLanguageTag()
+        val language = userLocale.value.language
         return when {
             languageTag.isSupported() -> languageTag
             language == "pt" -> "pt-BR"
@@ -43,4 +43,10 @@ object LanguageSupport {
     }
 
     fun getUserCountryCode(): String = userLocale.value.country
+
+    fun setUserLocale(
+        locale: Locale
+    ) {
+        _userLocale.value = locale
+    }
 }

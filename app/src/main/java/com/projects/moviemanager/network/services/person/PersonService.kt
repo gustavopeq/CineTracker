@@ -1,10 +1,10 @@
 package com.projects.moviemanager.network.services.person
 
+import com.projects.moviemanager.common.util.Constants
+import com.projects.moviemanager.core.LanguageManager.getUserLanguage
+import com.projects.moviemanager.network.models.content.common.PersonResponse
 import com.projects.moviemanager.network.models.person.PersonCreditsResponse
 import com.projects.moviemanager.network.models.person.PersonImagesResponse
-import com.projects.moviemanager.common.util.Constants
-import com.projects.moviemanager.common.util.Constants.ENGLISH_LANGUAGE_CODE
-import com.projects.moviemanager.network.models.content.common.PersonResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -15,17 +15,18 @@ interface PersonService {
     @GET("person/{person_ID}?api_key=${Constants.API_KEY}")
     suspend fun getPersonDetailsById(
         @Path("person_ID") personId: Int,
-        @Query("language") language: String = ENGLISH_LANGUAGE_CODE
+        @Query("language") language: String = getUserLanguage()
     ): Response<PersonResponse>
 
     @GET("person/{person_ID}/combined_credits?api_key=${Constants.API_KEY}")
     suspend fun getPersonCreditsById(
         @Path("person_ID") personId: Int,
-        @Query("language") language: String = ENGLISH_LANGUAGE_CODE
+        @Query("language") language: String = getUserLanguage()
     ): Response<PersonCreditsResponse>
 
     @GET("person/{person_ID}/images?api_key=${Constants.API_KEY}")
     suspend fun getPersonImagesById(
-        @Path("person_ID") personId: Int
+        @Path("person_ID") personId: Int,
+        @Query("language") language: String = getUserLanguage()
     ): Response<PersonImagesResponse>
 }

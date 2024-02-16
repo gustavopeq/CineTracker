@@ -1,12 +1,12 @@
 package com.projects.moviemanager.network.services.search
 
+import com.projects.moviemanager.common.util.Constants
+import com.projects.moviemanager.core.LanguageManager.getUserLanguage
 import com.projects.moviemanager.network.models.content.common.MovieResponse
 import com.projects.moviemanager.network.models.content.common.MultiResponse
 import com.projects.moviemanager.network.models.content.common.PersonResponse
 import com.projects.moviemanager.network.models.content.common.ShowResponse
 import com.projects.moviemanager.network.models.search.ContentPagingResponse
-import com.projects.moviemanager.common.util.Constants
-import com.projects.moviemanager.common.util.Constants.ENGLISH_LANGUAGE_CODE
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -17,7 +17,7 @@ interface SearchService {
     suspend fun searchMultiByQuery(
         @Query("query") query: String,
         @Query("include_adult") matureEnabled: Boolean = false,
-        @Query("language") language: String = ENGLISH_LANGUAGE_CODE,
+        @Query("language") language: String = getUserLanguage(),
         @Query("page") pageIndex: Int
     ): Response<ContentPagingResponse<MultiResponse>>
 
@@ -25,7 +25,7 @@ interface SearchService {
     suspend fun searchMovieByQuery(
         @Query("query") query: String,
         @Query("include_adult") matureEnabled: Boolean = false,
-        @Query("language") language: String = ENGLISH_LANGUAGE_CODE,
+        @Query("language") language: String = getUserLanguage(),
         @Query("page") pageIndex: Int
     ): Response<ContentPagingResponse<MovieResponse>>
 
@@ -33,7 +33,7 @@ interface SearchService {
     suspend fun searchShowByQuery(
         @Query("query") query: String,
         @Query("include_adult") matureEnabled: Boolean = false,
-        @Query("language") language: String = ENGLISH_LANGUAGE_CODE,
+        @Query("language") language: String = getUserLanguage(),
         @Query("page") pageIndex: Int
     ): Response<ContentPagingResponse<ShowResponse>>
 
@@ -41,7 +41,7 @@ interface SearchService {
     suspend fun searchPersonByQuery(
         @Query("query") query: String,
         @Query("include_adult") matureEnabled: Boolean = false,
-        @Query("language") language: String = ENGLISH_LANGUAGE_CODE,
+        @Query("language") language: String = getUserLanguage(),
         @Query("page") pageIndex: Int
     ): Response<ContentPagingResponse<PersonResponse>>
 }
