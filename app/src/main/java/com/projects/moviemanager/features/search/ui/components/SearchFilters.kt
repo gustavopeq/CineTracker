@@ -28,6 +28,7 @@ import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.common.ui.theme.SecondaryGreyColor
 import com.projects.moviemanager.common.util.UiConstants.DEFAULT_MARGIN
 import com.projects.moviemanager.common.util.UiConstants.DEFAULT_PADDING
+import com.projects.moviemanager.common.util.UiConstants.LARGE_PADDING
 import com.projects.moviemanager.common.util.UiConstants.SEARCH_FILTER_BUTTON_HEIGHT
 
 @Composable
@@ -102,6 +103,7 @@ private fun SearchTypeButton(
             modifier = Modifier.fillMaxSize()
         ) {
             Text(
+                modifier = Modifier.padding(horizontal = LARGE_PADDING.dp),
                 text = stringResource(id = searchTypeItem.tabResId),
                 style = MaterialTheme.typography.titleSmall,
                 maxLines = 1,

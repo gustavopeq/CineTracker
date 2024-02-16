@@ -1,7 +1,7 @@
 package com.projects.moviemanager.network.services.search
 
 import com.projects.moviemanager.common.util.Constants
-import com.projects.moviemanager.core.LanguageManager.getUserLanguage
+import com.projects.moviemanager.core.LanguageManager.getUserLanguageTag
 import com.projects.moviemanager.network.models.content.common.MovieResponse
 import com.projects.moviemanager.network.models.content.common.MultiResponse
 import com.projects.moviemanager.network.models.content.common.PersonResponse
@@ -17,7 +17,7 @@ interface SearchService {
     suspend fun searchMultiByQuery(
         @Query("query") query: String,
         @Query("include_adult") matureEnabled: Boolean = false,
-        @Query("language") language: String = getUserLanguage(),
+        @Query("language") language: String = getUserLanguageTag(),
         @Query("page") pageIndex: Int
     ): Response<ContentPagingResponse<MultiResponse>>
 
@@ -25,7 +25,7 @@ interface SearchService {
     suspend fun searchMovieByQuery(
         @Query("query") query: String,
         @Query("include_adult") matureEnabled: Boolean = false,
-        @Query("language") language: String = getUserLanguage(),
+        @Query("language") language: String = getUserLanguageTag(),
         @Query("page") pageIndex: Int
     ): Response<ContentPagingResponse<MovieResponse>>
 
@@ -33,7 +33,7 @@ interface SearchService {
     suspend fun searchShowByQuery(
         @Query("query") query: String,
         @Query("include_adult") matureEnabled: Boolean = false,
-        @Query("language") language: String = getUserLanguage(),
+        @Query("language") language: String = getUserLanguageTag(),
         @Query("page") pageIndex: Int
     ): Response<ContentPagingResponse<ShowResponse>>
 
@@ -41,7 +41,7 @@ interface SearchService {
     suspend fun searchPersonByQuery(
         @Query("query") query: String,
         @Query("include_adult") matureEnabled: Boolean = false,
-        @Query("language") language: String = getUserLanguage(),
+        @Query("language") language: String = getUserLanguageTag(),
         @Query("page") pageIndex: Int
     ): Response<ContentPagingResponse<PersonResponse>>
 }

@@ -1,7 +1,7 @@
 package com.projects.moviemanager.network.services.person
 
 import com.projects.moviemanager.common.util.Constants
-import com.projects.moviemanager.core.LanguageManager.getUserLanguage
+import com.projects.moviemanager.core.LanguageManager.getUserLanguageTag
 import com.projects.moviemanager.network.models.content.common.PersonResponse
 import com.projects.moviemanager.network.models.person.PersonCreditsResponse
 import com.projects.moviemanager.network.models.person.PersonImagesResponse
@@ -15,18 +15,18 @@ interface PersonService {
     @GET("person/{person_ID}?api_key=${Constants.API_KEY}")
     suspend fun getPersonDetailsById(
         @Path("person_ID") personId: Int,
-        @Query("language") language: String = getUserLanguage()
+        @Query("language") language: String = getUserLanguageTag()
     ): Response<PersonResponse>
 
     @GET("person/{person_ID}/combined_credits?api_key=${Constants.API_KEY}")
     suspend fun getPersonCreditsById(
         @Path("person_ID") personId: Int,
-        @Query("language") language: String = getUserLanguage()
+        @Query("language") language: String = getUserLanguageTag()
     ): Response<PersonCreditsResponse>
 
     @GET("person/{person_ID}/images?api_key=${Constants.API_KEY}")
     suspend fun getPersonImagesById(
         @Path("person_ID") personId: Int,
-        @Query("language") language: String = getUserLanguage()
+        @Query("language") language: String = getUserLanguageTag()
     ): Response<PersonImagesResponse>
 }

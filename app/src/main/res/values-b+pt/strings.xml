@@ -51,7 +51,7 @@
     <string name="search_top_results_tab">Principais Resultados</string>
     <string name="search_movies_tab">Filmes</string>
     <string name="search_shows_tab">Séries</string>
-    <string name="search_person_tab">Pessoa</string>
+    <string name="search_person_tab">Pessoas</string>
     <string name="search_error_title_message">Desculpe… Nenhum resultado encontrado :(</string>
     <string name="search_error_description_message">Tente procurar por outro filme, série ou pessoa.</string>
 

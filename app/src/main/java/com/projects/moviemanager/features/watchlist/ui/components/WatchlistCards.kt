@@ -46,6 +46,7 @@ import com.projects.moviemanager.features.watchlist.model.DefaultLists.Companion
 import com.projects.moviemanager.common.util.Constants.BASE_300_IMAGE_URL
 import com.projects.moviemanager.common.util.UiConstants.MEDIA_TYPE_TAG_CORNER_SIZE
 import com.projects.moviemanager.common.util.capitalized
+import com.projects.moviemanager.features.watchlist.model.DefaultLists
 
 @Composable
 fun WatchlistCard(
@@ -162,18 +163,26 @@ fun MoreOptionsPopUpMenu(
     onRemoveClick: () -> Unit,
     onMoveItemToList: () -> Unit
 ) {
+    val primaryList = DefaultLists.getListById(selectedList)
+    val listLocalizedName = stringResource(DefaultLists.getListLocalizedName(primaryList))
+
+    val secondaryList = getOtherList(selectedList)
+    val secondaryListLocalizedName = stringResource(
+        DefaultLists.getListLocalizedName(secondaryList)
+    )
+
     val menuItems = listOf(
         PopupMenuItem(
             title = stringResource(
                 id = R.string.remove_option_popup_menu,
-                selectedList.capitalized()
+                listLocalizedName
             ),
             onClick = onRemoveClick
         ),
         PopupMenuItem(
             title = stringResource(
                 id = R.string.move_to_list_option_popup_menu,
-                getOtherList(selectedList).listId.capitalized()
+                secondaryListLocalizedName
             ),
             onClick = onMoveItemToList
         )

@@ -35,6 +35,7 @@ import com.projects.moviemanager.common.util.UiConstants.DEFAULT_PADDING
 import com.projects.moviemanager.common.util.UiConstants.SMALL_MARGIN
 import com.projects.moviemanager.features.watchlist.events.WatchlistEvent
 import com.projects.moviemanager.features.watchlist.model.DefaultLists
+import com.projects.moviemanager.features.watchlist.model.DefaultLists.Companion.getListLocalizedName
 import com.projects.moviemanager.features.watchlist.model.WatchlistItemAction
 import com.projects.moviemanager.features.watchlist.ui.components.WatchlistBodyPlaceholder
 import com.projects.moviemanager.features.watchlist.ui.components.WatchlistCard
@@ -110,17 +111,17 @@ private fun Watchlist(
     LaunchedEffect(snackbarState) {
         if (snackbarState.displaySnackbar.value) {
             val listName = DefaultLists.getListById(snackbarState.listId)
-            listName?.let { list ->
-                val listCapitalized = list.toString()
+            listName?.let {
+                val listLocalizedName = context.resources.getString(getListLocalizedName(listName))
                 val message = if (snackbarState.itemAction == WatchlistItemAction.ITEM_REMOVED) {
                     context.resources.getString(
                         R.string.snackbar_item_removed_from_list,
-                        listCapitalized
+                        listLocalizedName
                     )
                 } else {
                     context.resources.getString(
                         R.string.snackbar_item_moved_to_list,
-                        listCapitalized
+                        listLocalizedName
                     )
                 }
                 snackbarHostState.showSnackbar(message)

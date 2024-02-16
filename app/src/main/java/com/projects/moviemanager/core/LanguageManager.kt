@@ -27,7 +27,7 @@ object LanguageManager {
     )
     private const val DEFAULT_LANGUAGE = "en-US"
 
-    fun getUserLanguage(): String {
+    fun getUserLanguageTag(): String {
         val languageTag = userLocale.value.toLanguageTag()
         val language = userLocale.value.language
         return when {

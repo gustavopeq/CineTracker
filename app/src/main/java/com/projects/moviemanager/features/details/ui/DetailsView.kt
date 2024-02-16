@@ -24,6 +24,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -53,6 +54,7 @@ import com.projects.moviemanager.features.details.ui.components.showall.ShowAllV
 import com.projects.moviemanager.features.details.ui.events.DetailsEvents
 import com.projects.moviemanager.features.details.util.mapValueToRange
 import com.projects.moviemanager.features.watchlist.model.DefaultLists
+import com.projects.moviemanager.features.watchlist.model.DefaultLists.Companion.getListLocalizedName
 
 @Composable
 fun Details(
@@ -130,17 +132,17 @@ private fun Details(
         if (snackbarState.displaySnackbar.value) {
             val itemAdded = snackbarState.addedItem
             val listName = DefaultLists.getListById(snackbarState.listId)
-            listName?.let { list ->
-                val listCapitalized = list.toString()
+            listName?.let {
+                val listLocalizedName = context.resources.getString(getListLocalizedName(listName))
                 val message = if (itemAdded) {
                     context.resources.getString(
                         R.string.snackbar_item_added_in_list,
-                        listCapitalized
+                        listLocalizedName
                     )
                 } else {
                     context.resources.getString(
                         R.string.snackbar_item_removed_from_list,
-                        listCapitalized
+                        listLocalizedName
                     )
                 }
                 snackbarHostState.showSnackbar(message)
