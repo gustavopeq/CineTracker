@@ -48,14 +48,19 @@ fun String.formatDate(context: Context): String {
     }
 }
 
-fun Double?.formatRating(): String {
+fun Double?.formatRating(
+    context: Context
+): String {
     if (this == null || this == EMPTY_RATINGS) {
-        return UNDEFINED_RATINGS
+        return context.resources.getString(R.string.undefined_ratings)
     }
 
-    var formattedRating = DecimalFormat("#.#").format(this)
+    val symbols = DecimalFormatSymbols.getInstance().apply {
+        decimalSeparator = '.'
+    }
+    var formattedRating = DecimalFormat("#.#", symbols).format(this)
     if (formattedRating.length == 1) {
-        formattedRating = "$formattedRating${DecimalFormatSymbols.getInstance().decimalSeparator}0"
+        formattedRating += "${symbols.decimalSeparator}0"
     }
 
     return formattedRating

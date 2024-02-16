@@ -109,6 +109,6 @@
     <string name="snackbar_item_removed_from_list">Removido de %s</string>
     <string name="snackbar_item_moved_to_list">Movido a %s</string>
     <string name="snackbar_undo_text">Deshacer</string>
-
+    <string name="undefined_ratings">N/D</string>
 
 </resources>
