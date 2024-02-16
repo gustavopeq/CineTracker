@@ -33,6 +33,7 @@ import com.projects.moviemanager.common.ui.components.tab.GenericTabRow
 import com.projects.moviemanager.common.ui.components.tab.setupTabs
 import com.projects.moviemanager.common.util.UiConstants.DEFAULT_PADDING
 import com.projects.moviemanager.common.util.UiConstants.SMALL_MARGIN
+import com.projects.moviemanager.features.watchlist.WatchlistScreen
 import com.projects.moviemanager.features.watchlist.events.WatchlistEvent
 import com.projects.moviemanager.features.watchlist.model.DefaultLists
 import com.projects.moviemanager.features.watchlist.model.DefaultLists.Companion.getListLocalizedName
@@ -102,6 +103,8 @@ private fun Watchlist(
     }
 
     LaunchedEffect(Unit) {
+        mainViewModel.updateCurrentScreen(WatchlistScreen.route())
+
         viewModel.onEvent(
             WatchlistEvent.LoadWatchlistData
         )

@@ -51,6 +51,7 @@ import com.projects.moviemanager.common.util.UiConstants.SMALL_PADDING
 import com.projects.moviemanager.common.util.calculateCardsPerRow
 import com.projects.moviemanager.common.util.dpToPx
 import com.projects.moviemanager.common.util.pxToDp
+import com.projects.moviemanager.features.browse.BrowseScreen
 import com.projects.moviemanager.features.browse.events.BrowseEvent
 import com.projects.moviemanager.features.browse.ui.components.CollapsingTabRow
 
@@ -88,6 +89,10 @@ private fun Browse(
 
     val listOfShows = viewModel.showPager.collectAsLazyPagingItems()
     val showSortType by mainViewModel.showSortType.collectAsState()
+
+    LaunchedEffect(Unit) {
+        mainViewModel.updateCurrentScreen(BrowseScreen.route())
+    }
 
     LaunchedEffect(pagerState.currentPage) {
         when (pagerState.currentPage) {

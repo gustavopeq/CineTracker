@@ -24,7 +24,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -34,6 +33,7 @@ import com.projects.moviemanager.common.domain.models.content.DetailedContent
 import com.projects.moviemanager.common.domain.models.content.GenericContent
 import com.projects.moviemanager.common.domain.models.util.DataLoadStatus
 import com.projects.moviemanager.common.domain.models.util.MediaType
+import com.projects.moviemanager.common.ui.MainViewModel
 import com.projects.moviemanager.common.ui.components.NetworkImage
 import com.projects.moviemanager.common.ui.components.popup.ClassicSnackbar
 import com.projects.moviemanager.common.util.Constants.BASE_ORIGINAL_IMAGE_URL
@@ -43,6 +43,7 @@ import com.projects.moviemanager.common.util.UiConstants.DETAILS_TITLE_IMAGE_OFF
 import com.projects.moviemanager.common.util.UiConstants.POSTER_ASPECT_RATIO
 import com.projects.moviemanager.common.util.UiConstants.POSTER_ASPECT_RATIO_MULTIPLY
 import com.projects.moviemanager.common.util.UiConstants.SECTION_PADDING
+import com.projects.moviemanager.features.details.DetailsScreen
 import com.projects.moviemanager.features.details.ui.components.CastCarousel
 import com.projects.moviemanager.features.details.ui.components.DetailBodyPlaceholder
 import com.projects.moviemanager.features.details.ui.components.DetailsDescriptionBody
@@ -66,6 +67,7 @@ fun Details(
     Box(modifier = Modifier.fillMaxSize()) {
         Details(
             viewModel = hiltViewModel(navBackStackEntry),
+            mainViewModel = hiltViewModel(),
             onBackPress = onBackPress,
             goToDetails = goToDetails,
             goToErrorScreen = goToErrorScreen
@@ -76,6 +78,7 @@ fun Details(
 @Composable
 private fun Details(
     viewModel: DetailsViewModel,
+    mainViewModel: MainViewModel,
     onBackPress: () -> Unit,
     goToDetails: (Int, MediaType) -> Unit,
     goToErrorScreen: () -> Unit
@@ -121,6 +124,8 @@ private fun Details(
     }
 
     LaunchedEffect(Unit) {
+        mainViewModel.updateCurrentScreen(DetailsScreen.route())
+
         if (detailsFailedLoading) {
             viewModel.onEvent(
                 DetailsEvents.FetchDetails

@@ -6,10 +6,9 @@ import androidx.compose.ui.layout.layout
 import androidx.compose.ui.unit.Dp
 import com.projects.moviemanager.R
 import com.projects.moviemanager.common.util.UiConstants.EMPTY_RATINGS
-import com.projects.moviemanager.common.util.UiConstants.UNDEFINED_RATINGS
-import timber.log.Timber
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
+import timber.log.Timber
 
 fun String.formatDate(context: Context): String {
     val month: Int?
