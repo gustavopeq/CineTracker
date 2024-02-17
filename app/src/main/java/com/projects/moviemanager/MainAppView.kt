@@ -54,17 +54,11 @@ fun MainApp() {
 
         Scaffold(
             topBar = {
-                AnimatedVisibility(
-                    visible = topBarState,
-                    enter = fadeIn(spring(stiffness = Spring.StiffnessHigh)),
-                    exit = fadeOut(spring(stiffness = Spring.StiffnessHigh))
-                ) {
-                    TopNavBar(
-                        currentScreen = currentScreen,
-                        mainViewModel = mainViewModel,
-                        displaySortScreen = displaySortScreen
-                    )
-                }
+                TopNavBar(
+                    currentScreen = currentScreen,
+                    mainViewModel = mainViewModel,
+                    displaySortScreen = displaySortScreen
+                )
             },
             bottomBar = {
                 AnimatedVisibility(

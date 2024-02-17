@@ -1,8 +1,5 @@
 package com.projects.moviemanager.navigation.components
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExitTransition
-import androidx.compose.animation.fadeIn
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -14,7 +11,6 @@ import com.projects.moviemanager.common.ui.MainViewModel
 import com.projects.moviemanager.common.ui.components.button.SortIconButton
 import com.projects.moviemanager.features.browse.BrowseScreen
 import com.projects.moviemanager.features.home.HomeScreen
-import com.projects.moviemanager.features.home.ui.components.HomeLogoAnimation
 import com.projects.moviemanager.features.search.SearchScreen
 import com.projects.moviemanager.features.watchlist.WatchlistScreen
 
@@ -30,15 +26,6 @@ fun TopNavBar(
 
     if (showTopBar) {
         TopAppBar(
-            navigationIcon = {
-                AnimatedVisibility(
-                    visible = currentScreen == HomeScreen.route(),
-                    enter = fadeIn(),
-                    exit = ExitTransition.None
-                ) {
-                    HomeLogoAnimation()
-                }
-            },
             title = {
                 Text(
                     text = title.orEmpty(),
