@@ -43,14 +43,10 @@ fun MainNavBar(
                 selected = currentScreen == item.screen.route(),
                 onClick = {
                     mainViewModel.updateCurrentScreen(item.screen.route())
-                    navController.navigate(item.screen.route()) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
-                        }
-
-                        launchSingleTop = true
-                        restoreState = true
-                    }
+                    navigateToTopLevelDestination(
+                        navController = navController,
+                        destination = item.screen.route()
+                    )
                 },
                 icon = {
                     Column(
@@ -75,5 +71,18 @@ fun MainNavBar(
                 )
             )
         }
+    }
+}
+
+fun navigateToTopLevelDestination(
+    navController: NavController,
+    destination: String
+) {
+    navController.navigate(destination) {
+        popUpTo(navController.graph.findStartDestination().id) {
+            saveState = true
+        }
+        launchSingleTop = true
+        restoreState = true
     }
 }

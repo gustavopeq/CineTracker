@@ -27,6 +27,7 @@ import com.projects.moviemanager.common.util.UiConstants.DEFAULT_MARGIN
 import com.projects.moviemanager.common.util.UiConstants.DEFAULT_PADDING
 import com.projects.moviemanager.common.util.UiConstants.LARGE_PADDING
 import com.projects.moviemanager.common.util.UiConstants.SMALL_PADDING
+import com.projects.moviemanager.common.util.UiConstants.WATCHLIST_CAROUSEL_MAX_COUNT
 
 @Composable
 fun WatchlistCarousel(
@@ -40,7 +41,7 @@ fun WatchlistCarousel(
     if (watchlist.isNotEmpty()) {
         ClassicCarousel(
             carouselHeaderRes = carouselHeader,
-            itemList = watchlist,
+            itemList = watchlist.take(WATCHLIST_CAROUSEL_MAX_COUNT),
             currentScreenWidth = currentScreenWidth,
             goToDetails = goToDetails,
             headerAdditionalAction = {
