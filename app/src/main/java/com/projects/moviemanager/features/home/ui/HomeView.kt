@@ -33,6 +33,7 @@ import com.projects.moviemanager.common.ui.components.button.GenericButton
 import com.projects.moviemanager.common.util.Constants.BASE_ORIGINAL_IMAGE_URL
 import com.projects.moviemanager.common.util.UiConstants.DEFAULT_MARGIN
 import com.projects.moviemanager.common.util.UiConstants.HOME_BACKGROUND_OFFSET_PERCENT
+import com.projects.moviemanager.common.util.UiConstants.HOME_BOTTOM_END_MARGIN
 import com.projects.moviemanager.common.util.UiConstants.POSTER_ASPECT_RATIO_MULTIPLY
 import com.projects.moviemanager.features.home.HomeScreen
 import com.projects.moviemanager.features.home.events.HomeEvent
@@ -195,7 +196,7 @@ private fun HomeBody(
                 HomeBrowseButton(
                     goToBrowse = goToBrowse
                 )
-                Spacer(modifier = Modifier.height(DEFAULT_MARGIN.dp))
+                Spacer(modifier = Modifier.height(HOME_BOTTOM_END_MARGIN.dp))
             }
         }
     }

@@ -27,6 +27,7 @@ object UiConstants {
     // Home
     const val HOME_LOGO_SIZE = 36
     const val WATCHLIST_CAROUSEL_MAX_COUNT = 10
+    const val HOME_BOTTOM_END_MARGIN = 60
 
     // Browse
     const val BROWSE_MIN_CARD_WIDTH = 450
