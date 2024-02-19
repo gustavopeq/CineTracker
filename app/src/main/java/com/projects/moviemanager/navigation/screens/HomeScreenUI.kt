@@ -11,6 +11,7 @@ import com.projects.moviemanager.features.details.DetailsScreen
 import com.projects.moviemanager.features.home.ui.Home
 import com.projects.moviemanager.features.watchlist.WatchlistScreen
 import com.projects.moviemanager.navigation.ScreenUI
+import com.projects.moviemanager.navigation.components.navigateToTopLevelDestination
 
 class HomeScreenUI : ScreenUI {
     @Composable
@@ -25,12 +26,16 @@ class HomeScreenUI : ScreenUI {
                 )
             },
             goToWatchlist = {
-                navController.navigate(WatchlistScreen.route())
+                navigateToTopLevelDestination(
+                    navController = navController,
+                    destination = WatchlistScreen.route()
+                )
             },
             goToBrowse = {
-                if (currentScreen != ErrorScreen.route()) {
-                    navController.navigate(BrowseScreen.route())
-                }
+                navigateToTopLevelDestination(
+                    navController = navController,
+                    destination = BrowseScreen.route()
+                )
             },
             goToErrorScreen = {
                 if (currentScreen != ErrorScreen.route()) {

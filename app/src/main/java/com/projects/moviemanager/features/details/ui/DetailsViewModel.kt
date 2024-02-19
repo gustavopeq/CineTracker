@@ -20,12 +20,12 @@ import com.projects.moviemanager.features.details.ui.events.DetailsEvents
 import com.projects.moviemanager.features.details.ui.state.DetailsSnackbarState
 import com.projects.moviemanager.features.watchlist.model.DefaultLists
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class DetailsViewModel @Inject constructor(
@@ -102,6 +102,7 @@ class DetailsViewModel @Inject constructor(
         _detailsFailedLoading.value = false
         viewModelScope.launch {
             fetchDetails()
+            detailsInteractor.getStreamingProviders(contentId, mediaType)
             if (_loadState.value == DataLoadStatus.Success) {
                 fetchAdditionalInfo()
             }
@@ -121,7 +122,7 @@ class DetailsViewModel @Inject constructor(
     }
 
     private suspend fun fetchCastDetails() {
-        val castDetailsState = detailsInteractor.getContentCreditsById(contentId, mediaType)
+        val castDetailsState = detailsInteractor.getContentCastById(contentId, mediaType)
         if (castDetailsState.isFailed()) {
             _loadState.value = DataLoadStatus.Failed
         } else {

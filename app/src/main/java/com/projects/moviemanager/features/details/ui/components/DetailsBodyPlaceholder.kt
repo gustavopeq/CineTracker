@@ -7,14 +7,17 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.projects.moviemanager.common.ui.components.ComponentPlaceholder
 import com.projects.moviemanager.common.util.UiConstants.DEFAULT_MARGIN
 import com.projects.moviemanager.common.util.UiConstants.LARGE_MARGIN
 import com.projects.moviemanager.common.util.UiConstants.SECTION_PADDING
 import com.projects.moviemanager.common.util.UiConstants.SMALL_PADDING
+import com.projects.moviemanager.common.util.UiConstants.TEXT_PLACEHOLDER_CORNER_PERCENTAGE
 
 @Composable
 fun DetailBodyPlaceholder(posterHeight: Float) {
@@ -27,36 +30,30 @@ fun DetailBodyPlaceholder(posterHeight: Float) {
                 .height((posterHeight * 0.85).dp)
         )
         Spacer(modifier = Modifier.height(SECTION_PADDING.dp))
-        ComponentPlaceholder(
-            modifier = Modifier
-                .padding(start = DEFAULT_MARGIN.dp, end = LARGE_MARGIN.dp)
-                .fillMaxWidth()
-                .height(18.dp)
-        )
-        Spacer(modifier = Modifier.height(SMALL_PADDING.dp))
-        ComponentPlaceholder(
-            modifier = Modifier
-                .padding(
-                    start = DEFAULT_MARGIN.dp,
-                    end = (LARGE_MARGIN * 2).dp
-                )
-                .fillMaxWidth()
-                .height(18.dp)
-        )
-        Spacer(modifier = Modifier.height(SMALL_PADDING.dp))
-        ComponentPlaceholder(
-            modifier = Modifier
-                .padding(
-                    start = DEFAULT_MARGIN.dp,
-                    end = (LARGE_MARGIN * 3).dp
-                )
-                .fillMaxWidth()
-                .height(18.dp)
-        )
+        TextLinePlaceholder(endPadding = LARGE_MARGIN)
+        TextLinePlaceholder(endPadding = LARGE_MARGIN)
+        TextLinePlaceholder(endPadding = LARGE_MARGIN)
+        TextLinePlaceholder(endPadding = LARGE_MARGIN * 2)
+        TextLinePlaceholder(endPadding = LARGE_MARGIN * 3)
+        CategoriesPlaceholder()
         CategoriesPlaceholder()
         CategoriesPlaceholder()
         CategoriesPlaceholder()
     }
+}
+
+@Composable
+private fun TextLinePlaceholder(
+    endPadding: Int
+) {
+    ComponentPlaceholder(
+        modifier = Modifier
+            .padding(start = DEFAULT_MARGIN.dp, end = endPadding.dp)
+            .fillMaxWidth()
+            .height(14.dp)
+            .clip(RoundedCornerShape(TEXT_PLACEHOLDER_CORNER_PERCENTAGE))
+    )
+    Spacer(modifier = Modifier.height(SMALL_PADDING.dp))
 }
 
 @Composable
@@ -66,13 +63,15 @@ private fun CategoriesPlaceholder() {
         modifier = Modifier
             .padding(start = DEFAULT_MARGIN.dp)
             .width(150.dp)
-            .height(18.dp)
+            .height(14.dp)
+            .clip(RoundedCornerShape(TEXT_PLACEHOLDER_CORNER_PERCENTAGE))
     )
     Spacer(modifier = Modifier.height(SMALL_PADDING.dp))
     ComponentPlaceholder(
         modifier = Modifier
             .padding(start = DEFAULT_MARGIN.dp)
             .width(90.dp)
-            .height(18.dp)
+            .height(14.dp)
+            .clip(RoundedCornerShape(TEXT_PLACEHOLDER_CORNER_PERCENTAGE))
     )
 }

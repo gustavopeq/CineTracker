@@ -16,18 +16,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.projects.moviemanager.R
+import com.projects.moviemanager.common.domain.models.content.ContentCast
 import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.common.ui.components.NetworkImage
+import com.projects.moviemanager.common.util.Constants.BASE_500_IMAGE_URL
 import com.projects.moviemanager.common.util.UiConstants.DEFAULT_MARGIN
 import com.projects.moviemanager.common.util.UiConstants.DEFAULT_PADDING
+import com.projects.moviemanager.common.util.UiConstants.DETAILS_CAST_CARD_HEIGHT
 import com.projects.moviemanager.common.util.UiConstants.DETAILS_CAST_PICTURE_SIZE
 import com.projects.moviemanager.common.util.UiConstants.SMALL_PADDING
-import com.projects.moviemanager.common.domain.models.content.ContentCast
-import com.projects.moviemanager.common.util.Constants
 import com.projects.moviemanager.common.util.removeParentPadding
 
 @Composable
@@ -42,18 +45,25 @@ fun CastCarousel(
 
     Spacer(modifier = Modifier.height(SMALL_PADDING.dp))
 
+    val currentScreenWidth = LocalConfiguration.current.screenWidthDp
+    val cardWidth = DETAILS_CAST_PICTURE_SIZE.dp + DEFAULT_PADDING.dp
+    val cardsCountInScreen = currentScreenWidth / cardWidth.value
+
     LazyRow(
         modifier = Modifier.removeParentPadding(DEFAULT_MARGIN.dp)
     ) {
-        item {
-            Spacer(modifier = Modifier.width(DEFAULT_MARGIN.dp))
+        if (contentCredits.size >= cardsCountInScreen) {
+            item {
+                Spacer(modifier = Modifier.width(DEFAULT_MARGIN.dp))
+            }
         }
         items(contentCredits) { cast ->
-            val castImageUrl = Constants.BASE_500_IMAGE_URL + cast.profilePoster
+            val castImageUrl = BASE_500_IMAGE_URL + cast.profilePoster
 
             Column(
                 modifier = Modifier
                     .width(DETAILS_CAST_PICTURE_SIZE.dp + DEFAULT_PADDING.dp)
+                    .height(DETAILS_CAST_CARD_HEIGHT.dp)
                     .padding(horizontal = DEFAULT_PADDING.dp)
                     .clickable {
                         goToDetails(cast.id, MediaType.PERSON)
@@ -78,7 +88,8 @@ fun CastCarousel(
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.surface,
                     textAlign = TextAlign.Center,
-                    maxLines = 2
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
                 )
             }
         }

@@ -1,13 +1,17 @@
 package com.projects.moviemanager.features.details.ui.components
 
-import android.content.Context
-import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -17,6 +21,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.platform.LocalContext
@@ -27,14 +32,24 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.projects.moviemanager.R
 import com.projects.moviemanager.common.domain.models.content.DetailedContent
+import com.projects.moviemanager.common.domain.models.content.StreamProvider
 import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.common.ui.components.GradientDirections
+import com.projects.moviemanager.common.ui.components.NetworkImage
 import com.projects.moviemanager.common.ui.components.RatingComponent
 import com.projects.moviemanager.common.ui.components.classicVerticalGradientBrush
+import com.projects.moviemanager.common.util.Constants.BASE_ORIGINAL_IMAGE_URL
 import com.projects.moviemanager.common.util.UiConstants.DEFAULT_MARGIN
+import com.projects.moviemanager.common.util.UiConstants.DEFAULT_PADDING
 import com.projects.moviemanager.common.util.UiConstants.DETAILS_OVERVIEW_MAX_LINES
+import com.projects.moviemanager.common.util.UiConstants.MEDIA_TYPE_TAG_CORNER_SIZE
+import com.projects.moviemanager.common.util.UiConstants.SMALL_PADDING
+import com.projects.moviemanager.common.util.UiConstants.STREAM_PROVIDER_ICON_SIZE
 import com.projects.moviemanager.common.util.formatDate
-import com.projects.moviemanager.features.details.util.stringFormat
+import com.projects.moviemanager.features.details.util.formatRuntime
+import com.projects.moviemanager.features.details.util.isValidValue
+import com.projects.moviemanager.features.details.util.toFormattedCurrency
+import com.projects.moviemanager.features.watchlist.ui.components.MediaTypeTag
 import com.projects.moviemanager.network.models.content.common.ContentGenre
 import com.projects.moviemanager.network.models.content.common.ProductionCountry
 
@@ -68,7 +83,20 @@ fun DetailsDescriptionHeader(
                 style = MaterialTheme.typography.displayMedium
             )
             when (contentDetails?.mediaType) {
-                MediaType.MOVIE, MediaType.SHOW -> RatingComponent(rating = contentDetails.rating)
+                MediaType.MOVIE, MediaType.SHOW -> {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        RatingComponent(rating = contentDetails.rating)
+                        Spacer(modifier = Modifier.width(DEFAULT_PADDING.dp))
+                        MediaTypeTag(
+                            modifier = Modifier.clip(
+                                RoundedCornerShape(MEDIA_TYPE_TAG_CORNER_SIZE.dp)
+                            ),
+                            mediaType = contentDetails.mediaType
+                        )
+                    }
+                }
                 else -> {}
             }
         }
@@ -79,36 +107,74 @@ fun DetailsDescriptionHeader(
 fun DetailsDescriptionBody(
     contentDetails: DetailedContent
 ) {
-    val context = LocalContext.current
-    OverviewInfo(contentDetails)
-
-    Spacer(modifier = Modifier.height(DEFAULT_MARGIN.dp))
+    if (contentDetails.overview.isNotEmpty()) {
+        OverviewInfo(contentDetails)
+    }
 
     when (contentDetails.mediaType) {
         MediaType.MOVIE -> {
-            ProductionCountriesInfo(contentDetails.productionCountries)
-            ReleaseDateInfo(contentDetails.releaseDate)
+            DateInfo(
+                header = stringResource(id = R.string.movie_details_release_date_label),
+                date = contentDetails.releaseDate
+            )
+
             GenresInfo(contentDetails.genres)
+
             RuntimeInfo(contentDetails.runtime)
+
+            ProductionCountriesInfo(contentDetails.productionCountries)
+
+            FinanceInfo(
+                header = stringResource(id = R.string.movie_details_budget_label),
+                value = contentDetails.budget
+            )
+
+            FinanceInfo(
+                header = stringResource(id = R.string.movie_details_revenue_label),
+                value = contentDetails.revenue
+            )
+
+            StreamProviderInfo(
+                streamProviders = contentDetails.streamProviders
+            )
         }
         MediaType.SHOW -> {
-            ProductionCountriesInfo(contentDetails.productionCountries)
+            DateInfo(
+                header = stringResource(id = R.string.show_details_first_air_date_label),
+                date = contentDetails.firstAirDate
+            )
+
+            DateInfo(
+                header = stringResource(id = R.string.show_details_last_air_date_label),
+                date = contentDetails.lastAirDate
+            )
+
             GenresInfo(contentDetails.genres)
+
+            ShowDurationInfo(
+                seasonNumber = contentDetails.numberOfSeasons,
+                episodeNumber = contentDetails.numberOfEpisodes
+            )
+
+            ProductionCountriesInfo(contentDetails.productionCountries)
+
+            StreamProviderInfo(
+                streamProviders = contentDetails.streamProviders
+            )
         }
         MediaType.PERSON -> {
-            BornDeathInfo(
-                labelRes = R.string.person_details_born_label,
-                bodyText = contentDetails.birthday,
-                context = context
+            DateInfo(
+                header = stringResource(id = R.string.person_details_born_label),
+                date = contentDetails.birthday
             )
-            BornDeathInfo(
-                labelRes = R.string.person_details_death_label,
-                bodyText = contentDetails.deathday,
-                context = context
+
+            DateInfo(
+                header = stringResource(id = R.string.person_details_death_label),
+                date = contentDetails.deathday
             )
+
             BornInInfo(contentDetails.placeOfBirth)
         }
-
         else -> {}
     }
 }
@@ -148,24 +214,26 @@ private fun OverviewInfo(contentDetails: DetailedContent) {
                 color = MaterialTheme.colorScheme.secondary,
                 textAlign = TextAlign.Center
             )
+        } else {
+            Spacer(modifier = Modifier.height(DEFAULT_MARGIN.dp))
         }
     }
 }
 
 @Composable
-private fun RuntimeInfo(runtime: Int?) {
-    if (runtime != null && runtime != 0) {
+private fun RuntimeInfo(runtime: Int) {
+    if (runtime > 0) {
         DetailDescriptionLabel(
             stringResource(id = R.string.movie_details_runtime_label)
         )
-        DetailDescriptionBody(runtime.stringFormat())
+        DetailDescriptionBody(runtime.formatRuntime())
         Spacer(modifier = Modifier.height(DEFAULT_MARGIN.dp))
     }
 }
 
 @Composable
-private fun GenresInfo(genres: List<ContentGenre?>?) {
-    if (genres?.isNotEmpty() == true) {
+private fun GenresInfo(genres: List<ContentGenre?>) {
+    if (genres.isNotEmpty()) {
         DetailDescriptionLabel(
             stringResource(id = R.string.movie_details_genres_label)
         )
@@ -176,20 +244,8 @@ private fun GenresInfo(genres: List<ContentGenre?>?) {
 }
 
 @Composable
-private fun ReleaseDateInfo(releaseDate: String?) {
-    if (releaseDate?.isNotEmpty() == true) {
-        DetailDescriptionLabel(
-            stringResource(id = R.string.movie_details_release_date_label)
-        )
-        val formattedDate = releaseDate.formatDate(LocalContext.current)
-        DetailDescriptionBody(formattedDate)
-        Spacer(modifier = Modifier.height(DEFAULT_MARGIN.dp))
-    }
-}
-
-@Composable
-private fun ProductionCountriesInfo(productionCountry: List<ProductionCountry?>?) {
-    if (productionCountry?.isNotEmpty() == true) {
+private fun ProductionCountriesInfo(productionCountry: List<ProductionCountry?>) {
+    if (productionCountry.isNotEmpty()) {
         DetailDescriptionLabel(
             stringResource(id = R.string.movie_details_production_country_title)
         )
@@ -202,29 +258,92 @@ private fun ProductionCountriesInfo(productionCountry: List<ProductionCountry?>?
 }
 
 @Composable
-private fun BornDeathInfo(
-    @StringRes labelRes: Int,
-    bodyText: String?,
-    context: Context
+private fun FinanceInfo(
+    header: String,
+    value: Long
 ) {
-    if (bodyText?.isNotEmpty() == true) {
-        DetailDescriptionLabel(
-            stringResource(id = labelRes)
+    if (value.isValidValue()) {
+        DetailDescriptionLabel(header)
+        DetailDescriptionBody(
+            bodyText = value.toFormattedCurrency()
         )
-        DetailDescriptionBody(bodyText.formatDate(context))
+        Spacer(modifier = Modifier.height(DEFAULT_MARGIN.dp))
+    }
+}
+
+@Composable
+private fun DateInfo(
+    header: String,
+    date: String
+) {
+    if (date.isNotEmpty()) {
+        DetailDescriptionLabel(header)
+        val formattedDate = date.formatDate(LocalContext.current)
+        DetailDescriptionBody(formattedDate)
+        Spacer(modifier = Modifier.height(DEFAULT_MARGIN.dp))
+    }
+}
+
+@Composable
+private fun ShowDurationInfo(
+    seasonNumber: Int,
+    episodeNumber: Int
+) {
+    if (seasonNumber > 0 && episodeNumber > 0) {
+        DetailDescriptionLabel(
+            stringResource(id = R.string.show_details_duration_label)
+        )
+        val resources = LocalContext.current.resources
+        val seasonString = resources.getQuantityString(
+            R.plurals.seasons,
+            seasonNumber,
+            seasonNumber
+        )
+        val episodeString = resources.getQuantityString(
+            R.plurals.episodes,
+            episodeNumber,
+            episodeNumber
+        )
+
+        DetailDescriptionBody(bodyText = "$seasonString, $episodeString")
         Spacer(modifier = Modifier.height(DEFAULT_MARGIN.dp))
     }
 }
 
 @Composable
 private fun BornInInfo(
-    bornIn: String?
+    bornIn: String
 ) {
-    if (bornIn?.isNotEmpty() == true) {
+    if (bornIn.isNotEmpty()) {
         DetailDescriptionLabel(
             stringResource(id = R.string.person_details_born_in_label)
         )
         DetailDescriptionBody(bornIn)
+        Spacer(modifier = Modifier.height(DEFAULT_MARGIN.dp))
+    }
+}
+
+@Composable
+private fun StreamProviderInfo(
+    streamProviders: List<StreamProvider>
+) {
+    if (streamProviders.isNotEmpty()) {
+        DetailDescriptionLabel(
+            stringResource(id = R.string.content_details_stream_label)
+        )
+        Spacer(modifier = Modifier.height(SMALL_PADDING.dp))
+        LazyRow {
+            items(streamProviders) { stream ->
+                val fullImagePath = BASE_ORIGINAL_IMAGE_URL + stream.logoPath
+                NetworkImage(
+                    modifier = Modifier
+                        .size(STREAM_PROVIDER_ICON_SIZE.dp)
+                        .clip(MaterialTheme.shapes.medium),
+                    imageUrl = fullImagePath
+                )
+                Spacer(modifier = Modifier.width(DEFAULT_PADDING.dp))
+            }
+        }
         Spacer(modifier = Modifier.height(DEFAULT_MARGIN.dp))
     }
 }

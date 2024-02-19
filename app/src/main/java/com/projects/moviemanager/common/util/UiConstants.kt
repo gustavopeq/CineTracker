@@ -10,7 +10,6 @@ object UiConstants {
     const val DEFAULT_MARGIN = 16
     const val LARGE_MARGIN = 20
     const val SECTION_PADDING = 24
-    const val UNDEFINED_RATINGS = "N/A"
     const val CARD_ROUND_CORNER = 4
     const val POSTER_ASPECT_RATIO = 2f / 3f
     const val POSTER_ASPECT_RATIO_MULTIPLY = 1.5f
@@ -22,9 +21,13 @@ object UiConstants {
     const val ERROR_ANIMATION_SIZE = 100
     const val DELAY_UPDATE_POPUP_TEXT_MS = 100L
     const val EMPTY_RATINGS = 0.0
+    const val MEDIA_TYPE_TAG_CORNER_SIZE = 2
+    const val TEXT_PLACEHOLDER_CORNER_PERCENTAGE = 30
 
     // Home
     const val HOME_LOGO_SIZE = 36
+    const val WATCHLIST_CAROUSEL_MAX_COUNT = 10
+    const val HOME_BOTTOM_END_MARGIN = 60
 
     // Browse
     const val BROWSE_MIN_CARD_WIDTH = 450
@@ -38,11 +41,13 @@ object UiConstants {
     // Details
     const val DETAILS_TITLE_IMAGE_OFFSET_PERCENT = 0.7f
     const val DETAILS_CAST_PICTURE_SIZE = 100
+    const val DETAILS_CAST_CARD_HEIGHT = 185
     const val VIDEOS_BORDER_SIZE = 4
     const val MAX_COUNT_MORE_LIKE_THIS_CARDS = 10
     const val RETURN_TOP_BAR_HEIGHT = 64
     const val DETAILS_OVERVIEW_MAX_LINES = 6
     const val MAX_COUNT_PERSON_ADDITIONAL_CONTENT = 20
+    const val STREAM_PROVIDER_ICON_SIZE = 60
 
     // Watchlist
     const val WATCHLIST_IMAGE_WIDTH = 100

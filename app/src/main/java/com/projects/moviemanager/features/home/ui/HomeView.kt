@@ -27,11 +27,15 @@ import com.projects.moviemanager.common.domain.models.content.GenericContent
 import com.projects.moviemanager.common.domain.models.person.PersonDetails
 import com.projects.moviemanager.common.domain.models.util.DataLoadStatus
 import com.projects.moviemanager.common.domain.models.util.MediaType
+import com.projects.moviemanager.common.ui.MainViewModel
 import com.projects.moviemanager.common.ui.components.ClassicLoadingIndicator
 import com.projects.moviemanager.common.ui.components.button.GenericButton
+import com.projects.moviemanager.common.util.Constants.BASE_ORIGINAL_IMAGE_URL
 import com.projects.moviemanager.common.util.UiConstants.DEFAULT_MARGIN
 import com.projects.moviemanager.common.util.UiConstants.HOME_BACKGROUND_OFFSET_PERCENT
+import com.projects.moviemanager.common.util.UiConstants.HOME_BOTTOM_END_MARGIN
 import com.projects.moviemanager.common.util.UiConstants.POSTER_ASPECT_RATIO_MULTIPLY
+import com.projects.moviemanager.features.home.HomeScreen
 import com.projects.moviemanager.features.home.events.HomeEvent
 import com.projects.moviemanager.features.home.ui.components.carousel.ComingSoonCarousel
 import com.projects.moviemanager.features.home.ui.components.carousel.TrendingCarousel
@@ -40,7 +44,6 @@ import com.projects.moviemanager.features.home.ui.components.featured.FeaturedBa
 import com.projects.moviemanager.features.home.ui.components.featured.FeaturedInfo
 import com.projects.moviemanager.features.home.ui.components.featured.PersonFeaturedInfo
 import com.projects.moviemanager.features.home.ui.components.featured.SecondaryFeaturedInfo
-import com.projects.moviemanager.common.util.Constants.BASE_ORIGINAL_IMAGE_URL
 
 @Composable
 fun Home(
@@ -51,6 +54,7 @@ fun Home(
 ) {
     Home(
         viewModel = hiltViewModel(),
+        mainViewModel = hiltViewModel(),
         goToDetails = goToDetails,
         goToWatchlist = goToWatchlist,
         goToBrowse = goToBrowse,
@@ -61,6 +65,7 @@ fun Home(
 @Composable
 private fun Home(
     viewModel: HomeViewModel,
+    mainViewModel: MainViewModel,
     goToDetails: (Int, MediaType) -> Unit,
     goToWatchlist: () -> Unit,
     goToBrowse: () -> Unit,
@@ -75,6 +80,7 @@ private fun Home(
     val posterHeight = posterWidth * POSTER_ASPECT_RATIO_MULTIPLY
 
     LaunchedEffect(Unit) {
+        mainViewModel.updateCurrentScreen(HomeScreen.route())
         when (loadState) {
             is DataLoadStatus.Success -> viewModel.onEvent(HomeEvent.ReloadWatchlist)
             else -> viewModel.onEvent(HomeEvent.LoadHome)
@@ -190,7 +196,7 @@ private fun HomeBody(
                 HomeBrowseButton(
                     goToBrowse = goToBrowse
                 )
-                Spacer(modifier = Modifier.height(DEFAULT_MARGIN.dp))
+                Spacer(modifier = Modifier.height(HOME_BOTTOM_END_MARGIN.dp))
             }
         }
     }

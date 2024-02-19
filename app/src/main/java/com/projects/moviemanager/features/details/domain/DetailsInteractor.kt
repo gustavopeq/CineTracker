@@ -1,21 +1,26 @@
 package com.projects.moviemanager.features.details.domain
 
 import com.projects.moviemanager.common.domain.models.content.GenericContent
+import com.projects.moviemanager.common.domain.models.content.StreamProvider
 import com.projects.moviemanager.common.domain.models.content.Videos
 import com.projects.moviemanager.common.domain.models.content.toContentCast
 import com.projects.moviemanager.common.domain.models.content.toDetailedContent
 import com.projects.moviemanager.common.domain.models.content.toGenericContent
 import com.projects.moviemanager.common.domain.models.content.toGenericContentList
+import com.projects.moviemanager.common.domain.models.content.toStreamProvider
 import com.projects.moviemanager.common.domain.models.content.toVideos
 import com.projects.moviemanager.common.domain.models.person.PersonImage
 import com.projects.moviemanager.common.domain.models.person.toPersonImage
 import com.projects.moviemanager.common.domain.models.util.MediaType
+import com.projects.moviemanager.core.LanguageManager.getUserCountryCode
 import com.projects.moviemanager.database.repository.DatabaseRepository
 import com.projects.moviemanager.features.details.ui.state.DetailsState
 import com.projects.moviemanager.features.watchlist.model.DefaultLists
+import com.projects.moviemanager.network.models.content.common.BaseContentResponse
 import com.projects.moviemanager.network.models.content.common.MovieResponse
 import com.projects.moviemanager.network.models.content.common.PersonResponse
 import com.projects.moviemanager.network.models.content.common.ShowResponse
+import com.projects.moviemanager.network.models.search.ContentPagingResponse
 import com.projects.moviemanager.network.repository.movie.MovieRepository
 import com.projects.moviemanager.network.repository.person.PersonRepository
 import com.projects.moviemanager.network.repository.show.ShowRepository
@@ -59,13 +64,21 @@ class DetailsInteractor @Inject constructor(
                             null
                         }
                     }
+
+                    val streamProviders = getStreamingProviders(contentId, mediaType)
+                    if (streamProviders.isNotEmpty()) {
+                        detailsState.detailsInfo.value = detailsState.detailsInfo.value?.copy(
+                            streamProviders = streamProviders
+                        )
+                    }
                 }
             }
         }
+
         return detailsState
     }
 
-    suspend fun getContentCreditsById(
+    suspend fun getContentCastById(
         contentId: Int,
         mediaType: MediaType
     ): DetailsState {
@@ -86,7 +99,9 @@ class DetailsInteractor @Inject constructor(
                 is Left -> {
                     detailsState.detailsCast.value = response.value.cast.map {
                         it.toContentCast()
-                    }
+                    }.filterNot {
+                        it.profilePoster.isEmpty()
+                    }.sortedBy { it.order ?: Int.MAX_VALUE }
                 }
             }
         }
@@ -134,16 +149,12 @@ class DetailsInteractor @Inject constructor(
         result.collect { response ->
             when (response) {
                 is Right -> {
-                    Timber.e("getRecommendationsContentById failed with error: ${response.error}")
+                    Timber.e(
+                        "getRecommendationsContentById failed with error: ${response.error}"
+                    )
                 }
                 is Left -> {
-                    listOfSimilar = response.value.results
-                        .filter {
-                            it.poster_path?.isNotEmpty() == true && it.title?.isNotEmpty() == true
-                        }
-                        .mapNotNull {
-                            it.toGenericContent()
-                        }
+                    listOfSimilar = mapResponseToGenericContent(response)
                     if (listOfSimilar.isEmpty()) {
                         listOfSimilar = getSimilarContentById(
                             contentId = contentId,
@@ -173,17 +184,52 @@ class DetailsInteractor @Inject constructor(
                     Timber.e("getSimilarContentById failed with error: ${response.error}")
                 }
                 is Left -> {
-                    listOfSimilar = response.value.results
-                        .filter {
-                            it.poster_path?.isNotEmpty() == true && it.title?.isNotEmpty() == true
-                        }
-                        .mapNotNull {
-                            it.toGenericContent()
-                        }
+                    listOfSimilar = mapResponseToGenericContent(response)
                 }
             }
         }
         return listOfSimilar
+    }
+
+    suspend fun getStreamingProviders(
+        contentId: Int,
+        mediaType: MediaType
+    ): List<StreamProvider> {
+        val result = when (mediaType) {
+            MediaType.MOVIE -> movieRepository.getStreamingProviders(contentId)
+            MediaType.SHOW -> showRepository.getStreamingProviders(contentId)
+            else -> return emptyList()
+        }
+
+        var streamProviderList: List<StreamProvider> = emptyList()
+        result.collect { response ->
+            when (response) {
+                is Right -> {
+                    Timber.e("getStreamingProviders failed with error: ${response.error}")
+                }
+                is Left -> {
+                    val userCountryCode = getUserCountryCode()
+                    streamProviderList = response.value.results?.get(
+                        userCountryCode
+                    )?.flatrate?.map {
+                        it.toStreamProvider()
+                    }.orEmpty()
+                }
+            }
+        }
+        return streamProviderList
+    }
+
+    private fun mapResponseToGenericContent(
+        response: Left<ContentPagingResponse<out BaseContentResponse>>
+    ): List<GenericContent> {
+        return response.value.results
+            .filter {
+                it.poster_path?.isNotEmpty() == true && it.title?.isNotEmpty() == true
+            }
+            .mapNotNull {
+                it.toGenericContent()
+            }
     }
 
     suspend fun getPersonCreditsById(
@@ -198,7 +244,9 @@ class DetailsInteractor @Inject constructor(
                     Timber.e("getPersonCreditsById failed with error: ${response.error}")
                 }
                 is Left -> {
-                    mediaContentList = response.value.cast.toGenericContentList()
+                    mediaContentList = response.value.cast.toGenericContentList().filterNot {
+                        it.name.isEmpty() || it.posterPath.isEmpty()
+                    }
                 }
             }
         }

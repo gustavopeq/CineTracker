@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -23,6 +24,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -42,7 +44,9 @@ import com.projects.moviemanager.common.util.UiConstants.SMALL_PADDING
 import com.projects.moviemanager.common.util.UiConstants.WATCHLIST_IMAGE_WIDTH
 import com.projects.moviemanager.features.watchlist.model.DefaultLists.Companion.getOtherList
 import com.projects.moviemanager.common.util.Constants.BASE_300_IMAGE_URL
+import com.projects.moviemanager.common.util.UiConstants.MEDIA_TYPE_TAG_CORNER_SIZE
 import com.projects.moviemanager.common.util.capitalized
+import com.projects.moviemanager.features.watchlist.model.DefaultLists
 
 @Composable
 fun WatchlistCard(
@@ -97,6 +101,7 @@ fun WatchlistCard(
                 RatingComponent(rating = rating)
                 Spacer(modifier = Modifier.weight(1f))
                 MediaTypeTag(
+                    modifier = Modifier.clip(RoundedCornerShape(MEDIA_TYPE_TAG_CORNER_SIZE.dp)),
                     mediaType = mediaType
                 )
             }
@@ -158,18 +163,26 @@ fun MoreOptionsPopUpMenu(
     onRemoveClick: () -> Unit,
     onMoveItemToList: () -> Unit
 ) {
+    val primaryList = DefaultLists.getListById(selectedList)
+    val listLocalizedName = stringResource(DefaultLists.getListLocalizedName(primaryList))
+
+    val secondaryList = getOtherList(selectedList)
+    val secondaryListLocalizedName = stringResource(
+        DefaultLists.getListLocalizedName(secondaryList)
+    )
+
     val menuItems = listOf(
         PopupMenuItem(
             title = stringResource(
                 id = R.string.remove_option_popup_menu,
-                selectedList.capitalized()
+                listLocalizedName
             ),
             onClick = onRemoveClick
         ),
         PopupMenuItem(
             title = stringResource(
                 id = R.string.move_to_list_option_popup_menu,
-                getOtherList(selectedList).listId.capitalized()
+                secondaryListLocalizedName
             ),
             onClick = onMoveItemToList
         )

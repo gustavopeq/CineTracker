@@ -26,13 +26,20 @@ data class DetailedContent(
     override val posterPath: String,
     override val backdropPath: String,
     override val mediaType: MediaType,
-    val productionCountries: List<ProductionCountry?>? = emptyList(),
-    val genres: List<ContentGenre?>? = emptyList(),
-    val runtime: Int? = 0,
-    val releaseDate: String? = "",
-    val birthday: String? = "",
-    val deathday: String? = "",
-    val placeOfBirth: String? = ""
+    val productionCountries: List<ProductionCountry?> = emptyList(),
+    val genres: List<ContentGenre?> = emptyList(),
+    val runtime: Int = 0,
+    val releaseDate: String = "",
+    val budget: Long = 0,
+    val revenue: Long = 0,
+    val firstAirDate: String = "",
+    val lastAirDate: String = "",
+    val birthday: String = "",
+    val deathday: String = "",
+    val placeOfBirth: String = "",
+    val numberOfSeasons: Int = 0,
+    val numberOfEpisodes: Int = 0,
+    val streamProviders: List<StreamProvider> = emptyList()
 ) : GenericContentInterface
 
 fun MovieResponse.toDetailedContent(): DetailedContent {
@@ -44,10 +51,12 @@ fun MovieResponse.toDetailedContent(): DetailedContent {
         backdropPath = this.backdrop_path.orEmpty(),
         mediaType = MediaType.MOVIE,
         rating = this.vote_average ?: EMPTY_RATINGS,
-        productionCountries = this.production_countries,
-        genres = this.genres,
-        runtime = this.runtime,
-        releaseDate = this.release_date.orEmpty()
+        productionCountries = this.production_countries ?: emptyList(),
+        genres = this.genres ?: emptyList(),
+        runtime = this.runtime ?: 0,
+        releaseDate = this.release_date.orEmpty(),
+        budget = this.budget ?: 0,
+        revenue = this.revenue ?: 0
     )
 }
 
@@ -60,8 +69,12 @@ fun ShowResponse.toDetailedContent(): DetailedContent {
         backdropPath = this.backdrop_path.orEmpty(),
         mediaType = MediaType.SHOW,
         rating = this.vote_average ?: EMPTY_RATINGS,
-        productionCountries = this.production_countries,
-        genres = this.genres
+        productionCountries = this.production_countries ?: emptyList(),
+        genres = this.genres ?: emptyList(),
+        firstAirDate = this.first_air_date.orEmpty(),
+        lastAirDate = this.last_air_date.orEmpty(),
+        numberOfSeasons = this.number_of_seasons ?: 0,
+        numberOfEpisodes = this.number_of_episodes ?: 0
     )
 }
 
@@ -74,8 +87,8 @@ fun PersonResponse.toDetailedContent(): DetailedContent {
         backdropPath = this.backdrop_path.orEmpty(),
         mediaType = MediaType.PERSON,
         rating = this.vote_average ?: EMPTY_RATINGS,
-        birthday = this.birthday,
-        deathday = this.deathday,
-        placeOfBirth = this.place_of_birth
+        birthday = this.birthday.orEmpty(),
+        deathday = this.deathday.orEmpty(),
+        placeOfBirth = this.place_of_birth.orEmpty()
     )
 }

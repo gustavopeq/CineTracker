@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -15,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.projects.moviemanager.common.domain.models.util.MediaType
@@ -61,7 +63,8 @@ fun SecondaryFeaturedInfo(
                     )
                     MediaTypeTag(
                         modifier = Modifier
-                            .align(Alignment.TopEnd),
+                            .align(Alignment.TopEnd)
+                            .clip(RoundedCornerShape(bottomStart = 4.dp)),
                         mediaType = featuredItem.mediaType
                     )
                 }
@@ -70,9 +73,9 @@ fun SecondaryFeaturedInfo(
                     modifier = Modifier.padding(DEFAULT_PADDING.dp)
                 ) {
                     HomeCardTitle(
-                        title = featuredItem.name.orEmpty()
+                        title = featuredItem.name
                     )
-                    if (featuredItem.rating != null && featuredItem.rating > 0.0) {
+                    if (featuredItem.rating > 0.0) {
                         Spacer(modifier = Modifier.height(UiConstants.SMALL_PADDING.dp))
                         RatingComponent(rating = featuredItem.rating)
                     }

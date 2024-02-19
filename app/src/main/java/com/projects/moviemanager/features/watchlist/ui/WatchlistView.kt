@@ -3,16 +3,11 @@ package com.projects.moviemanager.features.watchlist.ui
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -23,7 +18,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -34,18 +28,17 @@ import com.projects.moviemanager.common.domain.models.content.GenericContent
 import com.projects.moviemanager.common.domain.models.util.DataLoadStatus
 import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.common.ui.MainViewModel
-import com.projects.moviemanager.common.ui.components.ComponentPlaceholder
 import com.projects.moviemanager.common.ui.components.popup.ClassicSnackbar
 import com.projects.moviemanager.common.ui.components.tab.GenericTabRow
 import com.projects.moviemanager.common.ui.components.tab.setupTabs
-import com.projects.moviemanager.common.util.UiConstants.CARD_ROUND_CORNER
 import com.projects.moviemanager.common.util.UiConstants.DEFAULT_PADDING
-import com.projects.moviemanager.common.util.UiConstants.POSTER_ASPECT_RATIO_MULTIPLY
 import com.projects.moviemanager.common.util.UiConstants.SMALL_MARGIN
-import com.projects.moviemanager.common.util.UiConstants.WATCHLIST_IMAGE_WIDTH
+import com.projects.moviemanager.features.watchlist.WatchlistScreen
 import com.projects.moviemanager.features.watchlist.events.WatchlistEvent
 import com.projects.moviemanager.features.watchlist.model.DefaultLists
+import com.projects.moviemanager.features.watchlist.model.DefaultLists.Companion.getListLocalizedName
 import com.projects.moviemanager.features.watchlist.model.WatchlistItemAction
+import com.projects.moviemanager.features.watchlist.ui.components.WatchlistBodyPlaceholder
 import com.projects.moviemanager.features.watchlist.ui.components.WatchlistCard
 import com.projects.moviemanager.features.watchlist.ui.components.WatchlistTabItem
 
@@ -110,6 +103,8 @@ private fun Watchlist(
     }
 
     LaunchedEffect(Unit) {
+        mainViewModel.updateCurrentScreen(WatchlistScreen.route())
+
         viewModel.onEvent(
             WatchlistEvent.LoadWatchlistData
         )
@@ -119,17 +114,17 @@ private fun Watchlist(
     LaunchedEffect(snackbarState) {
         if (snackbarState.displaySnackbar.value) {
             val listName = DefaultLists.getListById(snackbarState.listId)
-            listName?.let { list ->
-                val listCapitalized = list.toString()
+            listName?.let {
+                val listLocalizedName = context.resources.getString(getListLocalizedName(listName))
                 val message = if (snackbarState.itemAction == WatchlistItemAction.ITEM_REMOVED) {
                     context.resources.getString(
                         R.string.snackbar_item_removed_from_list,
-                        listCapitalized
+                        listLocalizedName
                     )
                 } else {
                     context.resources.getString(
                         R.string.snackbar_item_moved_to_list,
-                        listCapitalized
+                        listLocalizedName
                     )
                 }
                 snackbarHostState.showSnackbar(message)
@@ -252,65 +247,6 @@ private fun WatchlistContentLazyList(
         }
     } else {
         EmptyListMessage(mediaType = sortType)
-    }
-}
-
-@Composable
-private fun WatchlistBodyPlaceholder() {
-    val imageWidth = WATCHLIST_IMAGE_WIDTH.dp
-    val imageHeight = imageWidth * POSTER_ASPECT_RATIO_MULTIPLY
-    LazyColumn(
-        contentPadding = PaddingValues(all = SMALL_MARGIN.dp)
-    ) {
-        items(5) {
-            // Card row
-            Row {
-                // Image
-                ComponentPlaceholder(
-                    modifier = Modifier
-                        .width(imageWidth)
-                        .height(imageHeight)
-                        .clip(
-                            RoundedCornerShape(
-                                topStart = CARD_ROUND_CORNER.dp,
-                                bottomStart = CARD_ROUND_CORNER.dp
-                            )
-                        )
-                )
-                // Content Description Column
-                Column(
-                    modifier = Modifier
-                        .weight(1f)
-                        .height(imageHeight)
-                        .padding(all = DEFAULT_PADDING.dp)
-                ) {
-                    Row(modifier = Modifier.fillMaxWidth()) {
-                        // Title
-                        ComponentPlaceholder(
-                            modifier = Modifier
-                                .weight(1f)
-                                .height(20.dp)
-                        )
-                        Spacer(modifier = Modifier.width(DEFAULT_PADDING.dp))
-                    }
-                    Spacer(modifier = Modifier.height(10.dp))
-                    // Rating
-                    ComponentPlaceholder(
-                        modifier = Modifier
-                            .width(50.dp)
-                            .height(17.dp)
-                    )
-                    Spacer(modifier = Modifier.weight(1f))
-                    // Content Type Tag
-                    ComponentPlaceholder(
-                        modifier = Modifier
-                            .width(50.dp)
-                            .height(19.dp)
-                    )
-                }
-            }
-            Spacer(modifier = Modifier.height(DEFAULT_PADDING.dp))
-        }
     }
 }
 

@@ -33,6 +33,7 @@ import com.projects.moviemanager.common.domain.models.content.DetailedContent
 import com.projects.moviemanager.common.domain.models.content.GenericContent
 import com.projects.moviemanager.common.domain.models.util.DataLoadStatus
 import com.projects.moviemanager.common.domain.models.util.MediaType
+import com.projects.moviemanager.common.ui.MainViewModel
 import com.projects.moviemanager.common.ui.components.NetworkImage
 import com.projects.moviemanager.common.ui.components.popup.ClassicSnackbar
 import com.projects.moviemanager.common.util.Constants.BASE_ORIGINAL_IMAGE_URL
@@ -42,6 +43,7 @@ import com.projects.moviemanager.common.util.UiConstants.DETAILS_TITLE_IMAGE_OFF
 import com.projects.moviemanager.common.util.UiConstants.POSTER_ASPECT_RATIO
 import com.projects.moviemanager.common.util.UiConstants.POSTER_ASPECT_RATIO_MULTIPLY
 import com.projects.moviemanager.common.util.UiConstants.SECTION_PADDING
+import com.projects.moviemanager.features.details.DetailsScreen
 import com.projects.moviemanager.features.details.ui.components.CastCarousel
 import com.projects.moviemanager.features.details.ui.components.DetailBodyPlaceholder
 import com.projects.moviemanager.features.details.ui.components.DetailsDescriptionBody
@@ -53,6 +55,7 @@ import com.projects.moviemanager.features.details.ui.components.showall.ShowAllV
 import com.projects.moviemanager.features.details.ui.events.DetailsEvents
 import com.projects.moviemanager.features.details.util.mapValueToRange
 import com.projects.moviemanager.features.watchlist.model.DefaultLists
+import com.projects.moviemanager.features.watchlist.model.DefaultLists.Companion.getListLocalizedName
 
 @Composable
 fun Details(
@@ -64,6 +67,7 @@ fun Details(
     Box(modifier = Modifier.fillMaxSize()) {
         Details(
             viewModel = hiltViewModel(navBackStackEntry),
+            mainViewModel = hiltViewModel(),
             onBackPress = onBackPress,
             goToDetails = goToDetails,
             goToErrorScreen = goToErrorScreen
@@ -74,6 +78,7 @@ fun Details(
 @Composable
 private fun Details(
     viewModel: DetailsViewModel,
+    mainViewModel: MainViewModel,
     onBackPress: () -> Unit,
     goToDetails: (Int, MediaType) -> Unit,
     goToErrorScreen: () -> Unit
@@ -119,6 +124,8 @@ private fun Details(
     }
 
     LaunchedEffect(Unit) {
+        mainViewModel.updateCurrentScreen(DetailsScreen.route())
+
         if (detailsFailedLoading) {
             viewModel.onEvent(
                 DetailsEvents.FetchDetails
@@ -130,17 +137,17 @@ private fun Details(
         if (snackbarState.displaySnackbar.value) {
             val itemAdded = snackbarState.addedItem
             val listName = DefaultLists.getListById(snackbarState.listId)
-            listName?.let { list ->
-                val listCapitalized = list.toString()
+            listName?.let {
+                val listLocalizedName = context.resources.getString(getListLocalizedName(listName))
                 val message = if (itemAdded) {
                     context.resources.getString(
                         R.string.snackbar_item_added_in_list,
-                        listCapitalized
+                        listLocalizedName
                     )
                 } else {
                     context.resources.getString(
                         R.string.snackbar_item_removed_from_list,
-                        listCapitalized
+                        listLocalizedName
                     )
                 }
                 snackbarHostState.showSnackbar(message)
@@ -275,7 +282,6 @@ private fun DetailsComponent(
                     DetailsDescriptionBody(
                         contentDetails = mediaInfo
                     )
-                    Spacer(modifier = Modifier.height(SECTION_PADDING.dp))
                     if (contentCredits.isNotEmpty()) {
                         CastCarousel(
                             contentCredits = contentCredits,

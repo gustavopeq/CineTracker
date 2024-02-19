@@ -1,18 +1,20 @@
 package com.projects.moviemanager.features.details.util
 
 import androidx.compose.runtime.Composable
+import java.text.NumberFormat
+import java.util.Locale
 
 @Composable
-fun Int.stringFormat(): String {
+fun Int.formatRuntime(): String {
     val runtimeHours: Int = this / 60
     val runtimeMinutes = this % 60
 
     return if (runtimeHours != 0 && runtimeMinutes != 0) {
-        "$runtimeHours h $runtimeMinutes min"
+        "${runtimeHours}h ${runtimeMinutes}m"
     } else if (runtimeHours != 0) {
-        "$runtimeHours h"
+        "${runtimeHours}h"
     } else {
-        "$runtimeMinutes min"
+        "${runtimeMinutes}m"
     }
 }
 
@@ -24,4 +26,19 @@ fun Float.mapValueToRange(initialHeaderPosY: Float): Float {
     val maxValue = 0f
     val mappedValue = (this - initialHeaderPosY) / (maxValue - initialHeaderPosY)
     return 1.0f - mappedValue
+}
+
+fun Long?.isValidValue(): Boolean {
+    return this != null && this > 0
+}
+
+fun Long.toFormattedCurrency(): String {
+    return try {
+        val decimalFormat = (NumberFormat.getCurrencyInstance(Locale.US)).apply {
+            maximumFractionDigits = 0
+        }
+        decimalFormat.format(this)
+    } catch (e: IllegalArgumentException) {
+        ""
+    }
 }

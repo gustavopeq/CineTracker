@@ -59,7 +59,9 @@ data class MovieResponse(
     val vote_count: Int?,
     val production_countries: List<ProductionCountry?>?,
     val genres: List<ContentGenre?>?,
-    val runtime: Int?
+    val runtime: Int?,
+    val budget: Long?,
+    val revenue: Long?
 ) : BaseContentResponse
 
 data class ShowResponse(
@@ -78,9 +80,12 @@ data class ShowResponse(
     val original_language: String?,
     val vote_count: Int?,
     val first_air_date: String?,
+    val last_air_date: String?,
     val origin_country: List<String>?,
     val production_countries: List<ProductionCountry?>?,
-    val genres: List<ContentGenre?>?
+    val genres: List<ContentGenre?>?,
+    val number_of_seasons: Int?,
+    val number_of_episodes: Int?
 ) : BaseContentResponse {
     override val title: String
         get() = name.orEmpty()
