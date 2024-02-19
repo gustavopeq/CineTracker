@@ -12,6 +12,14 @@ kapt{
     correctErrorTypes = true
 }
 
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file('local.properties')
+if (localPropertiesFile.exists()) {
+    localProperties.load(new FileInputStream(localPropertiesFile))
+}
+
+def apiKey = localProperties['API_KEY'] ?: ""
+
 android {
     compileSdkVersion 34
     namespace 'com.projects.moviemanager'
@@ -23,6 +31,7 @@ android {
         versionName "1.4"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField("String", "API_KEY", apiKey)
     }
 
     buildTypes {
