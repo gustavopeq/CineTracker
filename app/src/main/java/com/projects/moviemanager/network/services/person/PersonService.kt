@@ -12,19 +12,19 @@ import retrofit2.http.Query
 
 interface PersonService {
 
-    @GET("person/{person_ID}?api_key=${Constants.API_KEY}")
+    @GET("person/{person_ID}")
     suspend fun getPersonDetailsById(
         @Path("person_ID") personId: Int,
         @Query("language") language: String = getUserLanguageTag()
     ): Response<PersonResponse>
 
-    @GET("person/{person_ID}/combined_credits?api_key=${Constants.API_KEY}")
+    @GET("person/{person_ID}/combined_credits")
     suspend fun getPersonCreditsById(
         @Path("person_ID") personId: Int,
         @Query("language") language: String = getUserLanguageTag()
     ): Response<PersonCreditsResponse>
 
-    @GET("person/{person_ID}/images?api_key=${Constants.API_KEY}")
+    @GET("person/{person_ID}/images")
     suspend fun getPersonImagesById(
         @Path("person_ID") personId: Int,
         @Query("language") language: String = getUserLanguageTag()
