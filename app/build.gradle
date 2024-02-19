@@ -21,12 +21,12 @@ if (localPropertiesFile.exists()) {
 def apiKey = localProperties['API_KEY'] ?: ""
 
 android {
-    compileSdkVersion 34
     namespace 'com.projects.moviemanager'
     defaultConfig {
         applicationId "gustavo.projects.restapi"
         minSdkVersion 21
         targetSdkVersion 34
+        compileSdk 34
         versionCode 14
         versionName "1.4"
 
@@ -36,7 +36,8 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
