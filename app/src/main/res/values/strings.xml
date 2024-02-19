@@ -108,5 +108,9 @@
     <string name="snackbar_item_moved_to_list">Moved to %s</string>
     <string name="snackbar_undo_text">Undo</string>
     <string name="undefined_ratings">N/A</string>
+    <string name="notification_request_dialog_title">Keep your lists up-to-date!</string>
+    <string name="notification_request_dialog_message">Allow notifications to remind you to update your watched list.</string>
+    <string name="notification_request_dialog_allow">Yes</string>
+    <string name="notification_request_dialog_deny">No, thanks</string>
 
 </resources>
