@@ -110,5 +110,9 @@
     <string name="snackbar_item_moved_to_list">Movido para %s</string>
     <string name="snackbar_undo_text">Desfazer</string>
     <string name="undefined_ratings">N/D</string>
+    <string name="notification_request_dialog_title">Mantenha suas listas atualizadas!</string>
+    <string name="notification_request_dialog_message">Permita notificações para lembrar você de atualizar sua lista de assistidos.</string>
+    <string name="notification_request_dialog_allow">Sim</string>
+    <string name="notification_request_dialog_deny">Não, obrigado</string>
 
 </resources>

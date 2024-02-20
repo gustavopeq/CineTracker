@@ -13,7 +13,7 @@ import retrofit2.http.Query
 
 interface SearchService {
 
-    @GET("search/multi?api_key=${Constants.API_KEY}")
+    @GET("search/multi")
     suspend fun searchMultiByQuery(
         @Query("query") query: String,
         @Query("include_adult") matureEnabled: Boolean = false,
@@ -21,7 +21,7 @@ interface SearchService {
         @Query("page") pageIndex: Int
     ): Response<ContentPagingResponse<MultiResponse>>
 
-    @GET("search/movie?api_key=${Constants.API_KEY}")
+    @GET("search/movie")
     suspend fun searchMovieByQuery(
         @Query("query") query: String,
         @Query("include_adult") matureEnabled: Boolean = false,
@@ -29,7 +29,7 @@ interface SearchService {
         @Query("page") pageIndex: Int
     ): Response<ContentPagingResponse<MovieResponse>>
 
-    @GET("search/tv?api_key=${Constants.API_KEY}")
+    @GET("search/tv")
     suspend fun searchShowByQuery(
         @Query("query") query: String,
         @Query("include_adult") matureEnabled: Boolean = false,
@@ -37,7 +37,7 @@ interface SearchService {
         @Query("page") pageIndex: Int
     ): Response<ContentPagingResponse<ShowResponse>>
 
-    @GET("search/person?api_key=${Constants.API_KEY}")
+    @GET("search/person")
     suspend fun searchPersonByQuery(
         @Query("query") query: String,
         @Query("include_adult") matureEnabled: Boolean = false,

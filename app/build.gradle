@@ -5,28 +5,39 @@ plugins {
     id 'androidx.navigation.safeargs.kotlin'
     id 'com.google.gms.google-services'
     id 'com.google.dagger.hilt.android'
+    id 'com.google.firebase.crashlytics'
 }
 
 kapt{
     correctErrorTypes = true
 }
 
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file('local.properties')
+if (localPropertiesFile.exists()) {
+    localProperties.load(new FileInputStream(localPropertiesFile))
+}
+
+def apiKey = localProperties['API_KEY'] ?: ""
+
 android {
-    compileSdkVersion 34
     namespace 'com.projects.moviemanager'
     defaultConfig {
         applicationId "gustavo.projects.restapi"
         minSdkVersion 21
         targetSdkVersion 34
+        compileSdk 34
         versionCode 14
         versionName "1.4"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField("String", "API_KEY", apiKey)
     }
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
@@ -67,9 +78,6 @@ dependencies {
     //Glide
     implementation "com.github.bumptech.glide:compose:1.0.0-beta01"
 
-    //Picasso
-    implementation 'com.squareup.picasso:picasso:2.8'
-
     //ViewModel KTX + Coroutine
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2"
 
@@ -83,7 +91,8 @@ dependencies {
     implementation "androidx.room:room-ktx:$room_version"
 
     //Firebase
-    implementation platform('com.google.firebase:firebase-bom:30.3.1')
+    implementation platform("com.google.firebase:firebase-bom:$firebase_bom_version")
+    implementation("com.google.firebase:firebase-crashlytics")
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-messaging-ktx'
 

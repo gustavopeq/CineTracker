@@ -10,5 +10,8 @@
         <item name="android:navigationBarColor">
             @color/primary_grey
         </item>
+        <item name="android:windowBackground">
+            @color/primary_black
+        </item>
     </style>
 </resources>
