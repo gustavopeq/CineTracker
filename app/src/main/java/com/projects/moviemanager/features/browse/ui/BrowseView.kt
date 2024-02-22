@@ -241,7 +241,7 @@ private fun BrowseBodyPlaceholder(
         columns = GridCells.Fixed(numberOfCards),
         modifier = Modifier.padding(horizontal = SMALL_MARGIN.dp)
     ) {
-        items(numberOfCards * 2) {
+        items(numberOfCards * numberOfCards) {
             Column(
                 modifier = Modifier
                     .width(
