@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Moviebase Watchlist</string>
+    <string name="app_name">CineTracker</string>
 
     <!-- Main Navigation -->
     <string name="main_nav_home">Inicio</string>
