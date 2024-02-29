@@ -10,6 +10,7 @@ object UiConstants {
     const val DEFAULT_MARGIN = 16
     const val LARGE_MARGIN = 20
     const val SECTION_PADDING = 24
+    const val SYSTEM_BOTTOM_NAV_PADDING = 32
     const val CARD_ROUND_CORNER = 4
     const val POSTER_ASPECT_RATIO = 2f / 3f
     const val POSTER_ASPECT_RATIO_MULTIPLY = 1.5f
