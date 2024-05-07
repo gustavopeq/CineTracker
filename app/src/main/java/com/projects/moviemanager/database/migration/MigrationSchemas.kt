@@ -43,3 +43,21 @@ val MIGRATION_3_4: Migration = object : Migration(3, 4) {
         db.execSQL("ALTER TABLE content_entity ADD COLUMN createdAt INTEGER DEFAULT 0 NOT NULL")
     }
 }
+
+val MIGRATION_4_5: Migration = object : Migration(4, 5) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        db.execSQL(
+            "CREATE TABLE IF NOT EXISTS lists (" +
+                "listEntityBdId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+                "listName TEXT)"
+        )
+
+        // Pre-populate with existing lists
+        db.execSQL(
+            "INSERT INTO lists (listName) VALUES ('Watchlist')"
+        )
+        db.execSQL(
+            "INSERT INTO lists (listName) VALUES ('Watched')"
+        )
+    }
+}

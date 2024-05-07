@@ -7,7 +7,7 @@ import com.projects.moviemanager.database.model.ContentEntity
 
 @Database(
     entities = [ContentEntity::class],
-    version = 4
+    version = 5
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun contentEntityDao(): ContentEntityDao
