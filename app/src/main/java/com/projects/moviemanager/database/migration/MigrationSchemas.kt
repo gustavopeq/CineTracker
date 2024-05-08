@@ -46,24 +46,6 @@ val MIGRATION_3_4: Migration = object : Migration(3, 4) {
 
 val MIGRATION_4_5: Migration = object : Migration(4, 5) {
     override fun migrate(db: SupportSQLiteDatabase) {
-        db.execSQL(
-            "CREATE TABLE IF NOT EXISTS lists (" +
-                "listEntityBdId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
-                "listName TEXT)"
-        )
-
-        // Pre-populate with existing lists
-        db.execSQL(
-            "INSERT INTO lists (listName) VALUES ('Watchlist')"
-        )
-        db.execSQL(
-            "INSERT INTO lists (listName) VALUES ('Watched')"
-        )
-    }
-}
-
-val MIGRATION_5_6: Migration = object : Migration(5, 6) {
-    override fun migrate(db: SupportSQLiteDatabase) {
         // Create a temporary table for ListEntity
         db.execSQL(
             """
@@ -72,6 +54,14 @@ val MIGRATION_5_6: Migration = object : Migration(5, 6) {
                 listName TEXT NOT NULL
             )
             """
+        )
+
+        // Insert default lists into the new_list_entity table
+        db.execSQL(
+            "INSERT INTO new_list_entity (listName) VALUES ('${DefaultLists.WATCHLIST}')"
+        )
+        db.execSQL(
+            "INSERT INTO new_list_entity (listName) VALUES ('${DefaultLists.WATCHED}')"
         )
 
         // Populate the new_list_entity table with unique list names from the old content_entity table
@@ -108,7 +98,6 @@ val MIGRATION_5_6: Migration = object : Migration(5, 6) {
 
         // Drop the old tables
         db.execSQL("DROP TABLE content_entity")
-        db.execSQL("DROP TABLE IF EXISTS list_entity")
 
         // Rename new tables to the official table names
         db.execSQL("ALTER TABLE new_list_entity RENAME TO list_entity")
