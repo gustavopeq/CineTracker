@@ -54,7 +54,7 @@ fun WatchlistCard(
     rating: Double,
     posterUrl: String?,
     mediaType: MediaType,
-    selectedList: String,
+    selectedList: Int,
     onCardClick: () -> Unit,
     onRemoveClick: () -> Unit,
     onMoveItemToList: () -> Unit
@@ -158,7 +158,7 @@ fun MediaTypeTag(
 @Composable
 fun MoreOptionsPopUpMenu(
     showMenu: Boolean,
-    selectedList: String,
+    selectedList: Int,
     onDismissRequest: () -> Unit,
     onRemoveClick: () -> Unit,
     onMoveItemToList: () -> Unit

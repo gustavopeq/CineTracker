@@ -188,7 +188,7 @@ private fun Watchlist(
 private fun WatchlistBody(
     contentList: List<GenericContent>,
     sortType: MediaType?,
-    selectedList: String,
+    selectedList: Int,
     goToDetails: (Int, MediaType) -> Unit,
     removeItem: (Int, MediaType) -> Unit,
     moveItemToList: (Int, MediaType) -> Unit
@@ -211,7 +211,7 @@ private fun WatchlistBody(
 private fun WatchlistContentLazyList(
     sortType: MediaType?,
     contentList: List<GenericContent>,
-    selectedList: String,
+    selectedList: Int,
     goToDetails: (Int, MediaType) -> Unit,
     removeItem: (Int, MediaType) -> Unit,
     moveItemToList: (Int, MediaType) -> Unit

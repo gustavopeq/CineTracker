@@ -136,7 +136,7 @@ class WatchlistViewModel @Inject constructor(
     }
 
     private fun triggerSnackbar(
-        listId: String,
+        listId: Int,
         itemAction: WatchlistItemAction
     ) {
         _snackbarState.value = WatchlistSnackbarState(

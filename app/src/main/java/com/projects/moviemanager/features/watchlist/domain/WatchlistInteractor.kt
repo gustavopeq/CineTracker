@@ -21,9 +21,9 @@ class WatchlistInteractor @Inject constructor(
     private val showRepository: ShowRepository
 ) {
     private var lastRemovedItem: ContentEntity? = null
-    private var lastMovedListId: String? = null
+    private var lastMovedListId: Int? = null
 
-    suspend fun getAllItems(listId: String): List<ContentEntity> {
+    suspend fun getAllItems(listId: Int): List<ContentEntity> {
         return databaseRepository.getAllItemsByListId(listId = listId)
     }
 
@@ -82,7 +82,7 @@ class WatchlistInteractor @Inject constructor(
     suspend fun removeContentFromDatabase(
         contentId: Int,
         mediaType: MediaType,
-        listId: String
+        listId: Int
     ) {
         lastRemovedItem = databaseRepository.deleteItem(
             contentId = contentId,
@@ -93,8 +93,8 @@ class WatchlistInteractor @Inject constructor(
     suspend fun moveItemToList(
         contentId: Int,
         mediaType: MediaType,
-        currentListId: String,
-        newListId: String
+        currentListId: Int,
+        newListId: Int
     ) {
         lastRemovedItem = databaseRepository.moveItemToList(
             contentId = contentId,

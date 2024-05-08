@@ -108,7 +108,7 @@ private fun Details(
         }
     }
 
-    val onToggleWatchlist: (String) -> Unit = { listId ->
+    val onToggleWatchlist: (Int) -> Unit = { listId ->
         contentDetails?.let {
             viewModel.onEvent(
                 DetailsEvents.ToggleContentFromList(

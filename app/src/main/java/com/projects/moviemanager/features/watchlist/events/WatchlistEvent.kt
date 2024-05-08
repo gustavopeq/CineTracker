@@ -11,7 +11,7 @@ sealed class WatchlistEvent {
         val mediaType: MediaType
     ) : WatchlistEvent()
     data class SelectList(
-        val list: String
+        val list: Int
     ) : WatchlistEvent()
     data class UpdateSortType(
         val mediaType: MediaType?

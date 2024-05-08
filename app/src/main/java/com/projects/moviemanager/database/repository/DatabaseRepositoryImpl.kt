@@ -11,7 +11,7 @@ class DatabaseRepositoryImpl(
     override suspend fun insertItem(
         contentId: Int,
         mediaType: MediaType,
-        listId: String
+        listId: Int
     ) {
         val item = ContentEntity(
             contentId = contentId,
@@ -25,7 +25,7 @@ class DatabaseRepositoryImpl(
     override suspend fun deleteItem(
         contentId: Int,
         mediaType: MediaType,
-        listId: String
+        listId: Int
     ): ContentEntity? {
         val itemRemoved = contentEntityDao.getItem(
             contentId = contentId,
@@ -42,7 +42,7 @@ class DatabaseRepositoryImpl(
         return itemRemoved
     }
 
-    override suspend fun getAllItemsByListId(listId: String): List<ContentEntity> {
+    override suspend fun getAllItemsByListId(listId: Int): List<ContentEntity> {
         return contentEntityDao.getAllItems(listId)
     }
 
@@ -59,8 +59,8 @@ class DatabaseRepositoryImpl(
     override suspend fun moveItemToList(
         contentId: Int,
         mediaType: MediaType,
-        currentListId: String,
-        newListId: String
+        currentListId: Int,
+        newListId: Int
     ): ContentEntity? {
         deleteItem(
             contentId = contentId,

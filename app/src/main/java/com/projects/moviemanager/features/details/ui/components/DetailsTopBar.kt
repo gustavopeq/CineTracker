@@ -40,9 +40,9 @@ fun DetailsTopBar(
     currentHeaderPosY: Float,
     initialHeaderPosY: Float? = null,
     showWatchlistButton: Boolean,
-    contentInWatchlistStatus: Map<String, Boolean>,
+    contentInWatchlistStatus: Map<Int, Boolean>,
     onBackBtnPress: () -> Unit,
-    toggleWatchlist: (String) -> Unit
+    toggleWatchlist: (Int) -> Unit
 ) {
     val barHeightFloat = dpToPx(RETURN_TOP_BAR_HEIGHT.dp, density = LocalDensity.current)
 
@@ -108,8 +108,8 @@ fun DetailsTopBar(
 
 @Composable
 private fun WatchlistButtonIcon(
-    contentInWatchlistStatus: Map<String, Boolean>,
-    toggleWatchlist: (String) -> Unit
+    contentInWatchlistStatus: Map<Int, Boolean>,
+    toggleWatchlist: (Int) -> Unit
 ) {
     var showPopupMenu by remember { mutableStateOf(false) }
     val color = if (contentInWatchlistStatus.values.contains(true)) {
@@ -142,9 +142,9 @@ private fun WatchlistButtonIcon(
 @Composable
 fun WatchlistPopUpMenu(
     showMenu: Boolean,
-    contentInWatchlistStatus: Map<String, Boolean>,
+    contentInWatchlistStatus: Map<Int, Boolean>,
     onDismissRequest: () -> Unit,
-    toggleWatchlist: (String) -> Unit
+    toggleWatchlist: (Int) -> Unit
 ) {
     val watchlist = stringResource(id = R.string.watchlist_tab)
     val watchlistMenuTitle = if (contentInWatchlistStatus[DefaultLists.WATCHLIST.listId] == true) {

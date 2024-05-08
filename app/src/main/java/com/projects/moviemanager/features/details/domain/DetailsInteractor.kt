@@ -279,7 +279,7 @@ class DetailsInteractor @Inject constructor(
     suspend fun verifyContentInLists(
         contentId: Int,
         mediaType: MediaType
-    ): Map<String, Boolean> {
+    ): Map<Int, Boolean> {
         val result = databaseRepository.searchItems(
             contentId = contentId,
             mediaType = mediaType
@@ -300,7 +300,7 @@ class DetailsInteractor @Inject constructor(
         currentStatus: Boolean,
         contentId: Int,
         mediaType: MediaType,
-        listId: String
+        listId: Int
     ) {
         when (currentStatus) {
             true -> {
@@ -315,7 +315,7 @@ class DetailsInteractor @Inject constructor(
     private suspend fun addToWatchlist(
         contentId: Int,
         mediaType: MediaType,
-        listId: String
+        listId: Int
     ) {
         databaseRepository.insertItem(
             contentId = contentId,
@@ -327,7 +327,7 @@ class DetailsInteractor @Inject constructor(
     suspend fun removeFromWatchlist(
         contentId: Int,
         mediaType: MediaType,
-        listId: String
+        listId: Int
     ) {
         databaseRepository.deleteItem(
             contentId = contentId,

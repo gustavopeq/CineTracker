@@ -9,7 +9,7 @@ import com.projects.moviemanager.database.model.ContentEntity
 @Dao
 interface ContentEntityDao {
     @Query("SELECT * FROM content_entity WHERE listId = :listId ORDER BY createdAt DESC")
-    fun getAllItems(listId: String): List<ContentEntity>
+    fun getAllItems(listId: Int): List<ContentEntity>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insert(contentEntity: ContentEntity)
@@ -18,7 +18,7 @@ interface ContentEntityDao {
         "DELETE FROM content_entity " +
             "WHERE contentId=:contentId AND mediaType = :mediaType AND listId = :listId"
     )
-    fun delete(contentId: Int, mediaType: String, listId: String)
+    fun delete(contentId: Int, mediaType: String, listId: Int)
 
     @Query(
         "SELECT * FROM content_entity WHERE contentId = :contentId AND mediaType = :mediaType"
@@ -29,5 +29,5 @@ interface ContentEntityDao {
         "SELECT * FROM content_entity WHERE " +
             "contentId = :contentId AND mediaType = :mediaType AND listId = :listId"
     )
-    fun getItem(contentId: Int, mediaType: String, listId: String): ContentEntity?
+    fun getItem(contentId: Int, mediaType: String, listId: Int): ContentEntity?
 }

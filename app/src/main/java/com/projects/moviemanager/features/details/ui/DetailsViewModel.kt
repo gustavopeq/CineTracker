@@ -69,7 +69,7 @@ class DetailsViewModel @Inject constructor(
             Pair(DefaultLists.WATCHED.listId, false)
         )
     )
-    val contentInListStatus: StateFlow<Map<String, Boolean>> get() = _contentInListStatus
+    val contentInListStatus: StateFlow<Map<Int, Boolean>> get() = _contentInListStatus
 
     private val _detailsFailedLoading: MutableState<Boolean> = mutableStateOf(false)
     val detailsFailedLoading: MutableState<Boolean> get() = _detailsFailedLoading
@@ -167,7 +167,7 @@ class DetailsViewModel @Inject constructor(
      * Function to Add or Remove content from database list. If the item is currently in the list,
      * it'll be removed. If it's not, it'll be added.
      */
-    private fun toggleContentFromList(listId: String) {
+    private fun toggleContentFromList(listId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             val currentStatus = _contentInListStatus.value[listId] ?: false
             val updatedWatchlistStatus = _contentInListStatus.value.toMutableMap()

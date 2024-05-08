@@ -9,7 +9,7 @@ import com.projects.moviemanager.common.util.Constants.UNSELECTED_OPTION_INDEX
 sealed class WatchlistTabItem(
     @StringRes override val tabResId: Int,
     override var tabIndex: Int = UNSELECTED_OPTION_INDEX,
-    val listId: String
+    val listId: Int
 ) : TabItem {
     data object WatchlistTab : WatchlistTabItem(
         tabResId = R.string.watchlist_tab,
