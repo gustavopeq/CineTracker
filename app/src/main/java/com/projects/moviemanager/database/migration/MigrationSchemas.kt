@@ -56,14 +56,6 @@ val MIGRATION_4_5: Migration = object : Migration(4, 5) {
             """
         )
 
-        // Insert default lists into the new_list_entity table
-        db.execSQL(
-            "INSERT INTO new_list_entity (listName) VALUES ('${DefaultLists.WATCHLIST}')"
-        )
-        db.execSQL(
-            "INSERT INTO new_list_entity (listName) VALUES ('${DefaultLists.WATCHED}')"
-        )
-
         // Populate the new_list_entity table with unique list names from the old content_entity table
         db.execSQL(
             """
@@ -102,5 +94,21 @@ val MIGRATION_4_5: Migration = object : Migration(4, 5) {
         // Rename new tables to the official table names
         db.execSQL("ALTER TABLE new_list_entity RENAME TO list_entity")
         db.execSQL("ALTER TABLE new_content_entity RENAME TO content_entity")
+
+        // List of default list names
+        val defaultLists = listOf("watchlist", "watched")
+
+        // Insert default lists if they do not exist
+        defaultLists.forEach { listName ->
+            db.execSQL(
+                """
+                INSERT INTO list_entity (listName)
+                SELECT ? WHERE NOT EXISTS (
+                    SELECT 1 FROM list_entity WHERE listName = ?
+                )
+                """,
+                arrayOf(listName, listName)
+            )
+        }
     }
 }
