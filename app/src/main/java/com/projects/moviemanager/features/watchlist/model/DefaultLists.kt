@@ -5,7 +5,8 @@ import com.projects.moviemanager.common.util.capitalized
 
 enum class DefaultLists(val listId: Int) {
     WATCHLIST(1),
-    WATCHED(2);
+    WATCHED(2),
+    ADD_NEW(3);
 
     override fun toString(): String {
         return super.toString().lowercase().capitalized()

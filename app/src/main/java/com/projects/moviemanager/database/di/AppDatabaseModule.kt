@@ -7,6 +7,7 @@ import com.projects.moviemanager.database.migration.MIGRATION_1_2
 import com.projects.moviemanager.database.migration.MIGRATION_2_3
 import com.projects.moviemanager.database.migration.MIGRATION_3_4
 import com.projects.moviemanager.database.migration.MIGRATION_4_5
+import com.projects.moviemanager.database.roomCallback
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -34,6 +35,8 @@ object AppDatabaseModule {
                 MIGRATION_4_5,
                 MIGRATION_4_5
             )
-            .fallbackToDestructiveMigration().build()
+            .addCallback(roomCallback)
+            .fallbackToDestructiveMigration()
+            .build()
     }
 }

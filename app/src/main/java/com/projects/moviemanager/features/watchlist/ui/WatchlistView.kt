@@ -30,7 +30,7 @@ import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.common.ui.MainViewModel
 import com.projects.moviemanager.common.ui.components.popup.ClassicSnackbar
 import com.projects.moviemanager.common.ui.components.tab.GenericTabRow
-import com.projects.moviemanager.common.ui.components.tab.setupTabs
+import com.projects.moviemanager.common.ui.components.tab.setupGenericTabs
 import com.projects.moviemanager.common.util.UiConstants.DEFAULT_PADDING
 import com.projects.moviemanager.common.util.UiConstants.SMALL_MARGIN
 import com.projects.moviemanager.features.watchlist.WatchlistScreen
@@ -41,6 +41,8 @@ import com.projects.moviemanager.features.watchlist.model.WatchlistItemAction
 import com.projects.moviemanager.features.watchlist.ui.components.WatchlistBodyPlaceholder
 import com.projects.moviemanager.features.watchlist.ui.components.WatchlistCard
 import com.projects.moviemanager.features.watchlist.ui.components.WatchlistTabItem
+import com.projects.moviemanager.features.watchlist.ui.state.WatchlistSnackbarState
+import timber.log.Timber
 
 @Composable
 fun Watchlist(
@@ -63,6 +65,7 @@ private fun Watchlist(
     goToErrorScreen: () -> Unit
 ) {
     val loadState by viewModel.loadState.collectAsState()
+    val allLists by viewModel.allLists.collectAsState()
     val watchlist by viewModel.watchlist.collectAsState()
     val watchedList by viewModel.watchedList.collectAsState()
     val selectedList by viewModel.selectedList
@@ -70,46 +73,122 @@ private fun Watchlist(
     val snackbarState by viewModel.snackbarState
     val snackbarHostState = remember { SnackbarHostState() }
 
-    val availableTabs = listOf(
-        WatchlistTabItem.WatchlistTab,
-        WatchlistTabItem.WatchedTab
-    )
+    if (allLists.isNotEmpty()) {
+        val (tabList, selectedTabIndex, updateSelectedTab) = setupGenericTabs(
+            tabList = allLists,
+            onTabSelected = { index ->
+                if (index == WatchlistTabItem.AddNewTab.tabIndex) {
+                    Timber.tag("print").d("Add new tab - $index")
+                    viewModel.onEvent(WatchlistEvent.CreateNewList)
+                } else {
+                    viewModel.onEvent(
+                        WatchlistEvent.SelectList(allLists[index].listId)
+                    )
+                }
+            }
+        )
 
-    val (tabList, selectedTabIndex, updateSelectedTab) = setupTabs(
-        tabList = availableTabs,
-        onTabSelected = { index ->
+        val removeItem: (Int, MediaType) -> Unit = { contentId, mediaType ->
             viewModel.onEvent(
-                WatchlistEvent.SelectList(availableTabs[index].listId)
+                WatchlistEvent.RemoveItem(contentId, mediaType)
             )
         }
-    )
 
-    val removeItem: (Int, MediaType) -> Unit = { contentId, mediaType ->
-        viewModel.onEvent(
-            WatchlistEvent.RemoveItem(contentId, mediaType)
-        )
+        val moveItemToList: (Int, MediaType) -> Unit = { contentId, mediaType ->
+            viewModel.onEvent(
+                WatchlistEvent.UpdateItemListId(contentId, mediaType)
+            )
+        }
+
+        LaunchedEffect(sortType) {
+            viewModel.onEvent(
+                WatchlistEvent.UpdateSortType(sortType)
+            )
+        }
+
+        LaunchedEffect(Unit) {
+            mainViewModel.updateCurrentScreen(WatchlistScreen.route())
+
+            viewModel.onEvent(
+                WatchlistEvent.LoadWatchlistData
+            )
+        }
+
+        SnackbarLaunchedEffect(snackbarState, snackbarHostState, viewModel)
+
+        ClassicSnackbar(
+            snackbarHostState = snackbarHostState,
+            onActionClick = {
+                viewModel.onEvent(WatchlistEvent.UndoItemAction)
+            }
+        ) {
+            Column(modifier = Modifier.fillMaxSize()) {
+                GenericTabRow(
+                    selectedTabIndex = selectedTabIndex.value,
+                    tabList = tabList,
+                    updateSelectedTab = { index, focusSelectedTab ->
+                        if (index == WatchlistTabItem.AddNewTab.tabIndex) {
+                            updateSelectedTab(index, false)
+                        } else {
+                            updateSelectedTab(index, focusSelectedTab)
+                        }
+                    }
+                )
+                when (loadState) {
+                    DataLoadStatus.Empty -> {
+                        // Display empty screen
+                    }
+
+                    DataLoadStatus.Loading -> {
+                        WatchlistBodyPlaceholder()
+                    }
+
+                    DataLoadStatus.Success -> {
+                        when (tabList[selectedTabIndex.value].tabIndex) {
+                            WatchlistTabItem.WatchlistTab.tabIndex -> {
+                                WatchlistBody(
+                                    contentList = watchlist,
+                                    sortType = sortType,
+                                    selectedList = selectedList,
+                                    goToDetails = goToDetails,
+                                    removeItem = removeItem,
+                                    moveItemToList = moveItemToList
+                                )
+                            }
+
+                            WatchlistTabItem.WatchedTab.tabIndex -> {
+                                WatchlistBody(
+                                    contentList = watchedList,
+                                    sortType = sortType,
+                                    selectedList = selectedList,
+                                    goToDetails = goToDetails,
+                                    removeItem = removeItem,
+                                    moveItemToList = moveItemToList
+                                )
+                            }
+                            WatchlistTabItem.AddNewTab.tabIndex -> {
+                                // nothing
+                            }
+                        }
+                    }
+
+                    DataLoadStatus.Failed -> {
+                        goToErrorScreen()
+                    }
+                }
+            }
+        }
+    } else {
+
     }
+}
 
-    val moveItemToList: (Int, MediaType) -> Unit = { contentId, mediaType ->
-        viewModel.onEvent(
-            WatchlistEvent.UpdateItemListId(contentId, mediaType)
-        )
-    }
-
-    LaunchedEffect(sortType) {
-        viewModel.onEvent(
-            WatchlistEvent.UpdateSortType(sortType)
-        )
-    }
-
-    LaunchedEffect(Unit) {
-        mainViewModel.updateCurrentScreen(WatchlistScreen.route())
-
-        viewModel.onEvent(
-            WatchlistEvent.LoadWatchlistData
-        )
-    }
-
+@Composable
+private fun SnackbarLaunchedEffect(
+    snackbarState: WatchlistSnackbarState,
+    snackbarHostState: SnackbarHostState,
+    viewModel: WatchlistViewModel
+) {
     val context = LocalContext.current
     LaunchedEffect(snackbarState) {
         if (snackbarState.displaySnackbar.value) {
@@ -129,56 +208,6 @@ private fun Watchlist(
                 }
                 snackbarHostState.showSnackbar(message)
                 viewModel.onEvent(WatchlistEvent.OnSnackbarDismiss)
-            }
-        }
-    }
-
-    ClassicSnackbar(
-        snackbarHostState = snackbarHostState,
-        onActionClick = {
-            viewModel.onEvent(WatchlistEvent.UndoItemAction)
-        }
-    ) {
-        Column(modifier = Modifier.fillMaxSize()) {
-            GenericTabRow(selectedTabIndex.value, tabList, updateSelectedTab)
-            when (loadState) {
-                DataLoadStatus.Empty -> {
-                    // Display empty screen
-                }
-
-                DataLoadStatus.Loading -> {
-                    WatchlistBodyPlaceholder()
-                }
-
-                DataLoadStatus.Success -> {
-                    when (tabList[selectedTabIndex.value].tabIndex) {
-                        WatchlistTabItem.WatchlistTab.tabIndex -> {
-                            WatchlistBody(
-                                contentList = watchlist,
-                                sortType = sortType,
-                                selectedList = selectedList,
-                                goToDetails = goToDetails,
-                                removeItem = removeItem,
-                                moveItemToList = moveItemToList
-                            )
-                        }
-
-                        WatchlistTabItem.WatchedTab.tabIndex -> {
-                            WatchlistBody(
-                                contentList = watchedList,
-                                sortType = sortType,
-                                selectedList = selectedList,
-                                goToDetails = goToDetails,
-                                removeItem = removeItem,
-                                moveItemToList = moveItemToList
-                            )
-                        }
-                    }
-                }
-
-                DataLoadStatus.Failed -> {
-                    goToErrorScreen()
-                }
             }
         }
     }

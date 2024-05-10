@@ -20,4 +20,6 @@ sealed class WatchlistEvent {
         val contentId: Int,
         val mediaType: MediaType
     ) : WatchlistEvent()
+
+    data object CreateNewList : WatchlistEvent()
 }

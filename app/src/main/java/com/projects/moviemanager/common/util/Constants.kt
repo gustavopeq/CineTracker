@@ -13,4 +13,5 @@ object Constants {
     const val PAGE_SIZE = 20
 
     const val UNSELECTED_OPTION_INDEX = -1
+    const val ADD_NEW_TAB_INDEX = -2
 }

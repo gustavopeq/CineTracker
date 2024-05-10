@@ -26,10 +26,10 @@ import com.projects.moviemanager.common.util.UiConstants
 import com.projects.moviemanager.common.util.removeParentPadding
 
 @Composable
-fun setupTabs(
+fun setupGenericTabs(
     tabList: List<TabItem>,
     onTabSelected: (Int) -> Unit = {}
-): Triple<List<TabItem>, State<Int>, (Int) -> Unit> {
+): Triple<List<TabItem>, State<Int>, (Int, Boolean) -> Unit> {
     tabList.forEachIndexed { index, tabItem ->
         tabItem.tabIndex = index
     }
@@ -38,8 +38,10 @@ fun setupTabs(
         mutableIntStateOf(tabList.firstOrNull()?.tabIndex ?: 0)
     }
 
-    val updateSelectedTab: (Int) -> Unit = { index ->
-        selectedTabIndex.intValue = index
+    val updateSelectedTab: (Int, Boolean) -> Unit = { index, focusSelectedTab ->
+        if (focusSelectedTab) {
+            selectedTabIndex.intValue = index
+        }
         onTabSelected(index)
     }
 
@@ -50,7 +52,7 @@ fun setupTabs(
 fun GenericTabRow(
     selectedTabIndex: Int,
     tabList: List<TabItem>,
-    updateSelectedTab: (Int) -> Unit
+    updateSelectedTab: (Int, Boolean) -> Unit
 ) {
     ScrollableTabRow(
         modifier = Modifier.fillMaxWidth(),
@@ -66,12 +68,17 @@ fun GenericTabRow(
         edgePadding = 0.dp
     ) {
         tabList.forEachIndexed { index, mediaTypeTabItem ->
+
+            val tabName = mediaTypeTabItem.tabResId?.let {
+                stringResource(id = it)
+            } ?: mediaTypeTabItem.tabName
+
             GenericTab(
-                text = stringResource(id = mediaTypeTabItem.tabResId),
+                text = tabName.orEmpty(),
                 tabIndex = index,
                 isSelected = selectedTabIndex == index,
                 onClick = {
-                    updateSelectedTab(index)
+                    updateSelectedTab(index, true)
                 }
             )
         }

@@ -2,6 +2,7 @@ package com.projects.moviemanager.database.repository
 
 import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.database.model.ContentEntity
+import com.projects.moviemanager.database.model.ListEntity
 
 interface DatabaseRepository {
     suspend fun insertItem(contentId: Int, mediaType: MediaType, listId: Int)
@@ -20,4 +21,8 @@ interface DatabaseRepository {
     ): ContentEntity?
 
     suspend fun reinsertItem(contentEntity: ContentEntity)
+
+    suspend fun getAllLists(): List<ListEntity>
+
+    suspend fun addNewList(listName: String)
 }

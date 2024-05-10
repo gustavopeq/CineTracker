@@ -7,7 +7,7 @@ import com.projects.moviemanager.common.domain.models.content.Videos
 import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.common.ui.components.GridContentList
 import com.projects.moviemanager.common.ui.components.tab.GenericTabRow
-import com.projects.moviemanager.common.ui.components.tab.setupTabs
+import com.projects.moviemanager.common.ui.components.tab.setupGenericTabs
 import com.projects.moviemanager.common.util.UiConstants.MAX_COUNT_MORE_LIKE_THIS_CARDS
 import com.projects.moviemanager.features.details.ui.components.moreoptions.MoreOptionsTabItem.MoreLikeThisTab
 import com.projects.moviemanager.features.details.ui.components.moreoptions.MoreOptionsTabItem.VideosTab
@@ -26,7 +26,7 @@ fun MoreOptionsTab(
         availableTabs.add(VideosTab)
     }
 
-    val (tabList, selectedTabIndex, updateSelectedTab) = setupTabs(availableTabs)
+    val (tabList, selectedTabIndex, updateSelectedTab) = setupGenericTabs(availableTabs)
 
     if (tabList.isNotEmpty()) {
         Column {

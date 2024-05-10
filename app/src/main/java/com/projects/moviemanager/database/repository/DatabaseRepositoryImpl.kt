@@ -2,10 +2,13 @@ package com.projects.moviemanager.database.repository
 
 import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.database.dao.ContentEntityDao
+import com.projects.moviemanager.database.dao.ListEntityDao
 import com.projects.moviemanager.database.model.ContentEntity
+import com.projects.moviemanager.database.model.ListEntity
 
 class DatabaseRepositoryImpl(
-    private val contentEntityDao: ContentEntityDao
+    private val contentEntityDao: ContentEntityDao,
+    private val listEntityDao: ListEntityDao
 ) : DatabaseRepository {
 
     override suspend fun insertItem(
@@ -81,5 +84,17 @@ class DatabaseRepositoryImpl(
 
     override suspend fun reinsertItem(contentEntity: ContentEntity) {
         contentEntityDao.insert(contentEntity)
+    }
+
+    override suspend fun getAllLists(): List<ListEntity> {
+        return listEntityDao.getAllLists()
+    }
+
+    override suspend fun addNewList(listName: String) {
+        listEntityDao.insertList(
+            listEntity = ListEntity(
+                listName = listName
+            )
+        )
     }
 }

@@ -12,6 +12,7 @@ import com.projects.moviemanager.features.watchlist.events.WatchlistEvent
 import com.projects.moviemanager.features.watchlist.model.DefaultLists
 import com.projects.moviemanager.features.watchlist.model.DefaultLists.Companion.getOtherList
 import com.projects.moviemanager.features.watchlist.model.WatchlistItemAction
+import com.projects.moviemanager.features.watchlist.ui.components.WatchlistTabItem
 import com.projects.moviemanager.features.watchlist.ui.state.WatchlistSnackbarState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -30,6 +31,9 @@ class WatchlistViewModel @Inject constructor(
     )
     val loadState: StateFlow<DataLoadStatus> get() = _loadState
 
+    private val _allLists = MutableStateFlow(listOf<WatchlistTabItem>())
+    val allLists: StateFlow<List<WatchlistTabItem>> get() = _allLists
+
     private val _watchlist = MutableStateFlow(listOf<GenericContent>())
     val watchlist: StateFlow<List<GenericContent>> get() = _watchlist
 
@@ -46,6 +50,10 @@ class WatchlistViewModel @Inject constructor(
     val snackbarState: MutableState<WatchlistSnackbarState> get() = _snackbarState
     private var lastItemAction: WatchlistItemAction? = null
 
+    init {
+        loadAllLists()
+    }
+
     fun onEvent(
         event: WatchlistEvent
     ) {
@@ -59,6 +67,7 @@ class WatchlistViewModel @Inject constructor(
             }
             is WatchlistEvent.OnSnackbarDismiss -> snackbarDismiss()
             is WatchlistEvent.UndoItemAction -> undoItemRemoved()
+            is WatchlistEvent.CreateNewList -> createNewList()
         }
     }
 
@@ -179,5 +188,17 @@ class WatchlistViewModel @Inject constructor(
 
     private fun snackbarDismiss() {
         _snackbarState.value = WatchlistSnackbarState()
+    }
+
+    private fun loadAllLists() {
+        viewModelScope.launch(Dispatchers.IO) {
+            _allLists.value = watchlistInteractor.getAllLists()
+        }
+    }
+
+    private fun createNewList() {
+        viewModelScope.launch(Dispatchers.IO) {
+            watchlistInteractor.createNewList("Top10")
+        }
     }
 }

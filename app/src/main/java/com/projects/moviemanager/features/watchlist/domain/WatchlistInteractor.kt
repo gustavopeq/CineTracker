@@ -5,6 +5,8 @@ import com.projects.moviemanager.common.domain.models.content.toGenericContent
 import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.database.model.ContentEntity
 import com.projects.moviemanager.database.repository.DatabaseRepository
+import com.projects.moviemanager.features.watchlist.model.DefaultLists
+import com.projects.moviemanager.features.watchlist.ui.components.WatchlistTabItem
 import com.projects.moviemanager.features.watchlist.ui.state.WatchlistState
 import com.projects.moviemanager.network.models.content.common.MovieResponse
 import com.projects.moviemanager.network.models.content.common.ShowResponse
@@ -122,5 +124,34 @@ class WatchlistInteractor @Inject constructor(
                 )
             }
         }
+    }
+
+    suspend fun getAllLists(): List<WatchlistTabItem> {
+        val allListsEntity = databaseRepository.getAllLists()
+
+        val allWatchlistTabs = mutableListOf<WatchlistTabItem>()
+
+        allListsEntity.forEach { listEntity ->
+            when (listEntity.listId) {
+                DefaultLists.WATCHLIST.listId -> allWatchlistTabs.add(WatchlistTabItem.WatchlistTab)
+                DefaultLists.WATCHED.listId -> allWatchlistTabs.add(WatchlistTabItem.WatchedTab)
+                else -> {
+                    val customTab = WatchlistTabItem.CustomTab(
+                        tabName = listEntity.listName,
+                        listId = listEntity.listId
+                    )
+                    allWatchlistTabs.add(customTab)
+                }
+            }
+        }
+        allWatchlistTabs.add(WatchlistTabItem.AddNewTab)
+
+        return allWatchlistTabs
+    }
+
+    suspend fun createNewList(
+        listName: String
+    ) {
+        databaseRepository.addNewList(listName)
     }
 }
