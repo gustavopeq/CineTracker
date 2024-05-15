@@ -31,6 +31,8 @@ import com.projects.moviemanager.common.ui.MainViewModel
 import com.projects.moviemanager.common.ui.components.popup.ClassicSnackbar
 import com.projects.moviemanager.common.ui.components.tab.GenericTabRow
 import com.projects.moviemanager.common.ui.components.tab.setupGenericTabs
+import com.projects.moviemanager.common.util.Constants
+import com.projects.moviemanager.common.util.Constants.MAX_LIST_NUMBER
 import com.projects.moviemanager.common.util.UiConstants.DEFAULT_PADDING
 import com.projects.moviemanager.common.util.UiConstants.SMALL_MARGIN
 import com.projects.moviemanager.features.watchlist.WatchlistScreen
@@ -42,7 +44,6 @@ import com.projects.moviemanager.features.watchlist.ui.components.WatchlistBodyP
 import com.projects.moviemanager.features.watchlist.ui.components.WatchlistCard
 import com.projects.moviemanager.features.watchlist.ui.components.WatchlistTabItem
 import com.projects.moviemanager.features.watchlist.ui.state.WatchlistSnackbarState
-import timber.log.Timber
 
 @Composable
 fun Watchlist(
@@ -66,120 +67,138 @@ private fun Watchlist(
 ) {
     val loadState by viewModel.loadState.collectAsState()
     val allLists by viewModel.allLists.collectAsState()
-    val watchlist by viewModel.watchlist.collectAsState()
-    val watchedList by viewModel.watchedList.collectAsState()
+    val listContent by viewModel.listContent.collectAsState()
     val selectedList by viewModel.selectedList
     val sortType by mainViewModel.watchlistSort.collectAsState()
     val snackbarState by viewModel.snackbarState
     val snackbarHostState = remember { SnackbarHostState() }
 
     if (allLists.isNotEmpty()) {
-        val (tabList, selectedTabIndex, updateSelectedTab) = setupGenericTabs(
-            tabList = allLists,
-            onTabSelected = { index ->
-                if (index == WatchlistTabItem.AddNewTab.tabIndex) {
-                    Timber.tag("print").d("Add new tab - $index")
-                    viewModel.onEvent(WatchlistEvent.CreateNewList)
-                } else {
-                    viewModel.onEvent(
-                        WatchlistEvent.SelectList(allLists[index].listId)
-                    )
-                }
-            }
+        AllListsLoadedState(
+            allLists,
+            viewModel,
+            sortType,
+            mainViewModel,
+            snackbarState,
+            snackbarHostState,
+            loadState,
+            listContent,
+            selectedList,
+            goToDetails,
+            goToErrorScreen
         )
+    }
+}
 
-        val removeItem: (Int, MediaType) -> Unit = { contentId, mediaType ->
-            viewModel.onEvent(
-                WatchlistEvent.RemoveItem(contentId, mediaType)
-            )
-        }
-
-        val moveItemToList: (Int, MediaType) -> Unit = { contentId, mediaType ->
-            viewModel.onEvent(
-                WatchlistEvent.UpdateItemListId(contentId, mediaType)
-            )
-        }
-
-        LaunchedEffect(sortType) {
-            viewModel.onEvent(
-                WatchlistEvent.UpdateSortType(sortType)
-            )
-        }
-
-        LaunchedEffect(Unit) {
-            mainViewModel.updateCurrentScreen(WatchlistScreen.route())
-
-            viewModel.onEvent(
-                WatchlistEvent.LoadWatchlistData
-            )
-        }
-
-        SnackbarLaunchedEffect(snackbarState, snackbarHostState, viewModel)
-
-        ClassicSnackbar(
-            snackbarHostState = snackbarHostState,
-            onActionClick = {
-                viewModel.onEvent(WatchlistEvent.UndoItemAction)
-            }
-        ) {
-            Column(modifier = Modifier.fillMaxSize()) {
-                GenericTabRow(
-                    selectedTabIndex = selectedTabIndex.value,
-                    tabList = tabList,
-                    updateSelectedTab = { index, focusSelectedTab ->
-                        if (index == WatchlistTabItem.AddNewTab.tabIndex) {
-                            updateSelectedTab(index, false)
-                        } else {
-                            updateSelectedTab(index, focusSelectedTab)
-                        }
-                    }
-                )
-                when (loadState) {
-                    DataLoadStatus.Empty -> {
-                        // Display empty screen
-                    }
-
-                    DataLoadStatus.Loading -> {
-                        WatchlistBodyPlaceholder()
-                    }
-
-                    DataLoadStatus.Success -> {
-                        when (tabList[selectedTabIndex.value].tabIndex) {
-                            WatchlistTabItem.WatchlistTab.tabIndex -> {
-                                WatchlistBody(
-                                    contentList = watchlist,
-                                    sortType = sortType,
-                                    selectedList = selectedList,
-                                    goToDetails = goToDetails,
-                                    removeItem = removeItem,
-                                    moveItemToList = moveItemToList
-                                )
-                            }
-
-                            WatchlistTabItem.WatchedTab.tabIndex -> {
-                                WatchlistBody(
-                                    contentList = watchedList,
-                                    sortType = sortType,
-                                    selectedList = selectedList,
-                                    goToDetails = goToDetails,
-                                    removeItem = removeItem,
-                                    moveItemToList = moveItemToList
-                                )
-                            }
-                            WatchlistTabItem.AddNewTab.tabIndex -> {
-                                // nothing
-                            }
-                        }
-                    }
-
-                    DataLoadStatus.Failed -> {
-                        goToErrorScreen()
-                    }
-                }
-            }
+@Composable
+private fun AllListsLoadedState(
+    allLists: List<WatchlistTabItem>,
+    viewModel: WatchlistViewModel,
+    sortType: MediaType?,
+    mainViewModel: MainViewModel,
+    snackbarState: WatchlistSnackbarState,
+    snackbarHostState: SnackbarHostState,
+    loadState: DataLoadStatus,
+    listContent: Map<Int, List<GenericContent>>,
+    selectedList: Int,
+    goToDetails: (Int, MediaType) -> Unit,
+    goToErrorScreen: () -> Unit
+) {
+    val availableTabLists = if (allLists.size > MAX_LIST_NUMBER) {
+        allLists.filterNot {
+            it.listId == Constants.ADD_NEW_TAB_ID
         }
     } else {
+        allLists
+    }
 
+    val (tabList, selectedTabIndex, updateSelectedTab) = setupGenericTabs(
+        tabList = availableTabLists,
+        onTabSelected = { index ->
+
+            if (availableTabLists[index].listId == WatchlistTabItem.AddNewTab.listId) {
+                viewModel.onEvent(WatchlistEvent.CreateNewList)
+            } else {
+                viewModel.onEvent(
+                    WatchlistEvent.SelectList(availableTabLists[index].listId)
+                )
+            }
+        }
+    )
+
+    val removeItem: (Int, MediaType) -> Unit = { contentId, mediaType ->
+        viewModel.onEvent(
+            WatchlistEvent.RemoveItem(contentId, mediaType)
+        )
+    }
+
+    val moveItemToList: (Int, MediaType) -> Unit = { contentId, mediaType ->
+        viewModel.onEvent(
+            WatchlistEvent.UpdateItemListId(contentId, mediaType)
+        )
+    }
+
+    LaunchedEffect(sortType) {
+        viewModel.onEvent(
+            WatchlistEvent.UpdateSortType(sortType)
+        )
+    }
+
+    LaunchedEffect(Unit) {
+        mainViewModel.updateCurrentScreen(WatchlistScreen.route())
+
+        viewModel.onEvent(
+            WatchlistEvent.LoadWatchlistData
+        )
+    }
+
+    SnackbarLaunchedEffect(snackbarState, snackbarHostState, viewModel)
+
+    ClassicSnackbar(
+        snackbarHostState = snackbarHostState,
+        onActionClick = {
+            viewModel.onEvent(WatchlistEvent.UndoItemAction)
+        }
+    ) {
+        Column(modifier = Modifier.fillMaxSize()) {
+            GenericTabRow(
+                selectedTabIndex = selectedTabIndex.value,
+                tabList = tabList,
+                updateSelectedTab = { index, focusSelectedTab ->
+                    if (availableTabLists[index].listId == WatchlistTabItem.AddNewTab.listId) {
+                        updateSelectedTab(index, false)
+                    } else {
+                        updateSelectedTab(index, focusSelectedTab)
+                    }
+                }
+            )
+            when (loadState) {
+                DataLoadStatus.Empty -> {
+                    // Display empty screen
+                }
+
+                DataLoadStatus.Loading -> {
+                    WatchlistBodyPlaceholder()
+                }
+
+                DataLoadStatus.Success -> {
+                    val contentList = listContent[availableTabLists[selectedTabIndex.value].listId]
+
+                    WatchlistBody(
+                        contentList = contentList.orEmpty(),
+                        sortType = sortType,
+                        selectedList = selectedList,
+                        goToDetails = goToDetails,
+                        removeItem = removeItem,
+                        moveItemToList = moveItemToList
+                    )
+                }
+
+                DataLoadStatus.Failed -> {
+                    goToErrorScreen()
+                }
+            }
+        }
     }
 }
 

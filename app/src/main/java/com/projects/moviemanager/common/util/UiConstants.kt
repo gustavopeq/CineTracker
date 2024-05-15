@@ -26,7 +26,6 @@ object UiConstants {
     const val TEXT_PLACEHOLDER_CORNER_PERCENTAGE = 30
 
     // Home
-    const val HOME_LOGO_SIZE = 36
     const val WATCHLIST_CAROUSEL_MAX_COUNT = 10
     const val HOME_BOTTOM_END_MARGIN = 60
 

@@ -19,6 +19,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
@@ -34,11 +35,8 @@ class WatchlistViewModel @Inject constructor(
     private val _allLists = MutableStateFlow(listOf<WatchlistTabItem>())
     val allLists: StateFlow<List<WatchlistTabItem>> get() = _allLists
 
-    private val _watchlist = MutableStateFlow(listOf<GenericContent>())
-    val watchlist: StateFlow<List<GenericContent>> get() = _watchlist
-
-    private val _watchedList = MutableStateFlow(listOf<GenericContent>())
-    val watchedList: StateFlow<List<GenericContent>> get() = _watchedList
+    private val _listContent = MutableStateFlow<Map<Int, List<GenericContent>>>(emptyMap())
+    val listContent: StateFlow<Map<Int, List<GenericContent>>> get() = _listContent
 
     val selectedList = mutableStateOf(DefaultLists.WATCHLIST.listId)
 
@@ -75,31 +73,25 @@ class WatchlistViewModel @Inject constructor(
         showLoadingState: Boolean
     ) {
         viewModelScope.launch(Dispatchers.IO) {
-            val watchlistDatabaseItems = watchlistInteractor.getAllItems(
-                listId = DefaultLists.WATCHLIST.listId
-            )
-            if (showLoadingState && watchlistDatabaseItems.isNotEmpty()) {
-                _loadState.value = DataLoadStatus.Loading
+            val allListsData = mutableMapOf<Int, List<GenericContent>>()
+
+            allLists.value.forEach { listItem ->
+                val databaseItems = watchlistInteractor.getAllItems(listItem.listId)
+
+                if (showLoadingState && databaseItems.isNotEmpty()) {
+                    _loadState.value = DataLoadStatus.Loading
+                }
+
+                val listState = watchlistInteractor.fetchListDetails(databaseItems)
+                if (listState.isFailed()) {
+                    _loadState.value = DataLoadStatus.Failed
+                    return@launch
+                }
+
+                allListsData[listItem.listId] = listState.listItems.value
             }
 
-            val watchlistState = watchlistInteractor.fetchListDetails(watchlistDatabaseItems)
-            if (watchlistState.isFailed()) {
-                _loadState.value = DataLoadStatus.Failed
-                return@launch
-            }
-            _watchlist.value = watchlistState.listItems.value
-
-            val watchedDatabaseItems = watchlistInteractor.getAllItems(
-                listId = DefaultLists.WATCHED.listId
-            )
-
-            val watchedState = watchlistInteractor.fetchListDetails(watchedDatabaseItems)
-            if (watchedState.isFailed()) {
-                _loadState.value = DataLoadStatus.Failed
-                return@launch
-            }
-            _watchedList.value = watchedState.listItems.value
-
+            _listContent.value = allListsData
             _loadState.value = DataLoadStatus.Success
         }
     }
@@ -161,16 +153,13 @@ class WatchlistViewModel @Inject constructor(
         contentId: Int,
         mediaType: MediaType
     ) {
-        val currentList = when (selectedList.value) {
-            DefaultLists.WATCHLIST.listId -> _watchlist
-            DefaultLists.WATCHED.listId -> _watchedList
-            else -> return
-        }
+        val listId = selectedList.value
 
-        val updatedList = currentList.value.filterNot {
-            it.id == contentId && it.mediaType == mediaType
+        _listContent.value = _listContent.value.toMutableMap().apply {
+            this[listId] = this[listId]?.filterNot {
+                it.id == contentId && it.mediaType == mediaType
+            } ?: emptyList()
         }
-        currentList.value = updatedList
     }
 
     private fun undoItemRemoved() {
@@ -198,7 +187,11 @@ class WatchlistViewModel @Inject constructor(
 
     private fun createNewList() {
         viewModelScope.launch(Dispatchers.IO) {
-            watchlistInteractor.createNewList("Top10")
+            watchlistInteractor.createNewList(UUID.randomUUID().toString().substring(0,5))
+            loadAllLists()
+            loadWatchlistData(
+                showLoadingState = true
+            )
         }
     }
 }

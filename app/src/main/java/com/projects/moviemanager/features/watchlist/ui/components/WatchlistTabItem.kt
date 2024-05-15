@@ -3,7 +3,6 @@ package com.projects.moviemanager.features.watchlist.ui.components
 import androidx.annotation.StringRes
 import com.projects.moviemanager.R
 import com.projects.moviemanager.common.ui.components.tab.TabItem
-import com.projects.moviemanager.common.util.Constants.ADD_NEW_TAB_INDEX
 import com.projects.moviemanager.common.util.Constants.UNSELECTED_OPTION_INDEX
 import com.projects.moviemanager.features.watchlist.model.DefaultLists
 
@@ -23,8 +22,7 @@ sealed class WatchlistTabItem(
     )
     data object AddNewTab : WatchlistTabItem(
         tabResId = R.string.add_new_tab,
-        listId = DefaultLists.ADD_NEW.listId,
-        tabIndex = ADD_NEW_TAB_INDEX
+        listId = DefaultLists.ADD_NEW.listId
     )
     data class CustomTab(
         override val tabResId: Int? = null,

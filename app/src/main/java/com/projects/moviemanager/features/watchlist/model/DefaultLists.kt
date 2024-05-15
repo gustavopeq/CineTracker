@@ -1,12 +1,13 @@
 package com.projects.moviemanager.features.watchlist.model
 
 import com.projects.moviemanager.R
+import com.projects.moviemanager.common.util.Constants.ADD_NEW_TAB_ID
 import com.projects.moviemanager.common.util.capitalized
 
 enum class DefaultLists(val listId: Int) {
     WATCHLIST(1),
     WATCHED(2),
-    ADD_NEW(3);
+    ADD_NEW(ADD_NEW_TAB_ID);
 
     override fun toString(): String {
         return super.toString().lowercase().capitalized()
