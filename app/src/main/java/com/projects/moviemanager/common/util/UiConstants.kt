@@ -51,6 +51,7 @@ object UiConstants {
 
     // Watchlist
     const val WATCHLIST_IMAGE_WIDTH = 100
+    const val WATCHLIST_ADD_NEW_ICON_SIZE = 35
 
     // Search
     const val SEARCH_FILTER_BUTTON_HEIGHT = 30

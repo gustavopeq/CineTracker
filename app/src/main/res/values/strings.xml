@@ -35,7 +35,6 @@
     <!-- Watchlist screen -->
     <string name="watchlist_tab">Watchlist</string>
     <string name="watched_tab">Watched</string>
-    <string name="add_new_tab">Add</string>
     <string name="movie_tag">Movie</string>
     <string name="show_tag">Show</string>
     <string name="remove_option_popup_menu">Remove from %s</string>
@@ -46,6 +45,7 @@
     <string name="empty_list_message">Add to this list by searching for a movie or show.</string>
     <string name="empty_movie_list_message">Add to this list by searching for movie.</string>
     <string name="empty_show_list_message">Add to this list by searching for a show.</string>
+    <string name="add_new_tab_description">Create new tab</string>
 
     <!-- Search screen -->
     <string name="search_bar_placeholder">Search movies, shows or people…</string>

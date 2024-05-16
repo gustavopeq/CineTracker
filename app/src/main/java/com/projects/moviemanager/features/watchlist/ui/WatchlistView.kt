@@ -32,7 +32,7 @@ import com.projects.moviemanager.common.ui.components.popup.ClassicSnackbar
 import com.projects.moviemanager.common.ui.components.tab.GenericTabRow
 import com.projects.moviemanager.common.ui.components.tab.setupGenericTabs
 import com.projects.moviemanager.common.util.Constants
-import com.projects.moviemanager.common.util.Constants.MAX_LIST_NUMBER
+import com.projects.moviemanager.common.util.Constants.MAX_WATCHLIST_LIST_NUMBER
 import com.projects.moviemanager.common.util.UiConstants.DEFAULT_PADDING
 import com.projects.moviemanager.common.util.UiConstants.SMALL_MARGIN
 import com.projects.moviemanager.features.watchlist.WatchlistScreen
@@ -104,7 +104,7 @@ private fun AllListsLoadedState(
     goToDetails: (Int, MediaType) -> Unit,
     goToErrorScreen: () -> Unit
 ) {
-    val availableTabLists = if (allLists.size > MAX_LIST_NUMBER) {
+    val availableTabLists = if (allLists.size > MAX_WATCHLIST_LIST_NUMBER) {
         allLists.filterNot {
             it.listId == Constants.ADD_NEW_TAB_ID
         }
