@@ -46,6 +46,9 @@
     <string name="empty_movie_list_message">Add to this list by searching for movie.</string>
     <string name="empty_show_list_message">Add to this list by searching for a show.</string>
     <string name="add_new_tab_description">Create new tab</string>
+    <string name="create_new_list_header">Create a new List</string>
+    <string name="create_new_list_placeholder">NEW LIST NAME</string>
+    <string name="create_new_list_button">Create</string>
 
     <!-- Search screen -->
     <string name="search_bar_placeholder">Search movies, shows or people…</string>

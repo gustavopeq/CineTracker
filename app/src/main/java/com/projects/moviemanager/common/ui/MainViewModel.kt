@@ -1,13 +1,15 @@
 package com.projects.moviemanager.common.ui
 
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.projects.moviemanager.common.domain.models.util.MediaType
-import dagger.hilt.android.lifecycle.HiltViewModel
 import com.projects.moviemanager.common.domain.models.util.SortTypeItem
 import com.projects.moviemanager.features.home.HomeScreen
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor() : ViewModel() {
@@ -26,6 +28,13 @@ class MainViewModel @Inject constructor() : ViewModel() {
 
     private val _watchlistSort = MutableStateFlow<MediaType?>(null)
     val watchlistSort: StateFlow<MediaType?> get() = _watchlistSort
+
+    /* Create New List  */
+    private val _displayCreateNewList = MutableStateFlow(false)
+    val displayCreateNewList: StateFlow<Boolean> get() = _displayCreateNewList
+
+    private val _newListTextFieldValue = mutableStateOf("")
+    val newListTextFieldValue: MutableState<String> get() = _newListTextFieldValue
 
     fun updateSortType(
         sortTypeItem: SortTypeItem
@@ -53,5 +62,18 @@ class MainViewModel @Inject constructor() : ViewModel() {
         mediaType: MediaType?
     ) {
         _watchlistSort.value = mediaType
+    }
+
+    fun updateDisplayCreateNewList(
+        open: Boolean
+    ) {
+        _newListTextFieldValue.value = ""
+        _displayCreateNewList.value = open
+    }
+
+    fun updateCreateNewListTextField(
+        listName: String
+    ) {
+        _newListTextFieldValue.value = listName
     }
 }

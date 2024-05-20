@@ -117,7 +117,7 @@ private fun AllListsLoadedState(
         onTabSelected = { index ->
 
             if (availableTabLists[index].listId == WatchlistTabItem.AddNewTab.listId) {
-                viewModel.onEvent(WatchlistEvent.CreateNewList)
+                mainViewModel.updateDisplayCreateNewList(true)
             } else {
                 viewModel.onEvent(
                     WatchlistEvent.SelectList(availableTabLists[index].listId)

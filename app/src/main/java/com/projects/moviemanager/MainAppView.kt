@@ -24,6 +24,7 @@ import com.projects.moviemanager.common.ui.components.bottomsheet.ModalComponent
 import com.projects.moviemanager.common.ui.screen.ErrorScreen
 import com.projects.moviemanager.common.ui.theme.MovieManagerTheme
 import com.projects.moviemanager.features.details.DetailsScreen
+import com.projects.moviemanager.features.watchlist.ui.components.CreateListBottomSheet
 import com.projects.moviemanager.navigation.MainNavGraph
 import com.projects.moviemanager.navigation.components.MainNavBar
 import com.projects.moviemanager.navigation.components.MainNavBarItem
@@ -84,6 +85,10 @@ fun MainApp() {
             mainViewModel = mainViewModel,
             showSortBottomSheet = showSortBottomSheet,
             displaySortScreen = displaySortScreen
+        )
+
+        CreateListBottomSheet(
+            mainViewModel = mainViewModel
         )
     }
 }
