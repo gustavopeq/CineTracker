@@ -14,4 +14,7 @@ interface ListEntityDao {
 
     @Query("SELECT * FROM list_entity")
     fun getAllLists(): List<ListEntity>
+
+    @Query("SELECT COUNT(*) FROM list_entity WHERE listName = :listName")
+    fun getListCountByName(listName: String): Int
 }

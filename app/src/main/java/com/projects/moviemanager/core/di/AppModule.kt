@@ -5,6 +5,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import com.projects.moviemanager.common.ui.MainViewModel
+import com.projects.moviemanager.database.repository.DatabaseRepository
 import javax.inject.Singleton
 
 @Module
@@ -12,7 +13,9 @@ import javax.inject.Singleton
 object AppModule {
     @Singleton
     @Provides
-    fun providesMainViewModel(): MainViewModel {
-        return MainViewModel()
+    fun providesMainViewModel(
+        databaseRepository: DatabaseRepository
+    ): MainViewModel {
+        return MainViewModel(databaseRepository)
     }
 }

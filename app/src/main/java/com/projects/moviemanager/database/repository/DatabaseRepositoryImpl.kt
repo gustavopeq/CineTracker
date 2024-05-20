@@ -90,11 +90,22 @@ class DatabaseRepositoryImpl(
         return listEntityDao.getAllLists()
     }
 
-    override suspend fun addNewList(listName: String) {
-        listEntityDao.insertList(
-            listEntity = ListEntity(
-                listName = listName
+    /**
+     * @return Return true when list is created or false if new list couldn't be created
+     */
+    override suspend fun addNewList(listName: String): Boolean {
+        val newListName = listName.lowercase()
+        val isDuplicated = listEntityDao.getListCountByName(newListName) > 0
+
+        return if (isDuplicated) {
+            false
+        } else {
+            listEntityDao.insertList(
+                listEntity = ListEntity(
+                    listName = newListName
+                )
             )
-        )
+            true
+        }
     }
 }
