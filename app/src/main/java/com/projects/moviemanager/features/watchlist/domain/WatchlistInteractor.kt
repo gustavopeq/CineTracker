@@ -3,6 +3,7 @@ package com.projects.moviemanager.features.watchlist.domain
 import com.projects.moviemanager.common.domain.models.content.GenericContent
 import com.projects.moviemanager.common.domain.models.content.toGenericContent
 import com.projects.moviemanager.common.domain.models.util.MediaType
+import com.projects.moviemanager.common.util.Constants
 import com.projects.moviemanager.database.model.ContentEntity
 import com.projects.moviemanager.database.repository.DatabaseRepository
 import com.projects.moviemanager.features.watchlist.model.DefaultLists
@@ -144,14 +145,13 @@ class WatchlistInteractor @Inject constructor(
                 }
             }
         }
-        allWatchlistTabs.add(WatchlistTabItem.AddNewTab)
+        if (allListsEntity.size < Constants.MAX_WATCHLIST_LIST_NUMBER) {
+            allWatchlistTabs.add(WatchlistTabItem.AddNewTab)
+        }
 
+        allWatchlistTabs.forEachIndexed { index, tabItem ->
+            tabItem.tabIndex = index
+        }
         return allWatchlistTabs
-    }
-
-    suspend fun createNewList(
-        listName: String
-    ) {
-        databaseRepository.addNewList(listName)
     }
 }

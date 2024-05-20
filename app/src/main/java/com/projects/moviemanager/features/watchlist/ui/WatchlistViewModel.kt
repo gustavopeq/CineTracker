@@ -19,7 +19,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
@@ -48,6 +47,10 @@ class WatchlistViewModel @Inject constructor(
     val snackbarState: MutableState<WatchlistSnackbarState> get() = _snackbarState
     private var lastItemAction: WatchlistItemAction? = null
 
+    // Tabs
+    private var _selectedTabIndex = MutableStateFlow(0)
+    val selectedTabIndex: StateFlow<Int> get() = _selectedTabIndex
+
     init {
         viewModelScope.launch(Dispatchers.IO) {
             loadAllLists()
@@ -60,17 +63,18 @@ class WatchlistViewModel @Inject constructor(
         when (event) {
             is WatchlistEvent.LoadWatchlistData -> loadWatchlistData(showLoadingState = true)
             is WatchlistEvent.RemoveItem -> removeListItem(event.contentId, event.mediaType)
-            is WatchlistEvent.SelectList -> selectedList.value = event.list
+            is WatchlistEvent.SelectList -> updateSelectedTab(event.tabItem)
             is WatchlistEvent.UpdateSortType -> sortType.value = event.mediaType
             is WatchlistEvent.UpdateItemListId -> {
                 updateItemListId(event.contentId, event.mediaType)
             }
             is WatchlistEvent.OnSnackbarDismiss -> snackbarDismiss()
             is WatchlistEvent.UndoItemAction -> undoItemRemoved()
-            is WatchlistEvent.CreateNewList -> createNewList()
             is WatchlistEvent.LoadAllLists -> {
                 viewModelScope.launch(Dispatchers.IO) {
-                    loadAllLists()
+                    loadAllLists(
+                        focusLast = true
+                    )
                 }
             }
         }
@@ -186,17 +190,28 @@ class WatchlistViewModel @Inject constructor(
         _snackbarState.value = WatchlistSnackbarState()
     }
 
-    private suspend fun loadAllLists() {
+    private suspend fun loadAllLists(
+        focusLast: Boolean = false
+    ) {
         _allLists.value = watchlistInteractor.getAllLists()
+        if (focusLast) {
+            val isLastItemAddNew = allLists.value.lastOrNull()?.listId ==
+                WatchlistTabItem.AddNewTab.listId
+            val lastValidItem = if (isLastItemAddNew) {
+                allLists.value[allLists.value.lastIndex - 1]
+            } else {
+                allLists.value.lastOrNull()
+            }
+            updateSelectedTab(lastValidItem)
+        }
     }
 
-    private fun createNewList() {
-        viewModelScope.launch(Dispatchers.IO) {
-            watchlistInteractor.createNewList(UUID.randomUUID().toString().substring(0,5))
-            loadAllLists()
-            loadWatchlistData(
-                showLoadingState = true
-            )
+    private fun updateSelectedTab(
+        tabItem: WatchlistTabItem?
+    ) {
+        if (tabItem != null) {
+            selectedList.value = tabItem.listId
+            _selectedTabIndex.value = tabItem.tabIndex
         }
     }
 }

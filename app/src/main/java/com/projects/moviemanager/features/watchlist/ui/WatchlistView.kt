@@ -30,9 +30,6 @@ import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.common.ui.MainViewModel
 import com.projects.moviemanager.common.ui.components.popup.ClassicSnackbar
 import com.projects.moviemanager.common.ui.components.tab.GenericTabRow
-import com.projects.moviemanager.common.ui.components.tab.setupGenericTabs
-import com.projects.moviemanager.common.util.Constants.ADD_NEW_TAB_ID
-import com.projects.moviemanager.common.util.Constants.MAX_WATCHLIST_LIST_NUMBER
 import com.projects.moviemanager.common.util.UiConstants.DEFAULT_PADDING
 import com.projects.moviemanager.common.util.UiConstants.SMALL_MARGIN
 import com.projects.moviemanager.features.watchlist.WatchlistScreen
@@ -92,7 +89,7 @@ private fun Watchlist(
 
 @Composable
 private fun AllListsLoadedState(
-    allLists: List<WatchlistTabItem>,
+    tabList: List<WatchlistTabItem>,
     viewModel: WatchlistViewModel,
     sortType: MediaType?,
     mainViewModel: MainViewModel,
@@ -105,27 +102,17 @@ private fun AllListsLoadedState(
     goToErrorScreen: () -> Unit
 ) {
     val refreshLists by mainViewModel.refreshLists.collectAsState()
+    val selectedTabIndex by viewModel.selectedTabIndex.collectAsState()
 
-    val availableTabLists = if (allLists.size > MAX_WATCHLIST_LIST_NUMBER) {
-        allLists.filterNot {
-            it.listId == ADD_NEW_TAB_ID
+    val updateSelectedTab: (Int) -> Unit = { index ->
+        if (tabList[index].listId == WatchlistTabItem.AddNewTab.listId) {
+            mainViewModel.updateDisplayCreateNewList(true)
+        } else {
+            viewModel.onEvent(
+                WatchlistEvent.SelectList(tabList[index])
+            )
         }
-    } else {
-        allLists
     }
-
-    val (tabList, selectedTabIndex, updateSelectedTab) = setupGenericTabs(
-        tabList = availableTabLists,
-        onTabSelected = { index ->
-            if (availableTabLists[index].listId == WatchlistTabItem.AddNewTab.listId) {
-                mainViewModel.updateDisplayCreateNewList(true)
-            } else {
-                viewModel.onEvent(
-                    WatchlistEvent.SelectList(availableTabLists[index].listId)
-                )
-            }
-        }
-    )
 
     val removeItem: (Int, MediaType) -> Unit = { contentId, mediaType ->
         viewModel.onEvent(
@@ -170,14 +157,10 @@ private fun AllListsLoadedState(
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
             GenericTabRow(
-                selectedTabIndex = selectedTabIndex.value,
+                selectedTabIndex = selectedTabIndex,
                 tabList = tabList,
-                updateSelectedTab = { index, focusSelectedTab ->
-                    if (availableTabLists[index].listId == WatchlistTabItem.AddNewTab.listId) {
-                        updateSelectedTab(index, false)
-                    } else {
-                        updateSelectedTab(index, focusSelectedTab)
-                    }
+                updateSelectedTab = { index, _ ->
+                    updateSelectedTab(index)
                 }
             )
             when (loadState) {
@@ -190,7 +173,7 @@ private fun AllListsLoadedState(
                 }
 
                 DataLoadStatus.Success -> {
-                    val contentList = listContent[availableTabLists[selectedTabIndex.value].listId]
+                    val contentList = listContent[tabList[selectedTabIndex].listId]
 
                     WatchlistBody(
                         contentList = contentList.orEmpty(),

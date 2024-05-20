@@ -1,6 +1,7 @@
 package com.projects.moviemanager.features.watchlist.events
 
 import com.projects.moviemanager.common.domain.models.util.MediaType
+import com.projects.moviemanager.features.watchlist.ui.components.WatchlistTabItem
 
 sealed class WatchlistEvent {
     data object LoadWatchlistData : WatchlistEvent()
@@ -11,7 +12,7 @@ sealed class WatchlistEvent {
         val mediaType: MediaType
     ) : WatchlistEvent()
     data class SelectList(
-        val list: Int
+        val tabItem: WatchlistTabItem
     ) : WatchlistEvent()
     data class UpdateSortType(
         val mediaType: MediaType?
@@ -20,7 +21,5 @@ sealed class WatchlistEvent {
         val contentId: Int,
         val mediaType: MediaType
     ) : WatchlistEvent()
-
-    data object CreateNewList : WatchlistEvent()
     data object LoadAllLists : WatchlistEvent()
 }
