@@ -49,7 +49,9 @@ class WatchlistViewModel @Inject constructor(
     private var lastItemAction: WatchlistItemAction? = null
 
     init {
-        loadAllLists()
+        viewModelScope.launch(Dispatchers.IO) {
+            loadAllLists()
+        }
     }
 
     fun onEvent(
@@ -66,6 +68,11 @@ class WatchlistViewModel @Inject constructor(
             is WatchlistEvent.OnSnackbarDismiss -> snackbarDismiss()
             is WatchlistEvent.UndoItemAction -> undoItemRemoved()
             is WatchlistEvent.CreateNewList -> createNewList()
+            is WatchlistEvent.LoadAllLists -> {
+                viewModelScope.launch(Dispatchers.IO) {
+                    loadAllLists()
+                }
+            }
         }
     }
 
@@ -179,10 +186,8 @@ class WatchlistViewModel @Inject constructor(
         _snackbarState.value = WatchlistSnackbarState()
     }
 
-    private fun loadAllLists() {
-        viewModelScope.launch(Dispatchers.IO) {
-            _allLists.value = watchlistInteractor.getAllLists()
-        }
+    private suspend fun loadAllLists() {
+        _allLists.value = watchlistInteractor.getAllLists()
     }
 
     private fun createNewList() {

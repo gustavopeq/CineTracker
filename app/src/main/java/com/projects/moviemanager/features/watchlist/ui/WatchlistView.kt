@@ -31,7 +31,7 @@ import com.projects.moviemanager.common.ui.MainViewModel
 import com.projects.moviemanager.common.ui.components.popup.ClassicSnackbar
 import com.projects.moviemanager.common.ui.components.tab.GenericTabRow
 import com.projects.moviemanager.common.ui.components.tab.setupGenericTabs
-import com.projects.moviemanager.common.util.Constants
+import com.projects.moviemanager.common.util.Constants.ADD_NEW_TAB_ID
 import com.projects.moviemanager.common.util.Constants.MAX_WATCHLIST_LIST_NUMBER
 import com.projects.moviemanager.common.util.UiConstants.DEFAULT_PADDING
 import com.projects.moviemanager.common.util.UiConstants.SMALL_MARGIN
@@ -104,9 +104,11 @@ private fun AllListsLoadedState(
     goToDetails: (Int, MediaType) -> Unit,
     goToErrorScreen: () -> Unit
 ) {
+    val refreshLists by mainViewModel.refreshLists.collectAsState()
+
     val availableTabLists = if (allLists.size > MAX_WATCHLIST_LIST_NUMBER) {
         allLists.filterNot {
-            it.listId == Constants.ADD_NEW_TAB_ID
+            it.listId == ADD_NEW_TAB_ID
         }
     } else {
         allLists
@@ -115,7 +117,6 @@ private fun AllListsLoadedState(
     val (tabList, selectedTabIndex, updateSelectedTab) = setupGenericTabs(
         tabList = availableTabLists,
         onTabSelected = { index ->
-
             if (availableTabLists[index].listId == WatchlistTabItem.AddNewTab.listId) {
                 mainViewModel.updateDisplayCreateNewList(true)
             } else {
@@ -150,6 +151,13 @@ private fun AllListsLoadedState(
         viewModel.onEvent(
             WatchlistEvent.LoadWatchlistData
         )
+    }
+
+    LaunchedEffect(refreshLists) {
+        if (refreshLists) {
+            mainViewModel.setRefreshLists(false)
+            viewModel.onEvent(WatchlistEvent.LoadAllLists)
+        }
     }
 
     SnackbarLaunchedEffect(snackbarState, snackbarHostState, viewModel)

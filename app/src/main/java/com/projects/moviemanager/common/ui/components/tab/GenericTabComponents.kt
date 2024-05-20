@@ -30,6 +30,7 @@ import com.projects.moviemanager.common.util.UiConstants
 import com.projects.moviemanager.common.util.UiConstants.WATCHLIST_ADD_NEW_ICON_SIZE
 import com.projects.moviemanager.common.util.removeParentPadding
 import com.projects.moviemanager.features.watchlist.ui.components.WatchlistTabItem
+import timber.log.Timber
 
 @Composable
 fun setupGenericTabs(
@@ -50,6 +51,7 @@ fun setupGenericTabs(
         }
         onTabSelected(index)
     }
+    Timber.tag("printlog").d("tabList: $tabList")
 
     return Triple(tabList, selectedTabIndex, updateSelectedTab)
 }

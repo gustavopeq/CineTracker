@@ -22,4 +22,5 @@ sealed class WatchlistEvent {
     ) : WatchlistEvent()
 
     data object CreateNewList : WatchlistEvent()
+    data object LoadAllLists : WatchlistEvent()
 }

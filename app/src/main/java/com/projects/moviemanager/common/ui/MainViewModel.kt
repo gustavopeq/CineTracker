@@ -42,6 +42,9 @@ class MainViewModel @Inject constructor(
     private val _isDuplicatedListName = MutableStateFlow(false)
     val isDuplicatedListName: StateFlow<Boolean> get() = _isDuplicatedListName
 
+    private val _refreshLists = MutableStateFlow(false)
+    val refreshLists: StateFlow<Boolean> get() = _refreshLists
+
     fun updateSortType(
         sortTypeItem: SortTypeItem
     ) {
@@ -99,5 +102,11 @@ class MainViewModel @Inject constructor(
         } else {
             _isDuplicatedListName.value = true
         }
+    }
+
+    fun setRefreshLists(
+        shouldRefresh: Boolean
+    ) {
+        _refreshLists.value = shouldRefresh
     }
 }
