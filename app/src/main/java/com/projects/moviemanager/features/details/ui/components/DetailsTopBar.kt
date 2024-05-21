@@ -187,5 +187,9 @@ fun WatchlistPopUpMenu(
         )
     )
 
-    GenericPopupMenu(showMenu, onDismissRequest, menuItems)
+    GenericPopupMenu(
+        showMenu = showMenu,
+        onDismissRequest = onDismissRequest,
+        menuItems = menuItems
+    )
 }

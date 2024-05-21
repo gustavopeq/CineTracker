@@ -1,9 +1,11 @@
 package com.projects.moviemanager.features.watchlist.ui
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.absoluteOffset
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
@@ -15,9 +17,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -29,7 +34,10 @@ import com.projects.moviemanager.common.domain.models.util.DataLoadStatus
 import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.common.ui.MainViewModel
 import com.projects.moviemanager.common.ui.components.popup.ClassicSnackbar
+import com.projects.moviemanager.common.ui.components.popup.GenericPopupMenu
+import com.projects.moviemanager.common.ui.components.popup.PopupMenuItem
 import com.projects.moviemanager.common.ui.components.tab.GenericTabRow
+import com.projects.moviemanager.common.ui.theme.MainBarGreyColor
 import com.projects.moviemanager.common.util.UiConstants.DEFAULT_PADDING
 import com.projects.moviemanager.common.util.UiConstants.SMALL_MARGIN
 import com.projects.moviemanager.features.watchlist.WatchlistScreen
@@ -103,6 +111,8 @@ private fun AllListsLoadedState(
 ) {
     val refreshLists by mainViewModel.refreshLists.collectAsState()
     val selectedTabIndex by viewModel.selectedTabIndex.collectAsState()
+    var showRemovePopUpMenu by remember { mutableStateOf(false) }
+    var removePopUpMenuOffset by remember { mutableStateOf(Offset.Zero) }
 
     val updateSelectedTab: (Int) -> Unit = { index ->
         if (tabList[index].listId == WatchlistTabItem.AddNewTab.listId) {
@@ -161,6 +171,14 @@ private fun AllListsLoadedState(
                 tabList = tabList,
                 updateSelectedTab = { index, _ ->
                     updateSelectedTab(index)
+                },
+                onLongClick = { index, offset ->
+                    if (index != WatchlistTabItem.WatchlistTab.tabIndex &&
+                        index != WatchlistTabItem.WatchedTab.tabIndex
+                    ) {
+                        removePopUpMenuOffset = offset
+                        showRemovePopUpMenu = true
+                    }
                 }
             )
             when (loadState) {
@@ -191,6 +209,14 @@ private fun AllListsLoadedState(
             }
         }
     }
+
+    ListRemovePopUpMenu(
+        showRemoveMenu = showRemovePopUpMenu,
+        menuOffset = removePopUpMenuOffset,
+        onDismiss = {
+            showRemovePopUpMenu = false
+        }
+    )
 }
 
 @Composable
@@ -318,5 +344,27 @@ private fun EmptyListMessage(
             textAlign = TextAlign.Center
         )
         Spacer(modifier = Modifier.weight(0.7f))
+    }
+}
+
+@Composable
+private fun ListRemovePopUpMenu(
+    showRemoveMenu: Boolean,
+    menuOffset: Offset,
+    onDismiss: () -> Unit
+) {
+    val menuItems = listOf(
+        PopupMenuItem(stringResource(id = R.string.delete_list_pop_up_item), onClick = {})
+    )
+    Box(
+        modifier = Modifier
+            .absoluteOffset(x = (menuOffset.x / 2).dp)
+    ) {
+        GenericPopupMenu(
+            showMenu = showRemoveMenu,
+            backgroundColor = MainBarGreyColor,
+            onDismissRequest = onDismiss,
+            menuItems = menuItems
+        )
     }
 }

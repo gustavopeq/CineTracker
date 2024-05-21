@@ -7,24 +7,27 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 
 @Composable
 fun GenericPopupMenu(
     showMenu: Boolean,
+    backgroundColor: Color = MaterialTheme.colorScheme.primary,
+    textColor: Color = MaterialTheme.colorScheme.onPrimary,
     onDismissRequest: () -> Unit,
     menuItems: List<PopupMenuItem>
 ) {
     DropdownMenu(
         expanded = showMenu,
         onDismissRequest = onDismissRequest,
-        modifier = Modifier.background(color = MaterialTheme.colorScheme.primary)
+        modifier = Modifier.background(color = backgroundColor)
     ) {
         menuItems.forEach { menuItem ->
             DropdownMenuItem(
                 text = {
                     Text(
                         text = menuItem.title,
-                        color = MaterialTheme.colorScheme.onPrimary,
+                        color = textColor,
                         style = MaterialTheme.typography.bodySmall
                     )
                 },
