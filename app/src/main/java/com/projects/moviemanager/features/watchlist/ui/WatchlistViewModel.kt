@@ -53,7 +53,9 @@ class WatchlistViewModel @Inject constructor(
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            loadAllLists()
+            loadAllLists(
+                focusFirst = true
+            )
         }
     }
 
@@ -76,6 +78,9 @@ class WatchlistViewModel @Inject constructor(
                         focusLast = true
                     )
                 }
+            }
+            is WatchlistEvent.DeleteList -> {
+                onDeleteList(event.listId)
             }
         }
     }
@@ -191,10 +196,13 @@ class WatchlistViewModel @Inject constructor(
     }
 
     private suspend fun loadAllLists(
-        focusLast: Boolean = false
+        focusLast: Boolean = false,
+        focusFirst: Boolean = false,
     ) {
         _allLists.value = watchlistInteractor.getAllLists()
-        if (focusLast) {
+        if (focusFirst) {
+            updateSelectedTab(allLists.value.firstOrNull())
+        } else if (focusLast) {
             val isLastItemAddNew = allLists.value.lastOrNull()?.listId ==
                 WatchlistTabItem.AddNewTab.listId
             val lastValidItem = if (isLastItemAddNew) {
@@ -212,6 +220,19 @@ class WatchlistViewModel @Inject constructor(
         if (tabItem != null) {
             selectedList.value = tabItem.listId
             _selectedTabIndex.value = tabItem.tabIndex
+        }
+    }
+
+    private fun onDeleteList(listId: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            watchlistInteractor.deleteList(listId)
+            if (selectedList.value == listId) {
+                loadAllLists(
+                    focusFirst = true
+                )
+            } else {
+                loadAllLists()
+            }
         }
     }
 }

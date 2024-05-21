@@ -25,4 +25,6 @@ interface DatabaseRepository {
     suspend fun getAllLists(): List<ListEntity>
 
     suspend fun addNewList(listName: String): Boolean
+
+    suspend fun deleteList(listId: Int)
 }

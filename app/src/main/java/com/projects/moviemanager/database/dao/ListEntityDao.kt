@@ -12,6 +12,9 @@ interface ListEntityDao {
     @Insert(onConflict = OnConflictStrategy.ABORT)
     fun insertList(listEntity: ListEntity)
 
+    @Query("DELETE FROM list_entity WHERE listId = :listId")
+    fun deleteList(listId: Int)
+
     @Query("SELECT * FROM list_entity")
     fun getAllLists(): List<ListEntity>
 

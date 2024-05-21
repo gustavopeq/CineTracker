@@ -108,4 +108,8 @@ class DatabaseRepositoryImpl(
             true
         }
     }
+
+    override suspend fun deleteList(listId: Int) {
+        listEntityDao.deleteList(listId)
+    }
 }

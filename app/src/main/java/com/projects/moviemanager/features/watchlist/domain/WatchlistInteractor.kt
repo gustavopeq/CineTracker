@@ -154,4 +154,8 @@ class WatchlistInteractor @Inject constructor(
         }
         return allWatchlistTabs
     }
+
+    suspend fun deleteList(listId: Int) {
+        databaseRepository.deleteList(listId)
+    }
 }

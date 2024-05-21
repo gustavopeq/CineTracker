@@ -22,4 +22,7 @@ sealed class WatchlistEvent {
         val mediaType: MediaType
     ) : WatchlistEvent()
     data object LoadAllLists : WatchlistEvent()
+    data class DeleteList(
+        val listId: Int
+    ) : WatchlistEvent()
 }

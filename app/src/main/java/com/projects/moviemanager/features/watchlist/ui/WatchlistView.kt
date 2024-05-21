@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -38,6 +39,7 @@ import com.projects.moviemanager.common.ui.components.popup.GenericPopupMenu
 import com.projects.moviemanager.common.ui.components.popup.PopupMenuItem
 import com.projects.moviemanager.common.ui.components.tab.GenericTabRow
 import com.projects.moviemanager.common.ui.theme.MainBarGreyColor
+import com.projects.moviemanager.common.util.Constants.UNSELECTED_OPTION_INDEX
 import com.projects.moviemanager.common.util.UiConstants.DEFAULT_PADDING
 import com.projects.moviemanager.common.util.UiConstants.SMALL_MARGIN
 import com.projects.moviemanager.features.watchlist.WatchlistScreen
@@ -113,6 +115,7 @@ private fun AllListsLoadedState(
     val selectedTabIndex by viewModel.selectedTabIndex.collectAsState()
     var showRemovePopUpMenu by remember { mutableStateOf(false) }
     var removePopUpMenuOffset by remember { mutableStateOf(Offset.Zero) }
+    val listToRemoveIndex = remember { mutableIntStateOf(UNSELECTED_OPTION_INDEX) }
 
     val updateSelectedTab: (Int) -> Unit = { index ->
         if (tabList[index].listId == WatchlistTabItem.AddNewTab.listId) {
@@ -176,6 +179,7 @@ private fun AllListsLoadedState(
                     if (index != WatchlistTabItem.WatchlistTab.tabIndex &&
                         index != WatchlistTabItem.WatchedTab.tabIndex
                     ) {
+                        listToRemoveIndex.intValue = index
                         removePopUpMenuOffset = offset
                         showRemovePopUpMenu = true
                     }
@@ -213,6 +217,15 @@ private fun AllListsLoadedState(
     ListRemovePopUpMenu(
         showRemoveMenu = showRemovePopUpMenu,
         menuOffset = removePopUpMenuOffset,
+        onRemoveList = {
+            if (listToRemoveIndex.intValue != UNSELECTED_OPTION_INDEX) {
+                viewModel.onEvent(
+                    WatchlistEvent.DeleteList(
+                        tabList[listToRemoveIndex.intValue].listId
+                    )
+                )
+            }
+        },
         onDismiss = {
             showRemovePopUpMenu = false
         }
@@ -351,10 +364,14 @@ private fun EmptyListMessage(
 private fun ListRemovePopUpMenu(
     showRemoveMenu: Boolean,
     menuOffset: Offset,
+    onRemoveList: () -> Unit,
     onDismiss: () -> Unit
 ) {
     val menuItems = listOf(
-        PopupMenuItem(stringResource(id = R.string.delete_list_pop_up_item), onClick = {})
+        PopupMenuItem(
+            stringResource(id = R.string.delete_list_pop_up_item),
+            onClick = onRemoveList
+        )
     )
     Box(
         modifier = Modifier
