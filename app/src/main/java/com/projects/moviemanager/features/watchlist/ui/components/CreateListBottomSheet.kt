@@ -20,7 +20,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -34,6 +33,7 @@ import com.projects.moviemanager.common.ui.components.button.GenericButton
 import com.projects.moviemanager.common.ui.theme.MainBarGreyColor
 import com.projects.moviemanager.common.util.UiConstants.DEFAULT_MARGIN
 import com.projects.moviemanager.common.util.UiConstants.LARGE_MARGIN
+import com.projects.moviemanager.common.util.UiConstants.NEW_LIST_MAX_CHARACTERS
 import com.projects.moviemanager.common.util.UiConstants.SMALL_MARGIN
 import com.projects.moviemanager.common.util.UiConstants.SMALL_PADDING
 import kotlinx.coroutines.Dispatchers
@@ -55,7 +55,7 @@ fun CreateListBottomSheet(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ShowBottomSheet(
     mainViewModel: MainViewModel,
@@ -100,7 +100,9 @@ private fun ShowBottomSheet(
                     modifier = Modifier.fillMaxWidth(),
                     value = listName,
                     onValueChange = {
-                        mainViewModel.updateCreateNewListTextField(it.uppercase().trim())
+                        if (it.length <= NEW_LIST_MAX_CHARACTERS) {
+                            mainViewModel.updateCreateNewListTextField(it.uppercase().trim())
+                        }
                     },
                     placeholder = {
                         Text(

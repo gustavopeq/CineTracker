@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -30,6 +32,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.projects.moviemanager.R
@@ -133,6 +136,7 @@ fun GenericTab(
     Tab(
         modifier = Modifier
             .padding(horizontal = DEFAULT_PADDING.dp)
+            .wrapContentWidth()
             .onGloballyPositioned { coordinates ->
                 tabOffset = coordinates.localToRoot(Offset.Zero)
             },
@@ -143,14 +147,16 @@ fun GenericTab(
             modifier = Modifier.combinedClickable(
                 onLongClick = { onLongClick(tabOffset) },
                 onClick = { onClick() }
-            ),
+            ).widthIn(max = 160.dp),
             text = text.uppercase(),
             color = if (isSelected) {
                 MaterialTheme.colorScheme.onPrimary
             } else {
                 MaterialTheme.colorScheme.tertiary
             },
-            style = MaterialTheme.typography.bodyMedium
+            style = MaterialTheme.typography.bodyMedium,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
         )
         Spacer(modifier = Modifier.height(LARGE_PADDING.dp))
     }
