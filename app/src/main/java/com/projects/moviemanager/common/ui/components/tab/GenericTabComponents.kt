@@ -1,7 +1,10 @@
 package com.projects.moviemanager.common.ui.components.tab
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.MarqueeSpacing
+import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -26,6 +29,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
@@ -40,6 +44,7 @@ import com.projects.moviemanager.common.ui.theme.MainBarGreyColor
 import com.projects.moviemanager.common.util.UiConstants.BACKGROUND_INDEX
 import com.projects.moviemanager.common.util.UiConstants.DEFAULT_MARGIN
 import com.projects.moviemanager.common.util.UiConstants.DEFAULT_PADDING
+import com.projects.moviemanager.common.util.UiConstants.GENERIC_TAB_MAX_WIDTH
 import com.projects.moviemanager.common.util.UiConstants.LARGE_PADDING
 import com.projects.moviemanager.common.util.UiConstants.WATCHLIST_ADD_NEW_ICON_SIZE
 import com.projects.moviemanager.common.util.removeParentPadding
@@ -133,6 +138,15 @@ fun GenericTab(
     onLongClick: (Offset) -> Unit
 ) {
     var tabOffset by remember { mutableStateOf(Offset.Zero) }
+    val tabModifier = if (isSelected) {
+        Modifier.basicMarquee(
+            iterations = 1,
+            spacing = MarqueeSpacing(10.dp)
+        )
+    } else {
+        Modifier
+    }
+
     Tab(
         modifier = Modifier
             .padding(horizontal = DEFAULT_PADDING.dp)
@@ -143,21 +157,26 @@ fun GenericTab(
         selected = isSelected,
         onClick = { onClick() }
     ) {
-        Text(
+        Box(
             modifier = Modifier.combinedClickable(
                 onLongClick = { onLongClick(tabOffset) },
                 onClick = { onClick() }
-            ).widthIn(max = 160.dp),
-            text = text.uppercase(),
-            color = if (isSelected) {
-                MaterialTheme.colorScheme.onPrimary
-            } else {
-                MaterialTheme.colorScheme.tertiary
-            },
-            style = MaterialTheme.typography.bodyMedium,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis
-        )
+            ).widthIn(max = GENERIC_TAB_MAX_WIDTH.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                modifier = tabModifier,
+                text = text.uppercase(),
+                color = if (isSelected) {
+                    MaterialTheme.colorScheme.onPrimary
+                } else {
+                    MaterialTheme.colorScheme.tertiary
+                },
+                style = MaterialTheme.typography.bodyMedium,
+                maxLines = 1,
+                overflow = TextOverflow.Clip
+            )
+        }
         Spacer(modifier = Modifier.height(LARGE_PADDING.dp))
     }
 }

@@ -19,6 +19,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -197,20 +198,22 @@ class WatchlistViewModel @Inject constructor(
 
     private suspend fun loadAllLists(
         focusLast: Boolean = false,
-        focusFirst: Boolean = false,
+        focusFirst: Boolean = false
     ) {
         _allLists.value = watchlistInteractor.getAllLists()
-        if (focusFirst) {
-            updateSelectedTab(allLists.value.firstOrNull())
-        } else if (focusLast) {
-            val isLastItemAddNew = allLists.value.lastOrNull()?.listId ==
-                WatchlistTabItem.AddNewTab.listId
-            val lastValidItem = if (isLastItemAddNew) {
-                allLists.value[allLists.value.lastIndex - 1]
-            } else {
-                allLists.value.lastOrNull()
+        withContext(Dispatchers.Main) {
+            if (focusFirst) {
+                updateSelectedTab(_allLists.value.firstOrNull())
+            } else if (focusLast) {
+                val isLastItemAddNew = _allLists.value.lastOrNull()?.listId ==
+                    WatchlistTabItem.AddNewTab.listId
+                val lastValidItem = if (isLastItemAddNew) {
+                    _allLists.value[_allLists.value.lastIndex - 1]
+                } else {
+                    _allLists.value.lastOrNull()
+                }
+                updateSelectedTab(lastValidItem)
             }
-            updateSelectedTab(lastValidItem)
         }
     }
 
@@ -226,13 +229,9 @@ class WatchlistViewModel @Inject constructor(
     private fun onDeleteList(listId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             watchlistInteractor.deleteList(listId)
-            if (selectedList.value == listId) {
-                loadAllLists(
-                    focusFirst = true
-                )
-            } else {
-                loadAllLists()
-            }
+            loadAllLists(
+                focusFirst = true
+            )
         }
     }
 }
