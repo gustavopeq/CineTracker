@@ -51,7 +51,8 @@ import com.projects.moviemanager.features.details.ui.components.DetailsDescripti
 import com.projects.moviemanager.features.details.ui.components.DetailsTopBar
 import com.projects.moviemanager.features.details.ui.components.moreoptions.MoreOptionsTab
 import com.projects.moviemanager.features.details.ui.components.moreoptions.PersonMoreOptionsTab
-import com.projects.moviemanager.features.details.ui.components.showall.ShowAllView
+import com.projects.moviemanager.features.details.ui.components.otherlists.OtherListsPanel
+import com.projects.moviemanager.features.details.ui.components.showall.ShowAllContentList
 import com.projects.moviemanager.features.details.ui.events.DetailsEvents
 import com.projects.moviemanager.features.details.util.mapValueToRange
 import com.projects.moviemanager.features.watchlist.model.DefaultLists
@@ -98,6 +99,12 @@ private fun Details(
 
     var currentTitlePosY by rememberSaveable { mutableFloatStateOf(0f) }
     var initialTitlePosY by rememberSaveable { mutableStateOf<Float?>(null) }
+
+    // Other Lists Panel
+    var showOtherListsPanel by remember { mutableStateOf(false) }
+    val updateShowOtherListsPanel: (Boolean) -> Unit = {
+        showOtherListsPanel = it
+    }
 
     val updateTitlePosition: (Float) -> Unit = { newPosition ->
         if (initialTitlePosY == null) {
@@ -157,7 +164,7 @@ private fun Details(
     }
 
     if (loadState is DataLoadStatus.Success && showAllScreen) {
-        ShowAllView(
+        ShowAllContentList(
             showAllMediaType = showAllMediaType,
             contentList = personContentList,
             goToDetails = goToDetails,
@@ -171,7 +178,8 @@ private fun Details(
             showWatchlistButton = contentDetails?.mediaType != MediaType.PERSON,
             contentInWatchlistStatus = contentInListStatus,
             onBackBtnPress = onBackPress,
-            toggleWatchlist = onToggleWatchlist
+            toggleWatchlist = onToggleWatchlist,
+            showOtherListsPanel = updateShowOtherListsPanel
         )
 
         ClassicSnackbar(
@@ -201,6 +209,16 @@ private fun Details(
                     goToErrorScreen()
                 }
             }
+        }
+
+        if (showOtherListsPanel) {
+            OtherListsPanel(
+                allLists = viewModel.getAllLists(),
+                contentInListStatus = contentInListStatus,
+                onClosePanel = {
+                    updateShowOtherListsPanel(false)
+                }
+            )
         }
     }
 }

@@ -104,6 +104,8 @@
     <string name="october">October</string>
     <string name="november">November</string>
     <string name="december">December</string>
+    <string name="manage_other_lists_popup_menu">Manage other lists</string>
+    <string name="manage_other_lists_header">Add or Remove from lists</string>
 
     <!-- Common -->
     <string name="generic_error_message">Sorry, something went wrong…</string>

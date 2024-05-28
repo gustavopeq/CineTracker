@@ -13,6 +13,7 @@ import com.projects.moviemanager.common.domain.models.person.PersonImage
 import com.projects.moviemanager.common.domain.models.person.toPersonImage
 import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.core.LanguageManager.getUserCountryCode
+import com.projects.moviemanager.database.model.ListEntity
 import com.projects.moviemanager.database.repository.DatabaseRepository
 import com.projects.moviemanager.features.details.ui.state.DetailsState
 import com.projects.moviemanager.features.watchlist.model.DefaultLists
@@ -280,13 +281,14 @@ class DetailsInteractor @Inject constructor(
         contentId: Int,
         mediaType: MediaType
     ): Map<Int, Boolean> {
+        val allLists = databaseRepository.getAllLists()
+        val contentInListMap = allLists.associate { list ->
+            list.listId to false
+        }.toMutableMap()
+
         val result = databaseRepository.searchItems(
             contentId = contentId,
             mediaType = mediaType
-        )
-        val contentInListMap = mutableMapOf(
-            DefaultLists.WATCHLIST.listId to false,
-            DefaultLists.WATCHED.listId to false
         )
 
         result.forEach { content ->
@@ -324,7 +326,7 @@ class DetailsInteractor @Inject constructor(
         )
     }
 
-    suspend fun removeFromWatchlist(
+    private suspend fun removeFromWatchlist(
         contentId: Int,
         mediaType: MediaType,
         listId: Int
@@ -334,5 +336,9 @@ class DetailsInteractor @Inject constructor(
             mediaType = mediaType,
             listId = listId
         )
+    }
+
+    suspend fun getAllLists(): List<ListEntity> {
+        return databaseRepository.getAllLists()
     }
 }

@@ -13,6 +13,7 @@ import com.projects.moviemanager.common.domain.models.person.PersonImage
 import com.projects.moviemanager.common.domain.models.util.DataLoadStatus
 import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.common.util.UiConstants.DELAY_UPDATE_POPUP_TEXT_MS
+import com.projects.moviemanager.database.model.ListEntity
 import com.projects.moviemanager.features.details.DetailsScreen.ARG_CONTENT_ID
 import com.projects.moviemanager.features.details.DetailsScreen.ARG_MEDIA_TYPE
 import com.projects.moviemanager.features.details.domain.DetailsInteractor
@@ -79,7 +80,12 @@ class DetailsViewModel @Inject constructor(
     )
     val snackbarState: MutableState<DetailsSnackbarState> get() = _snackbarState
 
+    private lateinit var allLists: List<ListEntity>
+
     init {
+        viewModelScope.launch(Dispatchers.IO) {
+            allLists = detailsInteractor.getAllLists()
+        }
         initFetchDetails()
     }
 
@@ -198,5 +204,9 @@ class DetailsViewModel @Inject constructor(
     private fun resetDetails() {
         _loadState.value = DataLoadStatus.Loading
         _detailsFailedLoading.value = true
+    }
+
+    fun getAllLists(): List<ListEntity> {
+        return allLists
     }
 }

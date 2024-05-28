@@ -55,7 +55,8 @@ fun WatchlistSortBottomSheet(
     BackHandler { dismissBottomSheet() }
 
     GenericBottomSheet(
-        dismissBottomSheet = dismissBottomSheet
+        dismissBottomSheet = dismissBottomSheet,
+        headerText = stringResource(id = R.string.sort_by_header)
     ) {
         sortOptions.forEachIndexed { index, sortItem ->
             val isButtonSelected = index == selectedIndex

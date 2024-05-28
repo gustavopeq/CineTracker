@@ -43,7 +43,7 @@ import com.projects.moviemanager.common.util.dpToPx
 import com.projects.moviemanager.common.util.pxToDp
 
 @Composable
-fun ShowAllView(
+fun ShowAllContentList(
     showAllMediaType: MediaType,
     contentList: List<GenericContent>,
     goToDetails: (Int, MediaType) -> Unit,
