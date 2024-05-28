@@ -51,7 +51,7 @@ import com.projects.moviemanager.features.details.ui.components.DetailsDescripti
 import com.projects.moviemanager.features.details.ui.components.DetailsTopBar
 import com.projects.moviemanager.features.details.ui.components.moreoptions.MoreOptionsTab
 import com.projects.moviemanager.features.details.ui.components.moreoptions.PersonMoreOptionsTab
-import com.projects.moviemanager.features.details.ui.components.otherlists.OtherListsPanel
+import com.projects.moviemanager.features.details.ui.components.otherlists.OtherListsBottomSheet
 import com.projects.moviemanager.features.details.ui.components.showall.ShowAllContentList
 import com.projects.moviemanager.features.details.ui.events.DetailsEvents
 import com.projects.moviemanager.features.details.util.mapValueToRange
@@ -141,7 +141,7 @@ private fun Details(
     }
 
     LaunchedEffect(snackbarState) {
-        if (snackbarState.displaySnackbar.value) {
+        if (snackbarState.displaySnackbar.value && !showOtherListsPanel) {
             val itemAdded = snackbarState.addedItem
             val listName = DefaultLists.getListById(snackbarState.listId)
             listName?.let {
@@ -212,9 +212,10 @@ private fun Details(
         }
 
         if (showOtherListsPanel) {
-            OtherListsPanel(
+            OtherListsBottomSheet(
                 allLists = viewModel.getAllLists(),
                 contentInListStatus = contentInListStatus,
+                onToggleList = onToggleWatchlist,
                 onClosePanel = {
                     updateShowOtherListsPanel(false)
                 }

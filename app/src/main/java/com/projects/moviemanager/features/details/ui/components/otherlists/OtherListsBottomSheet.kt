@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,11 +22,11 @@ import com.projects.moviemanager.common.util.UiConstants.LARGE_PADDING
 import com.projects.moviemanager.common.util.capitalized
 import com.projects.moviemanager.database.model.ListEntity
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun OtherListsPanel(
+fun OtherListsBottomSheet(
     allLists: List<ListEntity>,
     contentInListStatus: Map<Int, Boolean>,
+    onToggleList: (Int) -> Unit,
     onClosePanel: () -> Unit
 ) {
     BackHandler {
@@ -45,31 +44,46 @@ fun OtherListsPanel(
                 it.listId == mapItem.key
             }?.listName
 
-            val contentInList = mapItem.value
+            val isContentInList = mapItem.value
 
             if (listName != null) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Start,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Checkbox(
-                        checked = contentInList,
-                        onCheckedChange = {},
-                        colors = CheckboxDefaults.colors(
-                            checkedColor = MaterialTheme.colorScheme.secondary
-                        )
-                    )
-                    Text(
-                        text = listName.capitalized(),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onPrimary,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                }
+                ListCheckboxRow(
+                    isContentInList = isContentInList,
+                    listName = listName,
+                    onToggleList = { onToggleList(mapItem.key) }
+                )
             }
         }
         Spacer(modifier = Modifier.height(LARGE_PADDING.dp))
+    }
+}
+
+@Composable
+private fun ListCheckboxRow(
+    isContentInList: Boolean,
+    listName: String,
+    onToggleList: () -> Unit,
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.Start,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Checkbox(
+            checked = isContentInList,
+            onCheckedChange = {
+                onToggleList()
+            },
+            colors = CheckboxDefaults.colors(
+                checkedColor = MaterialTheme.colorScheme.secondary
+            )
+        )
+        Text(
+            text = listName.capitalized(),
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onPrimary,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
     }
 }
