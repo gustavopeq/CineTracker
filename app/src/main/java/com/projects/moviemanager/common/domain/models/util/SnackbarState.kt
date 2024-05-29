@@ -9,4 +9,8 @@ open class SnackbarState {
     fun setSnackbarVisible() {
         displaySnackbar.value = true
     }
+
+    fun setSnackbarGone() {
+        displaySnackbar.value = false
+    }
 }

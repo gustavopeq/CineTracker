@@ -19,16 +19,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.projects.moviemanager.R
+import com.projects.moviemanager.common.domain.models.list.ListItem
 import com.projects.moviemanager.common.ui.components.SystemNavBarSpacer
 import com.projects.moviemanager.common.ui.components.bottomsheet.GenericBottomSheet
 import com.projects.moviemanager.common.util.UiConstants.LARGE_MARGIN
-import com.projects.moviemanager.common.util.UiConstants.LARGE_PADDING
 import com.projects.moviemanager.common.util.capitalized
-import com.projects.moviemanager.database.model.ListEntity
 
 @Composable
 fun OtherListsBottomSheet(
-    allLists: List<ListEntity>,
+    allLists: List<ListItem>,
     contentInListStatus: Map<Int, Boolean>,
     onToggleList: (Int) -> Unit,
     onClosePanel: () -> Unit
@@ -48,8 +47,8 @@ fun OtherListsBottomSheet(
         ) {
             items(contentInListStatus.toList()) { mapItem ->
                 val listName = allLists.find {
-                    it.listId == mapItem.first
-                }?.listName
+                    it.id == mapItem.first
+                }?.name
 
                 val isContentInList = mapItem.second
 

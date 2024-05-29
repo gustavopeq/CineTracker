@@ -9,14 +9,14 @@ import com.projects.moviemanager.common.domain.models.content.toGenericContent
 import com.projects.moviemanager.common.domain.models.content.toGenericContentList
 import com.projects.moviemanager.common.domain.models.content.toStreamProvider
 import com.projects.moviemanager.common.domain.models.content.toVideos
+import com.projects.moviemanager.common.domain.models.list.ListItem
+import com.projects.moviemanager.common.domain.models.list.toListItem
 import com.projects.moviemanager.common.domain.models.person.PersonImage
 import com.projects.moviemanager.common.domain.models.person.toPersonImage
 import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.core.LanguageManager.getUserCountryCode
-import com.projects.moviemanager.database.model.ListEntity
 import com.projects.moviemanager.database.repository.DatabaseRepository
 import com.projects.moviemanager.features.details.ui.state.DetailsState
-import com.projects.moviemanager.features.watchlist.model.DefaultLists
 import com.projects.moviemanager.network.models.content.common.BaseContentResponse
 import com.projects.moviemanager.network.models.content.common.MovieResponse
 import com.projects.moviemanager.network.models.content.common.PersonResponse
@@ -338,7 +338,9 @@ class DetailsInteractor @Inject constructor(
         )
     }
 
-    suspend fun getAllLists(): List<ListEntity> {
-        return databaseRepository.getAllLists()
+    suspend fun getAllLists(): List<ListItem> {
+        return databaseRepository.getAllLists().map { listEntity ->
+            listEntity.toListItem()
+        }
     }
 }

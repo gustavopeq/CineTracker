@@ -140,7 +140,7 @@ private fun Details(
         }
     }
 
-    LaunchedEffect(snackbarState) {
+    LaunchedEffect(snackbarState.displaySnackbar.value) {
         if (snackbarState.displaySnackbar.value && !showOtherListsPanel) {
             val itemAdded = snackbarState.addedItem
             val listName = DefaultLists.getListById(snackbarState.listId)

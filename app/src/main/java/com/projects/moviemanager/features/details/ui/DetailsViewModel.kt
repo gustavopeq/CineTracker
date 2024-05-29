@@ -9,11 +9,11 @@ import com.projects.moviemanager.common.domain.models.content.ContentCast
 import com.projects.moviemanager.common.domain.models.content.DetailedContent
 import com.projects.moviemanager.common.domain.models.content.GenericContent
 import com.projects.moviemanager.common.domain.models.content.Videos
+import com.projects.moviemanager.common.domain.models.list.ListItem
 import com.projects.moviemanager.common.domain.models.person.PersonImage
 import com.projects.moviemanager.common.domain.models.util.DataLoadStatus
 import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.common.util.UiConstants.DELAY_UPDATE_POPUP_TEXT_MS
-import com.projects.moviemanager.database.model.ListEntity
 import com.projects.moviemanager.features.details.DetailsScreen.ARG_CONTENT_ID
 import com.projects.moviemanager.features.details.DetailsScreen.ARG_MEDIA_TYPE
 import com.projects.moviemanager.features.details.domain.DetailsInteractor
@@ -80,7 +80,7 @@ class DetailsViewModel @Inject constructor(
     )
     val snackbarState: MutableState<DetailsSnackbarState> get() = _snackbarState
 
-    private lateinit var allLists: List<ListEntity>
+    private lateinit var allLists: List<ListItem>
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
@@ -198,7 +198,7 @@ class DetailsViewModel @Inject constructor(
     }
 
     private fun snackbarDismiss() {
-        _snackbarState.value = DetailsSnackbarState()
+        _snackbarState.value.setSnackbarGone()
     }
 
     private fun resetDetails() {
@@ -206,7 +206,7 @@ class DetailsViewModel @Inject constructor(
         _detailsFailedLoading.value = true
     }
 
-    fun getAllLists(): List<ListEntity> {
+    fun getAllLists(): List<ListItem> {
         return allLists
     }
 }
