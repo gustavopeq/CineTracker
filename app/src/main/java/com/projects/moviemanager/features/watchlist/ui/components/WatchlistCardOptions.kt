@@ -40,6 +40,13 @@ fun CardOptionsPopUpMenu(
     onRemoveClick: () -> Unit,
     onMoveItemToList: (Int) -> Unit
 ) {
+    val selectedListTabItem = allLists.find { it.listId == selectedListId }
+    val selectedListName = if (selectedListTabItem?.tabResId != null) {
+        stringResource(id = selectedListTabItem.tabResId ?: 0)
+    } else {
+        selectedListTabItem?.tabName
+    }
+
     val allListsFiltered = allLists.filterNot {
         it.listId == DefaultLists.ADD_NEW.listId || it.listId == selectedListId
     }
@@ -47,11 +54,10 @@ fun CardOptionsPopUpMenu(
     val updateDisplayOtherListsPanel: (Boolean) -> Unit = {
         displayOtherListsPanel = it
     }
-    val selectedList = DefaultLists.getListById(selectedListId)
     val secondaryList = DefaultLists.getOtherList(selectedListId)
 
     val menuItems = createMenuItems(
-        selectedList = selectedList,
+        selectedListName = selectedListName.orEmpty(),
         secondaryListName = secondaryList.toString(),
         allLists = allListsFiltered,
         onRemoveClick = onRemoveClick,
@@ -81,7 +87,7 @@ fun CardOptionsPopUpMenu(
 
 @Composable
 private fun createMenuItems(
-    selectedList: DefaultLists?,
+    selectedListName: String,
     secondaryListName: String,
     allLists: List<WatchlistTabItem>,
     onRemoveClick: () -> Unit,
@@ -91,7 +97,7 @@ private fun createMenuItems(
     val removeItem = PopupMenuItem(
         title = stringResource(
             id = R.string.remove_option_popup_menu,
-            selectedList.toString()
+            selectedListName.capitalized()
         ),
         onClick = onRemoveClick
     )
