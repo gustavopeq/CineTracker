@@ -10,7 +10,6 @@ import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.features.watchlist.domain.WatchlistInteractor
 import com.projects.moviemanager.features.watchlist.events.WatchlistEvent
 import com.projects.moviemanager.features.watchlist.model.DefaultLists
-import com.projects.moviemanager.features.watchlist.model.DefaultLists.Companion.getOtherList
 import com.projects.moviemanager.features.watchlist.model.WatchlistItemAction
 import com.projects.moviemanager.features.watchlist.ui.components.WatchlistTabItem
 import com.projects.moviemanager.features.watchlist.ui.state.WatchlistSnackbarState
@@ -69,7 +68,7 @@ class WatchlistViewModel @Inject constructor(
             is WatchlistEvent.SelectList -> updateSelectedTab(event.tabItem)
             is WatchlistEvent.UpdateSortType -> sortType.value = event.mediaType
             is WatchlistEvent.UpdateItemListId -> {
-                updateItemListId(event.contentId, event.mediaType)
+                updateItemListId(event.contentId, event.mediaType, event.listId)
             }
             is WatchlistEvent.OnSnackbarDismiss -> snackbarDismiss()
             is WatchlistEvent.UndoItemAction -> undoItemRemoved()
@@ -134,20 +133,20 @@ class WatchlistViewModel @Inject constructor(
 
     private fun updateItemListId(
         contentId: Int,
-        mediaType: MediaType
+        mediaType: MediaType,
+        listId: Int
     ) {
         viewModelScope.launch(Dispatchers.IO) {
-            val otherListId = getOtherList(selectedList.value).listId
             watchlistInteractor.moveItemToList(
                 contentId = contentId,
                 mediaType = mediaType,
                 currentListId = selectedList.value,
-                newListId = otherListId
+                newListId = listId
             )
             loadWatchlistData(showLoadingState = false)
 
             triggerSnackbar(
-                listId = otherListId,
+                listId = listId,
                 itemAction = WatchlistItemAction.ITEM_MOVED
             )
         }

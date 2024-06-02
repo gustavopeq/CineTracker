@@ -33,20 +33,15 @@ import com.projects.moviemanager.R
 import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.common.ui.components.NetworkImage
 import com.projects.moviemanager.common.ui.components.RatingComponent
-import com.projects.moviemanager.common.ui.components.popup.GenericPopupMenu
-import com.projects.moviemanager.common.ui.components.popup.PopupMenuItem
 import com.projects.moviemanager.common.ui.theme.MainBarGreyColor
 import com.projects.moviemanager.common.ui.theme.PrimaryYellowColor_90
+import com.projects.moviemanager.common.util.Constants.BASE_300_IMAGE_URL
 import com.projects.moviemanager.common.util.UiConstants.BROWSE_CARD_DEFAULT_ELEVATION
 import com.projects.moviemanager.common.util.UiConstants.DEFAULT_PADDING
+import com.projects.moviemanager.common.util.UiConstants.MEDIA_TYPE_TAG_CORNER_SIZE
 import com.projects.moviemanager.common.util.UiConstants.POSTER_ASPECT_RATIO_MULTIPLY
 import com.projects.moviemanager.common.util.UiConstants.SMALL_PADDING
 import com.projects.moviemanager.common.util.UiConstants.WATCHLIST_IMAGE_WIDTH
-import com.projects.moviemanager.features.watchlist.model.DefaultLists.Companion.getOtherList
-import com.projects.moviemanager.common.util.Constants.BASE_300_IMAGE_URL
-import com.projects.moviemanager.common.util.UiConstants.MEDIA_TYPE_TAG_CORNER_SIZE
-import com.projects.moviemanager.common.util.capitalized
-import com.projects.moviemanager.features.watchlist.model.DefaultLists
 
 @Composable
 fun WatchlistCard(
@@ -55,16 +50,19 @@ fun WatchlistCard(
     posterUrl: String?,
     mediaType: MediaType,
     selectedList: Int,
+    allLists: List<WatchlistTabItem>,
     onCardClick: () -> Unit,
     onRemoveClick: () -> Unit,
-    onMoveItemToList: () -> Unit
+    onMoveItemToList: (Int) -> Unit
 ) {
     val fullImageUrl = BASE_300_IMAGE_URL + posterUrl
     val imageWidth = WATCHLIST_IMAGE_WIDTH.dp
     val imageHeight = imageWidth * POSTER_ASPECT_RATIO_MULTIPLY
 
-
     var showPopupMenu by remember { mutableStateOf(false) }
+    val updatePopUpMenuVisibility: (Boolean) -> Unit = { isVisible ->
+        showPopupMenu = isVisible
+    }
 
     Card(
         modifier = Modifier
@@ -107,19 +105,18 @@ fun WatchlistCard(
             }
             IconButton(
                 onClick = {
-                    showPopupMenu = true
+                    updatePopUpMenuVisibility(true)
                 }
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_more_options),
                     contentDescription = "More Options"
                 )
-                MoreOptionsPopUpMenu(
+                CardOptionsPopUpMenu(
                     showMenu = showPopupMenu,
-                    selectedList = selectedList,
-                    onDismissRequest = {
-                        showPopupMenu = false
-                    },
+                    selectedListId = selectedList,
+                    allLists = allLists,
+                    onDismissRequest = { updatePopUpMenuVisibility(false) },
                     onRemoveClick = onRemoveClick,
                     onMoveItemToList = onMoveItemToList
                 )
@@ -153,44 +150,4 @@ fun MediaTypeTag(
             modifier = Modifier.padding(horizontal = 2.dp)
         )
     }
-}
-
-@Composable
-fun MoreOptionsPopUpMenu(
-    showMenu: Boolean,
-    selectedList: Int,
-    onDismissRequest: () -> Unit,
-    onRemoveClick: () -> Unit,
-    onMoveItemToList: () -> Unit
-) {
-    val primaryList = DefaultLists.getListById(selectedList)
-    val listLocalizedName = stringResource(DefaultLists.getListLocalizedName(primaryList))
-
-    val secondaryList = getOtherList(selectedList)
-    val secondaryListLocalizedName = stringResource(
-        DefaultLists.getListLocalizedName(secondaryList)
-    )
-
-    val menuItems = listOf(
-        PopupMenuItem(
-            title = stringResource(
-                id = R.string.remove_option_popup_menu,
-                listLocalizedName
-            ),
-            onClick = onRemoveClick
-        ),
-        PopupMenuItem(
-            title = stringResource(
-                id = R.string.move_to_list_option_popup_menu,
-                secondaryListLocalizedName
-            ),
-            onClick = onMoveItemToList
-        )
-    )
-
-    GenericPopupMenu(
-        showMenu = showMenu,
-        onDismissRequest = onDismissRequest,
-        menuItems = menuItems
-    )
 }

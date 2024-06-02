@@ -19,7 +19,8 @@ sealed class WatchlistEvent {
     ) : WatchlistEvent()
     data class UpdateItemListId(
         val contentId: Int,
-        val mediaType: MediaType
+        val mediaType: MediaType,
+        val listId: Int
     ) : WatchlistEvent()
     data object LoadAllLists : WatchlistEvent()
     data class DeleteList(

@@ -15,4 +15,5 @@ object Constants {
     const val UNSELECTED_OPTION_INDEX = -1
     const val ADD_NEW_TAB_ID = -2
     const val MAX_WATCHLIST_LIST_NUMBER = 12
+    const val DEFAULT_LISTS_SIZE = 2
 }

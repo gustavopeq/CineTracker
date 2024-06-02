@@ -1,11 +1,9 @@
 package com.projects.moviemanager.features.watchlist.ui
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.absoluteOffset
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
@@ -35,10 +33,7 @@ import com.projects.moviemanager.common.domain.models.util.DataLoadStatus
 import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.common.ui.MainViewModel
 import com.projects.moviemanager.common.ui.components.popup.ClassicSnackbar
-import com.projects.moviemanager.common.ui.components.popup.GenericPopupMenu
-import com.projects.moviemanager.common.ui.components.popup.PopupMenuItem
 import com.projects.moviemanager.common.ui.components.tab.GenericTabRow
-import com.projects.moviemanager.common.ui.theme.MainBarGreyColor
 import com.projects.moviemanager.common.util.Constants.UNSELECTED_OPTION_INDEX
 import com.projects.moviemanager.common.util.UiConstants.DEFAULT_PADDING
 import com.projects.moviemanager.common.util.UiConstants.SMALL_MARGIN
@@ -47,6 +42,7 @@ import com.projects.moviemanager.features.watchlist.events.WatchlistEvent
 import com.projects.moviemanager.features.watchlist.model.DefaultLists
 import com.projects.moviemanager.features.watchlist.model.DefaultLists.Companion.getListLocalizedName
 import com.projects.moviemanager.features.watchlist.model.WatchlistItemAction
+import com.projects.moviemanager.features.watchlist.ui.components.ListRemovePopUpMenu
 import com.projects.moviemanager.features.watchlist.ui.components.WatchlistBodyPlaceholder
 import com.projects.moviemanager.features.watchlist.ui.components.WatchlistCard
 import com.projects.moviemanager.features.watchlist.ui.components.WatchlistTabItem
@@ -133,9 +129,9 @@ private fun AllListsLoadedState(
         )
     }
 
-    val moveItemToList: (Int, MediaType) -> Unit = { contentId, mediaType ->
+    val moveItemToList: (Int, MediaType, Int) -> Unit = { contentId, mediaType, listId ->
         viewModel.onEvent(
-            WatchlistEvent.UpdateItemListId(contentId, mediaType)
+            WatchlistEvent.UpdateItemListId(contentId, mediaType, listId)
         )
     }
 
@@ -201,6 +197,7 @@ private fun AllListsLoadedState(
                         contentList = contentList.orEmpty(),
                         sortType = sortType,
                         selectedList = selectedList,
+                        allLists = tabList,
                         goToDetails = goToDetails,
                         removeItem = removeItem,
                         moveItemToList = moveItemToList
@@ -267,15 +264,17 @@ private fun WatchlistBody(
     contentList: List<GenericContent>,
     sortType: MediaType?,
     selectedList: Int,
+    allLists: List<WatchlistTabItem>,
     goToDetails: (Int, MediaType) -> Unit,
     removeItem: (Int, MediaType) -> Unit,
-    moveItemToList: (Int, MediaType) -> Unit
+    moveItemToList: (Int, MediaType, Int) -> Unit
 ) {
     if (contentList.isNotEmpty()) {
         WatchlistContentLazyList(
             sortType = sortType,
             contentList = contentList,
             selectedList = selectedList,
+            allLists = allLists,
             goToDetails = goToDetails,
             removeItem = removeItem,
             moveItemToList = moveItemToList
@@ -290,9 +289,10 @@ private fun WatchlistContentLazyList(
     sortType: MediaType?,
     contentList: List<GenericContent>,
     selectedList: Int,
+    allLists: List<WatchlistTabItem>,
     goToDetails: (Int, MediaType) -> Unit,
     removeItem: (Int, MediaType) -> Unit,
-    moveItemToList: (Int, MediaType) -> Unit
+    moveItemToList: (Int, MediaType, Int) -> Unit
 ) {
     val sortedItems = if (sortType != null) {
         contentList.filter { it.mediaType == sortType }
@@ -310,14 +310,15 @@ private fun WatchlistContentLazyList(
                     posterUrl = mediaInfo.posterPath,
                     mediaType = mediaInfo.mediaType,
                     selectedList = selectedList,
+                    allLists = allLists,
                     onCardClick = {
                         goToDetails(mediaInfo.id, mediaInfo.mediaType)
                     },
                     onRemoveClick = {
                         removeItem(mediaInfo.id, mediaInfo.mediaType)
                     },
-                    onMoveItemToList = {
-                        moveItemToList(mediaInfo.id, mediaInfo.mediaType)
+                    onMoveItemToList = { listId ->
+                        moveItemToList(mediaInfo.id, mediaInfo.mediaType, listId)
                     }
                 )
                 Spacer(modifier = Modifier.height(DEFAULT_PADDING.dp))
@@ -360,28 +361,3 @@ private fun EmptyListMessage(
     }
 }
 
-@Composable
-private fun ListRemovePopUpMenu(
-    showRemoveMenu: Boolean,
-    menuOffset: Offset,
-    onRemoveList: () -> Unit,
-    onDismiss: () -> Unit
-) {
-    val menuItems = listOf(
-        PopupMenuItem(
-            stringResource(id = R.string.delete_list_pop_up_item),
-            onClick = onRemoveList
-        )
-    )
-    Box(
-        modifier = Modifier
-            .absoluteOffset(x = (menuOffset.x / 2).dp)
-    ) {
-        GenericPopupMenu(
-            showMenu = showRemoveMenu,
-            backgroundColor = MainBarGreyColor,
-            onDismissRequest = onDismiss,
-            menuItems = menuItems
-        )
-    }
-}
