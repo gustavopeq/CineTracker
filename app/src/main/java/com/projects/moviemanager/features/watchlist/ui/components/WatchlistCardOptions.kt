@@ -99,6 +99,7 @@ private fun createMenuItems(
             id = R.string.remove_option_popup_menu,
             selectedListName.capitalized()
         ),
+        textColor = MaterialTheme.colorScheme.error,
         onClick = onRemoveClick
     )
 

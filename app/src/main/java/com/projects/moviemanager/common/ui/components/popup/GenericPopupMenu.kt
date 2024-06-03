@@ -13,7 +13,6 @@ import androidx.compose.ui.graphics.Color
 fun GenericPopupMenu(
     showMenu: Boolean,
     backgroundColor: Color = MaterialTheme.colorScheme.primary,
-    textColor: Color = MaterialTheme.colorScheme.onPrimary,
     onDismissRequest: () -> Unit,
     menuItems: List<PopupMenuItem>
 ) {
@@ -27,7 +26,7 @@ fun GenericPopupMenu(
                 text = {
                     Text(
                         text = menuItem.title,
-                        color = textColor,
+                        color = menuItem.textColor,
                         style = MaterialTheme.typography.bodySmall
                     )
                 },
