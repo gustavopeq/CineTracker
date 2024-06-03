@@ -42,6 +42,7 @@ import com.projects.moviemanager.features.watchlist.events.WatchlistEvent
 import com.projects.moviemanager.features.watchlist.model.DefaultLists
 import com.projects.moviemanager.features.watchlist.model.DefaultLists.Companion.getListLocalizedName
 import com.projects.moviemanager.features.watchlist.model.WatchlistItemAction
+import com.projects.moviemanager.features.watchlist.ui.components.DeleteListDialog
 import com.projects.moviemanager.features.watchlist.ui.components.ListRemovePopUpMenu
 import com.projects.moviemanager.features.watchlist.ui.components.WatchlistBodyPlaceholder
 import com.projects.moviemanager.features.watchlist.ui.components.WatchlistCard
@@ -109,9 +110,11 @@ private fun AllListsLoadedState(
 ) {
     val refreshLists by mainViewModel.refreshLists.collectAsState()
     val selectedTabIndex by viewModel.selectedTabIndex.collectAsState()
-    var showRemovePopUpMenu by remember { mutableStateOf(false) }
-    var removePopUpMenuOffset by remember { mutableStateOf(Offset.Zero) }
+    var showDeletePopUpMenu by remember { mutableStateOf(false) }
+    var deletePopUpMenuOffset by remember { mutableStateOf(Offset.Zero) }
     val listToRemoveIndex = remember { mutableIntStateOf(UNSELECTED_OPTION_INDEX) }
+    var displayDeleteDialog by remember { mutableStateOf(false) }
+    var itemToRemove: MutableMap<Int, MediaType> by remember { mutableMapOf() }
 
     val updateSelectedTab: (Int) -> Unit = { index ->
         if (tabList[index].listId == WatchlistTabItem.AddNewTab.listId) {
@@ -176,8 +179,8 @@ private fun AllListsLoadedState(
                         index != WatchlistTabItem.WatchedTab.tabIndex
                     ) {
                         listToRemoveIndex.intValue = index
-                        removePopUpMenuOffset = offset
-                        showRemovePopUpMenu = true
+                        deletePopUpMenuOffset = offset
+                        showDeletePopUpMenu = true
                     }
                 }
             )
@@ -212,19 +215,23 @@ private fun AllListsLoadedState(
     }
 
     ListRemovePopUpMenu(
-        showRemoveMenu = showRemovePopUpMenu,
-        menuOffset = removePopUpMenuOffset,
+        showRemoveMenu = showDeletePopUpMenu,
+        menuOffset = deletePopUpMenuOffset,
         onRemoveList = {
-            if (listToRemoveIndex.intValue != UNSELECTED_OPTION_INDEX) {
-                viewModel.onEvent(
-                    WatchlistEvent.DeleteList(
-                        tabList[listToRemoveIndex.intValue].listId
-                    )
-                )
-            }
+            displayDeleteDialog = true
         },
         onDismiss = {
-            showRemovePopUpMenu = false
+            showDeletePopUpMenu = false
+        }
+    )
+
+    DeleteListDialog(
+        displayDeleteDialog = displayDeleteDialog,
+        listToRemoveIndex = listToRemoveIndex,
+        viewModel = viewModel,
+        tabList = tabList,
+        onDialogDismiss = {
+            displayDeleteDialog = false
         }
     )
 }
@@ -299,6 +306,7 @@ private fun WatchlistContentLazyList(
     } else {
         contentList
     }
+
     if (sortedItems.isNotEmpty()) {
         LazyColumn(
             contentPadding = PaddingValues(all = SMALL_MARGIN.dp)
@@ -360,4 +368,3 @@ private fun EmptyListMessage(
         Spacer(modifier = Modifier.weight(0.7f))
     }
 }
-

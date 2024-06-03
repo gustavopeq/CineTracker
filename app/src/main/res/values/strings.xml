@@ -52,6 +52,10 @@
     <string name="delete_list_pop_up_item">Delete</string>
     <string name="move_to_other_list_item">Move to other list</string>
     <string name="move_to_other_list_header">Move to</string>
+    <string name="delete_list_display_title">Delete List</string>
+    <string name="delete_list_display_body">Are you sure you'd like to delete this list? It can't be undone.</string>
+    <string name="delete_list_display_confirm_btn">Delete List</string>
+    <string name="delete_list_display_dismiss_btn">Cancel</string>
 
     <!-- Search screen -->
     <string name="search_bar_placeholder">Search movies, shows or people…</string>
