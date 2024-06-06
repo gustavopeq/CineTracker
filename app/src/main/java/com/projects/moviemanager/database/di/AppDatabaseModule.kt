@@ -2,6 +2,7 @@ package com.projects.moviemanager.database.di
 
 import android.content.Context
 import androidx.room.Room
+import com.projects.moviemanager.R
 import com.projects.moviemanager.database.AppDatabase
 import com.projects.moviemanager.database.migration.MIGRATION_1_2
 import com.projects.moviemanager.database.migration.MIGRATION_2_3
@@ -32,11 +33,18 @@ object AppDatabaseModule {
                 MIGRATION_1_2,
                 MIGRATION_2_3,
                 MIGRATION_3_4,
-                MIGRATION_4_5,
-                MIGRATION_4_5
+                MIGRATION_4_5(getLocalizedListNames(context))
             )
             .addCallback(roomCallback)
             .fallbackToDestructiveMigration()
             .build()
+    }
+
+    private fun getLocalizedListNames(
+        context: Context
+    ): List<String> {
+        val watchlist = context.getString(R.string.watchlist_tab)
+        val watched = context.getString(R.string.watched_tab)
+        return listOf(watchlist, watched)
     }
 }
