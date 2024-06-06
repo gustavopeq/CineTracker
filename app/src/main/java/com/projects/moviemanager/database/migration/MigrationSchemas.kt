@@ -44,7 +44,7 @@ val MIGRATION_3_4: Migration = object : Migration(3, 4) {
     }
 }
 
-val MIGRATION_4_5: (List<String>) -> Migration = { localizedListNames ->
+val MIGRATION_4_5: (Map<String, String>) -> Migration = { localizedListNamesMap ->
     object : Migration(4, 5) {
         override fun migrate(db: SupportSQLiteDatabase) {
             // Create a temporary table for ListEntity
@@ -57,11 +57,32 @@ val MIGRATION_4_5: (List<String>) -> Migration = { localizedListNames ->
             """
             )
 
-            // Populate the new_list_entity table with unique list names from the old content_entity table
+            // Create a temporary table for mapping old list names to new list names
+            db.execSQL(
+                """
+            CREATE TABLE IF NOT EXISTS list_name_mapping (
+                oldListName TEXT NOT NULL,
+                newListName TEXT NOT NULL
+            )
+            """
+            )
+
+            // Populate the mapping table with old and new list names
+            localizedListNamesMap.forEach { (oldName, localizedName) ->
+                db.execSQL(
+                    """
+                INSERT INTO list_name_mapping (oldListName, newListName)
+                VALUES (?, ?)
+                """,
+                    arrayOf(oldName, localizedName)
+                )
+            }
+
+            // Populate the new_list_entity table with localized list names from the mapping table
             db.execSQL(
                 """
             INSERT INTO new_list_entity (listName)
-            SELECT DISTINCT listId FROM content_entity
+            SELECT DISTINCT newListName FROM list_name_mapping
             """
             )
 
@@ -85,19 +106,21 @@ val MIGRATION_4_5: (List<String>) -> Migration = { localizedListNames ->
             INSERT INTO new_content_entity (contentEntityDbId, contentId, mediaType, listId, createdAt)
             SELECT CE.contentEntityDbId, CE.contentId, CE.mediaType, LE.listId, CE.createdAt
             FROM content_entity AS CE
-            JOIN new_list_entity AS LE ON CE.listId = LE.listName
+            JOIN list_name_mapping AS LNM ON CE.listId = LNM.oldListName
+            JOIN new_list_entity AS LE ON LNM.newListName = LE.listName
             """
             )
 
             // Drop the old tables
             db.execSQL("DROP TABLE content_entity")
+            db.execSQL("DROP TABLE list_name_mapping")
 
             // Rename new tables to the official table names
             db.execSQL("ALTER TABLE new_list_entity RENAME TO list_entity")
             db.execSQL("ALTER TABLE new_content_entity RENAME TO content_entity")
 
             // Insert default lists if they do not exist
-            localizedListNames.forEach { listName ->
+            localizedListNamesMap.values.forEach { localizedName ->
                 db.execSQL(
                     """
                 INSERT INTO list_entity (listName)
@@ -105,7 +128,7 @@ val MIGRATION_4_5: (List<String>) -> Migration = { localizedListNames ->
                     SELECT 1 FROM list_entity WHERE listName = ?
                 )
                 """,
-                    arrayOf(listName, listName)
+                    arrayOf(localizedName, localizedName)
                 )
             }
         }

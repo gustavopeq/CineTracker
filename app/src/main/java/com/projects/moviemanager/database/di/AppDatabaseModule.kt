@@ -42,9 +42,10 @@ object AppDatabaseModule {
 
     private fun getLocalizedListNames(
         context: Context
-    ): List<String> {
-        val watchlist = context.getString(R.string.watchlist_tab)
-        val watched = context.getString(R.string.watched_tab)
-        return listOf(watchlist, watched)
+    ): Map<String, String> {
+        return mapOf(
+            "watchlist" to context.getString(R.string.watchlist_tab),
+            "watched" to context.getString(R.string.watched_tab)
+        )
     }
 }
