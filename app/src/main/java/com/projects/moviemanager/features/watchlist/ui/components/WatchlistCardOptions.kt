@@ -55,10 +55,13 @@ fun CardOptionsPopUpMenu(
         displayOtherListsPanel = it
     }
     val secondaryList = DefaultLists.getOtherList(selectedListId)
+    val secondaryListName = DefaultLists.getListLocalizedName(
+        DefaultLists.getListById(secondaryList.listId)
+    )
 
     val menuItems = createMenuItems(
         selectedListName = selectedListName.orEmpty(),
-        secondaryListName = secondaryList.toString(),
+        secondaryListName = stringResource(id = secondaryListName),
         allLists = allListsFiltered,
         onRemoveClick = onRemoveClick,
         onMoveItemToSecondaryList = {
