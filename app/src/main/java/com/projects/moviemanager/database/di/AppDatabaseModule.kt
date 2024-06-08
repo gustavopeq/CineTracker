@@ -44,8 +44,8 @@ object AppDatabaseModule {
         context: Context
     ): Map<String, String> {
         return mapOf(
-            "watchlist" to context.getString(R.string.watchlist_tab),
-            "watched" to context.getString(R.string.watched_tab)
+            "watchlist" to context.getString(R.string.watchlist_tab).lowercase(),
+            "watched" to context.getString(R.string.watched_tab).lowercase()
         )
     }
 }
