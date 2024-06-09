@@ -1,12 +1,15 @@
 package com.projects.moviemanager.navigation.components
 
+import androidx.compose.foundation.Image
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import com.projects.moviemanager.R
 import com.projects.moviemanager.common.ui.MainViewModel
 import com.projects.moviemanager.common.ui.components.button.SortIconButton
 import com.projects.moviemanager.features.browse.BrowseScreen
@@ -27,10 +30,19 @@ fun TopNavBar(
     if (showTopBar) {
         TopAppBar(
             title = {
-                Text(
-                    text = title.orEmpty(),
-                    style = MaterialTheme.typography.headlineLarge
-                )
+                if (currentScreen == HomeScreen.route()) {
+                    Image(
+                        painter = painterResource(id = R.drawable.cinetracker_name_logo),
+                        contentDescription = stringResource(
+                            id = R.string.app_logo_image_description
+                        )
+                    )
+                } else {
+                    Text(
+                        text = title.orEmpty(),
+                        style = MaterialTheme.typography.headlineLarge
+                    )
+                }
             },
             actions = {
                 if (screensWithSortIcon.contains(currentScreen)) {
