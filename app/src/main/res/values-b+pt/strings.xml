@@ -18,6 +18,7 @@
     <string name="coming_soon_header">Em Breve</string>
     <string name="home_bottom_screen_message">Parece que você viu tudo por aqui!</string>
     <string name="home_discover_more_button">Descubra Mais</string>
+    <string name="app_logo_image_description">Logotipo do app CineTracker</string>
 
     <!-- Browse screen -->
     <string name="movies_tab">Filmes</string>
@@ -45,6 +46,17 @@
     <string name="empty_list_message">Adicione à lista procurando por um filme ou série.</string>
     <string name="empty_movie_list_message">Adicione à lista procurando por um filme.</string>
     <string name="empty_show_list_message">Adicione à lista procurando por uma série.</string>
+    <string name="add_new_tab_description">Botão para criar nova lista</string>
+    <string name="create_new_list_header">Criar uma nova lista</string>
+    <string name="create_new_list_placeholder">NOME DA NOVA LISTA</string>
+    <string name="create_new_list_button">Criar</string>
+    <string name="delete_list_pop_up_item">Excluir</string>
+    <string name="move_to_other_list_item">Mover para outra lista</string>
+    <string name="move_to_other_list_header">Mover para</string>
+    <string name="delete_list_display_title">Excluir Lista</string>
+    <string name="delete_list_display_body">Tem certeza de que deseja excluir esta lista? Isso não pode ser desfeito.</string>
+    <string name="delete_list_display_confirm_btn">Excluir Lista</string>
+    <string name="delete_list_display_dismiss_btn">Cancelar</string>
 
     <!-- Search screen -->
     <string name="search_bar_placeholder">Pesquisar filmes, séries ou pessoas…</string>
@@ -101,6 +113,8 @@
     <string name="october">Outubro</string>
     <string name="november">Novembro</string>
     <string name="december">Dezembro</string>
+    <string name="manage_other_lists_popup_menu">Gerenciar outras listas</string>
+    <string name="manage_other_lists_header">Adicionar ou Remover das listas</string>
 
     <!-- Common -->
     <string name="generic_error_message">Desculpe, algo deu errado…</string>
