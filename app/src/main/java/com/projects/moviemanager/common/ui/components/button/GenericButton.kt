@@ -14,6 +14,7 @@ import com.projects.moviemanager.common.util.UiConstants.CLASSIC_BUTTON_BORDER_S
 fun GenericButton(
     modifier: Modifier = Modifier,
     buttonText: String,
+    enabled: Boolean = true,
     onClick: () -> Unit
 ) {
     Button(
@@ -22,7 +23,8 @@ fun GenericButton(
         colors = ButtonDefaults.buttonColors(
             containerColor = MaterialTheme.colorScheme.secondary
         ),
-        shape = RoundedCornerShape(CLASSIC_BUTTON_BORDER_SIZE.dp)
+        shape = RoundedCornerShape(CLASSIC_BUTTON_BORDER_SIZE.dp),
+        enabled = enabled
     ) {
         Text(
             text = buttonText,

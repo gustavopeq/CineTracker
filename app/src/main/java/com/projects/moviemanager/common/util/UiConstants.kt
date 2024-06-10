@@ -24,9 +24,9 @@ object UiConstants {
     const val EMPTY_RATINGS = 0.0
     const val MEDIA_TYPE_TAG_CORNER_SIZE = 2
     const val TEXT_PLACEHOLDER_CORNER_PERCENTAGE = 30
+    const val GENERIC_TAB_MAX_WIDTH = 160
 
     // Home
-    const val HOME_LOGO_SIZE = 36
     const val WATCHLIST_CAROUSEL_MAX_COUNT = 10
     const val HOME_BOTTOM_END_MARGIN = 60
 
@@ -52,6 +52,8 @@ object UiConstants {
 
     // Watchlist
     const val WATCHLIST_IMAGE_WIDTH = 100
+    const val WATCHLIST_ADD_NEW_ICON_SIZE = 35
+    const val NEW_LIST_MAX_CHARACTERS = 35
 
     // Search
     const val SEARCH_FILTER_BUTTON_HEIGHT = 30

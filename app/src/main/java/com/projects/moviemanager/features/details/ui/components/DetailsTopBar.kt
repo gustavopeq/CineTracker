@@ -40,9 +40,10 @@ fun DetailsTopBar(
     currentHeaderPosY: Float,
     initialHeaderPosY: Float? = null,
     showWatchlistButton: Boolean,
-    contentInWatchlistStatus: Map<String, Boolean>,
+    contentInWatchlistStatus: Map<Int, Boolean>,
     onBackBtnPress: () -> Unit,
-    toggleWatchlist: (String) -> Unit
+    toggleWatchlist: (Int) -> Unit,
+    showOtherListsPanel: (Boolean) -> Unit
 ) {
     val barHeightFloat = dpToPx(RETURN_TOP_BAR_HEIGHT.dp, density = LocalDensity.current)
 
@@ -100,7 +101,8 @@ fun DetailsTopBar(
         if (showWatchlistButton) {
             WatchlistButtonIcon(
                 contentInWatchlistStatus = contentInWatchlistStatus,
-                toggleWatchlist = toggleWatchlist
+                toggleWatchlist = toggleWatchlist,
+                showOtherListsPanel = showOtherListsPanel
             )
         }
     }
@@ -108,8 +110,9 @@ fun DetailsTopBar(
 
 @Composable
 private fun WatchlistButtonIcon(
-    contentInWatchlistStatus: Map<String, Boolean>,
-    toggleWatchlist: (String) -> Unit
+    contentInWatchlistStatus: Map<Int, Boolean>,
+    toggleWatchlist: (Int) -> Unit,
+    showOtherListsPanel: (Boolean) -> Unit
 ) {
     var showPopupMenu by remember { mutableStateOf(false) }
     val color = if (contentInWatchlistStatus.values.contains(true)) {
@@ -134,7 +137,8 @@ private fun WatchlistButtonIcon(
             onDismissRequest = {
                 showPopupMenu = false
             },
-            toggleWatchlist = toggleWatchlist
+            toggleWatchlist = toggleWatchlist,
+            showCustomLists = { showOtherListsPanel(true) }
         )
     }
 }
@@ -142,9 +146,10 @@ private fun WatchlistButtonIcon(
 @Composable
 fun WatchlistPopUpMenu(
     showMenu: Boolean,
-    contentInWatchlistStatus: Map<String, Boolean>,
+    contentInWatchlistStatus: Map<Int, Boolean>,
     onDismissRequest: () -> Unit,
-    toggleWatchlist: (String) -> Unit
+    toggleWatchlist: (Int) -> Unit,
+    showCustomLists: () -> Unit
 ) {
     val watchlist = stringResource(id = R.string.watchlist_tab)
     val watchlistMenuTitle = if (contentInWatchlistStatus[DefaultLists.WATCHLIST.listId] == true) {
@@ -172,7 +177,7 @@ fun WatchlistPopUpMenu(
         )
     }
 
-    val menuItems = listOf(
+    val menuItems = mutableListOf(
         PopupMenuItem(
             title = watchlistMenuTitle,
             onClick = {
@@ -187,5 +192,20 @@ fun WatchlistPopUpMenu(
         )
     )
 
-    GenericPopupMenu(showMenu, onDismissRequest, menuItems)
+    if (contentInWatchlistStatus.size > 2) {
+        menuItems.add(
+            PopupMenuItem(
+                title = stringResource(id = R.string.manage_other_lists_popup_menu),
+                onClick = {
+                    showCustomLists()
+                }
+            )
+        )
+    }
+
+    GenericPopupMenu(
+        showMenu = showMenu,
+        onDismissRequest = onDismissRequest,
+        menuItems = menuItems
+    )
 }

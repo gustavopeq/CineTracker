@@ -7,6 +7,7 @@ import com.projects.moviemanager.common.util.Constants.UNSELECTED_OPTION_INDEX
 
 sealed class MoreOptionsTabItem(
     @StringRes override val tabResId: Int,
+    override val tabName: String? = "",
     override var tabIndex: Int = UNSELECTED_OPTION_INDEX
 ) : TabItem {
     data object VideosTab : MoreOptionsTabItem(

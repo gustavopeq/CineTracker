@@ -2,16 +2,19 @@ package com.projects.moviemanager.database.repository
 
 import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.database.dao.ContentEntityDao
+import com.projects.moviemanager.database.dao.ListEntityDao
 import com.projects.moviemanager.database.model.ContentEntity
+import com.projects.moviemanager.database.model.ListEntity
 
 class DatabaseRepositoryImpl(
-    private val contentEntityDao: ContentEntityDao
+    private val contentEntityDao: ContentEntityDao,
+    private val listEntityDao: ListEntityDao
 ) : DatabaseRepository {
 
     override suspend fun insertItem(
         contentId: Int,
         mediaType: MediaType,
-        listId: String
+        listId: Int
     ) {
         val item = ContentEntity(
             contentId = contentId,
@@ -25,7 +28,7 @@ class DatabaseRepositoryImpl(
     override suspend fun deleteItem(
         contentId: Int,
         mediaType: MediaType,
-        listId: String
+        listId: Int
     ): ContentEntity? {
         val itemRemoved = contentEntityDao.getItem(
             contentId = contentId,
@@ -42,7 +45,7 @@ class DatabaseRepositoryImpl(
         return itemRemoved
     }
 
-    override suspend fun getAllItemsByListId(listId: String): List<ContentEntity> {
+    override suspend fun getAllItemsByListId(listId: Int): List<ContentEntity> {
         return contentEntityDao.getAllItems(listId)
     }
 
@@ -59,8 +62,8 @@ class DatabaseRepositoryImpl(
     override suspend fun moveItemToList(
         contentId: Int,
         mediaType: MediaType,
-        currentListId: String,
-        newListId: String
+        currentListId: Int,
+        newListId: Int
     ): ContentEntity? {
         deleteItem(
             contentId = contentId,
@@ -81,5 +84,32 @@ class DatabaseRepositoryImpl(
 
     override suspend fun reinsertItem(contentEntity: ContentEntity) {
         contentEntityDao.insert(contentEntity)
+    }
+
+    override suspend fun getAllLists(): List<ListEntity> {
+        return listEntityDao.getAllLists()
+    }
+
+    /**
+     * @return Return true when list is created or false if new list couldn't be created
+     */
+    override suspend fun addNewList(listName: String): Boolean {
+        val newListName = listName.lowercase()
+        val isDuplicated = listEntityDao.getListCountByName(newListName) > 0
+
+        return if (isDuplicated) {
+            false
+        } else {
+            listEntityDao.insertList(
+                listEntity = ListEntity(
+                    listName = newListName
+                )
+            )
+            true
+        }
+    }
+
+    override suspend fun deleteList(listId: Int) {
+        listEntityDao.deleteList(listId)
     }
 }

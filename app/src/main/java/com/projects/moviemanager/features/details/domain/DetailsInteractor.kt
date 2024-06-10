@@ -9,13 +9,14 @@ import com.projects.moviemanager.common.domain.models.content.toGenericContent
 import com.projects.moviemanager.common.domain.models.content.toGenericContentList
 import com.projects.moviemanager.common.domain.models.content.toStreamProvider
 import com.projects.moviemanager.common.domain.models.content.toVideos
+import com.projects.moviemanager.common.domain.models.list.ListItem
+import com.projects.moviemanager.common.domain.models.list.toListItem
 import com.projects.moviemanager.common.domain.models.person.PersonImage
 import com.projects.moviemanager.common.domain.models.person.toPersonImage
 import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.core.LanguageManager.getUserCountryCode
 import com.projects.moviemanager.database.repository.DatabaseRepository
 import com.projects.moviemanager.features.details.ui.state.DetailsState
-import com.projects.moviemanager.features.watchlist.model.DefaultLists
 import com.projects.moviemanager.network.models.content.common.BaseContentResponse
 import com.projects.moviemanager.network.models.content.common.MovieResponse
 import com.projects.moviemanager.network.models.content.common.PersonResponse
@@ -279,14 +280,15 @@ class DetailsInteractor @Inject constructor(
     suspend fun verifyContentInLists(
         contentId: Int,
         mediaType: MediaType
-    ): Map<String, Boolean> {
+    ): Map<Int, Boolean> {
+        val allLists = databaseRepository.getAllLists()
+        val contentInListMap = allLists.associate { list ->
+            list.listId to false
+        }.toMutableMap()
+
         val result = databaseRepository.searchItems(
             contentId = contentId,
             mediaType = mediaType
-        )
-        val contentInListMap = mutableMapOf(
-            DefaultLists.WATCHLIST.listId to false,
-            DefaultLists.WATCHED.listId to false
         )
 
         result.forEach { content ->
@@ -300,7 +302,7 @@ class DetailsInteractor @Inject constructor(
         currentStatus: Boolean,
         contentId: Int,
         mediaType: MediaType,
-        listId: String
+        listId: Int
     ) {
         when (currentStatus) {
             true -> {
@@ -315,7 +317,7 @@ class DetailsInteractor @Inject constructor(
     private suspend fun addToWatchlist(
         contentId: Int,
         mediaType: MediaType,
-        listId: String
+        listId: Int
     ) {
         databaseRepository.insertItem(
             contentId = contentId,
@@ -324,15 +326,21 @@ class DetailsInteractor @Inject constructor(
         )
     }
 
-    suspend fun removeFromWatchlist(
+    private suspend fun removeFromWatchlist(
         contentId: Int,
         mediaType: MediaType,
-        listId: String
+        listId: Int
     ) {
         databaseRepository.deleteItem(
             contentId = contentId,
             mediaType = mediaType,
             listId = listId
         )
+    }
+
+    suspend fun getAllLists(): List<ListItem> {
+        return databaseRepository.getAllLists().map { listEntity ->
+            listEntity.toListItem()
+        }
     }
 }

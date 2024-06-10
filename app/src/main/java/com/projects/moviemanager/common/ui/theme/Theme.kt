@@ -16,7 +16,8 @@ private val DarkColorPalette = darkColorScheme(
     onSurfaceVariant = PrimaryYellowColor,
     inverseSurface = DividerGrey,
     surfaceVariant = PrimaryGreyColor_55,
-    background = PrimaryBlackColor
+    background = PrimaryBlackColor,
+    error = PrimaryRedColor
 )
 
 @Composable

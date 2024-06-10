@@ -3,8 +3,11 @@ package com.projects.moviemanager.features.watchlist.domain
 import com.projects.moviemanager.common.domain.models.content.GenericContent
 import com.projects.moviemanager.common.domain.models.content.toGenericContent
 import com.projects.moviemanager.common.domain.models.util.MediaType
+import com.projects.moviemanager.common.util.Constants
 import com.projects.moviemanager.database.model.ContentEntity
 import com.projects.moviemanager.database.repository.DatabaseRepository
+import com.projects.moviemanager.features.watchlist.model.DefaultLists
+import com.projects.moviemanager.features.watchlist.ui.components.WatchlistTabItem
 import com.projects.moviemanager.features.watchlist.ui.state.WatchlistState
 import com.projects.moviemanager.network.models.content.common.MovieResponse
 import com.projects.moviemanager.network.models.content.common.ShowResponse
@@ -21,9 +24,9 @@ class WatchlistInteractor @Inject constructor(
     private val showRepository: ShowRepository
 ) {
     private var lastRemovedItem: ContentEntity? = null
-    private var lastMovedListId: String? = null
+    private var lastMovedListId: Int? = null
 
-    suspend fun getAllItems(listId: String): List<ContentEntity> {
+    suspend fun getAllItems(listId: Int): List<ContentEntity> {
         return databaseRepository.getAllItemsByListId(listId = listId)
     }
 
@@ -82,7 +85,7 @@ class WatchlistInteractor @Inject constructor(
     suspend fun removeContentFromDatabase(
         contentId: Int,
         mediaType: MediaType,
-        listId: String
+        listId: Int
     ) {
         lastRemovedItem = databaseRepository.deleteItem(
             contentId = contentId,
@@ -93,8 +96,8 @@ class WatchlistInteractor @Inject constructor(
     suspend fun moveItemToList(
         contentId: Int,
         mediaType: MediaType,
-        currentListId: String,
-        newListId: String
+        currentListId: Int,
+        newListId: Int
     ) {
         lastRemovedItem = databaseRepository.moveItemToList(
             contentId = contentId,
@@ -122,5 +125,37 @@ class WatchlistInteractor @Inject constructor(
                 )
             }
         }
+    }
+
+    suspend fun getAllLists(): List<WatchlistTabItem> {
+        val allListsEntity = databaseRepository.getAllLists()
+
+        val allWatchlistTabs = mutableListOf<WatchlistTabItem>()
+
+        allListsEntity.forEach { listEntity ->
+            when (listEntity.listId) {
+                DefaultLists.WATCHLIST.listId -> allWatchlistTabs.add(WatchlistTabItem.WatchlistTab)
+                DefaultLists.WATCHED.listId -> allWatchlistTabs.add(WatchlistTabItem.WatchedTab)
+                else -> {
+                    val customTab = WatchlistTabItem.CustomTab(
+                        tabName = listEntity.listName,
+                        listId = listEntity.listId
+                    )
+                    allWatchlistTabs.add(customTab)
+                }
+            }
+        }
+        if (allListsEntity.size < Constants.MAX_WATCHLIST_LIST_NUMBER) {
+            allWatchlistTabs.add(WatchlistTabItem.AddNewTab)
+        }
+
+        allWatchlistTabs.forEachIndexed { index, tabItem ->
+            tabItem.tabIndex = index
+        }
+        return allWatchlistTabs
+    }
+
+    suspend fun deleteList(listId: Int) {
+        databaseRepository.deleteList(listId)
     }
 }

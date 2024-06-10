@@ -3,13 +3,15 @@ package com.projects.moviemanager.features.watchlist.ui.components
 import androidx.annotation.StringRes
 import com.projects.moviemanager.R
 import com.projects.moviemanager.common.ui.components.tab.TabItem
-import com.projects.moviemanager.features.watchlist.model.DefaultLists
+import com.projects.moviemanager.common.util.Constants.ADD_NEW_TAB_ID
 import com.projects.moviemanager.common.util.Constants.UNSELECTED_OPTION_INDEX
+import com.projects.moviemanager.features.watchlist.model.DefaultLists
 
 sealed class WatchlistTabItem(
-    @StringRes override val tabResId: Int,
+    @StringRes override val tabResId: Int? = null,
+    override val tabName: String? = "",
     override var tabIndex: Int = UNSELECTED_OPTION_INDEX,
-    val listId: String
+    open val listId: Int
 ) : TabItem {
     data object WatchlistTab : WatchlistTabItem(
         tabResId = R.string.watchlist_tab,
@@ -19,4 +21,15 @@ sealed class WatchlistTabItem(
         tabResId = R.string.watched_tab,
         listId = DefaultLists.WATCHED.listId
     )
+    data object AddNewTab : WatchlistTabItem(
+        tabResId = null,
+        listId = DefaultLists.ADD_NEW.listId,
+        tabIndex = ADD_NEW_TAB_ID
+    )
+    data class CustomTab(
+        override val tabResId: Int? = null,
+        override val tabName: String?,
+        override var tabIndex: Int = UNSELECTED_OPTION_INDEX,
+        override var listId: Int
+    ) : WatchlistTabItem(tabResId, tabName, tabIndex, listId)
 }

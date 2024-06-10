@@ -15,9 +15,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -30,7 +34,7 @@ import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.common.ui.MainViewModel
 import com.projects.moviemanager.common.ui.components.popup.ClassicSnackbar
 import com.projects.moviemanager.common.ui.components.tab.GenericTabRow
-import com.projects.moviemanager.common.ui.components.tab.setupTabs
+import com.projects.moviemanager.common.util.Constants.UNSELECTED_OPTION_INDEX
 import com.projects.moviemanager.common.util.UiConstants.DEFAULT_PADDING
 import com.projects.moviemanager.common.util.UiConstants.SMALL_MARGIN
 import com.projects.moviemanager.features.watchlist.WatchlistScreen
@@ -38,9 +42,12 @@ import com.projects.moviemanager.features.watchlist.events.WatchlistEvent
 import com.projects.moviemanager.features.watchlist.model.DefaultLists
 import com.projects.moviemanager.features.watchlist.model.DefaultLists.Companion.getListLocalizedName
 import com.projects.moviemanager.features.watchlist.model.WatchlistItemAction
+import com.projects.moviemanager.features.watchlist.ui.components.DeleteListDialog
+import com.projects.moviemanager.features.watchlist.ui.components.ListRemovePopUpMenu
 import com.projects.moviemanager.features.watchlist.ui.components.WatchlistBodyPlaceholder
 import com.projects.moviemanager.features.watchlist.ui.components.WatchlistCard
 import com.projects.moviemanager.features.watchlist.ui.components.WatchlistTabItem
+import com.projects.moviemanager.features.watchlist.ui.state.WatchlistSnackbarState
 
 @Composable
 fun Watchlist(
@@ -63,26 +70,61 @@ private fun Watchlist(
     goToErrorScreen: () -> Unit
 ) {
     val loadState by viewModel.loadState.collectAsState()
-    val watchlist by viewModel.watchlist.collectAsState()
-    val watchedList by viewModel.watchedList.collectAsState()
+    val allLists by viewModel.allLists.collectAsState()
+    val listContent by viewModel.listContent.collectAsState()
     val selectedList by viewModel.selectedList
     val sortType by mainViewModel.watchlistSort.collectAsState()
     val snackbarState by viewModel.snackbarState
     val snackbarHostState = remember { SnackbarHostState() }
 
-    val availableTabs = listOf(
-        WatchlistTabItem.WatchlistTab,
-        WatchlistTabItem.WatchedTab
-    )
+    if (allLists.isNotEmpty()) {
+        AllListsLoadedState(
+            allLists,
+            viewModel,
+            sortType,
+            mainViewModel,
+            snackbarState,
+            snackbarHostState,
+            loadState,
+            listContent,
+            selectedList,
+            goToDetails,
+            goToErrorScreen
+        )
+    }
+}
 
-    val (tabList, selectedTabIndex, updateSelectedTab) = setupTabs(
-        tabList = availableTabs,
-        onTabSelected = { index ->
+@Composable
+private fun AllListsLoadedState(
+    tabList: List<WatchlistTabItem>,
+    viewModel: WatchlistViewModel,
+    sortType: MediaType?,
+    mainViewModel: MainViewModel,
+    snackbarState: WatchlistSnackbarState,
+    snackbarHostState: SnackbarHostState,
+    loadState: DataLoadStatus,
+    listContent: Map<Int, List<GenericContent>>,
+    selectedList: Int,
+    goToDetails: (Int, MediaType) -> Unit,
+    goToErrorScreen: () -> Unit
+) {
+    val refreshLists by mainViewModel.refreshLists.collectAsState()
+    val selectedTabIndex by viewModel.selectedTabIndex.collectAsState()
+    var showDeletePopUpMenu by remember { mutableStateOf(false) }
+    var deletePopUpMenuOffset by remember { mutableStateOf(Offset.Zero) }
+    val listToRemoveIndex = remember { mutableIntStateOf(UNSELECTED_OPTION_INDEX) }
+    var displayDeleteDialog by remember { mutableStateOf(false) }
+    var itemToRemove: MutableMap<Int, MediaType> by remember { mutableMapOf() }
+
+    val updateSelectedTab: (Int) -> Unit = { index ->
+        if (tabList[index].listId == WatchlistTabItem.AddNewTab.listId) {
+            mainViewModel.updateDisplayCreateNewList(true)
+        } else {
             viewModel.onEvent(
-                WatchlistEvent.SelectList(availableTabs[index].listId)
+                WatchlistEvent.SelectList(tabList[index])
             )
         }
-    )
+    }
 
     val removeItem: (Int, MediaType) -> Unit = { contentId, mediaType ->
         viewModel.onEvent(
@@ -90,9 +132,9 @@ private fun Watchlist(
         )
     }
 
-    val moveItemToList: (Int, MediaType) -> Unit = { contentId, mediaType ->
+    val moveItemToList: (Int, MediaType, Int) -> Unit = { contentId, mediaType, listId ->
         viewModel.onEvent(
-            WatchlistEvent.UpdateItemListId(contentId, mediaType)
+            WatchlistEvent.UpdateItemListId(contentId, mediaType, listId)
         )
     }
 
@@ -110,6 +152,96 @@ private fun Watchlist(
         )
     }
 
+    LaunchedEffect(refreshLists) {
+        if (refreshLists) {
+            mainViewModel.setRefreshLists(false)
+            viewModel.onEvent(WatchlistEvent.LoadAllLists)
+        }
+    }
+
+    SnackbarLaunchedEffect(snackbarState, snackbarHostState, viewModel)
+
+    ClassicSnackbar(
+        snackbarHostState = snackbarHostState,
+        onActionClick = {
+            viewModel.onEvent(WatchlistEvent.UndoItemAction)
+        }
+    ) {
+        Column(modifier = Modifier.fillMaxSize()) {
+            GenericTabRow(
+                selectedTabIndex = selectedTabIndex,
+                tabList = tabList,
+                updateSelectedTab = { index, _ ->
+                    updateSelectedTab(index)
+                },
+                onLongClick = { index, offset ->
+                    if (index != WatchlistTabItem.WatchlistTab.tabIndex &&
+                        index != WatchlistTabItem.WatchedTab.tabIndex
+                    ) {
+                        listToRemoveIndex.intValue = index
+                        deletePopUpMenuOffset = offset
+                        showDeletePopUpMenu = true
+                    }
+                }
+            )
+            when (loadState) {
+                DataLoadStatus.Empty -> {
+                    // Display empty screen
+                }
+
+                DataLoadStatus.Loading -> {
+                    WatchlistBodyPlaceholder()
+                }
+
+                DataLoadStatus.Success -> {
+                    val contentList = listContent[tabList[selectedTabIndex].listId]
+
+                    WatchlistBody(
+                        contentList = contentList.orEmpty(),
+                        sortType = sortType,
+                        selectedList = selectedList,
+                        allLists = tabList,
+                        goToDetails = goToDetails,
+                        removeItem = removeItem,
+                        moveItemToList = moveItemToList
+                    )
+                }
+
+                DataLoadStatus.Failed -> {
+                    goToErrorScreen()
+                }
+            }
+        }
+    }
+
+    ListRemovePopUpMenu(
+        showRemoveMenu = showDeletePopUpMenu,
+        menuOffset = deletePopUpMenuOffset,
+        onRemoveList = {
+            displayDeleteDialog = true
+        },
+        onDismiss = {
+            showDeletePopUpMenu = false
+        }
+    )
+
+    DeleteListDialog(
+        displayDeleteDialog = displayDeleteDialog,
+        listToRemoveIndex = listToRemoveIndex,
+        viewModel = viewModel,
+        tabList = tabList,
+        onDialogDismiss = {
+            displayDeleteDialog = false
+        }
+    )
+}
+
+@Composable
+private fun SnackbarLaunchedEffect(
+    snackbarState: WatchlistSnackbarState,
+    snackbarHostState: SnackbarHostState,
+    viewModel: WatchlistViewModel
+) {
     val context = LocalContext.current
     LaunchedEffect(snackbarState) {
         if (snackbarState.displaySnackbar.value) {
@@ -132,72 +264,24 @@ private fun Watchlist(
             }
         }
     }
-
-    ClassicSnackbar(
-        snackbarHostState = snackbarHostState,
-        onActionClick = {
-            viewModel.onEvent(WatchlistEvent.UndoItemAction)
-        }
-    ) {
-        Column(modifier = Modifier.fillMaxSize()) {
-            GenericTabRow(selectedTabIndex.value, tabList, updateSelectedTab)
-            when (loadState) {
-                DataLoadStatus.Empty -> {
-                    // Display empty screen
-                }
-
-                DataLoadStatus.Loading -> {
-                    WatchlistBodyPlaceholder()
-                }
-
-                DataLoadStatus.Success -> {
-                    when (tabList[selectedTabIndex.value].tabIndex) {
-                        WatchlistTabItem.WatchlistTab.tabIndex -> {
-                            WatchlistBody(
-                                contentList = watchlist,
-                                sortType = sortType,
-                                selectedList = selectedList,
-                                goToDetails = goToDetails,
-                                removeItem = removeItem,
-                                moveItemToList = moveItemToList
-                            )
-                        }
-
-                        WatchlistTabItem.WatchedTab.tabIndex -> {
-                            WatchlistBody(
-                                contentList = watchedList,
-                                sortType = sortType,
-                                selectedList = selectedList,
-                                goToDetails = goToDetails,
-                                removeItem = removeItem,
-                                moveItemToList = moveItemToList
-                            )
-                        }
-                    }
-                }
-
-                DataLoadStatus.Failed -> {
-                    goToErrorScreen()
-                }
-            }
-        }
-    }
 }
 
 @Composable
 private fun WatchlistBody(
     contentList: List<GenericContent>,
     sortType: MediaType?,
-    selectedList: String,
+    selectedList: Int,
+    allLists: List<WatchlistTabItem>,
     goToDetails: (Int, MediaType) -> Unit,
     removeItem: (Int, MediaType) -> Unit,
-    moveItemToList: (Int, MediaType) -> Unit
+    moveItemToList: (Int, MediaType, Int) -> Unit
 ) {
     if (contentList.isNotEmpty()) {
         WatchlistContentLazyList(
             sortType = sortType,
             contentList = contentList,
             selectedList = selectedList,
+            allLists = allLists,
             goToDetails = goToDetails,
             removeItem = removeItem,
             moveItemToList = moveItemToList
@@ -211,16 +295,18 @@ private fun WatchlistBody(
 private fun WatchlistContentLazyList(
     sortType: MediaType?,
     contentList: List<GenericContent>,
-    selectedList: String,
+    selectedList: Int,
+    allLists: List<WatchlistTabItem>,
     goToDetails: (Int, MediaType) -> Unit,
     removeItem: (Int, MediaType) -> Unit,
-    moveItemToList: (Int, MediaType) -> Unit
+    moveItemToList: (Int, MediaType, Int) -> Unit
 ) {
     val sortedItems = if (sortType != null) {
         contentList.filter { it.mediaType == sortType }
     } else {
         contentList
     }
+
     if (sortedItems.isNotEmpty()) {
         LazyColumn(
             contentPadding = PaddingValues(all = SMALL_MARGIN.dp)
@@ -232,14 +318,15 @@ private fun WatchlistContentLazyList(
                     posterUrl = mediaInfo.posterPath,
                     mediaType = mediaInfo.mediaType,
                     selectedList = selectedList,
+                    allLists = allLists,
                     onCardClick = {
                         goToDetails(mediaInfo.id, mediaInfo.mediaType)
                     },
                     onRemoveClick = {
                         removeItem(mediaInfo.id, mediaInfo.mediaType)
                     },
-                    onMoveItemToList = {
-                        moveItemToList(mediaInfo.id, mediaInfo.mediaType)
+                    onMoveItemToList = { listId ->
+                        moveItemToList(mediaInfo.id, mediaInfo.mediaType, listId)
                     }
                 )
                 Spacer(modifier = Modifier.height(DEFAULT_PADDING.dp))

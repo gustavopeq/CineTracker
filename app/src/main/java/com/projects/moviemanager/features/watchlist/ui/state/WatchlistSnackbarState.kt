@@ -1,9 +1,10 @@
 package com.projects.moviemanager.features.watchlist.ui.state
 
 import com.projects.moviemanager.common.domain.models.util.SnackbarState
+import com.projects.moviemanager.features.watchlist.model.DefaultLists
 import com.projects.moviemanager.features.watchlist.model.WatchlistItemAction
 
 data class WatchlistSnackbarState(
-    val listId: String = "",
+    val listId: Int = DefaultLists.WATCHLIST.listId,
     val itemAction: WatchlistItemAction = WatchlistItemAction.ITEM_REMOVED
 ) : SnackbarState()

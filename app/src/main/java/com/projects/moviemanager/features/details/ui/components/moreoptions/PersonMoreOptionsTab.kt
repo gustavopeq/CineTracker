@@ -8,7 +8,7 @@ import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.common.ui.components.GridContentList
 import com.projects.moviemanager.common.ui.components.GridImageList
 import com.projects.moviemanager.common.ui.components.tab.GenericTabRow
-import com.projects.moviemanager.common.ui.components.tab.setupTabs
+import com.projects.moviemanager.common.ui.components.tab.setupGenericTabs
 import com.projects.moviemanager.common.util.UiConstants.MAX_COUNT_PERSON_ADDITIONAL_CONTENT
 
 @Composable
@@ -32,7 +32,7 @@ fun PersonMoreOptionsTab(
         availableTabs.add(MoreOptionsTabItem.ImagesTab)
     }
 
-    val (tabList, selectedTabIndex, updateSelectedTab) = setupTabs(availableTabs)
+    val (tabList, selectedTabIndex, updateSelectedTab) = setupGenericTabs(availableTabs)
 
     if (tabList.isNotEmpty()) {
         Column {

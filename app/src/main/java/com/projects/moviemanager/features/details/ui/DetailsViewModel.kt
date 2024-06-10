@@ -9,6 +9,7 @@ import com.projects.moviemanager.common.domain.models.content.ContentCast
 import com.projects.moviemanager.common.domain.models.content.DetailedContent
 import com.projects.moviemanager.common.domain.models.content.GenericContent
 import com.projects.moviemanager.common.domain.models.content.Videos
+import com.projects.moviemanager.common.domain.models.list.ListItem
 import com.projects.moviemanager.common.domain.models.person.PersonImage
 import com.projects.moviemanager.common.domain.models.util.DataLoadStatus
 import com.projects.moviemanager.common.domain.models.util.MediaType
@@ -69,7 +70,7 @@ class DetailsViewModel @Inject constructor(
             Pair(DefaultLists.WATCHED.listId, false)
         )
     )
-    val contentInListStatus: StateFlow<Map<String, Boolean>> get() = _contentInListStatus
+    val contentInListStatus: StateFlow<Map<Int, Boolean>> get() = _contentInListStatus
 
     private val _detailsFailedLoading: MutableState<Boolean> = mutableStateOf(false)
     val detailsFailedLoading: MutableState<Boolean> get() = _detailsFailedLoading
@@ -79,7 +80,12 @@ class DetailsViewModel @Inject constructor(
     )
     val snackbarState: MutableState<DetailsSnackbarState> get() = _snackbarState
 
+    private lateinit var allLists: List<ListItem>
+
     init {
+        viewModelScope.launch(Dispatchers.IO) {
+            allLists = detailsInteractor.getAllLists()
+        }
         initFetchDetails()
     }
 
@@ -167,7 +173,7 @@ class DetailsViewModel @Inject constructor(
      * Function to Add or Remove content from database list. If the item is currently in the list,
      * it'll be removed. If it's not, it'll be added.
      */
-    private fun toggleContentFromList(listId: String) {
+    private fun toggleContentFromList(listId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             val currentStatus = _contentInListStatus.value[listId] ?: false
             val updatedWatchlistStatus = _contentInListStatus.value.toMutableMap()
@@ -192,11 +198,15 @@ class DetailsViewModel @Inject constructor(
     }
 
     private fun snackbarDismiss() {
-        _snackbarState.value = DetailsSnackbarState()
+        _snackbarState.value.setSnackbarGone()
     }
 
     private fun resetDetails() {
         _loadState.value = DataLoadStatus.Loading
         _detailsFailedLoading.value = true
+    }
+
+    fun getAllLists(): List<ListItem> {
+        return allLists
     }
 }

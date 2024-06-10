@@ -1,20 +1,22 @@
 package com.projects.moviemanager.features.watchlist.model
 
 import com.projects.moviemanager.R
+import com.projects.moviemanager.common.util.Constants.ADD_NEW_TAB_ID
 import com.projects.moviemanager.common.util.capitalized
 
-enum class DefaultLists(val listId: String) {
-    WATCHLIST("watchlist"),
-    WATCHED("watched");
+enum class DefaultLists(val listId: Int) {
+    WATCHLIST(1),
+    WATCHED(2),
+    ADD_NEW(ADD_NEW_TAB_ID);
 
     override fun toString(): String {
         return super.toString().lowercase().capitalized()
     }
     companion object {
-        fun getListById(listId: String): DefaultLists? {
+        fun getListById(listId: Int): DefaultLists? {
             return values().firstOrNull { it.listId == listId }
         }
-        fun getOtherList(listId: String): DefaultLists {
+        fun getOtherList(listId: Int): DefaultLists {
             return when (listId) {
                 WATCHLIST.listId -> WATCHED
                 else -> WATCHLIST

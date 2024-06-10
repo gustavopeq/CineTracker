@@ -8,6 +8,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.stringResource
+import com.projects.moviemanager.R
 import com.projects.moviemanager.common.domain.models.util.MediaType
 import com.projects.moviemanager.common.domain.models.util.SortTypeItem
 import com.projects.moviemanager.common.ui.MainViewModel
@@ -46,7 +47,8 @@ fun BrowseSortBottomSheet(
     BackHandler { dismissBottomSheet() }
 
     GenericBottomSheet(
-        dismissBottomSheet = dismissBottomSheet
+        dismissBottomSheet = dismissBottomSheet,
+        headerText = stringResource(id = R.string.sort_by_header)
     ) {
         when (selectedMediaType) {
             MediaType.MOVIE -> {

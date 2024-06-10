@@ -18,6 +18,7 @@
     <string name="coming_soon_header">Coming Soon</string>
     <string name="home_bottom_screen_message">Looks like you\'ve caught up with everything here!</string>
     <string name="home_discover_more_button">Discover More</string>
+    <string name="app_logo_image_description">CineTracker app logo</string>
 
     <!-- Browse screen -->
     <string name="movies_tab">Movies</string>
@@ -45,6 +46,17 @@
     <string name="empty_list_message">Add to this list by searching for a movie or show.</string>
     <string name="empty_movie_list_message">Add to this list by searching for movie.</string>
     <string name="empty_show_list_message">Add to this list by searching for a show.</string>
+    <string name="add_new_tab_description">Create new list button</string>
+    <string name="create_new_list_header">Create a new List</string>
+    <string name="create_new_list_placeholder">NEW LIST NAME</string>
+    <string name="create_new_list_button">Create</string>
+    <string name="delete_list_pop_up_item">Delete</string>
+    <string name="move_to_other_list_item">Move to other list</string>
+    <string name="move_to_other_list_header">Move to</string>
+    <string name="delete_list_display_title">Delete List</string>
+    <string name="delete_list_display_body">Are you sure you\'d like to delete this list? It can\'t be undone.</string>
+    <string name="delete_list_display_confirm_btn">Delete List</string>
+    <string name="delete_list_display_dismiss_btn">Cancel</string>
 
     <!-- Search screen -->
     <string name="search_bar_placeholder">Search movies, shows or people…</string>
@@ -99,6 +111,8 @@
     <string name="october">October</string>
     <string name="november">November</string>
     <string name="december">December</string>
+    <string name="manage_other_lists_popup_menu">Manage other lists</string>
+    <string name="manage_other_lists_header">Add or Remove from lists</string>
 
     <!-- Common -->
     <string name="generic_error_message">Sorry, something went wrong…</string>
