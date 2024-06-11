@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "149268285392",
+    "project_id": "moviemanager-333317",
+    "storage_bucket": "moviemanager-333317.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:149268285392:android:e53687cdaac7cc4c7a9bd5",
+        "android_client_info": {
+          "package_name": "gustavo.projects.restapi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "149268285392-f6cg6kcm2lhoepdteljs1a6pnv8o3ub0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBxQ3f_MLQR2D1JjLesXhHfRofFyyw6mzw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "149268285392-f6cg6kcm2lhoepdteljs1a6pnv8o3ub0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:149268285392:android:d8b7273d4a64a65d7a9bd5",
+        "android_client_info": {
+          "package_name": "gustavo.projects.restapi.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "149268285392-f6cg6kcm2lhoepdteljs1a6pnv8o3ub0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBxQ3f_MLQR2D1JjLesXhHfRofFyyw6mzw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "149268285392-f6cg6kcm2lhoepdteljs1a6pnv8o3ub0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
