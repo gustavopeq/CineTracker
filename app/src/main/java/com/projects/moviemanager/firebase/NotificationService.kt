@@ -3,10 +3,10 @@ package com.projects.moviemanager.firebase
 import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.content.Context
 import android.media.RingtoneManager
 import android.os.Build
 import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.projects.moviemanager.R
@@ -28,9 +28,6 @@ class NotificationService : FirebaseMessagingService() {
             .setSmallIcon(R.drawable.ic_now_playing)
             .setAutoCancel(true)
 
-        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE)
-            as NotificationManager
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
                 channelId,
@@ -38,12 +35,15 @@ class NotificationService : FirebaseMessagingService() {
                 NotificationManager.IMPORTANCE_DEFAULT
             )
 
-            notificationManager.createNotificationChannel(channel)
+            getSystemService(NotificationManager::class.java).createNotificationChannel(channel)
         }
 
         val notificationId = 0
 
-        notificationManager.notify(notificationId, notificationBuilder.build())
+        NotificationManagerCompat.from(this).notify(
+            notificationId,
+            notificationBuilder.build()
+        )
 
         super.onMessageReceived(message)
     }
