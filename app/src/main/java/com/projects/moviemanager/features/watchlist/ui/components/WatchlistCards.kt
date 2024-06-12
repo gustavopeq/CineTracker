@@ -42,6 +42,7 @@ import com.projects.moviemanager.common.util.UiConstants.MEDIA_TYPE_TAG_CORNER_S
 import com.projects.moviemanager.common.util.UiConstants.POSTER_ASPECT_RATIO_MULTIPLY
 import com.projects.moviemanager.common.util.UiConstants.SMALL_PADDING
 import com.projects.moviemanager.common.util.UiConstants.WATCHLIST_IMAGE_WIDTH
+import timber.log.Timber
 
 @Composable
 fun WatchlistCard(
