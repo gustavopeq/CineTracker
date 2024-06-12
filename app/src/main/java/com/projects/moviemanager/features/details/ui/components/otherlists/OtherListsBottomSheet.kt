@@ -1,6 +1,7 @@
 package com.projects.moviemanager.features.details.ui.components.otherlists
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -75,15 +76,15 @@ private fun ListCheckboxRow(
     onToggleList: () -> Unit
 ) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().clickable {
+            onToggleList()
+        },
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Checkbox(
             checked = isContentInList,
-            onCheckedChange = {
-                onToggleList()
-            },
+            onCheckedChange = {},
             colors = CheckboxDefaults.colors(
                 checkedColor = MaterialTheme.colorScheme.secondary
             )
