@@ -37,6 +37,7 @@ import com.projects.moviemanager.common.ui.components.tab.GenericTabRow
 import com.projects.moviemanager.common.util.Constants.UNSELECTED_OPTION_INDEX
 import com.projects.moviemanager.common.util.UiConstants.DEFAULT_PADDING
 import com.projects.moviemanager.common.util.UiConstants.SMALL_MARGIN
+import com.projects.moviemanager.common.util.capitalized
 import com.projects.moviemanager.features.watchlist.WatchlistScreen
 import com.projects.moviemanager.features.watchlist.events.WatchlistEvent
 import com.projects.moviemanager.features.watchlist.model.DefaultLists
@@ -114,7 +115,6 @@ private fun AllListsLoadedState(
     var deletePopUpMenuOffset by remember { mutableStateOf(Offset.Zero) }
     val listToRemoveIndex = remember { mutableIntStateOf(UNSELECTED_OPTION_INDEX) }
     var displayDeleteDialog by remember { mutableStateOf(false) }
-    var itemToRemove: MutableMap<Int, MediaType> by remember { mutableMapOf() }
 
     val updateSelectedTab: (Int) -> Unit = { index ->
         if (tabList[index].listId == WatchlistTabItem.AddNewTab.listId) {
@@ -159,7 +159,7 @@ private fun AllListsLoadedState(
         }
     }
 
-    SnackbarLaunchedEffect(snackbarState, snackbarHostState, viewModel)
+    SnackbarLaunchedEffect(snackbarState, snackbarHostState, viewModel, tabList)
 
     ClassicSnackbar(
         snackbarHostState = snackbarHostState,
@@ -240,23 +240,31 @@ private fun AllListsLoadedState(
 private fun SnackbarLaunchedEffect(
     snackbarState: WatchlistSnackbarState,
     snackbarHostState: SnackbarHostState,
-    viewModel: WatchlistViewModel
+    viewModel: WatchlistViewModel,
+    tabList: List<WatchlistTabItem>
 ) {
     val context = LocalContext.current
     LaunchedEffect(snackbarState) {
         if (snackbarState.displaySnackbar.value) {
-            val listName = DefaultLists.getListById(snackbarState.listId)
-            listName?.let {
-                val listLocalizedName = context.resources.getString(getListLocalizedName(listName))
+            val watchlistTabItem = tabList.find { it.listId == snackbarState.listId }
+            val tabName = if (watchlistTabItem?.tabName.isNullOrEmpty()) {
+                context.resources.getString(
+                    getListLocalizedName(DefaultLists.getListById(snackbarState.listId))
+                )
+            } else {
+                watchlistTabItem?.tabName
+            }
+
+            tabName?.let {
                 val message = if (snackbarState.itemAction == WatchlistItemAction.ITEM_REMOVED) {
                     context.resources.getString(
                         R.string.snackbar_item_removed_from_list,
-                        listLocalizedName
+                        it.capitalized()
                     )
                 } else {
                     context.resources.getString(
                         R.string.snackbar_item_moved_to_list,
-                        listLocalizedName
+                        it.capitalized()
                     )
                 }
                 snackbarHostState.showSnackbar(message)

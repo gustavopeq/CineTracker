@@ -136,10 +136,14 @@ private fun OtherListsPanel(
     onDismissRequest: () -> Unit,
     onMoveItemToList: (Int) -> Unit
 ) {
+    fun dismissBottomSheet() {
+        updateDisplayOtherListsPanel(false)
+        onDismissRequest()
+    }
+
     GenericBottomSheet(
         dismissBottomSheet = {
-            updateDisplayOtherListsPanel(false)
-            onDismissRequest()
+            dismissBottomSheet()
         },
         headerText = stringResource(id = R.string.move_to_other_list_header)
     ) {
@@ -155,6 +159,7 @@ private fun OtherListsPanel(
                         .fillMaxWidth()
                         .clickable {
                             onMoveItemToList(list.listId)
+                            dismissBottomSheet()
                         }
                 ) {
                     Column {
