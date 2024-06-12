@@ -249,7 +249,7 @@ private fun SnackbarLaunchedEffect(
             val watchlistTabItem = tabList.find { it.listId == snackbarState.listId }
             val tabName = if (watchlistTabItem?.tabName.isNullOrEmpty()) {
                 context.resources.getString(
-                    getListLocalizedName(DefaultLists.getListById(snackbarState.listId))
+                    getListLocalizedName(DefaultLists.getListById(snackbarState.listId ?: 0))
                 )
             } else {
                 watchlistTabItem?.tabName
