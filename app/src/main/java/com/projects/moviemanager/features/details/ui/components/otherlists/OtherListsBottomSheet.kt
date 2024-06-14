@@ -84,7 +84,9 @@ private fun ListCheckboxRow(
     ) {
         Checkbox(
             checked = isContentInList,
-            onCheckedChange = {},
+            onCheckedChange = {
+                onToggleList()
+            },
             colors = CheckboxDefaults.colors(
                 checkedColor = MaterialTheme.colorScheme.secondary
             )
