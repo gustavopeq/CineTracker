@@ -1,6 +1,7 @@
 package com.projects.moviemanager.common.ui.components
 
 import android.app.Activity
+import android.os.Build
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
@@ -20,17 +21,17 @@ fun SystemNavBarSpacer() {
 }
 
 @Composable
-fun SetStatusBarColor(
-    newColor: Color = MainBarGreyColor
-) {
-    val context = LocalContext.current
-    val window = (context as? Activity)?.window
+fun SetStatusBarColor(newColor: Color = MainBarGreyColor) {
+    if (Build.VERSION.SDK_INT < 35) {
+        val context = LocalContext.current
+        val window = (context as? Activity)?.window
 
-    DisposableEffect(Unit) {
-        window?.statusBarColor = newColor.toArgb()
+        DisposableEffect(Unit) {
+            window?.statusBarColor = newColor.toArgb()
 
-        onDispose {
-            window?.statusBarColor = PrimaryBlackColor.toArgb()
+            onDispose {
+                window?.statusBarColor = PrimaryBlackColor.toArgb()
+            }
         }
     }
 }

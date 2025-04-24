@@ -1,0 +1,63 @@
+[versions]
+composeBom = "2025.04.01"
+hiltAndroid = "2.54"
+hiltNavigationCompose = "1.2.0"
+kotlin = "2.1.10"
+agp = "8.9.2"
+ksp = "2.1.0-1.0.29"
+lifecycleViewmodelKtx = "2.8.7"
+lottieCompose = "6.4.0"
+navigation = "2.8.9"
+hilt = "2.48"
+pagingComposeVersion = "3.3.6"
+pagingRuntimeKtx = "3.3.6"
+firebaseBom = "33.12.0"
+firebase-analytics = "22.4.0"
+firebase-crashlytics = "19.4.2"
+firebase-messaging = "24.1.1"
+crashlyticsPlugin = "3.0.3"
+googleServices = "4.4.2"
+room = "2.7.1"
+timber = "5.0.1"
+retrofit = "2.9.0"
+moshi = "1.12.0"
+glideCompose = "1.0.0-beta01"
+composePlugin= "2.1.0"
+material3 = "1.4.0-alpha13"
+
+[libraries]
+compose-bom = { module = "androidx.compose:compose-bom", version.ref = "composeBom" }
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
+firebase-analytics-ktx = { module = "com.google.firebase:firebase-analytics-ktx", version.ref = "firebase-analytics" }
+firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics", version.ref = "firebase-crashlytics" }
+firebase-messaging-ktx = { module = "com.google.firebase:firebase-messaging-ktx", version.ref = "firebase-messaging" }
+hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
+hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hiltAndroid" }
+hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
+kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
+lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
+lottie-compose = { module = "com.airbnb.android:lottie-compose", version.ref = "lottieCompose" }
+material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
+paging-compose = { module = "androidx.paging:paging-compose", version.ref = "pagingComposeVersion" }
+paging-runtime-ktx  = { module = "androidx.paging:paging-runtime-ktx", version.ref = "pagingRuntimeKtx" }
+retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+moshi-kotlin = { module = "com.squareup.moshi:moshi-kotlin", version.ref = "moshi" }
+moshi-converter = { module = "com.squareup.retrofit2:converter-moshi", version.ref = "retrofit" }
+glide-compose = { module = "com.github.bumptech.glide:compose", version.ref = "glideCompose" }
+navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation" }
+room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
+room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+room-compiler = { module = "androidx.room:room-compiler",version.ref = "room" }
+timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
+ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
+
+[plugins]
+agp = { id = "com.android.application", version.ref = "agp" }
+kotlin = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+kapt = { id = "org.jetbrains.kotlin.kapt",    version.ref = "kotlin" }
+navigation-safeargs = { id = "androidx.navigation.safeargs.kotlin", version.ref = "navigation" }
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+google-services = { id = "com.google.gms.google-services", version.ref = "googleServices" }
+composePlugin = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "composePlugin" }
+crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "crashlyticsPlugin" }
