@@ -1,5 +1,6 @@
 package com.projects.moviemanager.features.browse.ui.components
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.core.animateIntOffsetAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -35,7 +36,7 @@ import com.projects.moviemanager.features.browse.events.BrowseEvent
 import com.projects.moviemanager.features.browse.ui.BrowseViewModel
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CollapsingTabRow(
     scrollBehavior: TopAppBarScrollBehavior,
@@ -51,12 +52,12 @@ fun CollapsingTabRow(
         },
         scrollBehavior = scrollBehavior,
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primary
+            containerColor = MaterialTheme.colorScheme.primary,
+            scrolledContainerColor = MaterialTheme.colorScheme.primary
         )
     )
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun BrowseTypeTabRow(
     viewModel: BrowseViewModel,
@@ -121,7 +122,6 @@ private fun BrowseTypeTab(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun TabIndicator(
     width: Dp,
